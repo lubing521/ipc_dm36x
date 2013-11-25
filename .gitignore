@@ -1,3 +1,4 @@
+
 *.o
 *.ko
 *.out
@@ -20,7 +21,6 @@ target/
 
 # Libraries
 *.lib
-
 # Shared objects (inc. Windows DLLs)
 *.dll
 *.so
