@@ -1,0 +1,3 @@
+Please post all the queries and support issues regarding DM36x IPNC at http://e2e.ti.com/support/dsp/davinci_digital_media_processors/f/100.aspx 
+
+All the suport documents needed are provided with the release at Docs folder.

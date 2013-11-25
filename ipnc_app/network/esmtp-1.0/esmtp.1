@@ -1,0 +1,262 @@
+.\" Based on ssmtp.1 and sendmail.8 man pages of the sSMTP and 
+.\" sendmail distributions respectively.
+.\" 
+.\" Portions are
+.\"     Copyright (c) 1998-2002 Sendmail, Inc. and its suppliers.
+.\"         All rights reserved.
+.\"     Copyright (c) 1983, 1997 Eric P. Allman.  All rights reserved.
+.\"     Copyright (c) 1988, 1991, 1993
+.\"         The Regents of the University of California.  All rights reserved.
+.TH ESMTP 1
+
+.SH NAME
+esmtp
+\-
+libESMTP to Sendmail compatibility interface
+
+.SH SYNOPSIS
+\fBesmtp\fR [\fIflags\fR] [\fIaddress ...\fR]
+.br
+\fBsendmail\fR [\fIflags\fR] [\fIaddress ...\fR]
+
+\fBmailq\fR
+.br
+\fBsendmail -bp\fR
+
+\fBnewaliases\fR
+.br
+\fBsendmail -bi\fR
+
+.SH DESCRIPTION
+\fBEsmtp\fR is a send-only \fBsendmail\fR emulator for machines which normally
+retrieve their mail from a centralized mailhub using programs such as
+\fBfetchmail\fR.
+
+\fBEsmtp\fR does not attempt to provide all the functionality of
+\fBsendmail\fR: it is intended to be used by mail user agents as \fBmutt\fR.
+
+.SH OPTIONS
+Most \fBsendmail\fR options are irrelevant to \fBesmtp\fR .  Those marked
+``ignored'' or ``default'' have no effect on mail transfer.  Those marked
+``unsupported'' are fatal errors.
+
+.TP
+\fB\-Ac\fR (ignored)
+Use submit.cf even if the operation mode does not indicate an initial mail
+submission.
+
+.TP
+\fB\-Am\fR (ignored)
+Use sendmail.cf even if the operation mode indicates an initial mail
+submission.
+
+.TP
+\fB\-B\fR \fItype\fR
+Set the body type to \fItype\fR.  Current legal values are 7BIT or 8BITMIME.
+
+.TP
+\fB\-ba\fR (unsupported)
+Go into ARPANET mode.
+
+.TP
+\fB\-bd\fR (unsupported)
+Run as a daemon.
+
+.TP
+\fB\-bD\fR (unsupported)
+Same as \fB\-bd\fR except runs in foreground.
+
+.TP
+\fB\-bh\fR (unsupported)
+Print the persistent host status database.
+
+.TP
+\fB\-bH\fR (unsupported)
+Purge expired entries from the persistent host status database.
+
+.TP
+\fB\-bi\fR (ignored)
+Initialize the alias database.
+
+.TP
+\fB\-bm\fR (default)
+Deliver mail in the usual way.
+
+.TP
+\fB\-bp\fR
+Print a listing of the queue(s).
+
+.TP
+\fB\-bP\fR (unsupported)
+Print number of entries in the queue(s); only available with shared memory
+support.
+
+.TP
+\fB\-bs\fR (unsupported)
+Use the SMTP protocol as described in RFC821 on standard input and output.  
+
+.TP
+\fB\-bt\fR (unsupported)
+Run in address test mode.  
+
+.TP
+\fB\-bv\fR (unsupported)
+Verify names only \- do not try to collect or deliver a message.
+
+.TP
+\fB\-C\fR \fIfile\fR
+Use alternate configuration file.
+
+.TP
+\fB\-d\fR \fIX\fR (ignored)
+Set debugging value to
+\fIX\fR.
+
+.TP
+\fB\-F\fR \fIfullname\fR
+Set the full name of the sender.
+
+.TP
+\fB\-f\fR \fIname\fR
+Sets the name of the ``from'' person (i.e., the envelope sender of the mail).
+This address may also be used in the From: header if that header is missing
+during initial submission.  The envelope sender address is used as the
+recipient for delivery status notifications and may also appear in a
+Return-Path: header.
+
+This address is also used to select from different identities in the
+configuration file. 
+
+If no envelope sender is specified in the command line then the default
+identity's address is used.
+
+.TP
+\fB\-G\fR (ignored)
+Relay (gateway) submission of a message.
+
+.TP
+\fB\-h\fR \fIN\fR (ignored)
+Set the hop count to \fIN\fR.
+
+.TP
+\fB\-I\fR (ignored)
+Same as \fB\-bi\fR.
+
+.TP
+\fB\-i\fR (ignored)
+Ignore dots alone on lines by themselves in incoming messages.
+This should be set if you are reading data from a file.
+
+.TP
+\fB\-L\fR \fItag\fR (ignored)
+Set the identifier used in syslog messages to the supplied \fItag\fR.
+
+.TP
+\fB\-N\fR \fIdsn\fR
+Set delivery status notification conditions to \fIdsn\fR, which can be `never'
+for no notifications or a comma separated list of the values `failure' to be
+notified if delivery failed, `delay' to be notified if delivery is delayed, and
+`success' to be notified when the message is successfully delivered.
+
+.TP
+\fB\-n\fR (default)
+Don't do aliasing.
+
+.TP
+\fB\-O\fP \fIoption\fR=\fIvalue\fR (ignored)
+Set option \fIoption\fR to the specified \fIvalue\fR.  This form uses long
+names.
+
+.TP
+\fB\-o\fR \fIx value\fR (ignored)
+Set option \fIx\fR to the specified \fIvalue\fR.  This form uses single
+character names only.  
+
+.TP
+\fB\-p\fR \fIprotocol\fR (ignored)
+Set the name of the protocol used to receive the message.  
+
+.TP
+\fB\-q\fR[\fItime\fR] (ignored)
+Process saved messages in the queue at given intervals.  
+
+.TP
+\fB\-qp\fR[\fItime\fR] (ignored)
+Similar to \fB\-q\fItime\fR, except that instead of periodically forking a
+child to process the queue, forks a single persistent child for each queue that
+alternates between processing the queue and sleeping.
+
+.TP
+\fB\-qf\fR (ignored)
+Process saved messages in the queue once and do not fork(), but run in the
+foreground.
+
+.TP
+\fB\-qG\fR \fIname\fR (ignored)
+Process jobs in queue group called \fIname\fR only.
+
+.TP
+\fB\-q\fR[\fI!\fR]\fBI\fR \fIsubstr\fR (ignored)
+Limit processed jobs to those containing \fIsubstr\fR as a substring of the
+queue id or not when \fI!\fR is specified.
+
+.TP
+\fB\-q\fR[\fI!\fR]\fBR\fR \fIsubstr\fR (ignored)
+Limit processed jobs to those containing \fIsubstr\fR as a substring of one of
+the recipients or not when \fI!\fR is specified.
+
+.TP
+\fB\-q\fR[\fI!\fR]\fBS\fR \fIsubstr\fR (ignored)
+Limit processed jobs to those containing \fIsubstr\fR as a substring of the
+sender or not when \fI!\fR is specified.
+
+.TP
+\fB\-R\fR \fIreturn\fR
+Set the amount of the message to be returned if the message bounces.  The
+\fIreturn\fR parameter can be `full' to return the entire message or `hdrs' to
+return only the headers.  In the latter case also local bounces return only the
+headers.
+
+.TP
+\fB\-r\fR \fIname\fR
+An alternate and obsolete form of the \fB\-f\fR flag.
+
+.TP
+\fB\-t\fR
+Read message for recipients.  To:, Cc:, and Bcc: lines will be scanned for
+recipient addresses.  The Bcc: line will be deleted before transmission.
+
+.TP
+\fB\-V\fR \fIenvid\fR
+Set the original envelope id.  
+
+.TP
+\fB\-v\fR
+Go into verbose mode.  
+
+.TP
+\fB\-X\fR \fIlogfile\fR
+Log all traffic in and out of mailers in the indicated log file.
+
+.TP
+\fB\-\-\fR
+Stop processing command flags and use the rest of the arguments as
+addresses.
+
+.SH FILES
+.TP
+ ~/.esmtprc
+User configuration file. Only read if no configuration file is specified on the
+command line.
+
+.TP
+/etc/esmtprc
+System configuration file. Only read if no configuration file is specified on
+the command line and there is no user configuration file.
+
+.SH SEE ALSO
+esmtprc(5),
+fetchmail(1)
+
+.SH AUTHOR
+Jos\['e] Fonseca

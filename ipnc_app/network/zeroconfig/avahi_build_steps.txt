@@ -1,0 +1,73 @@
+1. configure libdaemon and expat like: 
+    echo "ac_cv_func_setpgrp_void=yes" > config.cache
+    ./configure CC=arm_v5t_le-gcc AR=arm_v5t_le-ar RANLIB=arm_v5t_le-ranlib STRIP=arm_v5t_le-strip --host=arm-linux-gnu --prefix=/usr --sysconfdir=/etc --localstatedir=/var --config-cache
+
+2. Build libdaemon and expat like: 
+	make 
+	
+3. Stage/install libdaemon and expat like: 
+	
+	make DESTDIR=/home/user/workdir/DM368/ipnc/network/zeroconfig/avahi/avahi_require install
+	rm -rf /home/user/workdir/DM368/ipnc/network/zeroconfig/avahi/avahi_require/usr/lib/*.la
+	make DESTDIR=/home/user/workdir/DM368/IPNetCam/ipnc/target/filesys/ install
+	
+4. Configure avahi like: 
+
+	./configure CC=arm_v5t_le-gcc AR=arm_v5t_le-ar RANLIB=arm_v5t_le-ranlib STRIP=arm_v5t_le-strip --host=arm-linux-gnu  CPPFLAGS="-fno-stack-protector -I/home/user/workdir/DM368/ipnc/network/zeroconfig/avahi/avahi_require/usr/include     -I/home/user/workdir/DM368/ipnc/network/zeroconfig/avahi/avahi_require/usr/include -I/opt/dm36x/mv_pro_5.0/montavista/pro/devkit/arm/v5t_le/target/usr/include" LDFLAGS="-L/home/user/workdir/DM368/ipnc/network/zeroconfig/avahi/avahi_require/usr/lib     -L/home/user/workdir/DM368/ipnc/network/zeroconfig/avahi/avahi_require/lib -L/opt/dm36x/mv_pro_5.0/montavista/pro/devkit/arm/v5t_le/target/usr/lib" LIBDAEMON_CFLAGS="-I/home/user/workdir/DM368/ipnc/network/zeroconfig/avahi/avahi_require/usr/include "     LIBDAEMON_LIBS="-L/home/user/workdir/DM368/ipnc/network/zeroconfig/avahi/avahi_require/usr/lib -ldaemon" --disable-dbus --disable-gdbm     --disable-glib --disable-gobject --disable-gtk --disable-manpages --disable-monodoc     --disable-python --disable-qt3 --disable-qt4 --enable-libdaemon --with-distro=none     --with-xml=expat --prefix=/usr --sysconfdir=/etc --localstatedir=/var --disable-stack-protector
+	
+	make DESTDIR=/home/user/workdir/DM368/IPNetCam/ipnc/target/filesys/ install
+	make DESTDIR=/home/user/workdir/DM368/IPNetCam/ipnc/target/filesys/ install-data
+	make DESTDIR=/home/user/workdir/DM368/IPNetCam/ipnc/target/filesys/ install-exec
+	
+	
+5. add user and group on IPNC 
+NOTE: It would modify folder /etc, so you must run on NFS , because cramfs is read-only)
+
+	addgroup  avahi
+	addgroup  avahi-autoipd
+	
+	adduser  -G avahi -S -H avahi
+	adduser  -G avahi-autoipd -S -H avahi-autoipd
+	
+6. 
+-add http.service on /etc/avahi/service/ and the content as below
+	<?xml version="1.0" standalone='no'?>
+	<!DOCTYPE service-group SYSTEM "avahi-service.dtd">
+	<service-group>
+	  <name>DM36X_IPNC</name> ## Name of the Bookmark
+	  <service>
+		<type>_http._tcp</type>
+		<port>80</port>
+		<txt-record>path=/</txt-record> ## Path 
+	  </service>
+	</service-group>
+	
+-add psia.service on /etc/avahi/service/ and the content as below
+	<?xml version="1.0" standalone='no'?>
+	<!DOCTYPE service-group SYSTEM "avahi-service.dtd">
+	<service-group>
+	  <name>DM36X_IPNC</name> ## Name of the Bookmark
+	  <service>
+		<type>_psia._tcp</type>
+		<port>80</port>
+		<txt-record>path=/</txt-record> ## Path 
+	  </service>
+	</service-group>
+
+	
+	
+7. add below command to the /etc/fstab on IPNC
+	none		/var/lib	tmpfs	defaults		0 0
+	
+8. add avahi command to the /opt/ipnc/autorun.sh on IPNC
+	/usr/sbin/avahi-autoipd --no-drop-root --no-chroot -D eth0
+	/usr/sbin/avahi-daemon --no-drop-root --no-chroot -D
+	/usr/sbin/avahi-dnsconfd -D
+	
+9. Package the cramfs and boot IPNC
+
+
+
+	
+	
+

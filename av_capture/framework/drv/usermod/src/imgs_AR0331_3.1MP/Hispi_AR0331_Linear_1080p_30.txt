@@ -1,0 +1,449 @@
+// [HiSPi Linear 1080p60]1: Load=Reset
+// [Reset]1: STATE=Sensor Reset, 1
+// [Reset]2: DELAY=200
+// [Reset]3: STATE=Sensor Reset, 0
+// [Reset]4: FIELD_WR=RESET_REGISTER, 1
+regAddr[i] = 0x301A; regValue[i] = 0x0001 	// RESET_REGISTER
+// [Reset]5: FIELD_WR=RESET_REGISTER; regValue[i] = 0x10D8 
+; i++ ; regAddr[i] = 0x301A; regValue[i] = 0x10D8 	// RESET_REGISTER
+// [HiSPi Linear 1080p60]2: DELAY=200
+// [HiSPi Linear 1080p60]3: LOAD=AR0331 Linear sequencer load - 1.0
+// [AR0331 Linear sequencer load - 1.0]1: REG=0x3088; regValue[i] = 0x8000
+; i++ ; regAddr[i] = 0x3088; regValue[i] = 0x8000 	// SEQ_CTRL_PORT
+// [AR0331 Linear sequencer load - 1.0]2: REG=0x3086; regValue[i] = 0x4A03
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x4A03 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]3: REG=0x3086; regValue[i] = 0x4316
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x4316 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]4: REG=0x3086; regValue[i] = 0x443
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x0443 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]5: REG=0x3086; regValue[i] = 0x1645
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x1645 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]6: REG=0x3086; regValue[i] = 0x4045
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x4045 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]7: REG=0x3086; regValue[i] = 0x6017
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x6017 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]8: REG=0x3086; regValue[i] = 0x5045
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x5045 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]9: REG=0x3086; regValue[i] = 0x404B
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x404B 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]10: REG=0x3086; regValue[i] = 0x1244
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x1244 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]11: REG=0x3086; regValue[i] = 0x6134
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x6134 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]12: REG=0x3086; regValue[i] = 0x4A31
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x4A31 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]13: REG=0x3086; regValue[i] = 0x4342
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x4342 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]14: REG=0x3086; regValue[i] = 0x4560
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x4560 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]15: REG=0x3086; regValue[i] = 0x2714
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x2714 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]16: REG=0x3086; regValue[i] = 0x3DFF
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x3DFF 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]17: REG=0x3086; regValue[i] = 0x3DFF
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x3DFF 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]18: REG=0x3086; regValue[i] = 0x3DEA
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x3DEA 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]19: REG=0x3086; regValue[i] = 0x2704
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x2704 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]20: REG=0x3086; regValue[i] = 0x3D10
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x3D10 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]21: REG=0x3086; regValue[i] = 0x2705
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x2705 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]22: REG=0x3086; regValue[i] = 0x3D10
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x3D10 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]23: REG=0x3086; regValue[i] = 0x2715
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x2715 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]24: REG=0x3086; regValue[i] = 0x3527
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x3527 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]25: REG=0x3086; regValue[i] = 0x53D
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x053D 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]26: REG=0x3086; regValue[i] = 0x1045
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x1045 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]27: REG=0x3086; regValue[i] = 0x4027
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x4027 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]28: REG=0x3086; regValue[i] = 0x427
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x0427 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]29: REG=0x3086; regValue[i] = 0x143D
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x143D 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]30: REG=0x3086; regValue[i] = 0xFF3D
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0xFF3D 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]31: REG=0x3086; regValue[i] = 0xFF3D
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0xFF3D 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]32: REG=0x3086; regValue[i] = 0xEA62
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0xEA62 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]33: REG=0x3086; regValue[i] = 0x2728
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x2728 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]34: REG=0x3086; regValue[i] = 0x3627
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x3627 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]35: REG=0x3086; regValue[i] = 0x83D
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x083D 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]36: REG=0x3086; regValue[i] = 0x6444
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x6444 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]37: REG=0x3086; regValue[i] = 0x2C2C
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x2C2C 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]38: REG=0x3086; regValue[i] = 0x2C2C
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x2C2C 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]39: REG=0x3086; regValue[i] = 0x4B01
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x4B01 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]40: REG=0x3086; regValue[i] = 0x432D
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x432D 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]41: REG=0x3086; regValue[i] = 0x4643
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x4643 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]42: REG=0x3086; regValue[i] = 0x1647
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x1647 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]43: REG=0x3086; regValue[i] = 0x435F
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x435F 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]44: REG=0x3086; regValue[i] = 0x4F50
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x4F50 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]45: REG=0x3086; regValue[i] = 0x2604
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x2604 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]46: REG=0x3086; regValue[i] = 0x2694
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x2694 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]47: REG=0x3086; regValue[i] = 0x2027
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x2027 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]48: REG=0x3086; regValue[i] = 0xFC53
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0xFC53 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]49: REG=0x3086; regValue[i] = 0xD5C
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x0D5C 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]50: REG=0x3086; regValue[i] = 0xD57
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x0D57 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]51: REG=0x3086; regValue[i] = 0x5417
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x5417 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]52: REG=0x3086; regValue[i] = 0x955
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x0955 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]53: REG=0x3086; regValue[i] = 0x5649
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x5649 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]54: REG=0x3086; regValue[i] = 0x5307
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x5307 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]55: REG=0x3086; regValue[i] = 0x5303
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x5303 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]56: REG=0x3086; regValue[i] = 0x4D28
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x4D28 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]57: REG=0x3086; regValue[i] = 0x6C4C
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x6C4C 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]58: REG=0x3086; regValue[i] = 0x928
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x0928 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]59: REG=0x3086; regValue[i] = 0x2C28
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x2C28 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]60: REG=0x3086; regValue[i] = 0x294E
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x294E 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]61: REG=0x3086; regValue[i] = 0x5C09
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x5C09 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]62: REG=0x3086; regValue[i] = 0x4500
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x4500 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]63: REG=0x3086; regValue[i] = 0x4580
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x4580 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]64: REG=0x3086; regValue[i] = 0x26B6
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x26B6 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]65: REG=0x3086; regValue[i] = 0x27F8
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x27F8 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]66: REG=0x3086; regValue[i] = 0x1702
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x1702 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]67: REG=0x3086; regValue[i] = 0x27FA
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x27FA 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]68: REG=0x3086; regValue[i] = 0x5C0B
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x5C0B 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]69: REG=0x3086; regValue[i] = 0x1718
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x1718 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]70: REG=0x3086; regValue[i] = 0x26B2
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x26B2 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]71: REG=0x3086; regValue[i] = 0x5C03
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x5C03 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]72: REG=0x3086; regValue[i] = 0x1744
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x1744 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]73: REG=0x3086; regValue[i] = 0x27F2
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x27F2 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]74: REG=0x3086; regValue[i] = 0x1702
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x1702 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]75: REG=0x3086; regValue[i] = 0x2809
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x2809 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]76: REG=0x3086; regValue[i] = 0x1710
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x1710 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]77: REG=0x3086; regValue[i] = 0x1628
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x1628 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]78: REG=0x3086; regValue[i] = 0x84D
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x084D 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]79: REG=0x3086; regValue[i] = 0x1A26
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x1A26 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]80: REG=0x3086; regValue[i] = 0x9316
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x9316 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]81: REG=0x3086; regValue[i] = 0x1627
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x1627 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]82: REG=0x3086; regValue[i] = 0xFA45
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0xFA45 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]83: REG=0x3086; regValue[i] = 0xA017
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0xA017 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]84: REG=0x3086; regValue[i] = 0x727
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x0727 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]85: REG=0x3086; regValue[i] = 0xFB17
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0xFB17 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]86: REG=0x3086; regValue[i] = 0x2945
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x2945 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]87: REG=0x3086; regValue[i] = 0x8017
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x8017 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]88: REG=0x3086; regValue[i] = 0x827
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x0827 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]89: REG=0x3086; regValue[i] = 0xFA17
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0xFA17 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]90: REG=0x3086; regValue[i] = 0x285D
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x285D 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]91: REG=0x3086; regValue[i] = 0x170E
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x170E 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]92: REG=0x3086; regValue[i] = 0x2691
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x2691 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]93: REG=0x3086; regValue[i] = 0x5301
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x5301 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]94: REG=0x3086; regValue[i] = 0x1740
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x1740 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]95: REG=0x3086; regValue[i] = 0x5302
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x5302 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]96: REG=0x3086; regValue[i] = 0x1710
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x1710 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]97: REG=0x3086; regValue[i] = 0x2693
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x2693 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]98: REG=0x3086; regValue[i] = 0x2692
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x2692 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]99: REG=0x3086; regValue[i] = 0x484D
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x484D 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]100: REG=0x3086; regValue[i] = 0x4E28
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x4E28 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]101: REG=0x3086; regValue[i] = 0x94C
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x094C 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]102: REG=0x3086; regValue[i] = 0xB17
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x0B17 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]103: REG=0x3086; regValue[i] = 0x5F27
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x5F27 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]104: REG=0x3086; regValue[i] = 0xF217
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0xF217 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]105: REG=0x3086; regValue[i] = 0x1428
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x1428 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]106: REG=0x3086; regValue[i] = 0x816
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x0816 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]107: REG=0x3086; regValue[i] = 0x4D1A
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x4D1A 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]108: REG=0x3086; regValue[i] = 0x1616
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x1616 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]109: REG=0x3086; regValue[i] = 0x27FA
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x27FA 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]110: REG=0x3086; regValue[i] = 0x2603
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x2603 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]111: REG=0x3086; regValue[i] = 0x5C01
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x5C01 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]112: REG=0x3086; regValue[i] = 0x4540
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x4540 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]113: REG=0x3086; regValue[i] = 0x2798
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x2798 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]114: REG=0x3086; regValue[i] = 0x172A
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x172A 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]115: REG=0x3086; regValue[i] = 0x4A0A
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x4A0A 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]116: REG=0x3086; regValue[i] = 0x4316
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x4316 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]117: REG=0x3086; regValue[i] = 0xB43
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x0B43 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]118: REG=0x3086; regValue[i] = 0x279C
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x279C 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]119: REG=0x3086; regValue[i] = 0x4560
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x4560 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]120: REG=0x3086; regValue[i] = 0x1707
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x1707 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]121: REG=0x3086; regValue[i] = 0x279D
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x279D 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]122: REG=0x3086; regValue[i] = 0x1725
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x1725 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]123: REG=0x3086; regValue[i] = 0x4540
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x4540 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]124: REG=0x3086; regValue[i] = 0x1708
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x1708 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]125: REG=0x3086; regValue[i] = 0x2798
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x2798 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]126: REG=0x3086; regValue[i] = 0x5D53
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x5D53 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]127: REG=0x3086; regValue[i] = 0xD26
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x0D26 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]128: REG=0x3086; regValue[i] = 0x455C
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x455C 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]129: REG=0x3086; regValue[i] = 0x14B
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x014B 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]130: REG=0x3086; regValue[i] = 0x1244
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x1244 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]131: REG=0x3086; regValue[i] = 0x5251
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x5251 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]132: REG=0x3086; regValue[i] = 0x1702
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x1702 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]133: REG=0x3086; regValue[i] = 0x6018
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x6018 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]134: REG=0x3086; regValue[i] = 0x4A03
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x4A03 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]135: REG=0x3086; regValue[i] = 0x4316
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x4316 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]136: REG=0x3086; regValue[i] = 0x443
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x0443 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]137: REG=0x3086; regValue[i] = 0x1658
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x1658 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]138: REG=0x3086; regValue[i] = 0x4316
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x4316 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]139: REG=0x3086; regValue[i] = 0x5943
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x5943 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]140: REG=0x3086; regValue[i] = 0x165A
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x165A 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]141: REG=0x3086; regValue[i] = 0x4316
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x4316 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]142: REG=0x3086; regValue[i] = 0x5B43
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x5B43 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]143: REG=0x3086; regValue[i] = 0x4540
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x4540 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]144: REG=0x3086; regValue[i] = 0x279C
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x279C 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]145: REG=0x3086; regValue[i] = 0x4560
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x4560 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]146: REG=0x3086; regValue[i] = 0x1707
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x1707 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]147: REG=0x3086; regValue[i] = 0x279D
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x279D 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]148: REG=0x3086; regValue[i] = 0x1725
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x1725 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]149: REG=0x3086; regValue[i] = 0x4540
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x4540 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]150: REG=0x3086; regValue[i] = 0x1710
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x1710 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]151: REG=0x3086; regValue[i] = 0x2798
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x2798 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]152: REG=0x3086; regValue[i] = 0x1720
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x1720 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]153: REG=0x3086; regValue[i] = 0x224B
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x224B 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]154: REG=0x3086; regValue[i] = 0x1244
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x1244 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]155: REG=0x3086; regValue[i] = 0x2C2C
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x2C2C 	// SEQ_DATA_PORT
+// [AR0331 Linear sequencer load - 1.0]156: REG=0x3086; regValue[i] = 0x2C2C
+; i++ ; regAddr[i] = 0x3086; regValue[i] = 0x2C2C 	// SEQ_DATA_PORT
+// [HiSPi Linear 1080p60]4: FIELD_WR=RESET_REGISTER; regValue[i] = 0x0058 		
+; i++ ; regAddr[i] = 0x301A; regValue[i] = 0x0058 	// RESET_REGISTER
+// [HiSPi Linear 1080p60]5: FIELD_WR=DIGITAL_TEST; regValue[i] = 0x0000 			
+; i++ ; regAddr[i] = 0x30B0; regValue[i] = 0x0000 	// DIGITAL_TEST
+// [HiSPi Linear 1080p60]6: FIELD_WR=DIGITAL_CTRL; regValue[i] = 0x06EC 			
+; i++ ; regAddr[i] = 0x30BA; regValue[i] = 0x06EC 	// DIGITAL_CTRL
+// [HiSPi Linear 1080p60]7: FIELD_WR=DATA_FORMAT_BITS; regValue[i] = 0x0C0C		
+; i++ ; regAddr[i] = 0x31AC; regValue[i] = 0x0C0C 	// DATA_FORMAT_BITS
+// [HiSPi Linear 1080p60]8: LOAD=PLL_settings - 4 Lane 12-bit HiSPi
+// [PLL_settings - 4 Lane 12-bit HiSPi]1: FIELD_WR=VT_PIX_CLK_DIV; regValue[i] = 0x0006 		
+; i++ ; regAddr[i] = 0x302A; regValue[i] = PLL_P2 	// VT_PIX_CLK_DIV
+// [PLL_settings - 4 Lane 12-bit HiSPi]4: FIELD_WR=VT_SYS_CLK_DIV; regValue[i] = 0x0002 		
+; i++ ; regAddr[i] = 0x302C; regValue[i] = PLL_P1 	// VT_SYS_CLK_DIV
+// [PLL_settings - 4 Lane 12-bit HiSPi]5: FIELD_WR=PRE_PLL_CLK_DIV; regValue[i] = 0x0004 		
+; i++ ; regAddr[i] = 0x302E; regValue[i] = PLL_pre_div 	// PRE_PLL_CLK_DIV
+// [PLL_settings - 4 Lane 12-bit HiSPi]6: FIELD_WR=PLL_MULTIPLIER; regValue[i] = 0x0042 		
+; i++ ; regAddr[i] = 0x3030; regValue[i] = PLL_M  	// PLL_MULTIPLIER
+// [PLL_settings - 4 Lane 12-bit HiSPi]7: FIELD_WR=OP_PIX_CLK_DIV; regValue[i] = 0x000C 		
+; i++ ; regAddr[i] = 0x3036; regValue[i] = 0x000C 	// OP_PIX_CLK_DIV
+// [PLL_settings - 4 Lane 12-bit HiSPi]9: FIELD_WR=OP_SYS_CLK_DIV; regValue[i] = 0x0002 		
+; i++ ; regAddr[i] = 0x3038; regValue[i] = OP_SYS_CLK_DIV 	// OP_SYS_CLK_DIV
+// [HiSPi Linear 1080p60]9: FIELD_WR=Y_ADDR_START; regValue[i] = 0x00E4 			
+; i++ ; regAddr[i] = 0x3002; regValue[i] = 0x00E4 	// Y_ADDR_START
+// [HiSPi Linear 1080p60]10: FIELD_WR=X_ADDR_START; regValue[i] = 0x0042		 	
+; i++ ; regAddr[i] = 0x3004; regValue[i] = 0x0042 	// X_ADDR_START
+// [HiSPi Linear 1080p60]11: FIELD_WR=Y_ADDR_END; regValue[i] = 0x0523 			
+; i++ ; regAddr[i] = 0x3006; regValue[i] = 0x0523 	// Y_ADDR_END
+// [HiSPi Linear 1080p60]12: FIELD_WR=X_ADDR_END; regValue[i] = 0x07C0 			
+; i++ ; regAddr[i] = 0x3008; regValue[i] = 0x07C0 	// X_ADDR_END
+// [HiSPi Linear 1080p60]13: FIELD_WR=FRAME_LENGTH_LINES; regValue[i] = 0x0465 		
+; i++ ; regAddr[i] = 0x300A; regValue[i] = 0x0465 	// FRAME_LENGTH_LINES
+// [HiSPi Linear 1080p60]14: FIELD_WR=LINE_LENGTH_PCK; regValue[i] = 0x044C 		
+; i++ ; regAddr[i] = 0x300C; regValue[i] = 0x044C 	// LINE_LENGTH_PCK
+// [HiSPi Linear 1080p60]15: FIELD_WR=COARSE_INTEGRATION_TIME; regValue[i] = 0x0438 	
+; i++ ; regAddr[i] = 0x3012; regValue[i] = 0x0438 	// COARSE_INTEGRATION_TIME
+// [HiSPi Linear 1080p60]16: FIELD_WR=X_ODD_INC; regValue[i] = 0x0001 			
+; i++ ; regAddr[i] = 0x30A2; regValue[i] = 0x0001 	// X_ODD_INC
+// [HiSPi Linear 1080p60]17: FIELD_WR=Y_ODD_INC; regValue[i] = 0x0001 			
+; i++ ; regAddr[i] = 0x30A6; regValue[i] = 0x0001 	// Y_ODD_INC
+// [HiSPi Linear 1080p60]18: FIELD_WR=READ_MODE; regValue[i] = 0x0000 			
+; i++ ; regAddr[i] = 0x3040; regValue[i] = 0x0000 	// READ_MODE
+// [HiSPi Linear 1080p60]19: LOAD=Linear MOde
+// [Linear MOde]1: BITFIELD=0x3082; regValue[i] = 0x0003; regValue[i] = 0x0001
+; i++ ; regAddr[i] = 0x3082; regValue[i] = 0x0009 	// OPERATION_MODE_CTRL
+// [Linear MOde]2: LOAD=2D motion compensation OFF
+// [2D motion compensation OFF]1: FIELD_WR=HDR_MC_CTRL2; regValue[i] = 0x0000 			
+; i++ ; regAddr[i] = 0x318C; regValue[i] = 0x0000 	// HDR_MC_CTRL2
+// [2D motion compensation OFF]2: FIELD_WR=HDR_MC_CTRL4; regValue[i] = 0x0000			
+; i++ ; regAddr[i] = 0x3190; regValue[i] = 0x0000 	// HDR_MC_CTRL4
+// [2D motion compensation OFF]3: REG=0x30FE; regValue[i] = 0x0080		
+; i++ ; regAddr[i] = 0x30FE; regValue[i] = 0x0080 	// NOISE_PEDESTAL
+// [2D motion compensation OFF]4: REG=0x320A; regValue[i] = 0x0080		
+; i++ ; regAddr[i] = 0x320A; regValue[i] = 0x0080 	// ADACD_PEDESTAL
+// [Linear MOde]3: LOAD=ALTM Bypassed
+// [ALTM Bypassed]1: BITFIELD=0x301A; regValue[i] = 0x0004, 0			
+; i++ ; regAddr[i] = 0x301A; regValue[i] = 0x0058 	// RESET_REGISTER
+// [ALTM Bypassed]2: REG=0x2400; regValue[i] = 0x0003 			
+; i++ ; regAddr[i] = 0x2400; regValue[i] = 0x0003 	// ALTM_CONTROL
+// [ALTM Bypassed]3: REG=0x2450; regValue[i] = 0x0000		
+; i++ ; regAddr[i] = 0x2450; regValue[i] = 0x0000 	// ALTM_OUT_PEDESTAL
+// [ALTM Bypassed]4: FIELD_WR=DATA_PEDESTAL; regValue[i] = 0x00A8			
+; i++ ; regAddr[i] = 0x301E; regValue[i] = 0x00A8 	// DATA_PEDESTAL
+// [ALTM Bypassed]5: LOAD=ALTM Disabled Devware Color Setup
+// [ALTM Disabled Devware Color Setup]1: STATE=AWB Incandescent, 1.596 -0.718 0.122 -0.164 1.159 0.005 -0.279 -0.504 1.783
+// [ALTM Disabled Devware Color Setup]2: STATE=AWB Incandescent Gain, 0.747 2.727
+// [ALTM Disabled Devware Color Setup]3: STATE=AWB Sun, 1.487 -0.231 -0.257 -0.234 1.332 -0.098 -0.031 -0.384 1.416
+// [ALTM Disabled Devware Color Setup]4: STATE=AWB Sun Gain, 1.383 1.089
+// [ALTM Disabled Devware Color Setup]5: STATE=AWB Weight Map Method, 2
+// [ALTM Disabled Devware Color Setup]6: STATE=AWB Weight Map, 0,1,4369,0,0,274,8738,4352,0,290,8755,8448,1,4642,8738,8720,4386,13107,8465,8737,4677,21844,8466,9010,4677,21827,12818,9010,290,8738,4369,4369
+// [ALTM Disabled Devware Color Setup]7: STATE=AWB Weight Map X Scale, 128
+// [ALTM Disabled Devware Color Setup]8: STATE=AWB Weight Map Y Scale, 128
+// [ALTM Disabled Devware Color Setup]9: STATE=AWB Weight Map X Shift, 32
+// [ALTM Disabled Devware Color Setup]10: STATE=AWB Weight Map Y Shift, 23
+// [ALTM Disabled Devware Color Setup]11: STATE=AWB Weight Map X Center, 1023
+// [ALTM Disabled Devware Color Setup]12: STATE=AWB Weight Map Y Center, 999
+// [ALTM Disabled Devware Color Setup]13: STATE=AWB Weight Map Angle Sin, 53
+// [ALTM Disabled Devware Color Setup]14: STATE=AWB Weight Map Angle Cos, 36
+// [ALTM Disabled Devware Color Setup]15: STATE=AWB Weight Map Luma Low, 4
+// [ALTM Disabled Devware Color Setup]16: STATE=AWB Weight Map Luma High, 251
+// [ALTM Disabled Devware Color Setup]17: STATE=WB Adjust Gains, 1
+// [ALTM Disabled Devware Color Setup]18: STATE=Gamma Correction, 45
+// [ALTM Disabled Devware Color Setup]19: STATE=Black Correct, 4
+// [ALTM Disabled Devware Color Setup]20: STATE=Contrast, 22
+// [ALTM Disabled Devware Color Setup]21: STATE=Aperture Enable, 1
+// [ALTM Bypassed]6: BITFIELD=0x301A; regValue[i] = 0x0004, 1			
+; i++ ; regAddr[i] = 0x301A; regValue[i] = 0x005C 	// RESET_REGISTER
+// [Linear MOde]4: LOAD=ADACD Disabled
+// [ADACD Disabled]1: reg=0x3200; regValue[i] = 0x0000 		
+; i++ ; regAddr[i] = 0x3200; regValue[i] = 0x0000 	// ADACD_CONTROL
+// [Linear MOde]5: LOAD=Companding Disabled
+// [Companding Disabled]1: FIELD_WR=COMPANDING; regValue[i] = 0x0000			
+; i++ ; regAddr[i] = 0x31D0; regValue[i] = 0x0000 	// COMPANDING
+// [Linear MOde]6: REG=0x31E0; regValue[i] = 0x200			
+; i++ ; regAddr[i] = 0x31E0; regValue[i] = 0x0200 	// PIX_DEF_ID
+// [Linear MOde]7: FIELD_WR=ANALOG_GAIN; regValue[i] = 0x0006			
+; i++ ; regAddr[i] = 0x3060; regValue[i] = 0x0006 	// ANALOG_GAIN
+// [Linear MOde]8: LOAD=Enable Embedded Data and Stats
+// [Enable Embedded Data and Stats]1: FIELD_WR=SMIA_TEST, EMBEDDED_STATS_EN; regValue[i] = 0x0001	
+; i++ ; regAddr[i] = 0x3064; regValue[i] = 0x1982 	// SMIA_TEST
+// [Enable Embedded Data and Stats]2: FIELD_WR=SMIA_TEST, EMBEDDED_DATA; regValue[i] = 0x0001	
+; i++ ; regAddr[i] = 0x3064; regValue[i] = 0x1982 	// SMIA_TEST
+// [HiSPi Linear 1080p60]20: FIELD_WR=SERIAL_FORMAT; regValue[i] = 0x0304 		
+; i++ ; regAddr[i] = 0x31AE; regValue[i] = 0x0304 	// SERIAL_FORMAT
+// [HiSPi Linear 1080p60]21: FIELD_WR=HISPI_CONTROL_STATUS; regValue[i] = 0x8400 		
+; i++ ; regAddr[i] = 0x31C6; regValue[i] = 0x8400 	// HISPI_CONTROL_STATUS
+// [HiSPi Linear 1080p60]22: FIELD_WR=DATAPATH_SELECT; regValue[i] = 0x9010 		
+; i++ ; regAddr[i] = 0x306E; regValue[i] = 0x9010 	// DATAPATH_SELECT
+// [HiSPi Linear 1080p60]23: LOAD=Analog Settings
+// [Analog Settings]1: REG=0x3180; regValue[i] = 0x8089		
+; i++ ; regAddr[i] = 0x3180; regValue[i] = 0x8089 	// DELTA_DK_CONTROL
+// [Analog Settings]2: REG=0x30F4; regValue[i] = 0x4000
+; i++ ; regAddr[i] = 0x30F4; regValue[i] = 0x4000 	// RESERVED_MFR_30F4
+// [Analog Settings]3: REG=0x3ED4; regValue[i] = 0x8F6C
+; i++ ; regAddr[i] = 0x3ED4; regValue[i] = 0x8F6C 	// RESERVED_MFR_3ED4
+// [Analog Settings]4: REG=0x3ED6; regValue[i] = 0x6666
+; i++ ; regAddr[i] = 0x3ED6; regValue[i] = 0x6666 	// RESERVED_MFR_3ED6
+// [Analog Settings]5: REG=0x3EDA; regValue[i] = 0x8899
+; i++ ; regAddr[i] = 0x3EDA; regValue[i] = 0x8899 	// RESERVED_MFR_3EDA
+// [Analog Settings]6: REG=0x3EE6; regValue[i] = 0x00F0
+; i++ ; regAddr[i] = 0x3EE6; regValue[i] = 0x00F0 	// RESERVED_MFR_3EE6
+// [HiSPi Linear 1080p60]24: REG=0x3ED2; regValue[i] = 0x9F46			
+; i++ ; regAddr[i] = 0x3ED2; regValue[i] = 0x9F46 	// DAC_LD_6_7
+// [HiSPi Linear 1080p60]25: FIELD_WR=RESET_REGISTER; regValue[i] = 0x005C 		
+; i++ ; regAddr[i] = 0x301A; regValue[i] = 0x005C 	// RESET_REGISTER
+; i++ ;
+// [HiSPi Linear 1080p60]26: DELAY=33
+// [HiSPi Linear 1080p60]27: STATE=Detect Master Clock, 1

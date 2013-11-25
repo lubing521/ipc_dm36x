@@ -1,0 +1,1746 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--  This file conforms to the DTD xdc/cfg/configuration.dtd -->
+<configuration name="alg_config/alg_server.x470MV"
+    platformName="ti.platforms.evmDM365"
+    globalSection="null"
+    sysStack="4096"
+    stack="4096"
+    heap="4096"
+    argSize="512"
+    execCmd="@%24%28ECHO%29%20ti.platforms.evmDM365%20platform%20package%20cannot%20execute%20/home/jiangjx/UbuntuShare/ipnc_project/ipnc_lhy/github_ipc_lhy/av_capture/framework/alg/src/alg_config/alg_server.x470MV%20on%20Linux%0A@%24%28ECHO%29%20Check%20for%20updates%20to%20this%20package%20at%3A%0A@%24%28ECHO%29%20https%3A//www-a.ti.com/downloads/sds_support/targetcontent/rtsc/index.html%0A%09%3A"
+    endian="little"
+    codeModel="null"
+    dataModel="null">
+<targets>
+    <target name="gnu.targets.MVArm9"
+            version="1,0,3.4,3"
+            usedby="gnu.targets.rts470MV"/>
+    <target name="gnu.targets.MVArm9"
+            version="1,0,4.2,0"
+            usedby="ti.sdo.utils.trace"/>
+    <target name="gnu.targets.MVArm9"
+            version="1,0,4.2,0"
+            usedby="ti.sdo.fc.memutils"/>
+    <target name="gnu.targets.MVArm9"
+            version="1,0,4.2,0"
+            usedby="ti.sdo.fc.utils"/>
+    <target name="gnu.targets.MVArm9"
+            version="1,0,4.2,0"
+            usedby="ti.sdo.fc.dman3"/>
+    <target name="gnu.targets.MVArm9"
+            version="1,0,4.2,0"
+            usedby="ti.sdo.fc.acpy3"/>
+    <target name="gnu.targets.MVArm9"
+            version="1,0,4.2,0"
+            usedby="ti.sdo.fc.ires.hdvicp"/>
+    <target name="gnu.targets.MVArm9"
+            version="1,0,4.2,0"
+            usedby="ti.sdo.fc.hdvicpsync"/>
+    <target name="gnu.targets.MVArm9"
+            version="1,0,4.2,0"
+            usedby="ti.sdo.fc.ires.addrspace"/>
+    <target name="gnu.targets.MVArm9"
+            version="1,0,4.2,0"
+            usedby="ti.sdo.fc.ires.memtcm"/>
+    <target name="gnu.targets.MVArm9"
+            version="1,0,4.2,0"
+            usedby="ti.sdo.fc.ires.nullresource"/>
+    <target name="gnu.targets.MVArm9"
+            version="1,0,4.2,0"
+            usedby="ti.sdo.fc.rman"/>
+    <target name="gnu.targets.MVArm9"
+            version="1,0,4.2,0"
+            usedby="ti.sdo.fc.edma3"/>
+    <target name="gnu.targets.MVArm9"
+            version="1,0,4.2,0"
+            usedby="ti.sdo.fc.ires.edma3chan"/>
+    <target name="gnu.targets.MVArm9"
+            version="1,0,4.2,0"
+            usedby="ti.sdo.fc.ires.grouputils"/>
+    <target name="gnu.targets.MVArm9"
+            version="1,0,4.2,0"
+            usedby="ti.sdo.fc.ires.vicp"/>
+    <target name="gnu.targets.MVArm9"
+            version="1,0,4.2,0"
+            usedby="ti.sdo.fc.vicpsync"/>
+    <target name="gnu.targets.MVArm9"
+            version="1,0,4.2,0"
+            usedby="alg_config"/>
+</targets>
+<imports>
+    <package name="xdc.services.global" version="1, 0, 0" repository="/home/jiangjx/UbuntuShare/ipnc_project/ipnc_lhy/dvsdk_2_10_01_18/xdctools_3_15_01_59/packages/">
+        <module name="xdc.services.global.Clock"
+                used="true"
+                uses="">
+            <feature name="enable" type="boolean" value="false"/>
+            <feature name="showMemory" type="boolean" value="false"/>
+        </module>
+        <module name="xdc.services.global.Trace"
+                used="false"
+                uses="">
+        </module>
+    </package>
+    <package name="xdc" version="1, 1, 1" repository="/home/jiangjx/UbuntuShare/ipnc_project/ipnc_lhy/dvsdk_2_10_01_18/xdctools_3_15_01_59/packages/">
+    </package>
+    <package name="xdc.corevers" version="16, 0, 1, 0" repository="/home/jiangjx/UbuntuShare/ipnc_project/ipnc_lhy/dvsdk_2_10_01_18/xdctools_3_15_01_59/packages/">
+    </package>
+    <package name="xdc.shelf" version="1, 0, 0" repository="/home/jiangjx/UbuntuShare/ipnc_project/ipnc_lhy/dvsdk_2_10_01_18/xdctools_3_15_01_59/packages/">
+    </package>
+    <package name="xdc.services.spec" version="1, 0, 0, 0" repository="/home/jiangjx/UbuntuShare/ipnc_project/ipnc_lhy/dvsdk_2_10_01_18/xdctools_3_15_01_59/packages/">
+    </package>
+    <package name="xdc.services.intern.xsr" version="1, 0, 0" repository="/home/jiangjx/UbuntuShare/ipnc_project/ipnc_lhy/dvsdk_2_10_01_18/xdctools_3_15_01_59/packages/">
+    </package>
+    <package name="xdc.services.intern.gen" version="1, 0, 0, 0" repository="/home/jiangjx/UbuntuShare/ipnc_project/ipnc_lhy/dvsdk_2_10_01_18/xdctools_3_15_01_59/packages/">
+    </package>
+    <package name="xdc.services.intern.cmd" version="1, 0, 0, 0" repository="/home/jiangjx/UbuntuShare/ipnc_project/ipnc_lhy/dvsdk_2_10_01_18/xdctools_3_15_01_59/packages/">
+    </package>
+    <package name="xdc.rov" version="1, 0, 0" repository="/home/jiangjx/UbuntuShare/ipnc_project/ipnc_lhy/dvsdk_2_10_01_18/xdctools_3_15_01_59/packages/">
+        <module name="xdc.rov.Model"
+                used="false"
+                uses="">
+        </module>
+        <module name="xdc.rov.Program"
+                used="false"
+                uses="">
+        </module>
+        <module name="xdc.rov.StructureDecoder"
+                used="false"
+                uses="">
+        </module>
+        <module name="xdc.rov.StateReader"
+                used="false"
+                uses="">
+        </module>
+        <module name="xdc.rov.ViewXml"
+                used="false"
+                uses="">
+        </module>
+        <module name="xdc.rov.ViewInfo"
+                used="false"
+                uses="">
+        </module>
+        <module name="xdc.rov.OFReader"
+                used="false"
+                uses="">
+        </module>
+    </package>
+    <package name="xdc.runtime" version="2, 0, 0, 0" repository="/home/jiangjx/UbuntuShare/ipnc_project/ipnc_lhy/dvsdk_2_10_01_18/xdctools_3_15_01_59/packages/">
+        <module name="xdc.runtime.Assert"
+                used="false"
+                uses="">
+        </module>
+        <module name="xdc.runtime.Core"
+                used="false"
+                uses="">
+        </module>
+        <module name="xdc.runtime.Defaults"
+                used="false"
+                uses="">
+        </module>
+        <module name="xdc.runtime.Diags"
+                used="false"
+                uses="">
+        </module>
+        <module name="xdc.runtime.Error"
+                used="false"
+                uses="">
+        </module>
+        <module name="xdc.runtime.Gate"
+                used="false"
+                uses="">
+        </module>
+        <module name="xdc.runtime.GateNull"
+                used="false"
+                uses="">
+        </module>
+        <module name="xdc.runtime.Log"
+                used="false"
+                uses="">
+        </module>
+        <module name="xdc.runtime.LoggerBuf"
+                used="false"
+                uses="">
+        </module>
+        <module name="xdc.runtime.LoggerSys"
+                used="false"
+                uses="">
+        </module>
+        <module name="xdc.runtime.Main"
+                used="false"
+                uses="">
+        </module>
+        <module name="xdc.runtime.Memory"
+                used="false"
+                uses="">
+        </module>
+        <module name="xdc.runtime.HeapMin"
+                used="false"
+                uses="">
+        </module>
+        <module name="xdc.runtime.HeapStd"
+                used="false"
+                uses="">
+        </module>
+        <module name="xdc.runtime.Startup"
+                used="false"
+                uses="">
+        </module>
+        <module name="xdc.runtime.System"
+                used="false"
+                uses="">
+        </module>
+        <module name="xdc.runtime.SysStd"
+                used="false"
+                uses="">
+        </module>
+        <module name="xdc.runtime.SysMin"
+                used="false"
+                uses="">
+        </module>
+        <module name="xdc.runtime.Text"
+                used="false"
+                uses="">
+        </module>
+        <module name="xdc.runtime.Timestamp"
+                used="false"
+                uses="">
+        </module>
+        <module name="xdc.runtime.TimestampNull"
+                used="false"
+                uses="">
+        </module>
+        <module name="xdc.runtime.TimestampStd"
+                used="false"
+                uses="">
+        </module>
+        <module name="xdc.runtime.Types"
+                used="false"
+                uses="">
+        </module>
+    </package>
+    <package name="gnu.targets.rts470MV" version="1, 0, 0, 0" repository="/home/jiangjx/UbuntuShare/ipnc_project/ipnc_lhy/dvsdk_2_10_01_18/xdctools_3_15_01_59/packages/">
+    </package>
+    <package name="ti.sdo.linuxutils.vicp" version="1, 0, 0" repository="/home/jiangjx/UbuntuShare/ipnc_project/ipnc_lhy/dvsdk_2_10_01_18/linuxutils_2_24_03/packages/">
+        <module name="ti.sdo.linuxutils.vicp.VICP"
+                used="true"
+                uses="">
+            <feature name="debug" type="boolean" value="false"/>
+        </module>
+    </package>
+    <package name="ti.sdo.linuxutils.edma" version="1, 0, 0" repository="/home/jiangjx/UbuntuShare/ipnc_project/ipnc_lhy/dvsdk_2_10_01_18/linuxutils_2_24_03/packages/">
+        <module name="ti.sdo.linuxutils.edma.EDMA"
+                used="true"
+                uses="">
+            <feature name="debug" type="boolean" value="false"/>
+        </module>
+    </package>
+    <package name="ti.sdo.linuxutils.cmem" version="2, 2, 0" repository="/home/jiangjx/UbuntuShare/ipnc_project/ipnc_lhy/dvsdk_2_10_01_18/linuxutils_2_24_03/packages/">
+        <module name="ti.sdo.linuxutils.cmem.CMEM"
+                used="true"
+                uses="">
+            <feature name="debug" type="boolean" value="false"/>
+        </module>
+    </package>
+    <package name="ti.xdais.dm.examples.g711" version="1, 0, 0" repository="/home/jiangjx/UbuntuShare/ipnc_project/ipnc_lhy/dvsdk_2_10_01_18/codec_engine_2_24/examples/">
+    </package>
+    <package name="ti.sdo.ce.global" version="1, 0, 0" repository="/home/jiangjx/UbuntuShare/ipnc_project/ipnc_lhy/dvsdk_2_10_01_18/codec_engine_2_24/packages/">
+        <module name="ti.sdo.ce.global.Settings"
+                used="true"
+                uses="">
+            <feature name="profile" type="string" value="release"/>
+        </module>
+    </package>
+    <package name="ti.xdais.dm" version="1, 0, 5" repository="/home/jiangjx/UbuntuShare/ipnc_project/ipnc_lhy/dvsdk_2_10_01_18/xdais_6_24/packages/">
+    </package>
+    <package name="ti.sdo.utils.trace" version="1, 0, 0" repository="/home/jiangjx/UbuntuShare/ipnc_project/ipnc_lhy/dvsdk_2_10_01_18/framework_components_2_25_00_04/packages/">
+        <module name="ti.sdo.utils.trace.GT"
+                used="true"
+                uses="">
+            <feature name="PRINTFXN" type="string" value="GTConfig_tracePrintf"/>
+            <feature name="PIDFXN" type="object" value="null"/>
+            <feature name="TIDFXN" type="string" value="GTConfig_threadId"/>
+            <feature name="ERRORFXN" type="string" value="GTConfig_error"/>
+            <feature name="MALLOCFXN" type="string" value="GTConfig_libcMalloc"/>
+            <feature name="FREEFXN" type="string" value="GTConfig_libcFree"/>
+            <feature name="TIMEFXN" type="string" value="GTConfig_gettimeofday"/>
+            <feature name="LOCKFXN" type="string" value="GTConfig_pthreadLock"/>
+            <feature name="UNLOCKFXN" type="string" value="GTConfig_pthreadUnlock"/>
+            <feature name="INITFXN" type="string" value="GTConfig_posixInit"/>
+            <feature name="debug" type="boolean" value="false"/>
+        </module>
+    </package>
+    <package name="ti.sdo.ce.utils.xdm" version="1, 0, 2" repository="/home/jiangjx/UbuntuShare/ipnc_project/ipnc_lhy/dvsdk_2_10_01_18/codec_engine_2_24/packages/">
+    </package>
+    <package name="ti.xdais" version="1, 2.0, 1" repository="/home/jiangjx/UbuntuShare/ipnc_project/ipnc_lhy/dvsdk_2_10_01_18/xdais_6_24/packages/">
+    </package>
+    <package name="ti.sdo.ce.node" version="1, 0, 0" repository="/home/jiangjx/UbuntuShare/ipnc_project/ipnc_lhy/dvsdk_2_10_01_18/codec_engine_2_24/packages/">
+        <module name="ti.sdo.ce.node.NODE"
+                used="false"
+                uses="">
+        </module>
+    </package>
+    <package name="xdc.bld" version="1, 0, 2" repository="/home/jiangjx/UbuntuShare/ipnc_project/ipnc_lhy/dvsdk_2_10_01_18/xdctools_3_15_01_59/packages/">
+        <module name="xdc.bld.BuildEnvironment"
+                used="false"
+                uses="">
+        </module>
+        <module name="xdc.bld.PackageContents"
+                used="false"
+                uses="">
+        </module>
+        <module name="xdc.bld.Release"
+                used="false"
+                uses="">
+        </module>
+        <module name="xdc.bld.Library"
+                used="false"
+                uses="">
+        </module>
+        <module name="xdc.bld.Test"
+                used="false"
+                uses="">
+        </module>
+        <module name="xdc.bld.Object"
+                used="false"
+                uses="">
+        </module>
+        <module name="xdc.bld.Executable"
+                used="false"
+                uses="">
+        </module>
+        <module name="xdc.bld.Repository"
+                used="false"
+                uses="">
+        </module>
+        <module name="xdc.bld.Assembly"
+                used="false"
+                uses="">
+        </module>
+        <module name="xdc.bld.Script"
+                used="false"
+                uses="">
+        </module>
+        <module name="xdc.bld.Manifest"
+                used="false"
+                uses="">
+        </module>
+        <module name="xdc.bld.Utils"
+                used="true"
+                uses="">
+        </module>
+    </package>
+    <package name="gnu.targets" version="1, 0, 1" repository="/home/jiangjx/UbuntuShare/ipnc_project/ipnc_lhy/dvsdk_2_10_01_18/xdctools_3_15_01_59/packages/">
+        <module name="gnu.targets.Sparc"
+                used="false"
+                uses="">
+        </module>
+        <module name="gnu.targets.Linux86"
+                used="false"
+                uses="">
+        </module>
+        <module name="gnu.targets.Mingw"
+                used="false"
+                uses="">
+        </module>
+        <module name="gnu.targets.MVArm9"
+                used="true"
+                uses="">
+            <feature name="name" type="string" value="MVArm9"/>
+            <feature name="suffix" type="string" value="470MV"/>
+            <feature name="compatibleSuffixes" type="object" value="%5Bv5T%2C%20v5t%5D"><vector id="gnu.targets.MVArm9/compatibleSuffixes" length="2">
+  <elem>v5T</elem>
+  <elem>v5t</elem>
+</vector>
+            </feature>
+            <feature name="isa" type="string" value="v5T"/>
+            <feature name="model" type="xdc.bld.ITarget.Model" value="%7Bendian%3A%20little%2C%20codeModel%3A%20undefined%2C%20dataModel%3A%20undefined%7D"><struct id="gnu.targets.MVArm9/model">
+  <field name="endian">little</field>
+  <field name="codeModel">undefined</field>
+  <field name="dataModel">undefined</field>
+</struct>
+            </feature>
+            <feature name="os" type="string" value="Linux"/>
+            <feature name="rts" type="string" value="gnu.targets.rts470MV"/>
+            <feature name="base" type="undefined" value="undefined"/>
+            <feature name="dllExt" type="string" value=".so"/>
+            <feature name="execExt" type="undefined" value="undefined"/>
+            <feature name="platform" type="string" value="ti.platforms.evmDM6446"/>
+            <feature name="platforms" type="object" value="%5B%5D">
+            </feature>
+            <feature name="binaryParser" type="undefined" value="undefined"/>
+            <feature name="version" type="undefined" value="undefined"/>
+            <feature name="versionRaw" type="undefined" value="undefined"/>
+            <feature name="debugGen" type="xdc.bld.ITarget.DebugGen" value="%7BexecTemplate%3A%20undefined%2C%20execPattern%3A%20undefined%2C%20packageTemplate%3A%20undefined%2C%20packagePattern%3A%20undefined%7D"><struct id="gnu.targets.MVArm9/debugGen">
+  <field name="execTemplate">undefined</field>
+  <field name="execPattern">undefined</field>
+  <field name="packageTemplate">undefined</field>
+  <field name="packagePattern">undefined</field>
+</struct>
+            </feature>
+            <feature name="extensions" type="object" value="%5B%0A%5B%27.asm%27%2C%20%7Bsuf%3A%20.asm%2C%20typ%3A%20asm%7D%5D%2C%0A%5B%27.c%27%2C%20%7Bsuf%3A%20.c%2C%20typ%3A%20c%7D%5D%2C%0A%5B%27.cpp%27%2C%20%7Bsuf%3A%20.cpp%2C%20typ%3A%20cpp%7D%5D%2C%0A%5B%27.cxx%27%2C%20%7Bsuf%3A%20.cxx%2C%20typ%3A%20cpp%7D%5D%2C%0A%5B%27.C%27%2C%20%7Bsuf%3A%20.C%2C%20typ%3A%20cpp%7D%5D%2C%0A%5B%27.cc%27%2C%20%7Bsuf%3A%20.cc%2C%20typ%3A%20cpp%7D%5D%2C%0A%5B%27.s470MV%27%2C%20%7Bsuf%3A%20.s470MV%2C%20typ%3A%20asm%7D%5D%0A%5D"/>
+            <feature name="versionMap" type="object" value="%5B%0A%5B%27gcc3.2%27%2C%201%2C0%2C3.2%2C0%5D%0A%5D"><map id="gnu.targets.MVArm9/versionMap" length="1">
+  <entry key="gcc3.2">1,0,3.2,0</entry>
+</map>
+            </feature>
+            <feature name="alignDirectiveSupported" type="boolean" value="false"/>
+            <feature name="rootDir" type="undefined" value="undefined"/>
+            <feature name="profiles" type="object" value="%5B%0A%5B%27debug%27%2C%20%7BcompileOpts%3A%20%7Baopts%3A%20undefined%2C%20copts%3A%20-g%2C%20defs%3A%20-D_DEBUG_%3D1%2C%20incs%3A%20undefined%7D%2C%20linkOpts%3A%20-g%2C%20archiveOpts%3A%20undefined%2C%20filters%3A%20%5B%5D%7D%5D%2C%0A%5B%27release%27%2C%20%7BcompileOpts%3A%20%7Baopts%3A%20undefined%2C%20copts%3A%20-O2%2C%20defs%3A%20undefined%2C%20incs%3A%20undefined%7D%2C%20linkOpts%3A%20%2C%20archiveOpts%3A%20undefined%2C%20filters%3A%20%5B%5D%7D%5D%2C%0A%5B%27profile%27%2C%20%7BcompileOpts%3A%20%7Baopts%3A%20undefined%2C%20copts%3A%20-g%20-pg%2C%20defs%3A%20undefined%2C%20incs%3A%20undefined%7D%2C%20linkOpts%3A%20-pg%2C%20archiveOpts%3A%20undefined%2C%20filters%3A%20%5B%5D%7D%5D%2C%0A%5B%27coverage%27%2C%20%7BcompileOpts%3A%20%7Baopts%3A%20undefined%2C%20copts%3A%20-fprofile-arcs%20-ftest-coverage%2C%20defs%3A%20undefined%2C%20incs%3A%20undefined%7D%2C%20linkOpts%3A%20%2C%20archiveOpts%3A%20undefined%2C%20filters%3A%20%5B%5D%7D%5D%0A%5D"/>
+            <feature name="sectMap" type="object" value="%5B%0A%0A%5D">
+            </feature>
+            <feature name="stdInclude" type="string" value="gnu/targets/std.h"/>
+            <feature name="stdTypes" type="xdc.bld.ITarget.StdTypes" value="%7Bt_IArg%3A%20%7Bsize%3A%200x4%2C%20align%3A%200x4%7D%2C%20t_Char%3A%20%7Bsize%3A%200x1%2C%20align%3A%200x1%7D%2C%20t_Double%3A%20%7Bsize%3A%200x8%2C%20align%3A%200x4%7D%2C%20t_Float%3A%20%7Bsize%3A%200x4%2C%20align%3A%200x4%7D%2C%20t_Fxn%3A%20%7Bsize%3A%200x4%2C%20align%3A%200x4%7D%2C%20t_Int%3A%20%7Bsize%3A%200x4%2C%20align%3A%200x4%7D%2C%20t_Int8%3A%20%7Bsize%3A%200x1%2C%20align%3A%200x1%7D%2C%20t_Int16%3A%20%7Bsize%3A%200x2%2C%20align%3A%200x2%7D%2C%20t_Int32%3A%20%7Bsize%3A%200x4%2C%20align%3A%200x4%7D%2C%20t_Int40%3A%20%7Bsize%3A%20undefined%2C%20align%3A%20undefined%7D%2C%20t_Int64%3A%20%7Bsize%3A%200x8%2C%20align%3A%200x4%7D%2C%20t_Long%3A%20%7Bsize%3A%200x4%2C%20align%3A%200x4%7D%2C%20t_LDouble%3A%20%7Bsize%3A%200x8%2C%20align%3A%200x4%7D%2C%20t_LLong%3A%20%7Bsize%3A%200x8%2C%20align%3A%200x4%7D%2C%20t_Ptr%3A%20%7Bsize%3A%200x4%2C%20align%3A%200x4%7D%2C%20t_Short%3A%20%7Bsize%3A%200x2%2C%20align%3A%200x2%7D%7D"><struct id="gnu.targets.MVArm9/stdTypes">
+  <field name="t_IArg">
+    <struct id="gnu.targets.MVArm9/stdTypes/t_IArg">
+      <field name="size">0x4</field>
+      <field name="align">0x4</field>
+    </struct>
+  </field>
+  <field name="t_Char">
+    <struct id="gnu.targets.MVArm9/stdTypes/t_Char">
+      <field name="size">0x1</field>
+      <field name="align">0x1</field>
+    </struct>
+  </field>
+  <field name="t_Double">
+    <struct id="gnu.targets.MVArm9/stdTypes/t_Double">
+      <field name="size">0x8</field>
+      <field name="align">0x4</field>
+    </struct>
+  </field>
+  <field name="t_Float">
+    <struct id="gnu.targets.MVArm9/stdTypes/t_Float">
+      <field name="size">0x4</field>
+      <field name="align">0x4</field>
+    </struct>
+  </field>
+  <field name="t_Fxn">
+    <struct id="gnu.targets.MVArm9/stdTypes/t_Fxn">
+      <field name="size">0x4</field>
+      <field name="align">0x4</field>
+    </struct>
+  </field>
+  <field name="t_Int">
+    <struct id="gnu.targets.MVArm9/stdTypes/t_Int">
+      <field name="size">0x4</field>
+      <field name="align">0x4</field>
+    </struct>
+  </field>
+  <field name="t_Int8">
+    <struct id="gnu.targets.MVArm9/stdTypes/t_Int8">
+      <field name="size">0x1</field>
+      <field name="align">0x1</field>
+    </struct>
+  </field>
+  <field name="t_Int16">
+    <struct id="gnu.targets.MVArm9/stdTypes/t_Int16">
+      <field name="size">0x2</field>
+      <field name="align">0x2</field>
+    </struct>
+  </field>
+  <field name="t_Int32">
+    <struct id="gnu.targets.MVArm9/stdTypes/t_Int32">
+      <field name="size">0x4</field>
+      <field name="align">0x4</field>
+    </struct>
+  </field>
+  <field name="t_Int40">
+    <struct id="gnu.targets.MVArm9/stdTypes/t_Int40">
+      <field name="size">undefined</field>
+      <field name="align">undefined</field>
+    </struct>
+  </field>
+  <field name="t_Int64">
+    <struct id="gnu.targets.MVArm9/stdTypes/t_Int64">
+      <field name="size">0x8</field>
+      <field name="align">0x4</field>
+    </struct>
+  </field>
+  <field name="t_Long">
+    <struct id="gnu.targets.MVArm9/stdTypes/t_Long">
+      <field name="size">0x4</field>
+      <field name="align">0x4</field>
+    </struct>
+  </field>
+  <field name="t_LDouble">
+    <struct id="gnu.targets.MVArm9/stdTypes/t_LDouble">
+      <field name="size">0x8</field>
+      <field name="align">0x4</field>
+    </struct>
+  </field>
+  <field name="t_LLong">
+    <struct id="gnu.targets.MVArm9/stdTypes/t_LLong">
+      <field name="size">0x8</field>
+      <field name="align">0x4</field>
+    </struct>
+  </field>
+  <field name="t_Ptr">
+    <struct id="gnu.targets.MVArm9/stdTypes/t_Ptr">
+      <field name="size">0x4</field>
+      <field name="align">0x4</field>
+    </struct>
+  </field>
+  <field name="t_Short">
+    <struct id="gnu.targets.MVArm9/stdTypes/t_Short">
+      <field name="size">0x2</field>
+      <field name="align">0x2</field>
+    </struct>
+  </field>
+</struct>
+            </feature>
+            <feature name="bitsPerChar" type="number" value="8"/>
+            <feature name="GCCVERS" type="object" value="null"/>
+            <feature name="GCCTARG" type="object" value="null"/>
+            <feature name="LONGNAME" type="string" value="bin/arm_v5t_le-gcc"/>
+            <feature name="CYGWIN" type="boolean" value="true"/>
+            <feature name="noStdLinkScript" type="boolean" value="false"/>
+            <feature name="remoteHost" type="undefined" value="undefined"/>
+            <feature name="ar" type="gnu.targets.ITarget.Command" value="%7Bcmd%3A%20%24%28rootDir%29/%24%28GCCTARG%29/bin/ar%2C%20opts%3A%20cr%7D"><struct id="gnu.targets.MVArm9/ar">
+  <field name="cmd">$(rootDir)/$(GCCTARG)/bin/ar</field>
+  <field name="opts">cr</field>
+</struct>
+            </feature>
+            <feature name="arOpts" type="gnu.targets.ITarget.Options" value="%7Bprefix%3A%20%2C%20suffix%3A%20%7D"><struct id="gnu.targets.MVArm9/arOpts">
+  <field name="prefix"/>
+  <field name="suffix"/>
+</struct>
+            </feature>
+            <feature name="lnk" type="gnu.targets.ITarget.Command" value="%7Bcmd%3A%20%24%28rootDir%29/%24%28LONGNAME%29%2C%20opts%3A%20%7D"><struct id="gnu.targets.MVArm9/lnk">
+  <field name="cmd">$(rootDir)/$(LONGNAME)</field>
+  <field name="opts"/>
+</struct>
+            </feature>
+            <feature name="lnkOpts" type="gnu.targets.ITarget.Options" value="%7Bprefix%3A%20%2C%20suffix%3A%20-lstdc++%20-L%24%28rootDir%29/%24%28GCCTARG%29/lib%7D"><struct id="gnu.targets.MVArm9/lnkOpts">
+  <field name="prefix"/>
+  <field name="suffix">-lstdc++ -L$(rootDir)/$(GCCTARG)/lib</field>
+</struct>
+            </feature>
+            <feature name="cc" type="gnu.targets.ITarget.Command" value="%7Bcmd%3A%20%24%28rootDir%29/%24%28LONGNAME%29%20-c%20-MD%20-MF%20%24@.dep%2C%20opts%3A%20%7D"><struct id="gnu.targets.MVArm9/cc">
+  <field name="cmd">$(rootDir)/$(LONGNAME) -c -MD -MF $@.dep</field>
+  <field name="opts"/>
+</struct>
+            </feature>
+            <feature name="ccOpts" type="gnu.targets.ITarget.Options" value="%7Bprefix%3A%20-fPIC%20-Wunused%2C%20suffix%3A%20-Dfar%3D%20%7D"><struct id="gnu.targets.MVArm9/ccOpts">
+  <field name="prefix">-fPIC -Wunused</field>
+  <field name="suffix">-Dfar=</field>
+</struct>
+            </feature>
+            <feature name="asm" type="gnu.targets.ITarget.Command" value="%7Bcmd%3A%20%24%28rootDir%29/%24%28LONGNAME%29%20-c%20-x%20assembler%2C%20opts%3A%20%7D"><struct id="gnu.targets.MVArm9/asm">
+  <field name="cmd">$(rootDir)/$(LONGNAME) -c -x assembler</field>
+  <field name="opts"/>
+</struct>
+            </feature>
+            <feature name="asmOpts" type="gnu.targets.ITarget.Options" value="%7Bprefix%3A%20%2C%20suffix%3A%20%7D"><struct id="gnu.targets.MVArm9/asmOpts">
+  <field name="prefix"/>
+  <field name="suffix"/>
+</struct>
+            </feature>
+            <feature name="includeOpts" type="string" value=""/>
+        </module>
+        <module name="gnu.targets.UCArm9"
+                used="false"
+                uses="">
+        </module>
+    </package>
+    <package name="ti.sdo.fc.global" version="1, 0, 0" repository="/home/jiangjx/UbuntuShare/ipnc_project/ipnc_lhy/dvsdk_2_10_01_18/framework_components_2_25_00_04/packages/">
+        <module name="ti.sdo.fc.global.Settings"
+                used="true"
+                uses="">
+            <feature name="multiProcess" type="boolean" value="true"/>
+            <feature name="osalPackage" type="undefined" value="undefined"/>
+            <feature name="profile" type="string" value="release"/>
+        </module>
+    </package>
+    <package name="ti.sdo.fc.memutils" version="1, 0, 0" repository="/home/jiangjx/UbuntuShare/ipnc_project/ipnc_lhy/dvsdk_2_10_01_18/framework_components_2_25_00_04/packages/">
+        <module name="ti.sdo.fc.memutils.MEMUTILS"
+                used="true"
+                uses="">
+            <feature name="noLib" type="boolean" value="false"/>
+            <feature name="noOS" type="boolean" value="false"/>
+        </module>
+    </package>
+    <package name="ti.sdo.fc.utils" version="1, 0, 2" repository="/home/jiangjx/UbuntuShare/ipnc_project/ipnc_lhy/dvsdk_2_10_01_18/framework_components_2_25_00_04/packages/">
+        <module name="ti.sdo.fc.utils.SHM"
+                used="false"
+                uses="">
+        </module>
+        <module name="ti.sdo.fc.utils.RMM"
+                used="false"
+                uses="">
+        </module>
+        <module name="ti.sdo.fc.utils.SMGR"
+                used="false"
+                uses="">
+        </module>
+        <module name="ti.sdo.fc.utils.RMMP"
+                used="false"
+                uses="">
+        </module>
+        <module name="ti.sdo.fc.utils.SMGRMP"
+                used="false"
+                uses="">
+        </module>
+    </package>
+    <package name="ti.sdo.fc.dman3" version="1, 0, 4" repository="/home/jiangjx/UbuntuShare/ipnc_project/ipnc_lhy/dvsdk_2_10_01_18/framework_components_2_25_00_04/packages/">
+        <module name="ti.sdo.fc.dman3.DMAN3"
+                used="false"
+                uses="">
+        </module>
+    </package>
+    <package name="ti.sdo.fc.acpy3" version="1, 0, 4" repository="/home/jiangjx/UbuntuShare/ipnc_project/ipnc_lhy/dvsdk_2_10_01_18/framework_components_2_25_00_04/packages/">
+        <module name="ti.sdo.fc.acpy3.ACPY3"
+                used="false"
+                uses="">
+        </module>
+    </package>
+    <package name="ti.sdo.fc.ires" version="1, 0, 0" repository="/home/jiangjx/UbuntuShare/ipnc_project/ipnc_lhy/dvsdk_2_10_01_18/framework_components_2_25_00_04/packages/">
+    </package>
+    <package name="ti.sdo.fc.ires.hdvicp" version="1, 0, 1" repository="/home/jiangjx/UbuntuShare/ipnc_project/ipnc_lhy/dvsdk_2_10_01_18/framework_components_2_25_00_04/packages/">
+        <module name="ti.sdo.fc.ires.hdvicp.HDVICP"
+                used="true"
+                uses="">
+            <feature name="autoRegister" type="boolean" value="true"/>
+            <feature name="ipcKeyBase" type="number" value="1230390344"/>
+            <feature name="debug" type="boolean" value="false"/>
+            <feature name="trace" type="boolean" value="false"/>
+        </module>
+    </package>
+    <package name="ti.sdo.fc.hdvicpsync" version="1, 0, 0" repository="/home/jiangjx/UbuntuShare/ipnc_project/ipnc_lhy/dvsdk_2_10_01_18/framework_components_2_25_00_04/packages/">
+        <module name="ti.sdo.fc.hdvicpsync.HDVICPSYNC"
+                used="true"
+                uses="">
+            <feature name="debug" type="boolean" value="false"/>
+            <feature name="trace" type="boolean" value="false"/>
+        </module>
+    </package>
+    <package name="ti.sdo.fc.ires.addrspace" version="1, 0, 0" repository="/home/jiangjx/UbuntuShare/ipnc_project/ipnc_lhy/dvsdk_2_10_01_18/framework_components_2_25_00_04/packages/">
+        <module name="ti.sdo.fc.ires.addrspace.ADDRSPACE"
+                used="true"
+                uses="">
+            <feature name="autoRegister" type="boolean" value="true"/>
+            <feature name="noLib" type="boolean" value="false"/>
+            <feature name="noOS" type="boolean" value="false"/>
+        </module>
+    </package>
+    <package name="ti.sdo.fc.ires.memtcm" version="1, 0, 0" repository="/home/jiangjx/UbuntuShare/ipnc_project/ipnc_lhy/dvsdk_2_10_01_18/framework_components_2_25_00_04/packages/">
+        <module name="ti.sdo.fc.ires.memtcm.MEMTCM"
+                used="true"
+                uses="">
+            <feature name="autoRegister" type="boolean" value="true"/>
+            <feature name="cmemBlockId" type="number" value="1"/>
+            <feature name="ipcKeyBase" type="number" value="1296258125"/>
+            <feature name="debug" type="boolean" value="false"/>
+            <feature name="trace" type="boolean" value="false"/>
+        </module>
+    </package>
+    <package name="ti.sdo.codecs.h264enc" version="1, 0, 0" repository="/home/jiangjx/UbuntuShare/ipnc_project/ipnc_lhy/dvsdk_2_10_01_18/dm365_codecs_01_00_06/packages/">
+        <module name="ti.sdo.codecs.h264enc.H264ENC"
+                used="false"
+                uses="">
+        </module>
+    </package>
+    <package name="ittiam.codecs.aaclc_enc" version="" repository="/home/jiangjx/UbuntuShare/ipnc_project/ipnc_lhy/dvsdk_2_10_01_18/dm365_codecs_01_00_06/packages/">
+        <module name="ittiam.codecs.aaclc_enc.AACLC_ENC"
+                used="false"
+                uses="">
+        </module>
+    </package>
+    <package name="ittiam.codecs.aac_dec" version="" repository="/home/jiangjx/UbuntuShare/ipnc_project/ipnc_lhy/dvsdk_2_10_01_18/dm365_codecs_01_00_06/packages/">
+        <module name="ittiam.codecs.aac_dec.AAC_DEC"
+                used="false"
+                uses="">
+        </module>
+    </package>
+    <package name="ti.sdo.fc.ires.nullresource" version="1, 0, 0" repository="/home/jiangjx/UbuntuShare/ipnc_project/ipnc_lhy/dvsdk_2_10_01_18/framework_components_2_25_00_04/packages/">
+        <module name="ti.sdo.fc.ires.nullresource.NULLRES"
+                used="false"
+                uses="">
+        </module>
+    </package>
+    <package name="ti.sdo.fc.rman" version="2, 0, 0" repository="/home/jiangjx/UbuntuShare/ipnc_project/ipnc_lhy/dvsdk_2_10_01_18/framework_components_2_25_00_04/packages/">
+        <module name="ti.sdo.fc.rman.RMAN"
+                used="true"
+                uses="">
+            <feature name="tableSize" type="number" value="10"/>
+            <feature name="maxAlgs" type="number" value="32"/>
+            <feature name="useDSKT2" type="boolean" value="false"/>
+            <feature name="persistentAllocFxn" type="string" value="__ALG_allocMemory"/>
+            <feature name="persistentFreeFxn" type="string" value="__ALG_freeMemory"/>
+            <feature name="yieldSamePriority" type="boolean" value="false"/>
+            <feature name="semCreateFxn" type="string" value="Sem_create"/>
+            <feature name="semDeleteFxn" type="string" value="Sem_delete"/>
+            <feature name="semPendFxn" type="string" value="Sem_pend"/>
+            <feature name="semPostFxn" type="string" value="Sem_post"/>
+            <feature name="debug" type="boolean" value="false"/>
+            <feature name="trace" type="boolean" value="false"/>
+            <feature name="lockFxn" type="object" value="null"/>
+            <feature name="unlockFxn" type="object" value="null"/>
+            <feature name="setContextFxn" type="object" value="null"/>
+            <feature name="getContextFxn" type="object" value="null"/>
+            <feature name="yieldFxn" type="object" value="null"/>
+        </module>
+    </package>
+    <package name="ti.sdo.fc.edma3" version="3, 0, 0" repository="/home/jiangjx/UbuntuShare/ipnc_project/ipnc_lhy/dvsdk_2_10_01_18/framework_components_2_25_00_04/packages/">
+        <module name="ti.sdo.fc.edma3.Settings"
+                used="true"
+                uses="">
+            <feature name="EDMA3_MAXGROUPS" type="number" value="20"/>
+            <feature name="controllerId" type="number" value="0"/>
+            <feature name="region" type="number" value="1"/>
+            <feature name="persistentAllocFxn" type="string" value="__ALG_allocMemory"/>
+            <feature name="persistentFreeFxn" type="string" value="__ALG_freeMemory"/>
+            <feature name="semCreateFxn" type="string" value="Sem_create"/>
+            <feature name="semDeleteFxn" type="string" value="Sem_delete"/>
+            <feature name="semPendFxn" type="string" value="Sem_pend"/>
+            <feature name="semPostFxn" type="string" value="Sem_post"/>
+            <feature name="maxAlgs" type="number" value="32"/>
+            <feature name="maxRequests" type="number" value="256"/>
+            <feature name="contiguousPaRams" type="boolean" value="true"/>
+            <feature name="globalInit" type="boolean" value="true"/>
+            <feature name="globalConfig" type="object" value="null"/>
+            <feature name="regionConfig" type="object" value="null"/>
+            <feature name="maxTccs" type="object" value="%5Bundefined%2C%20undefined%2C%20undefined%2C%20undefined%2C%20undefined%2C%20undefined%2C%20undefined%2C%20undefined%2C%20undefined%2C%20undefined%2C%20undefined%2C%20undefined%2C%20undefined%2C%20undefined%2C%20undefined%2C%20undefined%2C%20undefined%2C%20undefined%2C%20undefined%2C%20undefined%5D"><vector id="ti.sdo.fc.edma3.Settings/maxTccs" length="20">
+  <elem>undefined</elem>
+  <elem>undefined</elem>
+  <elem>undefined</elem>
+  <elem>undefined</elem>
+  <elem>undefined</elem>
+  <elem>undefined</elem>
+  <elem>undefined</elem>
+  <elem>undefined</elem>
+  <elem>undefined</elem>
+  <elem>undefined</elem>
+  <elem>undefined</elem>
+  <elem>undefined</elem>
+  <elem>undefined</elem>
+  <elem>undefined</elem>
+  <elem>undefined</elem>
+  <elem>undefined</elem>
+  <elem>undefined</elem>
+  <elem>undefined</elem>
+  <elem>undefined</elem>
+  <elem>undefined</elem>
+</vector>
+            </feature>
+            <feature name="maxPaRams" type="object" value="%5Bundefined%2C%20undefined%2C%20undefined%2C%20undefined%2C%20undefined%2C%20undefined%2C%20undefined%2C%20undefined%2C%20undefined%2C%20undefined%2C%20undefined%2C%20undefined%2C%20undefined%2C%20undefined%2C%20undefined%2C%20undefined%2C%20undefined%2C%20undefined%2C%20undefined%2C%20undefined%5D"><vector id="ti.sdo.fc.edma3.Settings/maxPaRams" length="20">
+  <elem>undefined</elem>
+  <elem>undefined</elem>
+  <elem>undefined</elem>
+  <elem>undefined</elem>
+  <elem>undefined</elem>
+  <elem>undefined</elem>
+  <elem>undefined</elem>
+  <elem>undefined</elem>
+  <elem>undefined</elem>
+  <elem>undefined</elem>
+  <elem>undefined</elem>
+  <elem>undefined</elem>
+  <elem>undefined</elem>
+  <elem>undefined</elem>
+  <elem>undefined</elem>
+  <elem>undefined</elem>
+  <elem>undefined</elem>
+  <elem>undefined</elem>
+  <elem>undefined</elem>
+  <elem>undefined</elem>
+</vector>
+            </feature>
+            <feature name="maxEdmaChannels" type="object" value="%5Bundefined%2C%20undefined%2C%20undefined%2C%20undefined%2C%20undefined%2C%20undefined%2C%20undefined%2C%20undefined%2C%20undefined%2C%20undefined%2C%20undefined%2C%20undefined%2C%20undefined%2C%20undefined%2C%20undefined%2C%20undefined%2C%20undefined%2C%20undefined%2C%20undefined%2C%20undefined%5D"><vector id="ti.sdo.fc.edma3.Settings/maxEdmaChannels" length="20">
+  <elem>undefined</elem>
+  <elem>undefined</elem>
+  <elem>undefined</elem>
+  <elem>undefined</elem>
+  <elem>undefined</elem>
+  <elem>undefined</elem>
+  <elem>undefined</elem>
+  <elem>undefined</elem>
+  <elem>undefined</elem>
+  <elem>undefined</elem>
+  <elem>undefined</elem>
+  <elem>undefined</elem>
+  <elem>undefined</elem>
+  <elem>undefined</elem>
+  <elem>undefined</elem>
+  <elem>undefined</elem>
+  <elem>undefined</elem>
+  <elem>undefined</elem>
+  <elem>undefined</elem>
+  <elem>undefined</elem>
+</vector>
+            </feature>
+            <feature name="maxQdmaChannels" type="object" value="%5B0xa%2C%200xa%2C%200xa%2C%200xa%2C%20undefined%2C%20undefined%2C%20undefined%2C%20undefined%2C%20undefined%2C%20undefined%2C%20undefined%2C%20undefined%2C%20undefined%2C%20undefined%2C%20undefined%2C%20undefined%2C%20undefined%2C%20undefined%2C%20undefined%2C%20undefined%5D"><vector id="ti.sdo.fc.edma3.Settings/maxQdmaChannels" length="20">
+  <elem>0xa</elem>
+  <elem>0xa</elem>
+  <elem>0xa</elem>
+  <elem>0xa</elem>
+  <elem>undefined</elem>
+  <elem>undefined</elem>
+  <elem>undefined</elem>
+  <elem>undefined</elem>
+  <elem>undefined</elem>
+  <elem>undefined</elem>
+  <elem>undefined</elem>
+  <elem>undefined</elem>
+  <elem>undefined</elem>
+  <elem>undefined</elem>
+  <elem>undefined</elem>
+  <elem>undefined</elem>
+  <elem>undefined</elem>
+  <elem>undefined</elem>
+  <elem>undefined</elem>
+  <elem>undefined</elem>
+</vector>
+            </feature>
+            <feature name="debug" type="boolean" value="false"/>
+            <feature name="trace" type="boolean" value="false"/>
+            <feature name="ipcKeyBase" type="number" value="859917636"/>
+            <feature name="Region" type="number" value="1"/>
+            <feature name="GlobalInit" type="number" value="0"/>
+            <feature name="MaxTccs" type="object" value="%5B0xa%2C%200xa%2C%200xa%2C%200xa%2C%200x0%2C%200x0%2C%200x0%2C%200x0%2C%200x0%2C%200x0%2C%200x0%2C%200x0%2C%200x0%2C%200x0%2C%200x0%2C%200x0%2C%200x0%2C%200x0%2C%200x0%2C%200x0%5D"><vector id="ti.sdo.fc.edma3.Settings/MaxTccs" length="20">
+  <elem>0xa</elem>
+  <elem>0xa</elem>
+  <elem>0xa</elem>
+  <elem>0xa</elem>
+  <elem>0x0</elem>
+  <elem>0x0</elem>
+  <elem>0x0</elem>
+  <elem>0x0</elem>
+  <elem>0x0</elem>
+  <elem>0x0</elem>
+  <elem>0x0</elem>
+  <elem>0x0</elem>
+  <elem>0x0</elem>
+  <elem>0x0</elem>
+  <elem>0x0</elem>
+  <elem>0x0</elem>
+  <elem>0x0</elem>
+  <elem>0x0</elem>
+  <elem>0x0</elem>
+  <elem>0x0</elem>
+</vector>
+            </feature>
+            <feature name="MaxPaRams" type="object" value="%5B0x14%2C%200x14%2C%200x14%2C%200x14%2C%200x0%2C%200x0%2C%200x0%2C%200x0%2C%200x0%2C%200x0%2C%200x0%2C%200x0%2C%200x0%2C%200x0%2C%200x0%2C%200x0%2C%200x0%2C%200x0%2C%200x0%2C%200x0%5D"><vector id="ti.sdo.fc.edma3.Settings/MaxPaRams" length="20">
+  <elem>0x14</elem>
+  <elem>0x14</elem>
+  <elem>0x14</elem>
+  <elem>0x14</elem>
+  <elem>0x0</elem>
+  <elem>0x0</elem>
+  <elem>0x0</elem>
+  <elem>0x0</elem>
+  <elem>0x0</elem>
+  <elem>0x0</elem>
+  <elem>0x0</elem>
+  <elem>0x0</elem>
+  <elem>0x0</elem>
+  <elem>0x0</elem>
+  <elem>0x0</elem>
+  <elem>0x0</elem>
+  <elem>0x0</elem>
+  <elem>0x0</elem>
+  <elem>0x0</elem>
+  <elem>0x0</elem>
+</vector>
+            </feature>
+            <feature name="ContiguousPaRams" type="boolean" value="true"/>
+            <feature name="MaxEdmaChannels" type="object" value="%5B0x4%2C%200x4%2C%200x4%2C%200x5%2C%200x0%2C%200x0%2C%200x0%2C%200x0%2C%200x0%2C%200x0%2C%200x0%2C%200x0%2C%200x0%2C%200x0%2C%200x0%2C%200x0%2C%200x0%2C%200x0%2C%200x0%2C%200x0%5D"><vector id="ti.sdo.fc.edma3.Settings/MaxEdmaChannels" length="20">
+  <elem>0x4</elem>
+  <elem>0x4</elem>
+  <elem>0x4</elem>
+  <elem>0x5</elem>
+  <elem>0x0</elem>
+  <elem>0x0</elem>
+  <elem>0x0</elem>
+  <elem>0x0</elem>
+  <elem>0x0</elem>
+  <elem>0x0</elem>
+  <elem>0x0</elem>
+  <elem>0x0</elem>
+  <elem>0x0</elem>
+  <elem>0x0</elem>
+  <elem>0x0</elem>
+  <elem>0x0</elem>
+  <elem>0x0</elem>
+  <elem>0x0</elem>
+  <elem>0x0</elem>
+  <elem>0x0</elem>
+</vector>
+            </feature>
+            <feature name="MaxQdmaChannels" type="object" value="%5B0x1%2C%200x1%2C%200x1%2C%200x1%2C%200x0%2C%200x0%2C%200x0%2C%200x0%2C%200x0%2C%200x0%2C%200x0%2C%200x0%2C%200x0%2C%200x0%2C%200x0%2C%200x0%2C%200x0%2C%200x0%2C%200x0%2C%200x0%5D"><vector id="ti.sdo.fc.edma3.Settings/MaxQdmaChannels" length="20">
+  <elem>0x1</elem>
+  <elem>0x1</elem>
+  <elem>0x1</elem>
+  <elem>0x1</elem>
+  <elem>0x0</elem>
+  <elem>0x0</elem>
+  <elem>0x0</elem>
+  <elem>0x0</elem>
+  <elem>0x0</elem>
+  <elem>0x0</elem>
+  <elem>0x0</elem>
+  <elem>0x0</elem>
+  <elem>0x0</elem>
+  <elem>0x0</elem>
+  <elem>0x0</elem>
+  <elem>0x0</elem>
+  <elem>0x0</elem>
+  <elem>0x0</elem>
+  <elem>0x0</elem>
+  <elem>0x0</elem>
+</vector>
+            </feature>
+            <feature name="GlobalConfig" type="object" value="null"/>
+            <feature name="RegionConfig" type="object" value="null"/>
+        </module>
+    </package>
+    <package name="ti.sdo.fc.ires.edma3chan" version="1, 0, 0" repository="/home/jiangjx/UbuntuShare/ipnc_project/ipnc_lhy/dvsdk_2_10_01_18/framework_components_2_25_00_04/packages/">
+        <module name="ti.sdo.fc.ires.edma3chan.EDMA3CHAN"
+                used="true"
+                uses="">
+            <feature name="autoRegister" type="boolean" value="true"/>
+            <feature name="ipcKeyBase" type="number" value="1312901187"/>
+            <feature name="debug" type="boolean" value="false"/>
+            <feature name="trace" type="boolean" value="false"/>
+        </module>
+    </package>
+    <package name="ti.sdo.fc.ires.grouputils" version="1, 0, 0" repository="/home/jiangjx/UbuntuShare/ipnc_project/ipnc_lhy/dvsdk_2_10_01_18/framework_components_2_25_00_04/packages/">
+        <module name="ti.sdo.fc.ires.grouputils.GROUPUTILS"
+                used="true"
+                uses="">
+            <feature name="autoRegister" type="boolean" value="true"/>
+            <feature name="ipcKeyBase" type="number" value="1397508436"/>
+            <feature name="debug" type="boolean" value="false"/>
+            <feature name="trace" type="boolean" value="false"/>
+            <feature name="lockScratchGroupFxn" type="object" value="null"/>
+            <feature name="unlockScratchGroupFxn" type="object" value="null"/>
+            <feature name="scratchFxnPackage" type="object" value="null"/>
+            <feature name="semCreateFxn" type="string" value="Sem_create"/>
+            <feature name="semDeleteFxn" type="string" value="Sem_delete"/>
+            <feature name="semPendFxn" type="string" value="Sem_pend"/>
+            <feature name="semPostFxn" type="string" value="Sem_post"/>
+        </module>
+    </package>
+    <package name="ti.sdo.fc.ires.vicp" version="1, 0, 1" repository="/home/jiangjx/UbuntuShare/ipnc_project/ipnc_lhy/dvsdk_2_10_01_18/framework_components_2_25_00_04/packages/">
+        <module name="ti.sdo.fc.ires.vicp.VICP"
+                used="false"
+                uses="">
+        </module>
+        <module name="ti.sdo.fc.ires.vicp.VICP2"
+                used="true"
+                uses="">
+            <feature name="autoRegister" type="boolean" value="true"/>
+            <feature name="ipcKeyBase" type="number" value="1346586966"/>
+            <feature name="debug" type="boolean" value="false"/>
+            <feature name="trace" type="boolean" value="false"/>
+        </module>
+    </package>
+    <package name="ti.sdo.fc.vicpsync" version="1, 0, 0" repository="/home/jiangjx/UbuntuShare/ipnc_project/ipnc_lhy/dvsdk_2_10_01_18/framework_components_2_25_00_04/packages/">
+        <module name="ti.sdo.fc.vicpsync.VICPSYNC"
+                used="true"
+                uses="">
+            <feature name="debug" type="boolean" value="false"/>
+            <feature name="trace" type="boolean" value="false"/>
+        </module>
+    </package>
+    <package name="ti.sdo.codecs.iprun" version="1, 0, 0" repository="/home/jiangjx/UbuntuShare/ipnc_project/ipnc_lhy/dvsdk_2_10_01_18/dm365_codecs_01_00_06/packages/">
+        <module name="ti.sdo.codecs.iprun.IPRUN"
+                used="false"
+                uses="">
+        </module>
+    </package>
+    <package name="ti.sdo.codecs.ktnf" version="1, 0, 0" repository="/home/jiangjx/UbuntuShare/ipnc_project/ipnc_lhy/dvsdk_2_10_01_18/dm365_codecs_01_00_06/packages/">
+        <module name="ti.sdo.codecs.ktnf.KTNF"
+                used="false"
+                uses="">
+        </module>
+    </package>
+    <package name="ti.sdo.codecs.mpeg4enc" version="1, 0, 0" repository="/home/jiangjx/UbuntuShare/ipnc_project/ipnc_lhy/dvsdk_2_10_01_18/dm365_codecs_01_00_06/packages/">
+        <module name="ti.sdo.codecs.mpeg4enc.MPEG4ENC"
+                used="false"
+                uses="">
+        </module>
+    </package>
+    <package name="ti.sdo.codecs.jpegenc" version="1, 0, 0" repository="/home/jiangjx/UbuntuShare/ipnc_project/ipnc_lhy/dvsdk_2_10_01_18/dm365_codecs_01_00_06/packages/">
+        <module name="ti.sdo.codecs.jpegenc.JPEGENC"
+                used="false"
+                uses="">
+        </module>
+    </package>
+    <package name="ti.catalog.arm" version="1, 0, 1, 0" repository="/home/jiangjx/UbuntuShare/ipnc_project/ipnc_lhy/dvsdk_2_10_01_18/xdctools_3_15_01_59/packages/">
+        <module name="ti.catalog.arm.TMS470R10"
+                used="false"
+                uses="">
+        </module>
+        <module name="ti.catalog.arm.TMS320C5912"
+                used="false"
+                uses="">
+        </module>
+        <module name="ti.catalog.arm.TMS320C1030"
+                used="false"
+                uses="">
+        </module>
+        <module name="ti.catalog.arm.TMS320CDM6446"
+                used="false"
+                uses="">
+        </module>
+        <module name="ti.catalog.arm.TMS320CDM6467"
+                used="false"
+                uses="">
+        </module>
+        <module name="ti.catalog.arm.TMS320CDM355"
+                used="false"
+                uses="">
+        </module>
+        <module name="ti.catalog.arm.TMS320DM357"
+                used="false"
+                uses="">
+        </module>
+        <module name="ti.catalog.arm.TMS320DM365"
+                used="true"
+                uses="">
+        </module>
+        <module name="ti.catalog.arm.TMS320CDM510"
+                used="false"
+                uses="">
+        </module>
+        <module name="ti.catalog.arm.OMAP2430"
+                used="false"
+                uses="">
+        </module>
+        <module name="ti.catalog.arm.OMAP2431"
+                used="false"
+                uses="">
+        </module>
+        <module name="ti.catalog.arm.OMAP2530"
+                used="false"
+                uses="">
+        </module>
+        <module name="ti.catalog.arm.OMAP2531"
+                used="false"
+                uses="">
+        </module>
+        <module name="ti.catalog.arm.OMAP3403"
+                used="false"
+                uses="">
+        </module>
+        <module name="ti.catalog.arm.OMAP3405"
+                used="false"
+                uses="">
+        </module>
+        <module name="ti.catalog.arm.OMAP3503"
+                used="false"
+                uses="">
+        </module>
+        <module name="ti.catalog.arm.OMAP3505"
+                used="false"
+                uses="">
+        </module>
+        <module name="ti.catalog.arm.OMAP3515"
+                used="false"
+                uses="">
+        </module>
+        <module name="ti.catalog.arm.OMAP3517"
+                used="false"
+                uses="">
+        </module>
+        <module name="ti.catalog.arm.OMAP3425"
+                used="false"
+                uses="">
+        </module>
+        <module name="ti.catalog.arm.OMAP3525"
+                used="false"
+                uses="">
+        </module>
+        <module name="ti.catalog.arm.TMS320C3430"
+                used="false"
+                uses="">
+        </module>
+        <module name="ti.catalog.arm.OMAP3530"
+                used="false"
+                uses="">
+        </module>
+        <module name="ti.catalog.arm.TMS320DA828"
+                used="false"
+                uses="">
+        </module>
+        <module name="ti.catalog.arm.TMS320DA830"
+                used="false"
+                uses="">
+        </module>
+        <module name="ti.catalog.arm.OMAPL137"
+                used="false"
+                uses="">
+        </module>
+        <module name="ti.catalog.arm.CortexM3"
+                used="false"
+                uses="">
+        </module>
+        <module name="ti.catalog.arm.TMS570PSF762"
+                used="false"
+                uses="">
+        </module>
+        <module name="ti.catalog.arm.TMS320DA840"
+                used="false"
+                uses="">
+        </module>
+        <module name="ti.catalog.arm.OMAPL108"
+                used="false"
+                uses="">
+        </module>
+        <module name="ti.catalog.arm.OMAPL118"
+                used="false"
+                uses="">
+        </module>
+        <module name="ti.catalog.arm.OMAPL138"
+                used="false"
+                uses="">
+        </module>
+        <module name="ti.catalog.arm.TMS320CDM740"
+                used="false"
+                uses="">
+        </module>
+    </package>
+    <package name="ti.catalog" version="1, 0, 0" repository="/home/jiangjx/UbuntuShare/ipnc_project/ipnc_lhy/dvsdk_2_10_01_18/xdctools_3_15_01_59/packages/">
+    </package>
+    <package name="xdc.platform" version="1, 0, 1, 0" repository="/home/jiangjx/UbuntuShare/ipnc_project/ipnc_lhy/dvsdk_2_10_01_18/xdctools_3_15_01_59/packages/">
+        <module name="xdc.platform.ExeContext"
+                used="true"
+                uses="">
+        </module>
+        <module name="xdc.platform.Utils"
+                used="false"
+                uses="">
+        </module>
+    </package>
+    <package name="xdc.cfg" version="1, 0, 2, 0" repository="/home/jiangjx/UbuntuShare/ipnc_project/ipnc_lhy/dvsdk_2_10_01_18/xdctools_3_15_01_59/packages/">
+        <module name="xdc.cfg.Program"
+                used="true"
+                uses="">
+            <feature name="gen" type="xdc.cfg.Program.GenerationOptions" value="%7BdebuggerFiles%3A%20undefined%7D"><struct id="xdc.cfg.Program/gen">
+  <field name="debuggerFiles">undefined</field>
+</struct>
+            </feature>
+            <feature name="globalSection" type="object" value="null"/>
+            <feature name="sysStack" type="number" value="4096"/>
+            <feature name="stack" type="number" value="4096"/>
+            <feature name="heap" type="number" value="4096"/>
+            <feature name="argSize" type="number" value="512"/>
+            <feature name="execCmd" type="string" value="@%24%28ECHO%29%20ti.platforms.evmDM365%20platform%20package%20cannot%20execute%20/home/jiangjx/UbuntuShare/ipnc_project/ipnc_lhy/github_ipc_lhy/av_capture/framework/alg/src/alg_config/alg_server.x470MV%20on%20Linux%0A@%24%28ECHO%29%20Check%20for%20updates%20to%20this%20package%20at%3A%0A@%24%28ECHO%29%20https%3A//www-a.ti.com/downloads/sds_support/targetcontent/rtsc/index.html%0A%09%3A"/>
+            <feature name="linkTemplate" type="object" value="null"/>
+            <feature name="main" type="object" value="null"/>
+            <feature name="sectMap" type="object" value="%5B%0A%0A%5D">
+            </feature>
+            <feature name="system" type="undefined" value="undefined"/>
+            <feature name="name" type="string" value="alg_server.x470MV"/>
+            <feature name="buildPackage" type="string" value="alg_config"/>
+            <feature name="endian" type="string" value="little"/>
+            <feature name="codeModel" type="object" value="null"/>
+            <feature name="dataModel" type="object" value="null"/>
+            <feature name="build" type="object" value="%5Bobject%20Object%5D"/>
+            <feature name="cpu" type="xdc.platform.IExeContext.Instance" value="%7Bid%3A%200%2C%20catalogName%3A%20ti.catalog.arm%2C%20deviceName%3A%20TMS320DM365%2C%20revision%3A%20%2C%20clockRate%3A%200xd8%2C%20board%3A%20%7Bid%3A%200%2C%20boardName%3A%20evmDM365%2C%20boardFamily%3A%20evmDM365%2C%20boardRevision%3A%20null%7D%2C%20attrs%3A%20xdc.services.intern.xsr.Value%24Obj@e63606%3A%3A%28xdc.platform.ICpuDataSheet.Instance%29ti.catalog.arm.TMS320DM365.Instance%230%2C%20memoryMap%3A%20%5B%0A%5B%27IRAM0%27%2C%20%7Bcomment%3A%20Internal%20ARM%20Instruction%20RAM0%2C%20name%3A%20IRAM0%2C%20space%3A%20code%2C%20page%3A%20undefined%2C%20base%3A%200x0%2C%20len%3A%200x4000%2C%20access%3A%20RWX%7D%5D%2C%0A%5B%27IRAM1%27%2C%20%7Bcomment%3A%20Internal%20ARM%20Instruction%20RAM1%2C%20name%3A%20IRAM1%2C%20space%3A%20code%2C%20page%3A%20undefined%2C%20base%3A%200x4000%2C%20len%3A%200x4000%2C%20access%3A%20RWX%7D%5D%2C%0A%5B%27DRAM0%27%2C%20%7Bcomment%3A%20Internal%20ARM%20Data%20RAM0%2C%20name%3A%20DRAM0%2C%20space%3A%20data%2C%20page%3A%20undefined%2C%20base%3A%200x10000%2C%20len%3A%200x4000%2C%20access%3A%20RW%7D%5D%2C%0A%5B%27DRAM1%27%2C%20%7Bcomment%3A%20Internal%20ARM%20Data%20RAM1%2C%20name%3A%20DRAM1%2C%20space%3A%20data%2C%20page%3A%20undefined%2C%20base%3A%200x14000%2C%20len%3A%200x4000%2C%20access%3A%20RW%7D%5D%2C%0A%5B%27DDR%27%2C%20%7Bcomment%3A%20undefined%2C%20name%3A%20DDR%2C%20space%3A%20undefined%2C%20page%3A%20undefined%2C%20base%3A%200x80000000%2C%20len%3A%200x1000000%2C%20access%3A%20undefined%7D%5D%0A%5D%7D"/>
+            <feature name="platformName" type="string" value="ti.platforms.evmDM365"/>
+            <feature name="platform" type="xdc.platform.IPlatform.Instance" value="%7BexternalMemoryMap%3A%20%5B%0A%5B%27DDR%27%2C%20%7Bcomment%3A%20undefined%2C%20name%3A%20DDR%2C%20space%3A%20undefined%2C%20page%3A%20undefined%2C%20base%3A%200x80000000%2C%20len%3A%200x1000000%2C%20access%3A%20undefined%7D%5D%0A%5D%2C%20customMemoryMap%3A%20%5B%0A%0A%5D%2C%20renameMap%3A%20%5B%0A%0A%5D%2C%20dataMemory%3A%20DDR%2C%20codeMemory%3A%20DDR%2C%20stackMemory%3A%20DDR%2C%20sectMap%3A%20%5B%0A%0A%5D%7D"/>
+            <feature name="global" type="object" value="%5B%0A%0A%5D">
+            </feature>
+            <feature name="symbol" type="object" value="%5B%0A%5B%27xdc_runtime_Startup__EXECFXN__C%27%2C%200x0%5D%2C%0A%5B%27xdc_runtime_Startup__RESETFXN__C%27%2C%200x0%5D%2C%0A%5B%27xdc_runtime_Startup_exec__E%27%2C%200x0%5D%2C%0A%5B%27xdc_runtime_Startup_reset__I%27%2C%200x0%5D%0A%5D"><map id="xdc.cfg.Program/symbol" length="4">
+  <entry key="xdc_runtime_Startup__EXECFXN__C">0x0</entry>
+  <entry key="xdc_runtime_Startup__RESETFXN__C">0x0</entry>
+  <entry key="xdc_runtime_Startup_exec__E">0x0</entry>
+  <entry key="xdc_runtime_Startup_reset__I">0x0</entry>
+</map>
+            </feature>
+            <feature name="fixedCodeAddr" type="number" value="0"/>
+            <feature name="fixedDataAddr" type="number" value="0"/>
+            <feature name="loadFixedDataAddr" type="undefined" value="undefined"/>
+            <feature name="loadRom" type="boolean" value="false"/>
+        </module>
+        <module name="xdc.cfg.Main"
+                used="true"
+                uses="">
+        </module>
+    </package>
+    <package name="ti.platforms.evmDM365" version="1, 0, 0" repository="/home/jiangjx/UbuntuShare/ipnc_project/ipnc_lhy/dvsdk_2_10_01_18/xdctools_3_15_01_59/packages/">
+        <module name="ti.platforms.evmDM365.Platform"
+                used="true"
+                uses="">
+            <feature name="BOARD" type="xdc.platform.IPlatform.Board" value="%7Bid%3A%200%2C%20boardName%3A%20evmDM365%2C%20boardFamily%3A%20evmDM365%2C%20boardRevision%3A%20null%7D"><struct id="ti.platforms.evmDM365.Platform/BOARD">
+  <field name="id">0</field>
+  <field name="boardName">evmDM365</field>
+  <field name="boardFamily">evmDM365</field>
+  <field name="boardRevision">null</field>
+</struct>
+            </feature>
+            <feature name="CPU" type="xdc.platform.IExeContext.Cpu" value="%7Bid%3A%200%2C%20catalogName%3A%20ti.catalog.arm%2C%20deviceName%3A%20TMS320DM365%2C%20revision%3A%20%2C%20clockRate%3A%200xd8%7D"><struct id="ti.platforms.evmDM365.Platform/CPU">
+  <field name="id">0</field>
+  <field name="catalogName">ti.catalog.arm</field>
+  <field name="deviceName">TMS320DM365</field>
+  <field name="revision"/>
+  <field name="clockRate">0xd8</field>
+</struct>
+            </feature>
+        </module>
+    </package>
+    <package name="ti.sdo.ce.osal" version="2, 0, 2" repository="/home/jiangjx/UbuntuShare/ipnc_project/ipnc_lhy/dvsdk_2_10_01_18/codec_engine_2_24/packages/">
+        <module name="ti.sdo.ce.osal.Global"
+                used="true"
+                uses="">
+            <feature name="DEFAULT_ARMDSPLINKCONFIG" type="ti.sdo.ce.ipc.IIpc.ArmDspLinkConfig" value="%7BmemTable%3A%20%5B%0A%5B%27DDRALGHEAP%27%2C%20%7Baddr%3A%200x88000000%2C%20gppAddr%3A%20undefined%2C%20size%3A%200x7a00000%2C%20type%3A%20other%7D%5D%2C%0A%5B%27DDR2%27%2C%20%7Baddr%3A%200x8fa00000%2C%20gppAddr%3A%20undefined%2C%20size%3A%200x400000%2C%20type%3A%20main%7D%5D%2C%0A%5B%27DSPLINKMEM%27%2C%20%7Baddr%3A%200x8fe00000%2C%20gppAddr%3A%20undefined%2C%20size%3A%200x100000%2C%20type%3A%20link%7D%5D%2C%0A%5B%27RESETCTRL%27%2C%20%7Baddr%3A%200x8ff00000%2C%20gppAddr%3A%20undefined%2C%20size%3A%200x80%2C%20type%3A%20reset%7D%5D%0A%5D%2C%20doPowerControl%3A%20false%2C%20dspManagement%3A%20undefined%7D"/>
+            <feature name="os" type="ti.sdo.ce.osal.IOsal.Module" value="%7B%7D">
+            </feature>
+            <feature name="armDspLinkConfig" type="ti.sdo.ce.ipc.IIpc.ArmDspLinkConfig" value="%7BmemTable%3A%20%5B%0A%0A%5D%2C%20doPowerControl%3A%20undefined%2C%20dspManagement%3A%20undefined%7D"><struct id="ti.sdo.ce.osal.Global/armDspLinkConfig">
+  <field name="memTable"/>
+  <field name="doPowerControl">undefined</field>
+  <field name="dspManagement">undefined</field>
+</struct>
+            </feature>
+            <feature name="runtimeEnv" type="object" value="ti.sdo.ce.osal.Global.LINUX"/>
+            <feature name="defaultMemSegId" type="object" value="null"/>
+            <feature name="armCommMsgSize" type="number" value="4096"/>
+            <feature name="armCommNumMsgs" type="number" value="64"/>
+            <feature name="dspCommNumMsgQueues" type="number" value="64"/>
+            <feature name="dspCommUseExactMatch" type="boolean" value="true"/>
+            <feature name="dspConfigureMsgqAndPool" type="boolean" value="true"/>
+            <feature name="dspUseMsgqAndPool" type="boolean" value="true"/>
+            <feature name="dspCommMsgSize" type="number" value="1024"/>
+            <feature name="dspCommNumMsgs" type="number" value="64"/>
+            <feature name="usePowerManagement" type="undefined" value="undefined"/>
+            <feature name="powerSaveMemoryBlockName" type="object" value="null"/>
+            <feature name="useLinkArbiter" type="boolean" value="false"/>
+            <feature name="commLocateRetries" type="number" value="20"/>
+            <feature name="traceBufferSize" type="number" value="32768"/>
+            <feature name="enableLogging" type="boolean" value="true"/>
+            <feature name="logName" type="string" value="ti_sdo_ce_osal_LOG_Buffer"/>
+            <feature name="logSize" type="number" value="256"/>
+            <feature name="logType" type="string" value="circular"/>
+            <feature name="logSeg" type="object" value="null"/>
+            <feature name="skipVirtualAddressTranslation" type="boolean" value="false"/>
+            <feature name="embedBuildInfo" type="boolean" value="true"/>
+        </module>
+    </package>
+    <package name="ti.sdo.ce.osal.linux" version="2, 0, 1" repository="/home/jiangjx/UbuntuShare/ipnc_project/ipnc_lhy/dvsdk_2_10_01_18/codec_engine_2_24/packages/">
+        <module name="ti.sdo.ce.osal.linux.Settings"
+                used="true"
+                uses="">
+            <feature name="ipcKeyBase" type="number" value="1279349583"/>
+            <feature name="maxCbListSize" type="number" value="100"/>
+            <feature name="debug" type="boolean" value="false"/>
+        </module>
+    </package>
+    <package name="ti.sdo.ce.ipc" version="2, 0, 1" repository="/home/jiangjx/UbuntuShare/ipnc_project/ipnc_lhy/dvsdk_2_10_01_18/codec_engine_2_24/packages/">
+        <module name="ti.sdo.ce.ipc.Settings"
+                used="true"
+                uses="">
+            <feature name="DEFAULT_ARMDSPLINKCONFIG" type="ti.sdo.ce.ipc.IIpc.ArmDspLinkConfig" value="%7BmemTable%3A%20%5B%0A%5B%27DDRALGHEAP%27%2C%20%7Baddr%3A%200x88000000%2C%20gppAddr%3A%20undefined%2C%20size%3A%200x7a00000%2C%20type%3A%20other%7D%5D%2C%0A%5B%27DDR2%27%2C%20%7Baddr%3A%200x8fa00000%2C%20gppAddr%3A%20undefined%2C%20size%3A%200x400000%2C%20type%3A%20main%7D%5D%2C%0A%5B%27DSPLINKMEM%27%2C%20%7Baddr%3A%200x8fe00000%2C%20gppAddr%3A%20undefined%2C%20size%3A%200x100000%2C%20type%3A%20link%7D%5D%2C%0A%5B%27RESETCTRL%27%2C%20%7Baddr%3A%200x8ff00000%2C%20gppAddr%3A%20undefined%2C%20size%3A%200x80%2C%20type%3A%20reset%7D%5D%0A%5D%2C%20doPowerControl%3A%20false%2C%20dspManagement%3A%20undefined%7D"/>
+            <feature name="ipc" type="ti.sdo.ce.ipc.IIpc.Module" value="%7BlinkConfigs%3A%20%5B%0A%0A%5D%7D"><module id="ti.sdo.ce.ipc.linux.Ipc">
+  <field name="linkConfigs"/>
+</module>
+            </feature>
+            <feature name="commType" type="undefined" value="undefined"/>
+            <feature name="usesServer" type="boolean" value="false"/>
+            <feature name="armCommMsgSize" type="number" value="4096"/>
+            <feature name="armCommNumMsgs" type="number" value="64"/>
+            <feature name="commLocateRetries" type="number" value="20"/>
+            <feature name="useLinkArbiter" type="boolean" value="false"/>
+            <feature name="dspConfigureMsgqAndPool" type="boolean" value="true"/>
+            <feature name="dspUseMsgqAndPool" type="boolean" value="true"/>
+            <feature name="dspCommNumMsgQueues" type="number" value="64"/>
+            <feature name="dspCommUseExactMatch" type="boolean" value="true"/>
+            <feature name="dspCommMsgSize" type="number" value="1024"/>
+            <feature name="dspCommNumMsgs" type="number" value="64"/>
+            <feature name="usePowerManagement" type="undefined" value="undefined"/>
+            <feature name="powerSaveMemoryBlockName" type="object" value="null"/>
+            <feature name="debug" type="boolean" value="false"/>
+        </module>
+    </package>
+    <package name="ti.sdo.ce.alg" version="1, 0, 1" repository="/home/jiangjx/UbuntuShare/ipnc_project/ipnc_lhy/dvsdk_2_10_01_18/codec_engine_2_24/packages/">
+        <module name="ti.sdo.ce.alg.Settings"
+                used="true"
+                uses="">
+            <feature name="MAXGROUPID" type="number" value="20"/>
+            <feature name="useIdma3" type="boolean" value="false"/>
+            <feature name="useIres" type="boolean" value="true"/>
+            <feature name="useHeap" type="boolean" value="true"/>
+            <feature name="useCache" type="boolean" value="true"/>
+            <feature name="ipcKeyBase" type="number" value="1330072641"/>
+            <feature name="groupUsed" type="object" value="%5Bfalse%2C%20true%2C%20true%2C%20false%2C%20false%2C%20false%2C%20false%2C%20false%2C%20false%2C%20false%2C%20false%2C%20false%2C%20false%2C%20false%2C%20false%2C%20false%2C%20false%2C%20false%2C%20false%2C%20false%5D"><vector id="ti.sdo.ce.alg.Settings/groupUsed" length="20">
+  <elem>false</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>false</elem>
+  <elem>false</elem>
+  <elem>false</elem>
+  <elem>false</elem>
+  <elem>false</elem>
+  <elem>false</elem>
+  <elem>false</elem>
+  <elem>false</elem>
+  <elem>false</elem>
+  <elem>false</elem>
+  <elem>false</elem>
+  <elem>false</elem>
+  <elem>false</elem>
+  <elem>false</elem>
+  <elem>false</elem>
+  <elem>false</elem>
+  <elem>false</elem>
+</vector>
+            </feature>
+        </module>
+    </package>
+    <package name="ti.sdo.ce.ipc.linux" version="2, 0, 1" repository="/home/jiangjx/UbuntuShare/ipnc_project/ipnc_lhy/dvsdk_2_10_01_18/codec_engine_2_24/packages/">
+        <module name="ti.sdo.ce.ipc.linux.Ipc"
+                used="true"
+                uses="">
+            <feature name="linkConfigs" type="object" value="%5B%0A%0A%5D">
+            </feature>
+            <feature name="debug" type="boolean" value="false"/>
+        </module>
+    </package>
+    <package name="ti.sdo.ce" version="1, 0, 6" repository="/home/jiangjx/UbuntuShare/ipnc_project/ipnc_lhy/dvsdk_2_10_01_18/codec_engine_2_24/packages/">
+        <module name="ti.sdo.ce.Engine"
+                used="true"
+                uses="">
+            <feature name="MAXGROUPID" type="number" value="20"/>
+            <feature name="local" type="ti.sdo.ce.Engine.Instance" value="%7BMAXGROUPID%3A%200x14%2C%20name%3A%20local%2C%20algs%3A%20%5B%5D%2C%20server%3A%20undefined%2C%20armDspLinkConfig%3A%20%7BmemTable%3A%20%5B%0A%0A%5D%2C%20doPowerControl%3A%20undefined%2C%20dspManagement%3A%20undefined%7D%2C%20linkCfg%3A%20undefined%7D"><instance id="ti.sdo.ce.Engine.Instance#1">
+  <field name="MAXGROUPID">0x14</field>
+  <field name="name">local</field>
+  <field name="algs"/>
+  <field name="server">undefined</field>
+  <field name="armDspLinkConfig">
+    <struct id="ti.sdo.ce.Engine.Instance#1/armDspLinkConfig">
+      <field name="memTable"/>
+      <field name="doPowerControl">undefined</field>
+      <field name="dspManagement">undefined</field>
+    </struct>
+  </field>
+  <field name="linkCfg">undefined</field>
+</instance>
+            </feature>
+        </module>
+        <module name="ti.sdo.ce.Server"
+                used="false"
+                uses="">
+        </module>
+        <module name="ti.sdo.ce.VISA"
+                used="false"
+                uses="">
+        </module>
+        <module name="ti.sdo.ce.CERuntime"
+                used="true"
+                uses="">
+        </module>
+        <module name="ti.sdo.ce.Settings"
+                used="true"
+                uses="">
+            <feature name="checked" type="boolean" value="false"/>
+        </module>
+    </package>
+    <package name="ti.sdo.ce.video2" version="1, 0, 2" repository="/home/jiangjx/UbuntuShare/ipnc_project/ipnc_lhy/dvsdk_2_10_01_18/codec_engine_2_24/packages/">
+        <module name="ti.sdo.ce.video2.VIDDEC2Config"
+                used="true"
+                uses="">
+            <feature name="codecsList" type="object" value="%5Bobject%20Object%5D"/>
+        </module>
+    </package>
+    <package name="ti.sdo.ce.video1" version="1, 0, 2" repository="/home/jiangjx/UbuntuShare/ipnc_project/ipnc_lhy/dvsdk_2_10_01_18/codec_engine_2_24/packages/">
+        <module name="ti.sdo.ce.video1.VIDENC1Config"
+                used="true"
+                uses="">
+            <feature name="codecsList" type="object" value="%5Bobject%20Object%5D"/>
+        </module>
+        <module name="ti.sdo.ce.video1.VIDDEC1Config"
+                used="true"
+                uses="">
+            <feature name="codecsList" type="object" value="%5Bobject%20Object%5D"/>
+        </module>
+    </package>
+    <package name="ti.sdo.codecs.iprun.ce" version="1, 0, 0" repository="/home/jiangjx/UbuntuShare/ipnc_project/ipnc_lhy/dvsdk_2_10_01_18/dm365_codecs_01_00_06/packages/">
+        <module name="ti.sdo.codecs.iprun.ce.IPRUN"
+                used="true"
+                uses="">
+            <feature name="isLocal" type="boolean" value="true"/>
+            <feature name="ialgFxns" type="string" value="IPRUN_TI_IIPRUN"/>
+            <feature name="idma3Fxns" type="undefined" value="undefined"/>
+            <feature name="iresFxns" type="string" value="IPRUN_TI_IRES"/>
+            <feature name="serverFxns" type="string" value="VIDENC1_SKEL"/>
+            <feature name="stubFxns" type="string" value="VIDENC1_STUBS"/>
+            <feature name="rpcProtocolVersion" type="number" value="0"/>
+            <feature name="uuid" type="number" value="1256418240"/>
+            <feature name="frameRate" type="undefined" value="undefined"/>
+            <feature name="codecClassConfigurable" type="boolean" value="true"/>
+            <feature name="manageInBufsCache" type="object" value="%5Btrue%2C%20true%2C%20true%2C%20true%2C%20true%2C%20true%2C%20true%2C%20true%2C%20true%2C%20true%2C%20true%2C%20true%2C%20true%2C%20true%2C%20true%2C%20true%5D"><vector id="ti.sdo.codecs.iprun.ce.IPRUN/manageInBufsCache" length="16">
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+</vector>
+            </feature>
+            <feature name="manageOutBufsCache" type="object" value="%5Btrue%2C%20true%2C%20true%2C%20true%2C%20true%2C%20true%2C%20true%2C%20true%2C%20true%2C%20true%2C%20true%2C%20true%2C%20true%2C%20true%2C%20true%2C%20true%5D"><vector id="ti.sdo.codecs.iprun.ce.IPRUN/manageOutBufsCache" length="16">
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+</vector>
+            </feature>
+            <feature name="alg" type="ti.sdo.codecs.iprun.IPRUN.Module" value="%7Bwatermark%3A%20true%2C%20codeSection%3A%20undefined%2C%20udataSection%3A%20undefined%2C%20dataSection%3A%20undefined%7D"><module id="ti.sdo.codecs.iprun.IPRUN">
+  <field name="watermark">true</field>
+  <field name="codeSection">undefined</field>
+  <field name="udataSection">undefined</field>
+  <field name="dataSection">undefined</field>
+</module>
+            </feature>
+        </module>
+    </package>
+    <package name="ti.sdo.codecs.ktnf.ce" version="1, 0, 0" repository="/home/jiangjx/UbuntuShare/ipnc_project/ipnc_lhy/dvsdk_2_10_01_18/dm365_codecs_01_00_06/packages/">
+        <module name="ti.sdo.codecs.ktnf.ce.KTNF"
+                used="true"
+                uses="">
+            <feature name="isLocal" type="boolean" value="true"/>
+            <feature name="ialgFxns" type="string" value="KTNF_TI_IKTNF"/>
+            <feature name="idma3Fxns" type="undefined" value="undefined"/>
+            <feature name="iresFxns" type="string" value="KTNF_TI_IRES"/>
+            <feature name="serverFxns" type="string" value="VIDENC1_SKEL"/>
+            <feature name="stubFxns" type="string" value="VIDENC1_STUBS"/>
+            <feature name="rpcProtocolVersion" type="number" value="0"/>
+            <feature name="uuid" type="number" value="2132667248"/>
+            <feature name="frameRate" type="undefined" value="undefined"/>
+            <feature name="codecClassConfigurable" type="boolean" value="true"/>
+            <feature name="manageInBufsCache" type="object" value="%5Btrue%2C%20true%2C%20true%2C%20true%2C%20true%2C%20true%2C%20true%2C%20true%2C%20true%2C%20true%2C%20true%2C%20true%2C%20true%2C%20true%2C%20true%2C%20true%5D"><vector id="ti.sdo.codecs.ktnf.ce.KTNF/manageInBufsCache" length="16">
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+</vector>
+            </feature>
+            <feature name="manageOutBufsCache" type="object" value="%5Btrue%2C%20true%2C%20true%2C%20true%2C%20true%2C%20true%2C%20true%2C%20true%2C%20true%2C%20true%2C%20true%2C%20true%2C%20true%2C%20true%2C%20true%2C%20true%5D"><vector id="ti.sdo.codecs.ktnf.ce.KTNF/manageOutBufsCache" length="16">
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+</vector>
+            </feature>
+            <feature name="alg" type="ti.sdo.codecs.ktnf.KTNF.Module" value="%7Bwatermark%3A%20false%2C%20codeSection%3A%20undefined%2C%20udataSection%3A%20undefined%2C%20dataSection%3A%20undefined%7D"><module id="ti.sdo.codecs.ktnf.KTNF">
+  <field name="watermark">false</field>
+  <field name="codeSection">undefined</field>
+  <field name="udataSection">undefined</field>
+  <field name="dataSection">undefined</field>
+</module>
+            </feature>
+        </module>
+    </package>
+    <package name="ti.sdo.codecs.mpeg4enc.ce" version="1, 0, 0" repository="/home/jiangjx/UbuntuShare/ipnc_project/ipnc_lhy/dvsdk_2_10_01_18/dm365_codecs_01_00_06/packages/">
+        <module name="ti.sdo.codecs.mpeg4enc.ce.MPEG4ENC"
+                used="true"
+                uses="">
+            <feature name="isLocal" type="boolean" value="true"/>
+            <feature name="ialgFxns" type="string" value="MP4VENC_TI_IMP4VENC"/>
+            <feature name="idma3Fxns" type="undefined" value="undefined"/>
+            <feature name="iresFxns" type="string" value="MP4VENC_TI_IRES"/>
+            <feature name="serverFxns" type="string" value="VIDENC1_SKEL"/>
+            <feature name="stubFxns" type="string" value="VIDENC1_STUBS"/>
+            <feature name="rpcProtocolVersion" type="number" value="0"/>
+            <feature name="uuid" type="number" value="3544745280"/>
+            <feature name="frameRate" type="undefined" value="undefined"/>
+            <feature name="codecClassConfigurable" type="boolean" value="true"/>
+            <feature name="manageInBufsCache" type="object" value="%5Btrue%2C%20true%2C%20true%2C%20true%2C%20true%2C%20true%2C%20true%2C%20true%2C%20true%2C%20true%2C%20true%2C%20true%2C%20true%2C%20true%2C%20true%2C%20true%5D"><vector id="ti.sdo.codecs.mpeg4enc.ce.MPEG4ENC/manageInBufsCache" length="16">
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+</vector>
+            </feature>
+            <feature name="manageOutBufsCache" type="object" value="%5Btrue%2C%20true%2C%20true%2C%20true%2C%20true%2C%20true%2C%20true%2C%20true%2C%20true%2C%20true%2C%20true%2C%20true%2C%20true%2C%20true%2C%20true%2C%20true%5D"><vector id="ti.sdo.codecs.mpeg4enc.ce.MPEG4ENC/manageOutBufsCache" length="16">
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+</vector>
+            </feature>
+            <feature name="alg" type="ti.sdo.codecs.mpeg4enc.MPEG4ENC.Module" value="%7Bwatermark%3A%20false%2C%20codeSection%3A%20undefined%2C%20udataSection%3A%20undefined%2C%20dataSection%3A%20undefined%7D"><module id="ti.sdo.codecs.mpeg4enc.MPEG4ENC">
+  <field name="watermark">false</field>
+  <field name="codeSection">undefined</field>
+  <field name="udataSection">undefined</field>
+  <field name="dataSection">undefined</field>
+</module>
+            </feature>
+        </module>
+    </package>
+    <package name="ti.sdo.codecs.h264enc.ce" version="1, 0, 0" repository="/home/jiangjx/UbuntuShare/ipnc_project/ipnc_lhy/dvsdk_2_10_01_18/dm365_codecs_01_00_06/packages/">
+        <module name="ti.sdo.codecs.h264enc.ce.H264ENC"
+                used="true"
+                uses="">
+            <feature name="isLocal" type="boolean" value="true"/>
+            <feature name="ialgFxns" type="string" value="H264VENC_TI_IH264VENC"/>
+            <feature name="idma3Fxns" type="undefined" value="undefined"/>
+            <feature name="iresFxns" type="string" value="H264VENC_TI_IRES"/>
+            <feature name="serverFxns" type="string" value="VIDENC1_SKEL"/>
+            <feature name="stubFxns" type="string" value="VIDENC1_STUBS"/>
+            <feature name="rpcProtocolVersion" type="number" value="0"/>
+            <feature name="uuid" type="number" value="972753848"/>
+            <feature name="frameRate" type="undefined" value="undefined"/>
+            <feature name="codecClassConfigurable" type="boolean" value="true"/>
+            <feature name="manageInBufsCache" type="object" value="%5Btrue%2C%20true%2C%20true%2C%20true%2C%20true%2C%20true%2C%20true%2C%20true%2C%20true%2C%20true%2C%20true%2C%20true%2C%20true%2C%20true%2C%20true%2C%20true%5D"><vector id="ti.sdo.codecs.h264enc.ce.H264ENC/manageInBufsCache" length="16">
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+</vector>
+            </feature>
+            <feature name="manageOutBufsCache" type="object" value="%5Btrue%2C%20true%2C%20true%2C%20true%2C%20true%2C%20true%2C%20true%2C%20true%2C%20true%2C%20true%2C%20true%2C%20true%2C%20true%2C%20true%2C%20true%2C%20true%5D"><vector id="ti.sdo.codecs.h264enc.ce.H264ENC/manageOutBufsCache" length="16">
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+</vector>
+            </feature>
+            <feature name="alg" type="ti.sdo.codecs.h264enc.H264ENC.Module" value="%7Bwatermark%3A%20false%2C%20codeSection%3A%20undefined%2C%20udataSection%3A%20undefined%2C%20dataSection%3A%20undefined%7D"><module id="ti.sdo.codecs.h264enc.H264ENC">
+  <field name="watermark">false</field>
+  <field name="codeSection">undefined</field>
+  <field name="udataSection">undefined</field>
+  <field name="dataSection">undefined</field>
+</module>
+            </feature>
+        </module>
+    </package>
+    <package name="ti.sdo.ce.image1" version="1, 0, 1" repository="/home/jiangjx/UbuntuShare/ipnc_project/ipnc_lhy/dvsdk_2_10_01_18/codec_engine_2_24/packages/">
+        <module name="ti.sdo.ce.image1.IMGDEC1Config"
+                used="true"
+                uses="">
+            <feature name="codecsList" type="object" value="%5Bobject%20Object%5D"/>
+        </module>
+        <module name="ti.sdo.ce.image1.IMGENC1Config"
+                used="true"
+                uses="">
+            <feature name="codecsList" type="object" value="%5Bobject%20Object%5D"/>
+        </module>
+    </package>
+    <package name="ti.sdo.codecs.jpegenc.ce" version="1, 0, 0" repository="/home/jiangjx/UbuntuShare/ipnc_project/ipnc_lhy/dvsdk_2_10_01_18/dm365_codecs_01_00_06/packages/">
+        <module name="ti.sdo.codecs.jpegenc.ce.JPEGENC"
+                used="true"
+                uses="">
+            <feature name="isLocal" type="boolean" value="true"/>
+            <feature name="ialgFxns" type="string" value="JPEGENC_TI_IJPEGENC"/>
+            <feature name="idma3Fxns" type="undefined" value="undefined"/>
+            <feature name="iresFxns" type="string" value="JPEGENC_TI_IRES"/>
+            <feature name="serverFxns" type="string" value="IMGENC1_SKEL"/>
+            <feature name="stubFxns" type="string" value="IMGENC1_STUBS"/>
+            <feature name="rpcProtocolVersion" type="number" value="1"/>
+            <feature name="uuid" type="number" value="3732622784"/>
+            <feature name="frameRate" type="undefined" value="undefined"/>
+            <feature name="codecClassConfigurable" type="boolean" value="true"/>
+            <feature name="manageInBufsCache" type="object" value="%5Btrue%2C%20true%2C%20true%2C%20true%2C%20true%2C%20true%2C%20true%2C%20true%2C%20true%2C%20true%2C%20true%2C%20true%2C%20true%2C%20true%2C%20true%2C%20true%5D"><vector id="ti.sdo.codecs.jpegenc.ce.JPEGENC/manageInBufsCache" length="16">
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+</vector>
+            </feature>
+            <feature name="manageOutBufsCache" type="object" value="%5Btrue%2C%20true%2C%20true%2C%20true%2C%20true%2C%20true%2C%20true%2C%20true%2C%20true%2C%20true%2C%20true%2C%20true%2C%20true%2C%20true%2C%20true%2C%20true%5D"><vector id="ti.sdo.codecs.jpegenc.ce.JPEGENC/manageOutBufsCache" length="16">
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+  <elem>true</elem>
+</vector>
+            </feature>
+            <feature name="alg" type="ti.sdo.codecs.jpegenc.JPEGENC.Module" value="%7Bwatermark%3A%20false%2C%20codeSection%3A%20undefined%2C%20udataSection%3A%20undefined%2C%20dataSection%3A%20undefined%7D"><module id="ti.sdo.codecs.jpegenc.JPEGENC">
+  <field name="watermark">false</field>
+  <field name="codeSection">undefined</field>
+  <field name="udataSection">undefined</field>
+  <field name="dataSection">undefined</field>
+</module>
+            </feature>
+        </module>
+    </package>
+    <package name="ti.sdo.ce.audio1" version="1, 0, 1" repository="/home/jiangjx/UbuntuShare/ipnc_project/ipnc_lhy/dvsdk_2_10_01_18/codec_engine_2_24/packages/">
+    </package>
+    <package name="ittiam.codecs.aaclc_enc.ce" version="" repository="/home/jiangjx/UbuntuShare/ipnc_project/ipnc_lhy/dvsdk_2_10_01_18/dm365_codecs_01_00_06/packages/">
+        <module name="ittiam.codecs.aaclc_enc.ce.AACLC_ENC"
+                used="true"
+                uses="">
+            <feature name="isLocal" type="boolean" value="true"/>
+            <feature name="ialgFxns" type="string" value="EAACPLUSENCODER_ITTIAM_IEAACPLUSENCODER"/>
+            <feature name="idma3Fxns" type="undefined" value="undefined"/>
+            <feature name="iresFxns" type="string" value="AUDCDC_ITTIAM_IRES"/>
+            <feature name="serverFxns" type="string" value="AUDENC1_SKEL"/>
+            <feature name="stubFxns" type="string" value="AUDENC1_STUBS"/>
+            <feature name="rpcProtocolVersion" type="number" value="1"/>
+            <feature name="uuid" type="number" value="3082345429"/>
+            <feature name="frameRate" type="undefined" value="undefined"/>
+            <feature name="codecClassConfigurable" type="undefined" value="undefined"/>
+            <feature name="alg" type="ittiam.codecs.aaclc_enc.AACLC_ENC.Module" value="%7B%7D">
+            </feature>
+        </module>
+    </package>
+    <package name="ittiam.codecs.aac_dec.ce" version="" repository="/home/jiangjx/UbuntuShare/ipnc_project/ipnc_lhy/dvsdk_2_10_01_18/dm365_codecs_01_00_06/packages/">
+        <module name="ittiam.codecs.aac_dec.ce.AAC_DEC"
+                used="true"
+                uses="">
+            <feature name="isLocal" type="boolean" value="true"/>
+            <feature name="ialgFxns" type="string" value="ENHAACPDECODER_ITTIAM_IENHAACPDECODER"/>
+            <feature name="idma3Fxns" type="undefined" value="undefined"/>
+            <feature name="iresFxns" type="string" value="AUDCDC_ITTIAM_IRES"/>
+            <feature name="serverFxns" type="string" value="AUDDEC1_SKEL"/>
+            <feature name="stubFxns" type="string" value="AUDDEC1_STUBS"/>
+            <feature name="rpcProtocolVersion" type="number" value="1"/>
+            <feature name="uuid" type="number" value="1705744497"/>
+            <feature name="frameRate" type="undefined" value="undefined"/>
+            <feature name="codecClassConfigurable" type="undefined" value="undefined"/>
+            <feature name="alg" type="ittiam.codecs.aac_dec.AAC_DEC.Module" value="%7B%7D">
+            </feature>
+        </module>
+    </package>
+    <package name="ti.sdo.ce.speech1" version="1, 0, 1" repository="/home/jiangjx/UbuntuShare/ipnc_project/ipnc_lhy/dvsdk_2_10_01_18/codec_engine_2_24/packages/">
+    </package>
+    <package name="ti.sdo.ce.examples.codecs.g711" version="1, 0, 0" repository="/home/jiangjx/UbuntuShare/ipnc_project/ipnc_lhy/dvsdk_2_10_01_18/codec_engine_2_24/examples/">
+        <module name="ti.sdo.ce.examples.codecs.g711.G711ENC"
+                used="true"
+                uses="">
+            <feature name="isLocal" type="boolean" value="true"/>
+            <feature name="ialgFxns" type="string" value="G711ENC_SUN_IG711ENC"/>
+            <feature name="idma3Fxns" type="undefined" value="undefined"/>
+            <feature name="iresFxns" type="undefined" value="undefined"/>
+            <feature name="serverFxns" type="string" value="SPHENC1_SKEL"/>
+            <feature name="stubFxns" type="string" value="SPHENC1_STUBS"/>
+            <feature name="rpcProtocolVersion" type="number" value="0"/>
+            <feature name="uuid" type="number" value="3048083571"/>
+            <feature name="frameRate" type="undefined" value="undefined"/>
+            <feature name="codecClassConfigurable" type="undefined" value="undefined"/>
+        </module>
+        <module name="ti.sdo.ce.examples.codecs.g711.G711DEC"
+                used="true"
+                uses="">
+            <feature name="isLocal" type="boolean" value="true"/>
+            <feature name="ialgFxns" type="string" value="G711DEC_SUN_IG711DEC"/>
+            <feature name="idma3Fxns" type="undefined" value="undefined"/>
+            <feature name="iresFxns" type="undefined" value="undefined"/>
+            <feature name="serverFxns" type="string" value="SPHDEC1_SKEL"/>
+            <feature name="stubFxns" type="string" value="SPHDEC1_STUBS"/>
+            <feature name="rpcProtocolVersion" type="number" value="0"/>
+            <feature name="uuid" type="number" value="1469621135"/>
+            <feature name="frameRate" type="undefined" value="undefined"/>
+            <feature name="codecClassConfigurable" type="undefined" value="undefined"/>
+        </module>
+    </package>
+    <package name="alg_config" version="" repository="/home/jiangjx/UbuntuShare/ipnc_project/ipnc_lhy/github_ipc_lhy/av_capture/framework/alg/src/">
+    </package>
+</imports>
+</configuration>

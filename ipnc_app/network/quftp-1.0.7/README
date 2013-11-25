@@ -1,0 +1,47 @@
+This is my FTP client for Linux only.
+
+I wrote this client out of frustration not being able to get a decent
+FTP client for linux that does queueing.
+
+I can almost guarantee that there are bugs in this thing, but it seems
+to be reasonably stable here, and I can use it for my day-to-day FTP
+needs. If you find any bugs, or have any comments, please let me know
+at david@dparrish.com.
+
+COMPILING:
+	make
+
+INSTALLING:
+	make install
+	cp example.quftprc ~/.quftprc
+
+USING:
+	quftp -h
+
+	type "help" to get a list of commands in the program
+
+Feel free to modify the .quftprc file to your liking, there are
+instructions included in the file.
+
+Should be sufficiently easy. You must have the GNU readline 4.0 libraries
+installed with the headers in /usr/include/readline. (That's the place
+for it in Red Hat). If you are getting segfaults logging in, it's probably
+because you have an older version of readline installed. This is something
+I would love to fix.
+
+I don't plan on porting to Windows because it's not worth it.. there
+are plenty of good FTP clients for Windows 95, such as Bulletproof FTP
+(http://www.bpftp.com/). I don't have access to any *NIX systems other
+than Linux, but if you want to port it to anything else, go ahead,
+just let me know, preferably with patches.
+
+Script files can be created as just plain text files. These can contain
+any valid quftp command, which will be run one after the other. Run the
+script with the -s parameter or the run command. If any command fails,
+script processing will cancel, unless the -i (ignore errors) parameter
+is specified.
+
+The .quftprc file is just a script file that is always run on startup.
+
+I can be contacted at david@dparrish.com, and that's about it.
+

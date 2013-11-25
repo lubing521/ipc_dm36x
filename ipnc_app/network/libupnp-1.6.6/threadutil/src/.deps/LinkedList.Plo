@@ -1,0 +1,143 @@
+src/LinkedList.lo src/LinkedList.o: src/LinkedList.c inc/LinkedList.h \
+  inc/FreeList.h inc/ithread.h \
+  /opt/montavista/pro/devkit/arm/v5t_le/bin/../target/usr/include/pthread.h \
+  /opt/montavista/pro/devkit/arm/v5t_le/bin/../target/usr/include/features.h \
+  /opt/montavista/pro/devkit/arm/v5t_le/bin/../target/usr/include/bits/predefs.h \
+  /opt/montavista/pro/devkit/arm/v5t_le/bin/../target/usr/include/sys/cdefs.h \
+  /opt/montavista/pro/devkit/arm/v5t_le/bin/../target/usr/include/bits/wordsize.h \
+  /opt/montavista/pro/devkit/arm/v5t_le/bin/../target/usr/include/gnu/stubs.h \
+  /opt/montavista/pro/devkit/arm/v5t_le/bin/../target/usr/include/sched.h \
+  /opt/montavista/pro/devkit/arm/v5t_le/bin/../target/usr/include/bits/types.h \
+  /opt/montavista/pro/devkit/arm/v5t_le/bin/../lib/gcc/armv5tl-montavista-linux-gnueabi/4.2.0/include/stddef.h \
+  /opt/montavista/pro/devkit/arm/v5t_le/bin/../target/usr/include/bits/typesizes.h \
+  /opt/montavista/pro/devkit/arm/v5t_le/bin/../target/usr/include/time.h \
+  /opt/montavista/pro/devkit/arm/v5t_le/bin/../target/usr/include/bits/sched.h \
+  /opt/montavista/pro/devkit/arm/v5t_le/bin/../target/usr/include/bits/time.h \
+  /opt/montavista/pro/devkit/arm/v5t_le/bin/../target/usr/include/signal.h \
+  /opt/montavista/pro/devkit/arm/v5t_le/bin/../target/usr/include/bits/sigset.h \
+  /opt/montavista/pro/devkit/arm/v5t_le/bin/../target/usr/include/bits/pthreadtypes.h \
+  /opt/montavista/pro/devkit/arm/v5t_le/bin/../target/usr/include/bits/setjmp.h \
+  /opt/montavista/pro/devkit/arm/v5t_le/bin/../target/usr/include/unistd.h \
+  /opt/montavista/pro/devkit/arm/v5t_le/bin/../target/usr/include/bits/posix_opt.h \
+  /opt/montavista/pro/devkit/arm/v5t_le/bin/../target/usr/include/bits/confname.h \
+  /opt/montavista/pro/devkit/arm/v5t_le/bin/../target/usr/include/getopt.h \
+  /opt/montavista/pro/devkit/arm/v5t_le/bin/../target/usr/include/errno.h \
+  /opt/montavista/pro/devkit/arm/v5t_le/bin/../target/usr/include/bits/errno.h \
+  /opt/montavista/pro/devkit/arm/v5t_le/bin/../target/usr/include/linux/errno.h \
+  /opt/montavista/pro/devkit/arm/v5t_le/bin/../target/usr/include/asm/errno.h \
+  /opt/montavista/pro/devkit/arm/v5t_le/bin/../target/usr/include/asm-generic/errno.h \
+  /opt/montavista/pro/devkit/arm/v5t_le/bin/../target/usr/include/asm-generic/errno-base.h \
+  /opt/montavista/pro/devkit/arm/v5t_le/bin/../target/usr/include/sys/param.h \
+  /opt/montavista/pro/devkit/arm/v5t_le/bin/../lib/gcc/armv5tl-montavista-linux-gnueabi/4.2.0/include-fixed/limits.h \
+  /opt/montavista/pro/devkit/arm/v5t_le/bin/../lib/gcc/armv5tl-montavista-linux-gnueabi/4.2.0/include-fixed/syslimits.h \
+  /opt/montavista/pro/devkit/arm/v5t_le/bin/../target/usr/include/limits.h \
+  /opt/montavista/pro/devkit/arm/v5t_le/bin/../target/usr/include/bits/posix1_lim.h \
+  /opt/montavista/pro/devkit/arm/v5t_le/bin/../target/usr/include/bits/local_lim.h \
+  /opt/montavista/pro/devkit/arm/v5t_le/bin/../target/usr/include/linux/limits.h \
+  /opt/montavista/pro/devkit/arm/v5t_le/bin/../target/usr/include/bits/posix2_lim.h \
+  /opt/montavista/pro/devkit/arm/v5t_le/bin/../target/usr/include/linux/param.h \
+  /opt/montavista/pro/devkit/arm/v5t_le/bin/../target/usr/include/asm/param.h \
+  /opt/montavista/pro/devkit/arm/v5t_le/bin/../target/usr/include/sys/types.h \
+  /opt/montavista/pro/devkit/arm/v5t_le/bin/../target/usr/include/endian.h \
+  /opt/montavista/pro/devkit/arm/v5t_le/bin/../target/usr/include/bits/endian.h \
+  /opt/montavista/pro/devkit/arm/v5t_le/bin/../target/usr/include/sys/select.h \
+  /opt/montavista/pro/devkit/arm/v5t_le/bin/../target/usr/include/bits/select.h \
+  /opt/montavista/pro/devkit/arm/v5t_le/bin/../target/usr/include/sys/sysmacros.h \
+  /opt/montavista/pro/devkit/arm/v5t_le/bin/../target/usr/include/malloc.h \
+  /opt/montavista/pro/devkit/arm/v5t_le/bin/../target/usr/include/assert.h
+
+inc/LinkedList.h:
+
+inc/FreeList.h:
+
+inc/ithread.h:
+
+/opt/montavista/pro/devkit/arm/v5t_le/bin/../target/usr/include/pthread.h:
+
+/opt/montavista/pro/devkit/arm/v5t_le/bin/../target/usr/include/features.h:
+
+/opt/montavista/pro/devkit/arm/v5t_le/bin/../target/usr/include/bits/predefs.h:
+
+/opt/montavista/pro/devkit/arm/v5t_le/bin/../target/usr/include/sys/cdefs.h:
+
+/opt/montavista/pro/devkit/arm/v5t_le/bin/../target/usr/include/bits/wordsize.h:
+
+/opt/montavista/pro/devkit/arm/v5t_le/bin/../target/usr/include/gnu/stubs.h:
+
+/opt/montavista/pro/devkit/arm/v5t_le/bin/../target/usr/include/sched.h:
+
+/opt/montavista/pro/devkit/arm/v5t_le/bin/../target/usr/include/bits/types.h:
+
+/opt/montavista/pro/devkit/arm/v5t_le/bin/../lib/gcc/armv5tl-montavista-linux-gnueabi/4.2.0/include/stddef.h:
+
+/opt/montavista/pro/devkit/arm/v5t_le/bin/../target/usr/include/bits/typesizes.h:
+
+/opt/montavista/pro/devkit/arm/v5t_le/bin/../target/usr/include/time.h:
+
+/opt/montavista/pro/devkit/arm/v5t_le/bin/../target/usr/include/bits/sched.h:
+
+/opt/montavista/pro/devkit/arm/v5t_le/bin/../target/usr/include/bits/time.h:
+
+/opt/montavista/pro/devkit/arm/v5t_le/bin/../target/usr/include/signal.h:
+
+/opt/montavista/pro/devkit/arm/v5t_le/bin/../target/usr/include/bits/sigset.h:
+
+/opt/montavista/pro/devkit/arm/v5t_le/bin/../target/usr/include/bits/pthreadtypes.h:
+
+/opt/montavista/pro/devkit/arm/v5t_le/bin/../target/usr/include/bits/setjmp.h:
+
+/opt/montavista/pro/devkit/arm/v5t_le/bin/../target/usr/include/unistd.h:
+
+/opt/montavista/pro/devkit/arm/v5t_le/bin/../target/usr/include/bits/posix_opt.h:
+
+/opt/montavista/pro/devkit/arm/v5t_le/bin/../target/usr/include/bits/confname.h:
+
+/opt/montavista/pro/devkit/arm/v5t_le/bin/../target/usr/include/getopt.h:
+
+/opt/montavista/pro/devkit/arm/v5t_le/bin/../target/usr/include/errno.h:
+
+/opt/montavista/pro/devkit/arm/v5t_le/bin/../target/usr/include/bits/errno.h:
+
+/opt/montavista/pro/devkit/arm/v5t_le/bin/../target/usr/include/linux/errno.h:
+
+/opt/montavista/pro/devkit/arm/v5t_le/bin/../target/usr/include/asm/errno.h:
+
+/opt/montavista/pro/devkit/arm/v5t_le/bin/../target/usr/include/asm-generic/errno.h:
+
+/opt/montavista/pro/devkit/arm/v5t_le/bin/../target/usr/include/asm-generic/errno-base.h:
+
+/opt/montavista/pro/devkit/arm/v5t_le/bin/../target/usr/include/sys/param.h:
+
+/opt/montavista/pro/devkit/arm/v5t_le/bin/../lib/gcc/armv5tl-montavista-linux-gnueabi/4.2.0/include-fixed/limits.h:
+
+/opt/montavista/pro/devkit/arm/v5t_le/bin/../lib/gcc/armv5tl-montavista-linux-gnueabi/4.2.0/include-fixed/syslimits.h:
+
+/opt/montavista/pro/devkit/arm/v5t_le/bin/../target/usr/include/limits.h:
+
+/opt/montavista/pro/devkit/arm/v5t_le/bin/../target/usr/include/bits/posix1_lim.h:
+
+/opt/montavista/pro/devkit/arm/v5t_le/bin/../target/usr/include/bits/local_lim.h:
+
+/opt/montavista/pro/devkit/arm/v5t_le/bin/../target/usr/include/linux/limits.h:
+
+/opt/montavista/pro/devkit/arm/v5t_le/bin/../target/usr/include/bits/posix2_lim.h:
+
+/opt/montavista/pro/devkit/arm/v5t_le/bin/../target/usr/include/linux/param.h:
+
+/opt/montavista/pro/devkit/arm/v5t_le/bin/../target/usr/include/asm/param.h:
+
+/opt/montavista/pro/devkit/arm/v5t_le/bin/../target/usr/include/sys/types.h:
+
+/opt/montavista/pro/devkit/arm/v5t_le/bin/../target/usr/include/endian.h:
+
+/opt/montavista/pro/devkit/arm/v5t_le/bin/../target/usr/include/bits/endian.h:
+
+/opt/montavista/pro/devkit/arm/v5t_le/bin/../target/usr/include/sys/select.h:
+
+/opt/montavista/pro/devkit/arm/v5t_le/bin/../target/usr/include/bits/select.h:
+
+/opt/montavista/pro/devkit/arm/v5t_le/bin/../target/usr/include/sys/sysmacros.h:
+
+/opt/montavista/pro/devkit/arm/v5t_le/bin/../target/usr/include/malloc.h:
+
+/opt/montavista/pro/devkit/arm/v5t_le/bin/../target/usr/include/assert.h:

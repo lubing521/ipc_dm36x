@@ -1,0 +1,228 @@
+<HTML>
+<META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE">
+<TITLE>DM365IPNC - Maintenance</TITLE>
+<HEAD>
+<style>
+.heading
+{
+	font-family:arial,verdana,tahoma;
+	font-size:10pt;
+	font-weight:bold;
+	color:#CED6ED	
+}
+.bodytext
+{
+	font-family:arial,verdana,tahoma;
+	font-size:11pt;
+	font-weight:normal;
+	color:#8994A5	
+}
+
+.input1{   
+   color:#000000;   
+   font: bold 100	% 'arial',verdana,tahoma;   
+   background-color:#9B9EA7;   
+   border: 1px solid;   
+   border-color: #000 #000 #000 #000;   
+   filter:progid:DXImageTransform.Microsoft.Gradient   
+   (GradientType=0,StartColorStr='#9B9EA7',EndColorStr='#9B9EA7');   
+ }  
+
+input.btn4 {   
+color:#323431;   
+font: bold 93% 'arial',helvetica,tahoma;   
+background-color:#8D868D;   
+border: 1px solid;   
+border-color: #000200 #000200 #000200 #000200;   
+filter:progid:DXImageTransform.Microsoft.Gradient   
+(GradientType=0,StartColorStr='#ffffff',EndColorStr='#575757');   
+}
+.newColor
+{
+	color:#FFFFFF;   
+	font: bold 93% 'arial',helvetica,tahoma;   
+	background-color:#8D868D;   
+	border: 1px solid;   
+	border-color: #000200 #000200 #000200 #000200;   
+	filter:progid:DXImageTransform.Microsoft.Gradient   
+	(GradientType=0,StartColorStr='#F7A252',EndColorStr='#A41020');   
+}
+
+</style>
+
+	<script language="javascript">
+		var backup = 0
+		if (window.location.search.substring(1) == "bkup=1"){
+			backup =1;
+		}else{
+			backup =0;
+	  	}
+			
+		function showLog(sUrl){			
+			//var objWin = window.open(sUrl, "ipncpopup", "left=50, top=0, width=800, height=600, location=0, menubar=0, resizable=1, scrollbars=1, status=0, toolbar=0");
+			//objWin.focus();			
+			document.location.href = sUrl
+		}		
+		
+		function confirmRestart()
+		{
+			if(confirm("Do you really want to restart the camera?"))
+				return true;	
+			return false;
+		}
+		
+		function ParameterList(){	
+			ChangeButton('paraList','but_default_select.jpg')				
+			if(confirm("Do you really want to reset current parameter list?"))			{
+				ChangeButton('paraList','but_default.jpg')		
+				return true;												
+			}else{
+				ChangeButton('paraList','but_default.jpg')				
+				return false;		
+			}						
+		}
+		
+		function ChangeButton(ctrlName,imageName){				
+			document.images[ctrlName].src=imageName;			
+		}	
+		
+		function initPage(){
+			if (backup == 0){
+				document.frmRestore.uploadfile.disabled = 1
+				document.frmRestore.submit.disabled = 1
+				document.bkupfirm.disabled = 1
+				document.getElementById('divRestore').style.color = "#8D8D8D"
+				ChangeButton('bkupfirm','backwardFirmware_disable.jpg')
+			}
+		}
+		
+		function backupFirmware(){
+			if (backup == 1){
+				ChangeButton('bkupfirm','backwardFirmware_off.jpg')
+				return true;				
+			}else{
+				ChangeButton('bkupfirm','backwardFirmware_disable.jpg')
+				return false;
+			}
+			}
+	</script>
+	
+
+</HEAD>
+<BODY leftmargin=0 topmargin=0 bgcolor=#18243C scroll="no" onload="initPage()">
+<br>
+<table border=0 cellpadding=0 cellspacing=0 width=100% height=90%>
+<tr valign=top>
+<td width=20%>
+	<table border=0 cellspacing=1 cellpadding=1 class=bodytext>
+		<tr><td><img src="spacer.gif" border=0 ></td></tr>
+	</table>
+</td>
+
+	
+	<td width=60%>
+		<table border=0 cellspacing=1 cellpadding=1 class=bodytext width=600>
+			<tr><td class=heading>Event Logs</td></tr>
+		</table>
+		
+		<table border=0 cellspacing=1 cellpadding=1 class=bodytext width=600 height=12%>			
+			<tr>
+				<td width=60>&nbsp;</td>
+				<td width=160 class=normaltxt>System Log</td>		
+				<td><a href="sysget.htm" target="_self"><img src="but_view.jpg"  border="0"></a></td>
+				<td><a href="sysget.htm" target="_self" onfocus="ChangeButton('saveSysLog','but_save_select.jpg')" onblur="ChangeButton('saveSysLog','but_save.jpg')" ><img src="but_save.jpg" name="saveSysLog" border="0"></a></td>
+				<td><a href="vb.htm?sysclearcmd"  target="ifrTemp" onClick="ChangeButton('clrSysLog','but_clear.jpg')" onblur="ChangeButton('clrSysLog','but_clear.jpg')" onFocus="ChangeButton('clrSysLog','but_clear_select.jpg')" ><img src="but_clear.jpg"  name="clrSysLog" border="0"></a></td>				
+			</tr>
+			<tr>
+				<td width=60>&nbsp;</td>
+				<td width=160 class=normaltxt>Access Log</td>
+				<td><a href="accessget.htm" target="_self"><img src="but_view.jpg"  border="0" ></a></td>
+				<td><a href="accessget.htm" target="_self" onfocus="ChangeButton('saveAccLog','but_save_select.jpg')" onblur="ChangeButton('saveAccLog','but_save.jpg')"><img src="but_save.jpg" name="saveAccLog"  border="0"></a></td>
+				<td><a href="vb.htm?accessclearcmd"  target="ifrTemp" onClick="ChangeButton('clrAccLog','but_clear.jpg')" onblur="ChangeButton('clrAccLog','but_clear.jpg')" onFocus="ChangeButton('clrAccLog','but_clear_select.jpg')"><img src="but_clear.jpg" name="clrAccLog" border="0"></a></td>					</tr>		
+		</table>
+		<br>
+		<table border=0 cellspacing=1 cellpadding=1 class=bodytext width=600>
+			<tr><td width=100 class=heading>Camera Logs</td></tr>
+		</table>
+
+		<table border=0 cellspacing=1 cellpadding=1 class=bodytext width=600 height=12%>			
+			<tr>
+				<td width=60>&nbsp;</td>
+				<td width=160 class=normaltxt>Active Connection List</td>		
+				<td><a href="actvlistget.htm" target="_self" ><img src="but_view.jpg"  border="0" ></a></td>
+				<td><a href="actvlistget.htm" target="_self" onfocus="ChangeButton('saveActList','but_save_select.jpg')" onblur="ChangeButton('saveActList','but_save.jpg')" ><img src="but_save.jpg"  name="saveActList" border="0"></a></td>
+				<td><img src="but_disable_clear.jpg" border="0" ></td>			
+			</tr>
+			<tr>
+				<td width=60>&nbsp;</td>
+				<td width=160 class=normaltxt>Current Parameter List</td>
+				<td><a href="paraget.htm" target="_self"><img src="but_view.jpg"  border="0"></a></td>
+				<td><a href="paraget.htm" target="_self" onfocus="ChangeButton('saveParaList','but_save_select.jpg')" onblur="ChangeButton('saveParaList','but_save.jpg')" ><img src="but_save.jpg" name="saveParaList"  border="0"></a></td>
+				<td><a href="vb.htm?paradefaultcmd" target="ifrTemp"  onFocus="ChangeButton('paraList','but_default_select.jpg')" onblur="ChangeButton('paraList','but_default.jpg')"><img src="but_default.jpg" border="0" name="paraList" onclick="return ParameterList();" ></a></td>				
+			</tr>		
+		</table>
+		<br>
+		<table border=0 cellspacing=1 cellpadding=1 class=bodytext width=600 height=12%>
+			<tr><td class=heading>Camera Maintenance</td></tr>
+			<tr><td class=normaltxt>Upgrading Firmware (Kernel, Root file system)</td></tr>						
+		</table>
+		<br>
+		<table border=0 cellspacing=1 cellpadding=1 class=bodytext width=600 height=7%>				
+			<tr>
+				<td width=60>&nbsp;</td>
+				<td width=160 class=normaltxt align=left>New Kernel</td>				
+				<form name="frmKernel" method="post" enctype="multipart/form-data" action="update.cgi">
+					<td align=left><input type=file name=uploadfile size=27></td>
+					<td align=left><input type=submit name=Submit value=Upgrade class=btn4 ></td>
+				</form>
+			</tr>
+		</table>
+		
+		<table border=0 cellspacing=1 cellpadding=1 class=bodytext width=600 height=7%>				
+			<tr>
+				<td width=60>&nbsp;</td>
+				<td width=160 class=normaltxt align=left>Root file system</td>
+				<form name="frmRoot" method="post" enctype="multipart/form-data" action="update.cgi">
+					<td align=left><input type=file name=uploadfile size=27></td>
+					<td align=left><input type=submit name=Submit value=Upgrade class=btn4 ></td>								
+				</form>				
+			</tr>				
+		</table>
+		
+		<table border=0 cellspacing=1 cellpadding=1 class=bodytext width=600>				
+			<tr>
+				<td width=60>&nbsp;</td>
+				<td width=160 class=tableheadtxt align=left><div id="divRestore">Restore Firmware</div></td>				
+				<form name="frmRestore" method="post" enctype="multipart/form-data" action="vb.htm?restorefirmwarecmd">
+					<td align=left><input type=file name=uploadfile size=27></td>
+					<td align=left><input type=submit name=submit value="Restore "  class=btn4></td>
+				</form>				
+			</tr>		
+		</table>
+
+		<br><br>
+		<form name="frmRestart" method="get">
+		<table border=0 cellspacing=1 cellpadding=1 class=normaltxt width=600>			
+				<tr align=center>		
+					<td width=50% align=right>						
+						<a href="vb.htm?ipcamrestartcmd" target="ifrTemp"  onFocus="ChangeButton('restartCam','restartCamer_on.jpg')" onBlur="ChangeButton('restartCam','restartCamer_off.jpg')"><img src="restartCamer_off.jpg" border="0" name="restartCam" onclick="return confirmRestart();"></a></td>
+					</td>
+			
+					<td width=50% align=left>
+						<a href="vb.htm?backupfirmwarecmd" target="ifrTemp"  onclick="return backupFirmware();" onFocus="if (backup == 1) ChangeButton('bkupfirm','backwardFirmware_on.jpg')" onBlur="if (backup == 1) ChangeButton('bkupfirm','backwardFirmware_off.jpg')"><img src="backwardFirmware_off.jpg" border="0" name="bkupfirm"></a></td>
+					</td>
+				</tr>			
+		</table>
+		</form>
+	</td>
+
+<td width=20%>
+	<table border=0 cellspacing=1 cellpadding=1 class=bodytext>
+		<tr><td><img src="spacer.gif" border=0 ></td></tr>
+	</table>
+</td>
+</tr>
+</table>
+<IFRAME name=ifrTemp width=0 height=0 src="about:blank"></IFRAME>
+</BODY>
+</HTML>

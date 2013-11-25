@@ -1,0 +1,150 @@
+Changes from 1.0.6 to 1.0.7
+
+	* Can transfer files with spaces (Bug 204270)
+	* Don't segfault on responses without response code (like MOTD)
+
+
+Changes from 1.0.5 to 1.0.6
+
+	* Use more flexible logging system that can log to a file
+	* Understand STAT response 250 (Bug 216665)
+	* Replace bzero with memset (more portable)
+
+
+Changes from 1.0.4 to 1.0.5
+
+	* Fixed some buffer-overflow problems
+	* Changed my E-mail address
+
+
+Changes from 1.0.4 to 1.0.5
+
+	* STAT works for filenames including " "
+	* Added rmdir and mkdir commands (Simon Trimmer simon@urbanmyth.org)
+	* Ctrl-D now exits program (Simon Trimmer simon@urbanmyth.org)
+	* Spec file (Simon Trimmer simon@urbanmyth.org)
+
+
+Changes from 1.0.3 to 1.0.4
+
+	* Bug fixes
+	* Added quote command
+
+
+Changes from 1.0.2 to 1.0.3
+
+	* Added unset command
+	* More internal state information is stored in user variables
+	* Internal variables are read-only
+	* Finally a manpage!
+	* Added assert command
+
+
+Changes from 1.0.1 to 1.0.2
+
+	* Rewrote ftp_split_ls to handle any output format imaginable
+	* Creating directories on download now works
+	* Fixed normal (not passive) downloading.. it was broken
+
+
+Changes from 1.0 to 1.0.1
+
+	* The queue can be turned off
+	* STAT is more stable
+	* Requires Readline 4.0
+	* Much more stable
+	* Can send username and password on command line
+	* Progress bar isn't shown for 0-byte files
+	* Handles responses to more server commands
+	* Help command is more extensible
+	* Fixed a pile of string manipulations
+
+
+Changes from 0.93.4 to 1.0
+
+	* Put uses progress bar
+	* Fxp and put have timing information
+	* Changed output from ftp_get_file and ftp_put_file to be cleaner
+	* expand_wildcard handles local filenames for put
+	* Retrieve a file list
+
+
+Changes from 0.93.3 to 0.93.4
+
+	* Can run a script any time from inside the program
+	* Put in support for command aliases... redefine any command
+	* Recursive get & put & fxp
+	* progress_bar procedure made
+	* ftp_get_file uses progress bar
+	* .quftprc has completely changed format.
+	* Command aliases!
+	
+
+Changes from 0.93.2 to 0.93.3
+
+	* Uses regular expressions to match STAT output.. much more flexible
+	* Handles remote paths and filenames correctly
+	* ftp_fxp() handles errors now
+	* Lots of buffer overrun errors fixed (more stable now)
+	* Added program VERSION variable
+	* Improved command line completion *slightly*
+	* Finally parses the datestamp on STAT
+	* Added getpath() and getfilename() to split up a path/filename
+	* Has command line argument support
+	* Can specify the rcfile to read on the command line
+	* Script file processing
+
+	
+Changes from 0.93.1 to 0.93.2
+
+	* Release 0.93.1 didn't compile.. fixed now (removed config.h)
+	* ftp_glob added for wildcard expansion (not tested properly)
+	* Command line completion uses wildcards calling ftp_nlst (faster)
+	* example.quftprc updated for new variable names
+
+	
+Changes from 0.93 to 0.93.1
+
+	* Prints a few more useful status messages
+	* Understands a lot more error messages
+	* rm command
+	* A lot more stable
+	* Variable set enhancements
+	* Fixed a problem not working with some versions of readline
+
+
+Changes from 0.92 to 0.93
+
+	* Pager for remote text files
+	* Easily expandable command set (implement macros and scripting later)
+	* Expandable variable set
+	* More code simplification / readability enhancements
+	* Execute shell commands
+	* Rewrote getnextword() for the 5th time. Seems to work this time and is also simpler.
+
+	
+Changes from 0.91 to 0.92
+
+	* Command line completion
+	* Connect to multiple hosts simultaneously
+	* FxP transfers (between hosts)
+	* File resume automatically
+
+
+Changes from 0.90 to 0.91
+
+	* All ftp_x routines now accept a connection structure as
+	  an argument. This will be used later to establish multiple
+	  connections.
+	* Lots of small bug fixes to do with the rewritten getnextword()
+	* Compatibility fixes for broken ftp servers.
+
+
+Changes from 0.88 to 0.90
+
+	* Removed lots of dead/useless/evil code
+	* Reasonable URL parsing from the command line and the open command
+	* The nlst command does something now
+	* Adding an item to the queue gets the file size
+	* Support for separate queues in the future
+

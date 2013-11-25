@@ -1,0 +1,20 @@
+
+include $(BASE_DIR)/COMMON_HEADER.MK
+
+LIBS=$(LIB_DIR)/av_server.a $(LIB_DIR)/alg.a $(LIB_DIR)/drv.a $(LIB_DIR)/image_tune.a $(LIB_DIR)/osa.a $(LIB_DIR)/csl.a $(CMEM_LIB)
+LIBS+=$(CODEC_LIBS) 
+LIBS+=$(APP_LIB_DIR)/msg_util.a
+LIBS+=$(APP_LIB_DIR)/alarm_msg_drv.a
+LIBS+=$(DM365MM_LIB)
+
+INCLUDE+=$(CSL_INC)
+INCLUDE+=$(IMAGE_TUNE_INC)
+INCLUDE+=$(DRV_INC)
+INCLUDE+=$(ALG_INC)
+INCLUDE+=$(AV_SERVER_INC)
+INCLUDE+=$(STREAM_INC)
+INCLUDE+=-I$(PUBLIC_INCLUDE_DIR)
+
+include $(BASE_DIR)/COMMON_FOOTER.MK
+
+

@@ -1,0 +1,118 @@
+News
+~~~~
+
+  * Version 1.0 (2008-10-09):
+
+    * Fix NTLM authentication (Nils Rennebarth).
+
+    * Option to disable Message-ID header (Phil Sutter).
+
+  * Version 0.6.0 (2007-09-03):
+
+    * Handle CR-LF newline endings when parsing the headers.
+
+    * Wrapper script for off-line mail delivery (Phil Sutter).
+
+    * Document how to get CA certificates.
+    
+    * Corrections to the manpages (Reuben Thomas).
+
+    * Tips for adding missing Date: headers in messages for local delivery
+    (Bruce Schultz).
+    
+    * Use a reasonable default for the reverse path when one is not 
+    specified, instead of an empty one.
+
+    * Prevent segfault expanding %F in the MDA string when the reverse 
+    path is not specified.
+
+
+  * Version 0.5.1 (2005-03-10):
+
+    * A 'postconnect' keyword to execute a command after closing a SMTP
+    connection.
+
+    * Do not attempt to authenticate if no username/password is given.
+
+    * Several configuration fixes/enhancements (SASAJIMA and Dirk Tilger).
+
+    * Enforce strict permissions on configuration file (Tiago Macambira).
+
+    * Allow to set helo-name. Allow to send out local mail as remote mail
+    by adding a qualifying domain name. Allow forcing envelope-from and Sender
+    headers. Drop possible admin-added sgid priveleges to be dropped after
+    reading the config. (Bernhard Link)
+
+    * Do not pass multiple address to the MDA quoted as a single argument
+    (Kusanagi Kouichi).
+  
+
+  * Version 0.5.0 (2003-11-14):
+
+    * Fixed another bug which prevented to send mail when libesmtp had no
+    openssl support (Maurice Galland).
+    
+    * Detailed documentation on how to use the StartTLS extension. More
+    verbosity on StartTLS error messages.
+    
+    * New 'preconnect' keyword to execute a command prior to opening a SMTP
+    connection (Daniel Richard G.).
+    
+    * Fixed a bug which prevented to send mail when libesmtp had no
+    openssl support (Tomas Kondor).
+    
+    * New 'default' keyword for identities (Vitezslav Batrla).
+
+
+  * Version 0.4.1 (2003-07-14):
+  
+    * Packaging fixes.
+
+    * Esmtprc man page.
+
+    * Fixed the MDA return status which wasn't being cheked.
+
+    * Fixed a bug the input buffering which when using the '-t' option and
+    piping the input caused the parsed headers to be lost.
+    
+    
+  * Version 0.4 (2003-07-12):
+
+    * Debian packaging.
+
+    * Fixes to compile on FreeBSD (Tim Hemel).
+
+    * Local delivery via a MDA.
+
+    * Extraction of the recipients from the headers ('-t' option).
+
+    * 8bit-MIME extension support ('-B' option).
+
+    * Further Delivery Status Notification support ('-R' and '-V' options).
+
+
+  * Version 0.3 (2003-03-10):
+
+    * Capability to generate log files.
+
+    * Better verbose output.
+
+    * Minor bug fixes and documentation enhancements.
+
+    * Multiple identities (Jerome).
+
+
+  * Version 0.2 (2002-10-31):
+
+    * Packaging corrections.
+
+    * Minor bug fixes and documentation enhancements.
+
+    * Use sendmail exit codes.
+    
+
+  * Version 0.1 (2002-09-26):
+
+    * Initial release.
+
+

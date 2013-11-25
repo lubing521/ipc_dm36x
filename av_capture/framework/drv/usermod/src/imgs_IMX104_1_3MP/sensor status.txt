@@ -1,0 +1,43 @@
+IMX104
+
+==================
+First version
+1>hardware:
+           This is the lvds version,lvds324 for lvds to parallel.
+           Leopardboard V1.5 + IPNC LEOPARD ADAPTER BOARD V1.1 + IMX104 sensor board(IMX104 sensor on IMX136 PCB,IPNC IMX136_V1.0)
+         
+       ****Connect J5 of adapter board to Leopardboard J8
+
+2>software:
+           u-boot1.3.4-svn42,432MHz
+           DM368IPNC RDK svn5(rev5)
+
+3> For DM368IPNC,just need change IMGS_RESET_GPIO from GIO31 to GIO36,current GIO31 is for Leopardboard V1.5
+ 
+4>Status:
+
+         Basic version,720p@30fps,Need Tuning.
+
+07/07/2012
+
+
+==================
+update
+
+hardware:
+Leopardboard V1.5 + IPNC LEOPARD ADAPTER BOARD V1.1 + LI-IMX136-P33(IMX104 sensor on)
+
+status:
+
+       Currently switch lvds version and parallel version by macro IMX104_LVDS324.
+       Updated svn version :rev6
+       720p@30fps
+07/13/2012  
+
+   
+==================
+update
+
+1>udpate imx104 driver based on spi controller
+2>updated svn :10
+07/15/2012

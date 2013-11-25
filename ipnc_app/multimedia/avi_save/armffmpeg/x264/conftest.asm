@@ -1,0 +1,1 @@
+lzcnt eax, eax

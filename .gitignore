@@ -1,0 +1,33 @@
+*.o
+*.ko
+*.out
+*.DEPEND
+*.map
+*.bak
+*.tmp
+*.cmd
+*.c~
+tmp/
+doc/
+obj/
+tools/
+target/
+
+
+# Object files
+*.o
+*.ko
+
+# Libraries
+*.lib
+
+# Shared objects (inc. Windows DLLs)
+*.dll
+*.so
+*.so.*
+*.dylib
+
+# Executables
+*.exe
+*.out
+*.app

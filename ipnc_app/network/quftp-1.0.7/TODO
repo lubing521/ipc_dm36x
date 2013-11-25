@@ -1,0 +1,44 @@
+TODO list for version 1.0
+
+Legend
+	TODO			*
+	Done, Not tested	@
+	Done, working		!
+
+! Command Line Completion
+
+! Expandable command set
+
+! Dynamically define aliases
+
+! A progress bar or meter of some sort. Printing hashes is pretty,
+  but not very useful.
+
+! Open multiple sites at once
+
+! Transfer files between open sites (FxP)
+
+! Resume on GET, PUT and FXP
+
+* Reconnect on disconnection
+
+! Wildcards.. say no more
+
+! Scripting (-s argument)
+
+! File tree mirroring
+
+* Output redirection/piping
+
+! Retrieving file lists (from text files)
+
+! Shell commands
+
+! Pager for text files
+
+! Expandable variable set
+
+! Customisable ls output format
+
+* If you think of anything else, let me know at david@dparrish.com
+

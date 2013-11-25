@@ -1,0 +1,2 @@
+sublog.o: sublog.c
+net_config.o: net_config.c net_config.h

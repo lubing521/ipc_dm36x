@@ -1,0 +1,41 @@
+# This config file is parsed on startup.
+# It can contain any valid quftp command
+
+# Display the Message of the day on connect
+set motd false
+
+# Passive mode transfers
+set passive false
+
+# Command for paging text files
+set pager "/usr/bin/less"
+
+# Email address to send as anonymous password
+set email "user@quftp.com"
+
+# Screen width (taken from environment variable COLUMNS if not specified)
+#set screenwidth 80
+
+# Progress bar update interval (in seconds)
+set progress_update 1
+
+# Queue files for download
+set queuefiles true
+
+# Format to display list in
+# %f	filename
+# %s	file size
+# %o	owner
+# %g	group
+# %p	permissions
+# %t	timestamp
+# %%	'%' symbol
+# Anything else is printed literally
+#set lsformat "%f %s %o %g"
+
+
+# Define some aliases
+alias cdup cd ..
+alias dir ls
+alias exit quit
+

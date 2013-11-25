@@ -1,0 +1,7 @@
+1. Texas Instruments Inc: Visit www.ti.com/dm365ipnc for more details
+
+2. Appro Photoelectron Inc: For devloping hardware and IPNC application(http://appropho.com)
+
+3. GoDBTech Pvt Limited : For Developing web based GUI.(http://www.go-db.com/)
+
+4. FFMPEG.org: ActiveX player is devloped using this codebase from http://ffmpeg.org/download.html

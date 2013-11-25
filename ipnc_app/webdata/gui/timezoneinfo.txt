@@ -1,0 +1,26 @@
+GMT-12 Eniwetok, Kwajalein
+GMT-11 Midway Island, Samoa
+GMT-10 Hawaii
+GMT-09 Alaska
+GMT-08 Pacific Time (US & Canada), Tijuana
+GMT-07 Mountain Time (US & Canada), Arizona
+GMT-06 Central Time (US & Canada), Mexico City, Tegucigalpa, Saskatchewan
+GMT-05 Eastern Time (US & Canada), Indiana(East), Bogota, Lima
+GMT-04 Atlantic Time (Canada), Caracas, La Paz
+GMT-03 Brasilia, Buenos Aires, Georgetown
+GMT-02 Mid-Atlantic
+GMT-01 Azores, Cape Verdes Is.
+GMT+00 GMT, Dublin, Edinburgh, London, Lisbon, Monrovia, Casablanca
+GMT+01 Berlin, Stockholm, Rome, Bern, Brussels, Vienna, Paris, Madrid, Amsterdam, Prague, Warsaw, Budapest
+GMT+02 Athens, Helsinki, Istanbul, Cairo, Eastern Europe, Harare, Pretoria, Israel
+GMT+03 Baghdad, Kuwait, Nairobi, Riyadh, Moscow, St. Petersburg, Kazan, Volgograd
+GMT+04 Abu Dhabi, Muscat, Tbilisi
+GMT+05 Islamabad, Karachi, Ekaterinburg, Tashkent
+GMT+06 Alma Ata, Dhaka
+GMT+07 Bangkok, Jakarta, Hanoi
+GMT+08 Taipei, Beijing, Chongqing, Urumqi, Hong Kong, Perth, Singapore
+GMT+09 Tokyo, Osaka, Sapporo, Seoul, Yakutsk
+GMT+10 Brisbane, Melbourne, Sydney, Guam, Port Moresby, Vladivostok, Hobart
+GMT+11 Magadan, Solomon Is., New Caledonia
+GMT+12 Fiji, Kamchatka, Marshall Is., Wellington, Auckland
+

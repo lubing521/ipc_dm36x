@@ -1,0 +1,198 @@
+.TH QUFTP 1 "March 2000" "David Parrish" "David Parrish"
+.SH "NAME"
+quftp \- command line FTP client
+.br
+.SH SYNOPSIS
+.B quftp
+.RI [ -vhi "] [" "-r \fBfilename\fI" "] [" "-s \fBfilename\fI" "] [" -d\fB[n]\fI "] [" URL ]
+.SH DESCRIPTION
+.PP
+Command line FTP client, with support for queueing and transferring
+server-to-server
+.TP
+.B -v
+Display version number, then exit
+.TP
+.B -h
+Display usage help, then exit
+.TP
+.B -i
+Ignore any errors that may occur processing a script
+.TP
+.B -r
+Use \fBfilename\fR as the configuration instead of the default
+.TP
+.B -s
+Read in script commands from \fBfilename\fR. If an error occurs during script execution, quftp will exit unless \fB-i\fR is specified. After the script is finished executing, quftp will drop into interactive mode.
+.TP
+.B URL
+Specify a valid ftp:// URL to connect to. Any valid URL should be acceptable.
+.br
+.B ftp://username:password@hostname:port/directory/
+.SH USAGE
+.PP
+Normally, quftp runs in interactive mode, where commands are entered at the command line. Any of these commands can be put into a script file, which is executed with the \fB-s\fR command line option.
+.PP
+Variables can be inserted into the command line using \fB$\fIvariable\fR, where \fIvariable\fR has already been defined using the \fIset\fR command.
+.PP
+To execute a shell command, enter !\fIcommand\fR at the prompt.
+.PP
+Basic help for each command can be obtained from within quftp by the \fBhelp\fR commad.
+.TP
+.B quit
+Exit the program
+.TP
+.B exit
+Exit the program
+.TP
+.B ls \fI[filespec]\fB
+List current directory. If filespec is given, it is passed directly to the FTP server.
+.TP
+.B lls
+List the local directory
+.TP
+.B cd [\fIdirname\fB]
+Change the current directory to \fIdirname\fR if \fIdirname\fR is not given, display the current directory.
+.TP
+.B lcd \fIdirname\fB
+Change the current local directory to \fIdirname\fR if \fIdirname\fR is not given, display the current directory.
+.TP
+.B pwd
+Show current working directory
+.TP
+.B get \fIfilename...\fB
+Queue a file or files for download.
+.TP
+.B put \fIfilename...\fB
+Queue a file or files for upload
+.TP
+.B mkdir
+Create a new directory \fIdirname\fR
+.TP
+.B rmdir
+Remove a directory \fIdirname\fR
+.TP
+.B fxp \fIfilename...\fB
+Queue a file or files to be transferred between the current connection and the last connection (\fB$LAST_CONNECTION\fR). Use \fBswitch\fR to change the connection.
+.TP
+.B go
+Start transferring the queue
+.TP
+.B clear
+Delete all items from the queue
+.TP
+.B queue
+List all items on the queue
+.TP
+.B close
+Disconnect from the server
+.TP
+.B open \fIURL\fB
+Connect to a server specified by \fIURL\fR.
+.TP
+.B status
+Show the current status of all available connections.
+.TP
+.B stat \fI[filename]\fB
+Display statistics for \fIfilename\fR.
+.TP
+.B nlst
+List just the filenames in the current directory.
+.TP
+.B switch \fI[connection]\fB
+Switch to another connection. If \fIconnection\fR is not given, switch to the lat used connection (\fB$LAST_CONNECTION\fR).
+.TP
+.B debug \fI[debuglevel]\fB
+Set debugging level. If \fIdebuglevel\fR is not given, increase the debugging level by 1.
+Debugging levels are:
+.br
+\fB1\fR		No information - fairly quiet
+.br
+\fB2\fR		Normal
+.br
+\fB3\fR		More information
+.br
+\fB4\fR		Internal function calls
+.br
+\fB5\fR		Control connection data
+.TP
+.B user \fIusername [password]\fB
+Enter username and password for the server. If \fIpassword\fR is not given, prompt the user for the password. This forces a re-connect if a connection is already established.
+.TP
+.B cat \fI[filename]\fR
+Output \fIfilename\fR to stdout
+.TP
+.B more \fI[filename]\fR
+Page \fIfilename\fR using the command given in \fB$pager\fR.
+.TP
+.B set \fIvariable\fR \fIvalue\fR
+Set \fIvariable\fR to equal \fIvalue\fR. This is most commonly used in the configuration file.
+.TP
+.B unset \fIvariable\fR
+Remove \fIvariable\fR.
+.TP
+.B rm \fIfilename...\fR
+Delete a remote file or files.
+.TP
+.B run \fBfilename\fR
+Run a script file. After the script has finished, control is returned to the user.
+.TP
+.B alias \fIalias "command"\fB
+Define \fIalias\fR to execute \fIcommand\fR. If neither \fIalias\fR or \fIcommand\fR is specified, list all the aliases that have been defined.
+.TP
+.B getlist \fIfilename\fB
+Read in \fIfilename\fR and retrieve all the files listed.
+.TP
+.B assert
+Be sure the last command was successful. If it was not, exit the program. This is normally only used in scripts, to stop execution if a command does not work.
+.TP
+.B quote \fIcommand\fB
+Send \fIcommand\fR verbatim to the server, and display the result.
+.SH CONFIGURATION
+.PP
+Configuration is read at startup from \fB~/.quftprc\fR, although this can be specified as a different file using the \fB-c\fR command line option. This file must contain valid quftp commands, one per line. These commands are generally \fBste\fR commands that configure the quftp environment.
+.PP
+This section provides a brief overview of the configuration variables and their possible values.
+.TP
+.B motd (true/false)
+Display the server's Message Of The Day when establishing a connection
+.TP
+.B passive (true/false)
+Use passive mode when transferring files. Read \fIRFC 959\fR for a description of passive mode.
+.TP
+.B pager (any valid program)
+The name of the program to use as the pager when using the \fBmore\fR command. This should be specified with the full path.
+.TP
+.B email (any valid e-mail address)
+This is uesd as the password when connecting to a server anonymously.
+.TP
+.B progress_update (number)
+How often should the progress bar be updated during a file transfer (in seconds). If this is \fI0\fR then the progress bar will not be displayed.
+.TP
+.B queuefiles (true/false)
+Use the queue when transferring files. If \fIfalse\fR, then files will be transferred immediately after entering the \fBget\fR, \fBput\fR or \fBfxp\fR command.
+.PP
+quftp by default supports only UNIX-style listings from servers. If you have a need to access another server type, run a \fIls\fR command with the debug level set to 5 (\fBdebug 5\fR), and E-mail me with the the output from the \fBLIST\fR command. Alternatively, you can try adding your own list description in \fBftp.c\fR (around line 35). This is unsupported, so please e-mail me with any changes you make.
+.SH "INTERNAL VARIABLES"
+.PP
+State information internal to quftp is accessable read-only using the normal variable commands, including \fBset\fR and normal variable expansion (\fB$\fIvariable\fR).
+.TP
+.B PROGRAM_NAME
+Always contains "quftp"
+.TP
+.B VERSION
+The version number of quftp being used. This is also the version that is reported by the \fB-v\fR command line option.
+.TP
+.B CURRENT_CONNECTION
+The number of the connection currently being actioned. Use the \fBswitch\fR command to use a different connection.
+.TP
+.B LAST_CONNECTION
+The number of the last connection used. This is also the connection that any files transferred with the \fBfxp\fR command will go to.
+.TP
+.B HOSTNAME
+The name of the host the current connection applies to.
+.TP
+.B USERNAME
+The username currently being used on the current connection.
+.SH BUGS
+Report bugs to <david@dparrish.com>.

@@ -1,0 +1,51 @@
+# Sample configuration file for ESMTP.
+#
+# 	José Fonseca
+
+# Set SMTP host and service (port)
+#
+hostname = localhost:25
+
+# Set the user name
+#
+username = "USERNAME"
+
+# Set the password
+password = "PASSWORD"
+
+# Use the Starttls
+#
+#starttls = disabled
+#
+# It can be one of "enabled", "disabled" or "required". It defaults to
+# disabled.
+
+# Set the certificate passphrase
+#
+#certificate_passphrase = "CERTIFICATE_PASSPHRASE"
+
+# Command to run before contacting the SMTP server
+#
+#preconnect = "ssh -f -L 2025:mail.isp.com:25 user@shell.isp.com 'sleep 5'"
+
+
+# Same as above but for a different identity which can be selected with the
+# '-f' flag. You can have as many you like.
+#
+identity = myself@somewhere.com
+	hostname = smtp.somewhere.com:25
+	username = "myself"
+	password = "secret"
+	#starttls = disabled
+#
+# NOTE: the default indentity settings aren't shared by the other identities.
+# Everything (username, password, etc.) must be specified for every identity
+# even if they don't differ from the default identity.
+
+
+# Set the Mail Delivery Agent (MDA)
+#
+mda = "/usr/bin/procmail -d %T"
+#
+# Some possible MDAs are "/usr/bin/procmail -d %T", "/usr/bin/deliver" or
+# "/usr/lib/mail.local %T".

@@ -1,0 +1,19 @@
+1. x264
+- ./configure --disable-pthread --disable-asm --prefix=./../../ --host=arm-linux --cross-prefix=arm_v5t_le-
+- make;make install
+
+2. Faac
+- download from "http://sourceforge.net/projects/faac/" 
+- decompress at folder "ipnc_app\multimedia\avi_save\armffmpeg\faac"
+- make distclean
+- ./bootstrap
+- ./configure --prefix=$(Absolute PATH to the AVI_SAVE) --enable-static --host=arm CC=arm_v5t_le-gcc CXX=arm_v5t_le-g++
+   Here, $(Absolute PATH to the AVI_SAVE) may like /opt/workdir/IPNC_MT_DM368_NEW_UI/ipnc_app/multimedia/avi_save
+- make;make install
+
+3. FFMPEG
+./configure --arch=arm41 --cpu=armv5te --disable-muxers --enable-muxer=avi --disable-encoders --enable-encoder=pcm_mulaw --enable-encoder=aac --enable-encoder=libx264 --enable-encoder=mjpeg --enable-encoder=mpeg4 --disable-decoders --disable-indevs --disable-outdevs --disable-filters --disable-parsers --disable-demuxers --disable-protocol=pipe --disable-bsfs --disable-ffmpeg --disable-ffserver --disable-ffplay  --enable-small --disable-debug --enable-cross-compile --cross-prefix=arm_v5t_le- --disable-mmx  --disable-network --disable-zlib --disable-debug --enable-libx264 --enable-libfaac --enable-nonfree --enable-gpl --extra-cflags=-I./../include --extra-ldflags=-L./../lib --prefix=./..
+- make;make install
+
+
+

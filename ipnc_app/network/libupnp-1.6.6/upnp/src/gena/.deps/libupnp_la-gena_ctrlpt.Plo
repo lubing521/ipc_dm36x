@@ -1,0 +1,6 @@
+src/gena/libupnp_la-gena_ctrlpt.lo src/gena/libupnp_la-gena_ctrlpt.o:  \
+ src/gena/gena_ctrlpt.c src/inc/config.h ../autoconfig.h
+
+src/inc/config.h:
+
+../autoconfig.h:

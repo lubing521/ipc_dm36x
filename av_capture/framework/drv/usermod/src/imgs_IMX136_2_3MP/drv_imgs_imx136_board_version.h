@@ -1,0 +1,7 @@
+#ifndef _DRV_IMGS_IMX136_BOARD_VERSION_H_
+#define _DRV_IMGS_IMX136_BOARD_VERSION_H_
+
+
+//#define IMX136_LVDS324
+
+#endif

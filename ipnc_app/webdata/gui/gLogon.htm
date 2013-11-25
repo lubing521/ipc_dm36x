@@ -1,0 +1,46 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<title>DM365IPNC</title>
+<meta http-equiv=Content-Type content="text/html; charset=UTF-8">
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+<META HTTP-EQUIV="Expires" CONTENT="-1">
+<script type="text/javascript"> 
+	var currheight = -1;	
+	var portno = "";
+	if(location.port != "")
+		portno = ":" + location.port
+			
+	window.onresize = function(){
+		if(currheight != -1 && currheight != parent.document.documentElement.clientHeight)		{
+			parent.document.location.reload();
+		}
+		currheight = parent.document.documentElement.clientHeight;
+	}	
+ 
+	var _0x225c=["\x69\x6E\x6E\x65\x72\x57\x69\x64\x74\x68","\x75\x6E\x64\x65\x66\x69\x6E\x65\x64","\x69\x6E\x6E\x65\x72\x48\x65\x69\x67\x68\x74","\x64\x6F\x63\x75\x6D\x65\x6E\x74\x45\x6C\x65\x6D\x65\x6E\x74","\x63\x6C\x69\x65\x6E\x74\x57\x69\x64\x74\x68","\x63\x6C\x69\x65\x6E\x74\x48\x65\x69\x67\x68\x74","\x62\x6F\x64\x79","\x77\x69\x64\x74\x68","\x68\x65\x69\x67\x68\x74"];var viewWidth;var viewHeight;if( typeof window[_0x225c[0x0]]!=_0x225c[0x1]){viewWidth=window[_0x225c[0x0]];viewHeight=window[_0x225c[0x2]];} else {if( typeof document[_0x225c[0x3]]!=_0x225c[0x1]&& typeof document[_0x225c[0x3]][_0x225c[0x4]]!=_0x225c[0x1]&&document[_0x225c[0x3]][_0x225c[0x4]]!=0x0){viewWidth=document[_0x225c[0x3]][_0x225c[0x4]];viewHeight=document[_0x225c[0x3]][_0x225c[0x5]];} else {viewWidth=document[_0x225c[0x6]][_0x225c[0x4]];viewHeight=document[_0x225c[0x6]][_0x225c[0x5]];} ;} ;
+	
+	function initPage(){
+		if (viewWidth<1024) {viewWidth=1024}
+		if (viewHeight<650) {viewHeight=650}
+		if (document.GoDB){
+			document.GoDB.width = viewWidth - 20
+			document.GoDB.height = viewHeight
+			document.GoDB.focus()
+		}
+	}
+</script>
+</head>
+<body leftmargin=0 topmargin=0 marginwidth=0 marginheight=0 bgcolor=#000000 onload="initPage()">
+<table border=0 cellspacing=0 cellpadding=0>
+<tr valign=middle align=center><td>
+<script type="text/javascript"> 
+document.write("<OBJECT ID=\"GoDB\" CLASSID=\"CLSID:4635CCA8-3D11-418B-8257-29CF0FE60069\" Width=1004 Height=650 codebase=\"/IPNCWebDlls.CAB#version=-1,-1,-1,-1\">")
+document.write("<PARAM NAME=\"BDBUrl\" VALUE=\"http://"+location.hostname+portno+"/gIPNC-ro.gz\"></PARAM>")
+document.write("<SPAN style=\"font-family: Verdana; font-size: 9px; font-weight: normal; color: #FFFFFF\">The ActiveX control that displays the application has not been installed. &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href=\"#\" onclick=\"javascript:document.location.reload()\">Reload Page</a></SPAN></OBJECT>")
+</script>
+</td></tr>
+</table>
+</body>
+</html>
+

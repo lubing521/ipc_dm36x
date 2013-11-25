@@ -1,0 +1,332 @@
+Making install in common
+make[1]: Entering directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/common'
+make[2]: Entering directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/common'
+make[2]: Nothing to be done for `install-exec-am'.
+make[2]: Nothing to be done for `install-data-am'.
+make[2]: Leaving directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/common'
+make[1]: Leaving directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/common'
+Making install in avahi-common
+make[1]: Entering directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/avahi-common'
+make[2]: Entering directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/avahi-common'
+test -z "/usr/lib" || /bin/mkdir -p "/home/user/workdir/testcode/avahi/avahi_result/usr/lib"
+ /bin/sh ../libtool   --mode=install /usr/bin/install -c  'libavahi-common.la' '/home/user/workdir/testcode/avahi/avahi_result/usr/lib/libavahi-common.la'
+libtool: install: /usr/bin/install -c .libs/libavahi-common.so.3.5.1 /home/user/workdir/testcode/avahi/avahi_result/usr/lib/libavahi-common.so.3.5.1
+libtool: install: (cd /home/user/workdir/testcode/avahi/avahi_result/usr/lib && { ln -s -f libavahi-common.so.3.5.1 libavahi-common.so.3 || { rm -f libavahi-common.so.3 && ln -s libavahi-common.so.3.5.1 libavahi-common.so.3; }; })
+libtool: install: (cd /home/user/workdir/testcode/avahi/avahi_result/usr/lib && { ln -s -f libavahi-common.so.3.5.1 libavahi-common.so || { rm -f libavahi-common.so && ln -s libavahi-common.so.3.5.1 libavahi-common.so; }; })
+libtool: install: /usr/bin/install -c .libs/libavahi-common.lai /home/user/workdir/testcode/avahi/avahi_result/usr/lib/libavahi-common.la
+libtool: install: /usr/bin/install -c .libs/libavahi-common.a /home/user/workdir/testcode/avahi/avahi_result/usr/lib/libavahi-common.a
+libtool: install: chmod 644 /home/user/workdir/testcode/avahi/avahi_result/usr/lib/libavahi-common.a
+libtool: install: arm_v5t_le-ranlib /home/user/workdir/testcode/avahi/avahi_result/usr/lib/libavahi-common.a
+test -z "/usr/include/avahi-common" || /bin/mkdir -p "/home/user/workdir/testcode/avahi/avahi_result/usr/include/avahi-common"
+ /usr/bin/install -c -m 644 'strlst.h' '/home/user/workdir/testcode/avahi/avahi_result/usr/include/avahi-common/strlst.h'
+ /usr/bin/install -c -m 644 'address.h' '/home/user/workdir/testcode/avahi/avahi_result/usr/include/avahi-common/address.h'
+ /usr/bin/install -c -m 644 'alternative.h' '/home/user/workdir/testcode/avahi/avahi_result/usr/include/avahi-common/alternative.h'
+ /usr/bin/install -c -m 644 'domain.h' '/home/user/workdir/testcode/avahi/avahi_result/usr/include/avahi-common/domain.h'
+ /usr/bin/install -c -m 644 'cdecl.h' '/home/user/workdir/testcode/avahi/avahi_result/usr/include/avahi-common/cdecl.h'
+ /usr/bin/install -c -m 644 'defs.h' '/home/user/workdir/testcode/avahi/avahi_result/usr/include/avahi-common/defs.h'
+ /usr/bin/install -c -m 644 'malloc.h' '/home/user/workdir/testcode/avahi/avahi_result/usr/include/avahi-common/malloc.h'
+ /usr/bin/install -c -m 644 'watch.h' '/home/user/workdir/testcode/avahi/avahi_result/usr/include/avahi-common/watch.h'
+ /usr/bin/install -c -m 644 'timeval.h' '/home/user/workdir/testcode/avahi/avahi_result/usr/include/avahi-common/timeval.h'
+ /usr/bin/install -c -m 644 'simple-watch.h' '/home/user/workdir/testcode/avahi/avahi_result/usr/include/avahi-common/simple-watch.h'
+ /usr/bin/install -c -m 644 'thread-watch.h' '/home/user/workdir/testcode/avahi/avahi_result/usr/include/avahi-common/thread-watch.h'
+ /usr/bin/install -c -m 644 'gccmacro.h' '/home/user/workdir/testcode/avahi/avahi_result/usr/include/avahi-common/gccmacro.h'
+ /usr/bin/install -c -m 644 'error.h' '/home/user/workdir/testcode/avahi/avahi_result/usr/include/avahi-common/error.h'
+ /usr/bin/install -c -m 644 'llist.h' '/home/user/workdir/testcode/avahi/avahi_result/usr/include/avahi-common/llist.h'
+ /usr/bin/install -c -m 644 'rlist.h' '/home/user/workdir/testcode/avahi/avahi_result/usr/include/avahi-common/rlist.h'
+make[2]: Leaving directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/avahi-common'
+make[1]: Leaving directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/avahi-common'
+Making install in avahi-core
+make[1]: Entering directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/avahi-core'
+make[2]: Entering directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/avahi-core'
+test -z "/usr/lib" || /bin/mkdir -p "/home/user/workdir/testcode/avahi/avahi_result/usr/lib"
+ /bin/sh ../libtool   --mode=install /usr/bin/install -c  'libavahi-core.la' '/home/user/workdir/testcode/avahi/avahi_result/usr/lib/libavahi-core.la'
+libtool: install: (cd /home/user/workdir/testcode/avahi/avahi-0.6.25/avahi-core; /bin/sh /home/user/workdir/testcode/avahi/avahi-0.6.25/libtool  --tag CC --mode=relink arm_v5t_le-gcc -I.. "-DDEBUG_TRAP=__asm__(\"int \$3\")" -g -O2 -fstack-protector -Wall -W -Wextra -pedantic -pipe -Wformat -Wold-style-definition -Wdeclaration-after-statement -Wfloat-equal -Wmissing-declarations -Wmissing-prototypes -Wstrict-prototypes -Wredundant-decls -Wmissing-noreturn -Wshadow -Wendif-labels -Wpointer-arith -Wbad-function-cast -Wcast-qual -Wcast-align -Wwrite-strings -Winline -D_XOPEN_SOURCE=500 -D__EXTENSIONS__ -version-info 6:1:0 -L/home/user/workdir/testcode/avahi/avahi_require/usr/lib -L/home/user/workdir/testcode/avahi/avahi_require/lib -o libavahi-core.la -rpath /usr/lib libavahi_core_la-timeeventq.lo libavahi_core_la-iface.lo libavahi_core_la-server.lo libavahi_core_la-entry.lo libavahi_core_la-prioq.lo libavahi_core_la-cache.lo libavahi_core_la-socket.lo libavahi_core_la-response-sched.lo libavahi_core_la-query-sched.lo libavahi_core_la-probe-sched.lo libavahi_core_la-announce.lo libavahi_core_la-browse.lo libavahi_core_la-rrlist.lo libavahi_core_la-resolve-host-name.lo libavahi_core_la-resolve-address.lo libavahi_core_la-browse-domain.lo libavahi_core_la-browse-service-type.lo libavahi_core_la-browse-service.lo libavahi_core_la-resolve-service.lo libavahi_core_la-dns.lo libavahi_core_la-rr.lo libavahi_core_la-log.lo libavahi_core_la-browse-dns-server.lo libavahi_core_la-fdutil.lo libavahi_core_la-util.lo libavahi_core_la-hashmap.lo libavahi_core_la-wide-area.lo libavahi_core_la-multicast-lookup.lo libavahi_core_la-querier.lo libavahi_core_la-addr-util.lo libavahi_core_la-domain-util.lo libavahi_core_la-iface-linux.lo libavahi_core_la-netlink.lo ../avahi-common/libavahi-common.la -inst-prefix-dir /home/user/workdir/testcode/avahi/avahi_result)
+libtool: relink: arm_v5t_le-gcc -shared  .libs/libavahi_core_la-timeeventq.o .libs/libavahi_core_la-iface.o .libs/libavahi_core_la-server.o .libs/libavahi_core_la-entry.o .libs/libavahi_core_la-prioq.o .libs/libavahi_core_la-cache.o .libs/libavahi_core_la-socket.o .libs/libavahi_core_la-response-sched.o .libs/libavahi_core_la-query-sched.o .libs/libavahi_core_la-probe-sched.o .libs/libavahi_core_la-announce.o .libs/libavahi_core_la-browse.o .libs/libavahi_core_la-rrlist.o .libs/libavahi_core_la-resolve-host-name.o .libs/libavahi_core_la-resolve-address.o .libs/libavahi_core_la-browse-domain.o .libs/libavahi_core_la-browse-service-type.o .libs/libavahi_core_la-browse-service.o .libs/libavahi_core_la-resolve-service.o .libs/libavahi_core_la-dns.o .libs/libavahi_core_la-rr.o .libs/libavahi_core_la-log.o .libs/libavahi_core_la-browse-dns-server.o .libs/libavahi_core_la-fdutil.o .libs/libavahi_core_la-util.o .libs/libavahi_core_la-hashmap.o .libs/libavahi_core_la-wide-area.o .libs/libavahi_core_la-multicast-lookup.o .libs/libavahi_core_la-querier.o .libs/libavahi_core_la-addr-util.o .libs/libavahi_core_la-domain-util.o .libs/libavahi_core_la-iface-linux.o .libs/libavahi_core_la-netlink.o   -L/home/user/workdir/testcode/avahi/avahi_require/usr/lib -L/home/user/workdir/testcode/avahi/avahi_require/lib -L/home/user/workdir/testcode/avahi/avahi_result/usr/lib -L/usr/lib -lavahi-common    -pthread -Wl,-soname -Wl,libavahi-core.so.6 -o .libs/libavahi-core.so.6.0.1
+libtool: install: /usr/bin/install -c .libs/libavahi-core.so.6.0.1T /home/user/workdir/testcode/avahi/avahi_result/usr/lib/libavahi-core.so.6.0.1
+libtool: install: (cd /home/user/workdir/testcode/avahi/avahi_result/usr/lib && { ln -s -f libavahi-core.so.6.0.1 libavahi-core.so.6 || { rm -f libavahi-core.so.6 && ln -s libavahi-core.so.6.0.1 libavahi-core.so.6; }; })
+libtool: install: (cd /home/user/workdir/testcode/avahi/avahi_result/usr/lib && { ln -s -f libavahi-core.so.6.0.1 libavahi-core.so || { rm -f libavahi-core.so && ln -s libavahi-core.so.6.0.1 libavahi-core.so; }; })
+libtool: install: /usr/bin/install -c .libs/libavahi-core.lai /home/user/workdir/testcode/avahi/avahi_result/usr/lib/libavahi-core.la
+libtool: install: /usr/bin/install -c .libs/libavahi-core.a /home/user/workdir/testcode/avahi/avahi_result/usr/lib/libavahi-core.a
+libtool: install: chmod 644 /home/user/workdir/testcode/avahi/avahi_result/usr/lib/libavahi-core.a
+libtool: install: arm_v5t_le-ranlib /home/user/workdir/testcode/avahi/avahi_result/usr/lib/libavahi-core.a
+test -z "/usr/include/avahi-core" || /bin/mkdir -p "/home/user/workdir/testcode/avahi/avahi_result/usr/include/avahi-core"
+ /usr/bin/install -c -m 644 'core.h' '/home/user/workdir/testcode/avahi/avahi_result/usr/include/avahi-core/core.h'
+ /usr/bin/install -c -m 644 'log.h' '/home/user/workdir/testcode/avahi/avahi_result/usr/include/avahi-core/log.h'
+ /usr/bin/install -c -m 644 'rr.h' '/home/user/workdir/testcode/avahi/avahi_result/usr/include/avahi-core/rr.h'
+ /usr/bin/install -c -m 644 'publish.h' '/home/user/workdir/testcode/avahi/avahi_result/usr/include/avahi-core/publish.h'
+ /usr/bin/install -c -m 644 'lookup.h' '/home/user/workdir/testcode/avahi/avahi_result/usr/include/avahi-core/lookup.h'
+make[2]: Leaving directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/avahi-core'
+make[1]: Leaving directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/avahi-core'
+Making install in avahi-qt
+make[1]: Entering directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/avahi-qt'
+make  install-am
+make[2]: Entering directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/avahi-qt'
+make[3]: Entering directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/avahi-qt'
+test -z "/usr/lib" || /bin/mkdir -p "/home/user/workdir/testcode/avahi/avahi_result/usr/lib"
+test -z "" || /bin/mkdir -p "/home/user/workdir/testcode/avahi/avahi_result"
+test -z "" || /bin/mkdir -p "/home/user/workdir/testcode/avahi/avahi_result"
+make[3]: Leaving directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/avahi-qt'
+make[2]: Leaving directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/avahi-qt'
+make[1]: Leaving directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/avahi-qt'
+Making install in avahi-client
+make[1]: Entering directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/avahi-client'
+make[2]: Entering directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/avahi-client'
+test -z "/usr/lib" || /bin/mkdir -p "/home/user/workdir/testcode/avahi/avahi_result/usr/lib"
+test -z "" || /bin/mkdir -p "/home/user/workdir/testcode/avahi/avahi_result"
+make[2]: Leaving directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/avahi-client'
+make[1]: Leaving directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/avahi-client'
+Making install in avahi-glib
+make[1]: Entering directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/avahi-glib'
+make[2]: Entering directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/avahi-glib'
+test -z "/usr/lib" || /bin/mkdir -p "/home/user/workdir/testcode/avahi/avahi_result/usr/lib"
+test -z "" || /bin/mkdir -p "/home/user/workdir/testcode/avahi/avahi_result"
+make[2]: Leaving directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/avahi-glib'
+make[1]: Leaving directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/avahi-glib'
+Making install in avahi-gobject
+make[1]: Entering directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/avahi-gobject'
+make  install-am
+make[2]: Entering directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/avahi-gobject'
+make[3]: Entering directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/avahi-gobject'
+test -z "/usr/lib" || /bin/mkdir -p "/home/user/workdir/testcode/avahi/avahi_result/usr/lib"
+test -z "" || /bin/mkdir -p "/home/user/workdir/testcode/avahi/avahi_result"
+make[3]: Leaving directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/avahi-gobject'
+make[2]: Leaving directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/avahi-gobject'
+make[1]: Leaving directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/avahi-gobject'
+Making install in avahi-discover-standalone
+make[1]: Entering directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/avahi-discover-standalone'
+make[2]: Entering directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/avahi-discover-standalone'
+test -z "/usr/bin" || /bin/mkdir -p "/home/user/workdir/testcode/avahi/avahi_result/usr/bin"
+test -z "" || /bin/mkdir -p "/home/user/workdir/testcode/avahi/avahi_result"
+make[2]: Leaving directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/avahi-discover-standalone'
+make[1]: Leaving directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/avahi-discover-standalone'
+Making install in avahi-daemon
+make[1]: Entering directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/avahi-daemon'
+make[2]: Entering directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/avahi-daemon'
+test -z "/usr/sbin" || /bin/mkdir -p "/home/user/workdir/testcode/avahi/avahi_result/usr/sbin"
+  /bin/sh ../libtool   --mode=install /usr/bin/install -c 'avahi-daemon' '/home/user/workdir/testcode/avahi/avahi_result/usr/sbin/avahi-daemon'
+libtool: install: /usr/bin/install -c .libs/avahi-daemon /home/user/workdir/testcode/avahi/avahi_result/usr/sbin/avahi-daemon
+test -z "/var/run" || /bin/mkdir -p "/home/user/workdir/testcode/avahi/avahi_result/var/run"
+test -z "" || /bin/mkdir -p "/home/user/workdir/testcode/avahi/avahi_result"
+test -z "/usr/share/avahi/introspection" || /bin/mkdir -p "/home/user/workdir/testcode/avahi/avahi_result/usr/share/avahi/introspection"
+test -z "/usr/share/avahi" || /bin/mkdir -p "/home/user/workdir/testcode/avahi/avahi_result/usr/share/avahi"
+ /usr/bin/install -c -m 644 'avahi-service.dtd' '/home/user/workdir/testcode/avahi/avahi_result/usr/share/avahi/avahi-service.dtd'
+test -z "/etc/avahi" || /bin/mkdir -p "/home/user/workdir/testcode/avahi/avahi_result/etc/avahi"
+ /usr/bin/install -c -m 644 'avahi-daemon.conf' '/home/user/workdir/testcode/avahi/avahi_result/etc/avahi/avahi-daemon.conf'
+ /usr/bin/install -c -m 644 'hosts' '/home/user/workdir/testcode/avahi/avahi_result/etc/avahi/hosts'
+test -z "/etc/avahi/services" || /bin/mkdir -p "/home/user/workdir/testcode/avahi/avahi_result/etc/avahi/services"
+ /usr/bin/install -c -m 644 'ssh.service' '/home/user/workdir/testcode/avahi/avahi_result/etc/avahi/services/ssh.service'
+ /usr/bin/install -c -m 644 'sftp-ssh.service' '/home/user/workdir/testcode/avahi/avahi_result/etc/avahi/services/sftp-ssh.service'
+make[2]: Leaving directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/avahi-daemon'
+make[1]: Leaving directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/avahi-daemon'
+Making install in avahi-sharp
+make[1]: Entering directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/avahi-sharp'
+make[2]: Entering directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/avahi-sharp'
+make[2]: Nothing to be done for `install-exec-am'.
+test -z "" || /bin/mkdir -p "/home/user/workdir/testcode/avahi/avahi_result"
+make  install-data-hook
+make[3]: Entering directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/avahi-sharp'
+make[3]: Nothing to be done for `install-data-hook'.
+make[3]: Leaving directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/avahi-sharp'
+make[2]: Leaving directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/avahi-sharp'
+make[1]: Leaving directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/avahi-sharp'
+Making install in initscript
+make[1]: Entering directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/initscript'
+make[2]: Entering directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/initscript'
+make[3]: Entering directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/initscript'
+make[3]: Nothing to be done for `install-exec-am'.
+make[3]: Nothing to be done for `install-data-am'.
+make[3]: Leaving directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/initscript'
+make[2]: Leaving directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/initscript'
+make[1]: Leaving directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/initscript'
+Making install in avahi-dnsconfd
+make[1]: Entering directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/avahi-dnsconfd'
+make[2]: Entering directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/avahi-dnsconfd'
+test -z "/usr/sbin" || /bin/mkdir -p "/home/user/workdir/testcode/avahi/avahi_result/usr/sbin"
+  /bin/sh ../libtool   --mode=install /usr/bin/install -c 'avahi-dnsconfd' '/home/user/workdir/testcode/avahi/avahi_result/usr/sbin/avahi-dnsconfd'
+libtool: install: /usr/bin/install -c .libs/avahi-dnsconfd /home/user/workdir/testcode/avahi/avahi_result/usr/sbin/avahi-dnsconfd
+test -z "/etc/avahi" || /bin/mkdir -p "/home/user/workdir/testcode/avahi/avahi_result/etc/avahi"
+ /usr/bin/install -c 'avahi-dnsconfd.action' '/home/user/workdir/testcode/avahi/avahi_result/etc/avahi/avahi-dnsconfd.action'
+make[2]: Leaving directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/avahi-dnsconfd'
+make[1]: Leaving directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/avahi-dnsconfd'
+Making install in avahi-utils
+make[1]: Entering directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/avahi-utils'
+make[2]: Entering directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/avahi-utils'
+test -z "/usr/bin" || /bin/mkdir -p "/home/user/workdir/testcode/avahi/avahi_result/usr/bin"
+make[2]: Nothing to be done for `install-data-am'.
+make[2]: Leaving directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/avahi-utils'
+make[1]: Leaving directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/avahi-utils'
+Making install in avahi-python
+make[1]: Entering directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/avahi-python'
+Making install in avahi
+make[2]: Entering directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/avahi-python/avahi'
+make[3]: Entering directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/avahi-python/avahi'
+make[3]: Nothing to be done for `install-exec-am'.
+test -z "" || /bin/mkdir -p "/home/user/workdir/testcode/avahi/avahi_result"
+test -z "" || /bin/mkdir -p "/home/user/workdir/testcode/avahi/avahi_result"
+make[3]: Leaving directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/avahi-python/avahi'
+make[2]: Leaving directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/avahi-python/avahi'
+Making install in avahi-discover
+make[2]: Entering directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/avahi-python/avahi-discover'
+make[3]: Entering directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/avahi-python/avahi-discover'
+test -z "/usr/bin" || /bin/mkdir -p "/home/user/workdir/testcode/avahi/avahi_result/usr/bin"
+test -z "" || /bin/mkdir -p "/home/user/workdir/testcode/avahi/avahi_result"
+test -z "" || /bin/mkdir -p "/home/user/workdir/testcode/avahi/avahi_result"
+make[3]: Leaving directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/avahi-python/avahi-discover'
+make[2]: Leaving directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/avahi-python/avahi-discover'
+make[2]: Entering directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/avahi-python'
+make[3]: Entering directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/avahi-python'
+test -z "/usr/bin" || /bin/mkdir -p "/home/user/workdir/testcode/avahi/avahi_result/usr/bin"
+make[3]: Nothing to be done for `install-data-am'.
+make[3]: Leaving directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/avahi-python'
+make[2]: Leaving directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/avahi-python'
+make[1]: Leaving directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/avahi-python'
+Making install in examples
+make[1]: Entering directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/examples'
+make[2]: Entering directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/examples'
+make[2]: Nothing to be done for `install-exec-am'.
+make[2]: Nothing to be done for `install-data-am'.
+make[2]: Leaving directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/examples'
+make[1]: Leaving directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/examples'
+Making install in man
+make[1]: Entering directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/man'
+make[2]: Entering directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/man'
+make[2]: Nothing to be done for `install-exec-am'.
+test -z "/usr/share/man/man1" || /bin/mkdir -p "/home/user/workdir/testcode/avahi/avahi_result/usr/share/man/man1"
+test -z "/usr/share/man/man5" || /bin/mkdir -p "/home/user/workdir/testcode/avahi/avahi_result/usr/share/man/man5"
+test -z "/usr/share/man/man8" || /bin/mkdir -p "/home/user/workdir/testcode/avahi/avahi_result/usr/share/man/man8"
+make[2]: Leaving directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/man'
+make[1]: Leaving directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/man'
+Making install in tests
+make[1]: Entering directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/tests'
+make[2]: Entering directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/tests'
+make[2]: Nothing to be done for `install-exec-am'.
+make[2]: Nothing to be done for `install-data-am'.
+make[2]: Leaving directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/tests'
+make[1]: Leaving directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/tests'
+Making install in service-type-database
+make[1]: Entering directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/service-type-database'
+make[2]: Entering directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/service-type-database'
+test -z "/usr/lib/avahi" || /bin/mkdir -p "/home/user/workdir/testcode/avahi/avahi_result/usr/lib/avahi"
+test -z "/usr/share/avahi" || /bin/mkdir -p "/home/user/workdir/testcode/avahi/avahi_result/usr/share/avahi"
+ /usr/bin/install -c -m 644 'service-types' '/home/user/workdir/testcode/avahi/avahi_result/usr/share/avahi/service-types'
+make[2]: Leaving directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/service-type-database'
+make[1]: Leaving directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/service-type-database'
+Making install in avahi-compat-libdns_sd
+make[1]: Entering directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/avahi-compat-libdns_sd'
+make[2]: Entering directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/avahi-compat-libdns_sd'
+test -z "/usr/lib" || /bin/mkdir -p "/home/user/workdir/testcode/avahi/avahi_result/usr/lib"
+test -z "" || /bin/mkdir -p "/home/user/workdir/testcode/avahi/avahi_result"
+make[2]: Leaving directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/avahi-compat-libdns_sd'
+make[1]: Leaving directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/avahi-compat-libdns_sd'
+Making install in avahi-compat-howl
+make[1]: Entering directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/avahi-compat-howl'
+Making install in .
+make[2]: Entering directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/avahi-compat-howl'
+make[3]: Entering directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/avahi-compat-howl'
+test -z "/usr/lib" || /bin/mkdir -p "/home/user/workdir/testcode/avahi/avahi_result/usr/lib"
+test -z "" || /bin/mkdir -p "/home/user/workdir/testcode/avahi/avahi_result"
+test -z "" || /bin/mkdir -p "/home/user/workdir/testcode/avahi/avahi_result"
+test -z "" || /bin/mkdir -p "/home/user/workdir/testcode/avahi/avahi_result"
+test -z "" || /bin/mkdir -p "/home/user/workdir/testcode/avahi/avahi_result"
+test -z "" || /bin/mkdir -p "/home/user/workdir/testcode/avahi/avahi_result"
+make[3]: Leaving directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/avahi-compat-howl'
+make[2]: Leaving directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/avahi-compat-howl'
+Making install in samples
+make[2]: Entering directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/avahi-compat-howl/samples'
+make[3]: Entering directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/avahi-compat-howl/samples'
+make[3]: Nothing to be done for `install-exec-am'.
+make[3]: Nothing to be done for `install-data-am'.
+make[3]: Leaving directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/avahi-compat-howl/samples'
+make[2]: Leaving directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/avahi-compat-howl/samples'
+make[1]: Leaving directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/avahi-compat-howl'
+Making install in avahi-autoipd
+make[1]: Entering directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/avahi-autoipd'
+make[2]: Entering directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/avahi-autoipd'
+test -z "/usr/sbin" || /bin/mkdir -p "/home/user/workdir/testcode/avahi/avahi_result/usr/sbin"
+  /bin/sh ../libtool   --mode=install /usr/bin/install -c 'avahi-autoipd' '/home/user/workdir/testcode/avahi/avahi_result/usr/sbin/avahi-autoipd'
+libtool: install: /usr/bin/install -c avahi-autoipd /home/user/workdir/testcode/avahi/avahi_result/usr/sbin/avahi-autoipd
+make  install-exec-hook
+make[3]: Entering directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/avahi-autoipd'
+make[3]: Nothing to be done for `install-exec-hook'.
+make[3]: Leaving directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/avahi-autoipd'
+test -z "/etc/avahi" || /bin/mkdir -p "/home/user/workdir/testcode/avahi/avahi_result/etc/avahi"
+ /usr/bin/install -c 'avahi-autoipd.action' '/home/user/workdir/testcode/avahi/avahi_result/etc/avahi/avahi-autoipd.action'
+make[2]: Leaving directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/avahi-autoipd'
+make[1]: Leaving directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/avahi-autoipd'
+Making install in avahi-ui
+make[1]: Entering directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/avahi-ui'
+make[2]: Entering directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/avahi-ui'
+test -z "/usr/lib" || /bin/mkdir -p "/home/user/workdir/testcode/avahi/avahi_result/usr/lib"
+test -z "/usr/bin" || /bin/mkdir -p "/home/user/workdir/testcode/avahi/avahi_result/usr/bin"
+test -z "" || /bin/mkdir -p "/home/user/workdir/testcode/avahi/avahi_result"
+test -z "/usr/share/applications" || /bin/mkdir -p "/home/user/workdir/testcode/avahi/avahi_result/usr/share/applications"
+make[2]: Leaving directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/avahi-ui'
+make[1]: Leaving directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/avahi-ui'
+Making install in avahi-ui-sharp
+make[1]: Entering directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/avahi-ui-sharp'
+make[2]: Entering directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/avahi-ui-sharp'
+make[2]: Nothing to be done for `install-exec-am'.
+test -z "" || /bin/mkdir -p "/home/user/workdir/testcode/avahi/avahi_result"
+make  install-data-hook
+make[3]: Entering directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/avahi-ui-sharp'
+make[3]: Nothing to be done for `install-data-hook'.
+make[3]: Leaving directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/avahi-ui-sharp'
+make[2]: Leaving directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/avahi-ui-sharp'
+make[1]: Leaving directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/avahi-ui-sharp'
+Making install in po
+make[1]: Entering directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/po'
+linguas="ca de el en_AU en_CA en_GB en_NZ es fi fr hu it ms pl pt_BR ro ru sr sr@latin sv zh_CN "; \
+for lang in $linguas; do \
+  dir=/home/user/workdir/testcode/avahi/avahi_result/usr/share/locale/$lang/LC_MESSAGES; \
+  /bin/sh /home/user/workdir/testcode/avahi/avahi-0.6.25/install-sh -d $dir; \
+  if test -r $lang.gmo; then \
+    /usr/bin/install -c -m 644 $lang.gmo $dir/avahi.mo; \
+    echo "installing $lang.gmo as $dir/avahi.mo"; \
+  else \
+    /usr/bin/install -c -m 644 ./$lang.gmo $dir/avahi.mo; \
+    echo "installing ./$lang.gmo as" \
+	 "$dir/avahi.mo"; \
+  fi; \
+  if test -r $lang.gmo.m; then \
+    /usr/bin/install -c -m 644 $lang.gmo.m $dir/avahi.mo.m; \
+    echo "installing $lang.gmo.m as $dir/avahi.mo.m"; \
+  else \
+    if test -r ./$lang.gmo.m ; then \
+      /usr/bin/install -c -m 644 ./$lang.gmo.m \
+	$dir/avahi.mo.m; \
+      echo "installing ./$lang.gmo.m as" \
+	   "$dir/avahi.mo.m"; \
+    else \
+      true; \
+    fi; \
+  fi; \
+done
+installing ca.gmo as /home/user/workdir/testcode/avahi/avahi_result/usr/share/locale/ca/LC_MESSAGES/avahi.mo
+installing de.gmo as /home/user/workdir/testcode/avahi/avahi_result/usr/share/locale/de/LC_MESSAGES/avahi.mo
+installing el.gmo as /home/user/workdir/testcode/avahi/avahi_result/usr/share/locale/el/LC_MESSAGES/avahi.mo
+installing en_AU.gmo as /home/user/workdir/testcode/avahi/avahi_result/usr/share/locale/en_AU/LC_MESSAGES/avahi.mo
+installing en_CA.gmo as /home/user/workdir/testcode/avahi/avahi_result/usr/share/locale/en_CA/LC_MESSAGES/avahi.mo
+installing en_GB.gmo as /home/user/workdir/testcode/avahi/avahi_result/usr/share/locale/en_GB/LC_MESSAGES/avahi.mo
+installing en_NZ.gmo as /home/user/workdir/testcode/avahi/avahi_result/usr/share/locale/en_NZ/LC_MESSAGES/avahi.mo
+installing es.gmo as /home/user/workdir/testcode/avahi/avahi_result/usr/share/locale/es/LC_MESSAGES/avahi.mo
+installing fi.gmo as /home/user/workdir/testcode/avahi/avahi_result/usr/share/locale/fi/LC_MESSAGES/avahi.mo
+installing fr.gmo as /home/user/workdir/testcode/avahi/avahi_result/usr/share/locale/fr/LC_MESSAGES/avahi.mo
+installing hu.gmo as /home/user/workdir/testcode/avahi/avahi_result/usr/share/locale/hu/LC_MESSAGES/avahi.mo
+installing it.gmo as /home/user/workdir/testcode/avahi/avahi_result/usr/share/locale/it/LC_MESSAGES/avahi.mo
+installing ms.gmo as /home/user/workdir/testcode/avahi/avahi_result/usr/share/locale/ms/LC_MESSAGES/avahi.mo
+installing pl.gmo as /home/user/workdir/testcode/avahi/avahi_result/usr/share/locale/pl/LC_MESSAGES/avahi.mo
+installing pt_BR.gmo as /home/user/workdir/testcode/avahi/avahi_result/usr/share/locale/pt_BR/LC_MESSAGES/avahi.mo
+installing ro.gmo as /home/user/workdir/testcode/avahi/avahi_result/usr/share/locale/ro/LC_MESSAGES/avahi.mo
+installing ru.gmo as /home/user/workdir/testcode/avahi/avahi_result/usr/share/locale/ru/LC_MESSAGES/avahi.mo
+installing sr.gmo as /home/user/workdir/testcode/avahi/avahi_result/usr/share/locale/sr/LC_MESSAGES/avahi.mo
+installing sr@latin.gmo as /home/user/workdir/testcode/avahi/avahi_result/usr/share/locale/sr@latin/LC_MESSAGES/avahi.mo
+installing sv.gmo as /home/user/workdir/testcode/avahi/avahi_result/usr/share/locale/sv/LC_MESSAGES/avahi.mo
+installing zh_CN.gmo as /home/user/workdir/testcode/avahi/avahi_result/usr/share/locale/zh_CN/LC_MESSAGES/avahi.mo
+make[1]: Leaving directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/po'
+make[1]: Entering directory `/home/user/workdir/testcode/avahi/avahi-0.6.25'
+make[2]: Entering directory `/home/user/workdir/testcode/avahi/avahi-0.6.25'
+make[2]: Nothing to be done for `install-exec-am'.
+test -z "/usr/lib/pkgconfig" || /bin/mkdir -p "/home/user/workdir/testcode/avahi/avahi_result/usr/lib/pkgconfig"
+ /usr/bin/install -c -m 644 'avahi-core.pc' '/home/user/workdir/testcode/avahi/avahi_result/usr/lib/pkgconfig/avahi-core.pc'
+make[2]: Leaving directory `/home/user/workdir/testcode/avahi/avahi-0.6.25'
+make[1]: Leaving directory `/home/user/workdir/testcode/avahi/avahi-0.6.25'

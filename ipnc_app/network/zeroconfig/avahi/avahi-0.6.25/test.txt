@@ -1,0 +1,46 @@
+Making install in common
+make[1]: Entering directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/common'
+make[2]: Entering directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/common'
+make[2]: Nothing to be done for `install-exec-am'.
+make[2]: Nothing to be done for `install-data-am'.
+make[2]: Leaving directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/common'
+make[1]: Leaving directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/common'
+Making install in avahi-common
+make[1]: Entering directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/avahi-common'
+make[2]: Entering directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/avahi-common'
+test -z "/usr/lib" || /bin/mkdir -p "/home/user/workdir/IPNC_MT_368/target/filesys//usr/lib"
+ /bin/sh ../libtool   --mode=install /usr/bin/install -c  'libavahi-common.la' '/home/user/workdir/IPNC_MT_368/target/filesys//usr/lib/libavahi-common.la'
+libtool: install: /usr/bin/install -c .libs/libavahi-common.so.3.5.1 /home/user/workdir/IPNC_MT_368/target/filesys//usr/lib/libavahi-common.so.3.5.1
+libtool: install: (cd /home/user/workdir/IPNC_MT_368/target/filesys//usr/lib && { ln -s -f libavahi-common.so.3.5.1 libavahi-common.so.3 || { rm -f libavahi-common.so.3 && ln -s libavahi-common.so.3.5.1 libavahi-common.so.3; }; })
+libtool: install: (cd /home/user/workdir/IPNC_MT_368/target/filesys//usr/lib && { ln -s -f libavahi-common.so.3.5.1 libavahi-common.so || { rm -f libavahi-common.so && ln -s libavahi-common.so.3.5.1 libavahi-common.so; }; })
+libtool: install: /usr/bin/install -c .libs/libavahi-common.lai /home/user/workdir/IPNC_MT_368/target/filesys//usr/lib/libavahi-common.la
+libtool: install: /usr/bin/install -c .libs/libavahi-common.a /home/user/workdir/IPNC_MT_368/target/filesys//usr/lib/libavahi-common.a
+libtool: install: chmod 644 /home/user/workdir/IPNC_MT_368/target/filesys//usr/lib/libavahi-common.a
+libtool: install: arm_v5t_le-ranlib /home/user/workdir/IPNC_MT_368/target/filesys//usr/lib/libavahi-common.a
+test -z "/usr/include/avahi-common" || /bin/mkdir -p "/home/user/workdir/IPNC_MT_368/target/filesys//usr/include/avahi-common"
+ /usr/bin/install -c -m 644 'strlst.h' '/home/user/workdir/IPNC_MT_368/target/filesys//usr/include/avahi-common/strlst.h'
+ /usr/bin/install -c -m 644 'address.h' '/home/user/workdir/IPNC_MT_368/target/filesys//usr/include/avahi-common/address.h'
+ /usr/bin/install -c -m 644 'alternative.h' '/home/user/workdir/IPNC_MT_368/target/filesys//usr/include/avahi-common/alternative.h'
+ /usr/bin/install -c -m 644 'domain.h' '/home/user/workdir/IPNC_MT_368/target/filesys//usr/include/avahi-common/domain.h'
+ /usr/bin/install -c -m 644 'cdecl.h' '/home/user/workdir/IPNC_MT_368/target/filesys//usr/include/avahi-common/cdecl.h'
+ /usr/bin/install -c -m 644 'defs.h' '/home/user/workdir/IPNC_MT_368/target/filesys//usr/include/avahi-common/defs.h'
+ /usr/bin/install -c -m 644 'malloc.h' '/home/user/workdir/IPNC_MT_368/target/filesys//usr/include/avahi-common/malloc.h'
+ /usr/bin/install -c -m 644 'watch.h' '/home/user/workdir/IPNC_MT_368/target/filesys//usr/include/avahi-common/watch.h'
+ /usr/bin/install -c -m 644 'timeval.h' '/home/user/workdir/IPNC_MT_368/target/filesys//usr/include/avahi-common/timeval.h'
+ /usr/bin/install -c -m 644 'simple-watch.h' '/home/user/workdir/IPNC_MT_368/target/filesys//usr/include/avahi-common/simple-watch.h'
+ /usr/bin/install -c -m 644 'thread-watch.h' '/home/user/workdir/IPNC_MT_368/target/filesys//usr/include/avahi-common/thread-watch.h'
+ /usr/bin/install -c -m 644 'gccmacro.h' '/home/user/workdir/IPNC_MT_368/target/filesys//usr/include/avahi-common/gccmacro.h'
+ /usr/bin/install -c -m 644 'error.h' '/home/user/workdir/IPNC_MT_368/target/filesys//usr/include/avahi-common/error.h'
+ /usr/bin/install -c -m 644 'llist.h' '/home/user/workdir/IPNC_MT_368/target/filesys//usr/include/avahi-common/llist.h'
+ /usr/bin/install -c -m 644 'rlist.h' '/home/user/workdir/IPNC_MT_368/target/filesys//usr/include/avahi-common/rlist.h'
+make[2]: Leaving directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/avahi-common'
+make[1]: Leaving directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/avahi-common'
+Making install in avahi-core
+make[1]: Entering directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/avahi-core'
+make[2]: Entering directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/avahi-core'
+test -z "/usr/lib" || /bin/mkdir -p "/home/user/workdir/IPNC_MT_368/target/filesys//usr/lib"
+ /bin/sh ../libtool   --mode=install /usr/bin/install -c  'libavahi-core.la' '/home/user/workdir/IPNC_MT_368/target/filesys//usr/lib/libavahi-core.la'
+libtool: install: (cd /home/user/workdir/testcode/avahi/avahi-0.6.25/avahi-core; /bin/sh /home/user/workdir/testcode/avahi/avahi-0.6.25/libtool  --tag CC --mode=relink arm_v5t_le-gcc -I.. "-DDEBUG_TRAP=__asm__(\"int \$3\")" -g -O2 -fstack-protector -Wall -W -Wextra -pedantic -pipe -Wformat -Wold-style-definition -Wdeclaration-after-statement -Wfloat-equal -Wmissing-declarations -Wmissing-prototypes -Wstrict-prototypes -Wredundant-decls -Wmissing-noreturn -Wshadow -Wendif-labels -Wpointer-arith -Wbad-function-cast -Wcast-qual -Wcast-align -Wwrite-strings -Winline -D_XOPEN_SOURCE=500 -D__EXTENSIONS__ -version-info 6:1:0 -L/home/user/workdir/testcode/avahi/avahi_require/usr/lib -L/home/user/workdir/testcode/avahi/avahi_require/lib -o libavahi-core.la -rpath /usr/lib libavahi_core_la-timeeventq.lo libavahi_core_la-iface.lo libavahi_core_la-server.lo libavahi_core_la-entry.lo libavahi_core_la-prioq.lo libavahi_core_la-cache.lo libavahi_core_la-socket.lo libavahi_core_la-response-sched.lo libavahi_core_la-query-sched.lo libavahi_core_la-probe-sched.lo libavahi_core_la-announce.lo libavahi_core_la-browse.lo libavahi_core_la-rrlist.lo libavahi_core_la-resolve-host-name.lo libavahi_core_la-resolve-address.lo libavahi_core_la-browse-domain.lo libavahi_core_la-browse-service-type.lo libavahi_core_la-browse-service.lo libavahi_core_la-resolve-service.lo libavahi_core_la-dns.lo libavahi_core_la-rr.lo libavahi_core_la-log.lo libavahi_core_la-browse-dns-server.lo libavahi_core_la-fdutil.lo libavahi_core_la-util.lo libavahi_core_la-hashmap.lo libavahi_core_la-wide-area.lo libavahi_core_la-multicast-lookup.lo libavahi_core_la-querier.lo libavahi_core_la-addr-util.lo libavahi_core_la-domain-util.lo libavahi_core_la-iface-linux.lo libavahi_core_la-netlink.lo ../avahi-common/libavahi-common.la -inst-prefix-dir /home/user/workdir/IPNC_MT_368/target/filesys/)
+libtool: relink: arm_v5t_le-gcc -shared  .libs/libavahi_core_la-timeeventq.o .libs/libavahi_core_la-iface.o .libs/libavahi_core_la-server.o .libs/libavahi_core_la-entry.o .libs/libavahi_core_la-prioq.o .libs/libavahi_core_la-cache.o .libs/libavahi_core_la-socket.o .libs/libavahi_core_la-response-sched.o .libs/libavahi_core_la-query-sched.o .libs/libavahi_core_la-probe-sched.o .libs/libavahi_core_la-announce.o .libs/libavahi_core_la-browse.o .libs/libavahi_core_la-rrlist.o .libs/libavahi_core_la-resolve-host-name.o .libs/libavahi_core_la-resolve-address.o .libs/libavahi_core_la-browse-domain.o .libs/libavahi_core_la-browse-service-type.o .libs/libavahi_core_la-browse-service.o .libs/libavahi_core_la-resolve-service.o .libs/libavahi_core_la-dns.o .libs/libavahi_core_la-rr.o .libs/libavahi_core_la-log.o .libs/libavahi_core_la-browse-dns-server.o .libs/libavahi_core_la-fdutil.o .libs/libavahi_core_la-util.o .libs/libavahi_core_la-hashmap.o .libs/libavahi_core_la-wide-area.o .libs/libavahi_core_la-multicast-lookup.o .libs/libavahi_core_la-querier.o .libs/libavahi_core_la-addr-util.o .libs/libavahi_core_la-domain-util.o .libs/libavahi_core_la-iface-linux.o .libs/libavahi_core_la-netlink.o   -L/home/user/workdir/testcode/avahi/avahi_require/usr/lib -L/home/user/workdir/testcode/avahi/avahi_require/lib -L/home/user/workdir/IPNC_MT_368/target/filesys//usr/lib -L/usr/lib -lavahi-common    -pthread -Wl,-soname -Wl,libavahi-core.so.6 -o .libs/libavahi-core.so.6.0.1
+make[2]: Leaving directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/avahi-core'
+make[1]: Leaving directory `/home/user/workdir/testcode/avahi/avahi-0.6.25/avahi-core'

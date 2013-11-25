@@ -1,0 +1,56 @@
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+MANDIR=@mandir@
+BINDIR=@bindir@
+SRCDIR=@srcdir@
+
+INSTALL=install
+INSTALL_PROGRAM=${INSTALL}
+INSTALL_DATA=${INSTALL}
+
+OBJS=ftp.o ftp_data.o ftp_directory.o ftp_login.o ftp_transfer.o ftp_list.o \
+	text.o rc.o quftp.o log.o
+LIBS += -lreadline -lncurses
+HEADERS=*.h
+DEFS = @DEFS@
+CFLAGS += -g -O6 -Wall
+
+.SUFFIXES:
+.SUFFIXES: .c .o
+
+.PHONY:	install clean
+
+all:	quftp
+
+install: all
+	${INSTALL} -d ${DESTDIR}${BINDIR} ${DESTDIR}${MANDIR}/man1
+	${INSTALL_PROGRAM} -m 755 quftp ${DESTDIR}${BINDIR}/quftp
+	-${INSTALL_DATA} -m 644 quftp.1 ${DESTDIR}${MANDIR}/man1/quftp.1
+
+install-strip:
+	$(MAKE) INSTALL_PROGRAM='$(INSTALL_PROGRAM) -s' install
+
+uninstall:
+	rm -f ${DESTDIR}${BINDIR}/quftp
+	rm -f ${DESTDIR}${MANDIR}/man1/quftp.1
+
+clean:
+	rm -f *.o quftp
+
+distclean:
+	rm -f config.status config.log config.cache Makefile
+
+quftp:	quftp.c ${OBJS} ${HEADERS}
+	${CC} -I. -o $@ ${OBJS} ${CFLAGS} ${LIBS}
+
+temp:	temp.o
+
+ftp.o:		${HEADERS}
+ftp_data.o:	${HEADERS}
+ftp_directory.o:${HEADERS}
+ftp_login.o:	${HEADERS}
+ftp_transfer.o:	${HEADERS}
+ftp_list.o:	${HEADERS}
+text.o:		${HEADERS}
+rc.o:		${HEADERS}
+quftp.o:	${HEADERS}

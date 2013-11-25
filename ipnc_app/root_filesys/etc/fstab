@@ -1,0 +1,10 @@
+# /etc/fstab: static file system information.
+#
+# <file system>	<mount point>	<type>	<options>			<dump>  <pass>
+/dev/root	/		    auto	defaults,errors=remount-ro	0 0
+none		/proc		proc	noauto			                  0 0
+none		/sys		sysfs	noauto			                  0 0
+none		/dev/pts	devpts	noauto,gid=5,mode=620		  0 0
+none		/dev/shm	tmpfs	size=5M			                0 0
+none		/var/run	tmpfs	defaults			              0 0
+none		/tmp	    tmpfs	sync     			              0 0 

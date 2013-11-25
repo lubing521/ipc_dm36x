@@ -1,0 +1,26 @@
+IMX136
+
+1>hardware:
+
+         Main Board:Leopardboard V1.5 + IPNC LEOPARD ADAPTER BOARD V1.1 
+  
+       Sensor Board:
+                   LVDS Version:LVDS324 ENGINEERING BOARD V1.1 + IMX136 sensor board(IPNC IMX136-1.8_V1.0)
+                   Parallel Version:LI-IMX136-P33 Rev1.0
+Note:
+           need connect J5 of adapter board to Leopardboard J8
+
+2>software:
+           ubl:432MHz
+           u-boot1.3.4-svn42
+           updated svn:ver 19
+
+3> For DM368IPNC,just need change IMGS_RESET_GPIO from GIO31 to GIO36,current GIO31 is for Leopardboard V1.5
+ 
+4>Status:
+
+        1@Basic driver,need tuning.
+	2@For sensor board switch,use macro IMX136_LVDS324 in drv_imgs_imx136_board_version.h
+
+07/16/2012
+

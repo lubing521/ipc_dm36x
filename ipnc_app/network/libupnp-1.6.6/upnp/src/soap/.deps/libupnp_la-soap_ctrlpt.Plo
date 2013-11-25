@@ -1,0 +1,6 @@
+src/soap/libupnp_la-soap_ctrlpt.lo src/soap/libupnp_la-soap_ctrlpt.o:  \
+ src/soap/soap_ctrlpt.c src/inc/config.h ../autoconfig.h
+
+src/inc/config.h:
+
+../autoconfig.h:

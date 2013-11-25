@@ -1,0 +1,13 @@
+# This is an example script
+
+# Connect to localhost
+open localhost
+
+# Change to the directory /pub
+cd /pub
+
+# And list it
+ls
+
+# Exit quftp
+quit

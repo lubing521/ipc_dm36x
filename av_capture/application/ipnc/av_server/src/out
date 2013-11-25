@@ -1,0 +1,23 @@
+common/avServerMain.c:  gAVSERVER_UI_config.mode 			= AVSERVER_UI_CAPTURE_MODE_720P;
+common/avServerMain.c:      gAVSERVER_UI_config.mode = AVSERVER_UI_CAPTURE_MODE_720P_VGA;
+common/avServerMain.c:      gAVSERVER_UI_config.mode = AVSERVER_UI_CAPTURE_MODE_720P_VGA_30;
+common/avServerMain.c:      gAVSERVER_UI_config.mode = AVSERVER_UI_CAPTURE_MODE_720P_720P;
+common/avServerMain.c:      gAVSERVER_UI_config.mode = AVSERVER_UI_CAPTURE_MODE_720P_720P_30;
+common/avServerMain.c:      gAVSERVER_UI_config.mode = AVSERVER_UI_CAPTURE_MODE_720P;
+common/avServerMain.c:      gAVSERVER_UI_config.mode = AVSERVER_UI_CAPTURE_MODE_720P_MAX;
+common/avServerUi.c:    case AVSERVER_UI_CAPTURE_MODE_720P:
+common/avServerUi.c:	case AVSERVER_UI_CAPTURE_MODE_720P_720P:
+common/avServerUi.c:	case AVSERVER_UI_CAPTURE_MODE_720P_720P_30:
+common/avServerUi.c:        config->captureConfig[i].numEncodes       = ((gAVSERVER_UI_config.mode==AVSERVER_UI_CAPTURE_MODE_720P_720P)||(gAVSERVER_UI_config.mode==AVSERVER_UI_CAPTURE_MODE_720P_720P_30))?2:1;
+common/avServerUi.c:      if((gAVSERVER_UI_config.mode==AVSERVER_UI_CAPTURE_MODE_720P_720P)||(gAVSERVER_UI_config.mode==AVSERVER_UI_CAPTURE_MODE_720P_720P_30))
+common/avServerUi.c:        config->captureConfig[i].numEncodes       = ((gAVSERVER_UI_config.mode==AVSERVER_UI_CAPTURE_MODE_720P_720P)||(gAVSERVER_UI_config.mode==AVSERVER_UI_CAPTURE_MODE_720P_720P_30))?0:1;
+common/avServerUi.c:      config->captureConfig[i].frameSkipMask      = (gAVSERVER_UI_config.mode==AVSERVER_UI_CAPTURE_MODE_720P_720P)?0x1AAAAAAA:0x3FFFFFFF;
+common/avServerUi.c:	  if((gAVSERVER_UI_config.mode==AVSERVER_UI_CAPTURE_MODE_720P_720P)||(gAVSERVER_UI_config.mode==AVSERVER_UI_CAPTURE_MODE_720P_720P_30)) {
+common/avServerUi.c:      	config->encodeConfig[i].frameRateBase		 	= (gAVSERVER_UI_config.mode==AVSERVER_UI_CAPTURE_MODE_720P_720P)?(config->sensorFps*1000)>>1:(config->sensorFps*1000);
+common/avServerUi.c:    case AVSERVER_UI_CAPTURE_MODE_720P_VGA:
+common/avServerUi.c:    case AVSERVER_UI_CAPTURE_MODE_720P_VGA_30:
+common/avServerUi.c:      if( gAVSERVER_UI_config.mode == AVSERVER_UI_CAPTURE_MODE_720P_VGA)
+common/avServerUi.c:      if( gAVSERVER_UI_config.mode == AVSERVER_UI_CAPTURE_MODE_720P_VGA)
+common/avServerUi.c:      if( gAVSERVER_UI_config.mode == AVSERVER_UI_CAPTURE_MODE_720P_VGA)
+common/avServerUi.c:      if( gAVSERVER_UI_config.mode == AVSERVER_UI_CAPTURE_MODE_720P_VGA)
+common/avServerUi.c:		case AVSERVER_UI_CAPTURE_MODE_720P_MAX:

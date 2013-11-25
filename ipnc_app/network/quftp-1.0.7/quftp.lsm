@@ -1,0 +1,14 @@
+Begin3
+Title:          quftp
+Version:        1.0.7
+Entered-date:   2003-03-11
+Description:    Command line FTP client with transfer queueing
+Keywords:       ftp client command line queue
+Author:         david@dparrish.com (David Parrish)
+Maintained-by:  david@dparrish.com (David Parrish)
+Primary-site:   http://download.sourceforge.net/quftp/quftp-1.0.7.tar.gz
+Alternate-site: 
+Original-site:  
+Platforms:      linux
+Copying-policy: GPL
+End
