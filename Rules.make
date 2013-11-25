@@ -8,8 +8,8 @@ MVTOOL_DIR := /opt/mv_pro_5.0/montavista/pro/devkit/arm/v5t_le
 BASE_HOME := /home/jiangjx/UbuntuShare/ipnc_project/ipnc_lhy
 DVSDK_BASE_DIR := $(BASE_HOME)/dvsdk_2_10_01_18
 
-HOME      := $(BASE_HOME)/github_ipc_lhy
-BASE_DIR  := $(BASE_HOME)/github_ipc_lhy/av_capture/build
+HOME      := $(BASE_HOME)/ipc_dm36x
+BASE_DIR  := $(BASE_HOME)/ipc_dm36x/av_capture/build
 
 TARGET_FS := $(BASE_HOME)/target/filesys
 TFTP_HOME := $(BASE_HOME)/tftpboot
