@@ -653,6 +653,8 @@ int AUDIO_audioTskMain(struct OSA_TskHndl *pTsk, OSA_MsgHndl *pMsg, Uint32 curSt
   Bool done=FALSE, ackMsg = FALSE;
   Uint16 cmd = OSA_msgGetCmd(pMsg);
 
+  OSA_setTskName("lhy_audio");
+  
   #ifdef AVSERVER_DEBUG_AUDIO_THR
   OSA_printf(" AUDIO: Recevied CMD = 0x%04x\n", cmd);
   #endif
@@ -762,6 +764,8 @@ int AUDIOPLAY_audioTskMain(struct OSA_TskHndl *pTsk, OSA_MsgHndl *pMsg, Uint32 c
   Bool done=FALSE, ackMsg = FALSE;
   Uint16 cmd = OSA_msgGetCmd(pMsg);
 
+  OSA_setTskName("lhy_audioplay");
+  
   #ifdef AVSERVER_DEBUG_AUDIO_THR
   OSA_printf(" AUDIOPLAY: Recevied CMD = 0x%04x\n", cmd);
   #endif

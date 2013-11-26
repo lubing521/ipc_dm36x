@@ -1,5 +1,3 @@
-
-
 #include <osa_tsk.h>
 #include <sys/prctl.h>
 

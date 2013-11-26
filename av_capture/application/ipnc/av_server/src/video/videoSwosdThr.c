@@ -2379,6 +2379,8 @@ int VIDEO_swosdTskMain(struct OSA_TskHndl *pTsk, OSA_MsgHndl *pMsg, Uint32 curSt
 	Bool done=FALSE, ackMsg = FALSE;
 	Uint16 cmd = OSA_msgGetCmd(pMsg);
 
+    OSA_setTskName("lhy_swosd");
+    
 #ifdef AVSERVER_DEBUG_VIDEO_SWOSD_THR
 	OSA_printf(" SWOSD: Recevied CMD = 0x%04x\n", cmd);
 #endif

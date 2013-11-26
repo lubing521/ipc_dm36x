@@ -291,6 +291,8 @@ int VIDEO_streamTskMain(struct OSA_TskHndl *pTsk, OSA_MsgHndl *pMsg, Uint32 curS
   int status, streamId;
   Bool done=FALSE, ackMsg = FALSE;
   Uint16 cmd = OSA_msgGetCmd(pMsg);
+
+  OSA_setTskName("lhy_stream");
   
   #ifdef AVSERVER_DEBUG_VIDEO_STREAM_THR
   OSA_printf(" STREAM: Recevied CMD = 0x%04x\n", cmd);

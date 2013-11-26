@@ -176,6 +176,8 @@ int OSA_TEST_PSEQ_Main(struct OSA_TskHndl *pPrc, OSA_MsgHndl *pMsg, Uint32 curSt
   int retVal = OSA_SOK;
   Uint16 cmd = OSA_msgGetCmd(pMsg);
 
+  OSA_setTskName("lhy_osapseq");
+  
   switch(curState) {
     case OSA_TEST_STATE__READY:
       
@@ -307,6 +309,8 @@ int OSA_TEST_PSTA_Main(struct OSA_TskHndl *pPrc, OSA_MsgHndl *pMsg, Uint32 curSt
 {
   Uint16 cmd = OSA_msgGetCmd(pMsg);
 
+  OSA_setTskName("lhy_osapsta");
+  
   OSA_assert(curState == OSA_TEST_STATE__READY);
 
   switch(cmd) {
@@ -390,6 +394,7 @@ int OSA_TEST_PSTB_Main(struct OSA_TskHndl *pPrc, OSA_MsgHndl *pMsg, Uint32 curSt
 {
   Uint16 cmd = OSA_msgGetCmd(pMsg);
 
+  OSA_setTskName("lhy_osapstb");
   OSA_assert(curState == OSA_TEST_STATE__READY);
 
   switch(cmd) {
@@ -473,6 +478,8 @@ int OSA_TEST_PSTC_Main(struct OSA_TskHndl *pPrc, OSA_MsgHndl *pMsg, Uint32 curSt
 {
   Uint16 cmd = OSA_msgGetCmd(pMsg);
 
+  OSA_setTskName("lhy_osapstc");
+  
   OSA_assert(curState == OSA_TEST_STATE__READY);
 
   switch(cmd) {

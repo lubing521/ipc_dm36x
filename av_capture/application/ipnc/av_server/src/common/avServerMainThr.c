@@ -398,6 +398,8 @@ int AVSERVER_tskMain(struct OSA_TskHndl *pTsk, OSA_MsgHndl *pMsg, Uint32 curStat
   int status;
   Uint16 cmd = OSA_msgGetCmd(pMsg);
 
+  OSA_setTskName("lhy_avsermain");
+  
   #ifdef AVSERVER_DEBUG_MAIN_THR
   OSA_printf(" AVSERVER MAIN: Recevied CMD = 0x%04x, state = 0x%04x\n", cmd, curState);
   #endif

@@ -159,6 +159,8 @@ int VIDEO_motionTskMain(struct OSA_TskHndl *pTsk, OSA_MsgHndl *pMsg, Uint32 curS
   Bool done=FALSE, ackMsg = FALSE;
   Uint16 cmd = OSA_msgGetCmd(pMsg);
 
+  OSA_setTskName("lhy_motion");
+  
   #ifdef AVSERVER_DEBUG_VIDEO_MOTION_THR
   OSA_printf(" MOTION: Recevied CMD = 0x%04x\n", cmd);
   #endif

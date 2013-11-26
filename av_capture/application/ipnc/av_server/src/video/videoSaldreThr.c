@@ -286,6 +286,7 @@ int VIDEO_saldreRun(OSA_BufInfo **pOutBufInfo, int *rszBufId, int numStreams)
 
 void *VIDEO_saldreThrMain(void *prm)
 {
+  OSA_setTskName("lhy_saldre");
   while (1) {
     OSA_semWait(&g_saldreSemStart, OSA_TIMEOUT_FOREVER);
    	OSA_prfBegin(&gAVSERVER_ctrl.saldrePrf);

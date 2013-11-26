@@ -239,12 +239,22 @@ int VIDEO_aewbTskRun()
   return status;
 }
 
+void mSleep(const int mseconds)
+{
+    struct timeval tv;
+    tv.tv_sec  = mseconds / 1000;
+    tv.tv_usec = (mseconds % 1000) * 1000;
+    select(0, NULL, NULL, NULL, &tv);
+}
+
 int VIDEO_aewbTskMain(struct OSA_TskHndl *pTsk, OSA_MsgHndl *pMsg, Uint32 curState )
 {
   int status;
   Bool done=FALSE, ackMsg = FALSE;
   Uint16 cmd = OSA_msgGetCmd(pMsg);
 
+  OSA_setTskName("lhy_aewb");
+  
   #ifdef AVSERVER_DEBUG_VIDEO_2A_THR
   OSA_printf(" 2A: Recevied CMD = 0x%04x\n", cmd);
   #endif
@@ -296,8 +306,9 @@ int VIDEO_aewbTskMain(struct OSA_TskHndl *pTsk, OSA_MsgHndl *pMsg, Uint32 curSta
   OSA_printf(" 2A: Start...DONE\n");
   #endif
 
-  while(!done) {
-
+  while(!done) 
+  {
+    mSleep(20);
     status = VIDEO_aewbTskRun();
 
     if(status!=OSA_SOK) {

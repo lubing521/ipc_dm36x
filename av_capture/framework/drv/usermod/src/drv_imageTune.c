@@ -8,6 +8,7 @@ DRV_ImageTuneObj gDRV_imageTuneObj;
 
 void *DRV_imageTuneThrMain(void *prm)
 {
+  OSA_setTskName("lhy_imageTune");
   IMAGE_TUNE_ServerRun();
 
   return NULL;

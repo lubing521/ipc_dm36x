@@ -325,6 +325,8 @@ int VIDEO_fdTskMain(struct OSA_TskHndl *pTsk, OSA_MsgHndl *pMsg, Uint32 curState
   ALG_FaceOpenPrm faceOpenPrm;
   Uint16 cmd = OSA_msgGetCmd(pMsg);
 
+  OSA_setTskName("lhy_fd");
+  
   #ifdef AVSERVER_DEBUG_VIDEO_FD_THR
   OSA_printf(" FD: Received CMD = 0x%04x\n", cmd);
   #endif

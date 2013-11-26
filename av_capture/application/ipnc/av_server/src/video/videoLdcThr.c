@@ -152,6 +152,8 @@ int VIDEO_ldcTskMain(struct OSA_TskHndl *pTsk, OSA_MsgHndl *pMsg, Uint32 curStat
   Bool done=FALSE, ackMsg = FALSE;
   Uint16 cmd = OSA_msgGetCmd(pMsg);
 
+  OSA_setTskName("lhy_ldc");
+  
   #ifdef AVSERVER_DEBUG_VIDEO_LDC_THR
   OSA_printf(" LDC: Recevied CMD = 0x%04x\n", cmd);
   #endif

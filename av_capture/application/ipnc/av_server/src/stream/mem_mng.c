@@ -573,7 +573,7 @@ int MemMng_Mem_layout( int mem_layout )
 		mem_layout = MEM_LAYOUT_DEFAULT;
 	}
 
-	pLayout = &mem_layout_setting[mem_layout];
+	pLayout = &mem_layout_setting[mem_layout]; //&mem_layout_setting[7]
 	if( IsPrint )
 	{
 		printf("\n mem_layout        = %d \n", mem_layout);// mem_layout = 7
