@@ -21,6 +21,7 @@
 #include <file_dispatcher.h>
 #include <jpg_mng.h>
 #include <sem_util.h>
+#include <sys/prctl.h>
 
 #define NON_STOP_TIME	-1
 #define ALARM_SCHEDULE_MASK (FLG_UI_EXT | FLG_UI_MOTION | FLG_UI_ETH | FLG_UI_AUDIO)
@@ -137,6 +138,9 @@ void *AlramScheduler(void *arg)
 	unsigned short nAlarmStatus;
 	static unsigned short nLastAlarmStatus;
 	nLastAlarmStatus = pSysInfo->lan_config.alarmstatus;
+	
+	prctl(PR_SET_NAME, "lhy_scheduler");
+	
 	while(gAS_Run){
 		if(gAS_Pause)
 			nAlarmStatus = 0;

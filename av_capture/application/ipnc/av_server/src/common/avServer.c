@@ -1,6 +1,7 @@
 
 #include <avserver.h>
 #include <osa_cmem.h>
+#include <sys/prctl.h>
 
 
 //////zeng add 2012-06-28
@@ -1111,6 +1112,7 @@ void* OSD_ThreadOSD(void *param)
 {
 	time_t           timep = {0};
 	g_OSDBase.bTimeEn = TRUE;
+	prctl(PR_SET_NAME, "lhy_osdthr");
 	while( TRUE )
 	{
 		timep = time(NULL);

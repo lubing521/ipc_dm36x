@@ -384,7 +384,7 @@ void *Msg_CTRL(void* args)
 	MSG_BUF msgbuf;
 
 	//ShowInfo(pParm, 1);
-
+    OSA_setTskName("lhy_msgctrl");
 
 	qid 					= (int )pParm->qid;
 	Rendezvous_Handle	hRv = &pParm->objRv[0];

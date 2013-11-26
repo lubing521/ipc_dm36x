@@ -31,6 +31,7 @@
 #include <strings.h>
 #include <dirent.h>
 #include <av_server_ctrl.h>
+#include <sys/prctl.h>
 
 #define AVI_INT_STATE	0
 #define AVI_RUN	1
@@ -337,6 +338,9 @@ void *AviMngThr(void *arg)
 {
 	unsigned short nFlg;
 	int nState;
+
+	prctl(PR_SET_NAME, "avimng");
+	
 	while(!(GetAviState(0) & AVI_THR_EXIT)){
 		AVI_DBG("Ready\n");
 		while(!((nState = GetAviState(AVI_RUN | AVI_DST_MASK)) & (AVI_RUN | AVI_THR_EXIT))){

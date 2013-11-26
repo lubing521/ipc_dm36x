@@ -15,6 +15,7 @@
 #include <sys_env_type.h>
 #include <file_msg_drv.h>
 #include <system_default.h>
+#include <sys/prctl.h>
 
 static char *nicname = "eth0";
 
@@ -3063,7 +3064,9 @@ void *ntpThrFxn(void *arg)
 {
 	char buf[256];
 	char *server_name = arg;
-
+	
+    prctl(PR_SET_NAME, "ntpclint");
+    
 	sprintf(buf, NTPCLIENT_EXE " -s -i %d -h %s\n", NTP_TIMEOUT_CNT, server_name);
 	dbg("run_ntpclient: %s\n", buf);
 	system(buf);

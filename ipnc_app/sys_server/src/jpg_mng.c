@@ -26,6 +26,7 @@
 #include <sem_util.h>
 #include <system_default.h>
 #include <fcntl.h>
+#include <sys/prctl.h>
 
 #define JPG_INT_STATE	0 ///< JPEG manager initial state.
 #define JPG_RUN	1 ///< JPEG running flag.
@@ -288,6 +289,7 @@ void *JpgMngThr(void *arg)
 {
 	int nState, nSetFlg;
 	unsigned short nFlg;
+	prctl(PR_SET_NAME, "jpgmng");
 	while(!(GetJpgState(0) & JPG_THR_EXIT)){
 		JPG_DBG("Ready\n");
 		while(!((nState = GetJpgState(JPG_RUN | JPG_DST_MASK | JPG_STOP)) & (JPG_RUN | JPG_THR_EXIT))){

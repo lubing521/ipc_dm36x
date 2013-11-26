@@ -26,6 +26,7 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <system_control.h>
+#include <sys/prctl.h>
 
 #ifdef DEBUG
 #define DBG(fmt, args...)	printf("Debug " fmt, ##args)
@@ -238,6 +239,7 @@ static int ProcFileMsg(FILE_MSG_BUF* pMsg)
  */
 static void *ProcFileThread(void *arg)
 {
+    prctl(PR_SET_NAME, "procfilethr");
 	while(IsFileThreadQuit() == 0){
 		if(FileNeedWrite()){
 			DBG("File write\n");
@@ -377,6 +379,7 @@ static int CleanupFileEnv(int condition)
 void *FileMngThread(void *arg)
 {
 	int ret;
+	prctl(PR_SET_NAME, "filemng");
 	ret = SetupEnv();
 	if(ret == 0)
 	{

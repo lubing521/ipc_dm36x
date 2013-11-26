@@ -43,6 +43,7 @@ Modification:
 #include <dirent.h>
 #include <mntent.h>
 #include <signal.h>
+#include <sys/prctl.h>
 
 #include "dev_Upgrade.h"
 
@@ -1409,6 +1410,7 @@ void TcpSendServer()
 	int nSock ;
 	NET_MESSAGE msg;
 	char buf[200];
+	prctl(PR_SET_NAME, "TcpSendServer");
 	while(1)
 	{
 		ret=TcpMsgBuffer(&nSock , &msg , 0); //∂¡»°œ˚œ¢
@@ -1630,6 +1632,8 @@ void	UdpPortListenThread()
 	int nMsg;
 	nUdpSock = g_Upgrade_ServerInfo.hUdpPortSock;
 	NET_MESSAGE UI_CmdMsg , ReUI_CmdMsg;
+	prctl(PR_SET_NAME, "UdpPortListen");
+	
 	while (1)
 	{
 		ret=UdpReceive(nUdpSock , &UI_CmdMsg , sizeof(NET_MESSAGE) , &addr);
@@ -1778,6 +1782,8 @@ void *access_listen_ret_thread(void *param)
 	free(param);
 	hConnSock = listen_ret.accept_sock;
 	memcpy(&addr, &listen_ret.client_addr, sizeof(struct sockaddr_in));
+
+	prctl(PR_SET_NAME, "upgrade_uplisten");
 	
 	while(1)
 	{
@@ -2012,7 +2018,7 @@ void TCPListenThread()
 	bzero(&addr, sizeof(addr));
 	len = sizeof(addr);
 	hListenSock = g_Upgrade_ServerInfo.hTcpListenSock;
-
+    prctl(PR_SET_NAME, "TCPListenThread");
 	while(1)
 	{
 		to.tv_sec = 10; //10√Î

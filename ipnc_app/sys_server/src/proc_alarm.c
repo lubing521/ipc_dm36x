@@ -37,6 +37,8 @@
 #include <sys/time.h>
 #include <alarm_msg_drv.h>
 #include <gio_alarmout.h>
+#include <sys/prctl.h>
+
 
 #define STATUS_ALARM		(1<<0)
 #define STATUS_SCHEDULE		(1<<1)
@@ -64,6 +66,7 @@ extern volatile SemHandl_t hGIOSem;
 extern volatile SemHandl_t audioSem;
 int alarmDurationTime = 0;
 int audio_count =0;
+
 /**
 * @brief Get alarm duration
 * @return alarm duration
@@ -392,6 +395,9 @@ void *ProcAlarmThread(void *arg)
 	void *status = PROC_SUCESS;
 	time_t tCurrentTime;
 	struct tm *tmnow;
+	
+	prctl(PR_SET_NAME, "lhy_alarm");
+	
 	AlarmParam_t* pEvironment = (AlarmParam_t*)arg;
 	unsigned char enableIn,enableOut=0,trigger;
 	LogEntry_t tLog;
