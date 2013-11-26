@@ -180,7 +180,7 @@
 #define IMGS_I2C_ADDR       (0x90) /* for webcam */
 #endif
 
-#define IMGS_RESET_GPIO     (92)
+#define IMGS_RESET_GPIO     (80)
 
 typedef struct {
 

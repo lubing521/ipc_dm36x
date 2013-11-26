@@ -13,9 +13,7 @@ BASE_DIR  := $(BASE_HOME)/ipc_dm36x/av_capture/build
 
 TARGET_FS := $(BASE_HOME)/target/filesys
 TFTP_HOME := $(BASE_HOME)/tftpboot
-KERNELDIR := $(BASE_HOME)/ti-davinci
-
-
+KERNELDIR := $(BASE_HOME)/davinci/ti-davinci
 
 #SYSTEM := DVR
 #SYSTEM := EVM

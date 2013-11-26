@@ -88,6 +88,7 @@ lsp:
 ifeq ($(SYSTEM), IPNC)	
 	make lspbuild MAKE_TARGET=modules
 	cp $(KERNELDIR)/arch/arm/boot/uImage $(TFTP_HOME)/uImage_ipnc_$(HARDWARE)
+	-cp $(KERNELDIR)/arch/arm/boot/uImage /home/jiangjx/UbuntuShare/tftpboot/
 	find $(KERNELDIR) -name "*.ko" -exec cp '{}' $(TARGET_FS_DIR)/modules \;
 	rm $(TARGET_FS_DIR)/modules/ltt*.ko
 endif
@@ -114,9 +115,10 @@ nfsreset:
 	sudo /sbin/service nfs restart	
 
 sysall:
-	make lspall	
 	make dvsdkall
 	make all
+	make lspall
+	make
 	
 sysclean:
 	make lspclean	

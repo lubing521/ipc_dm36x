@@ -53,7 +53,7 @@
 //#define STREAM_CMEM_ALLOC OSA_cmemAlloc
 #define STREAM_CMEM_ALLOC OSA_cmemAllocCached
 
-#define MEMMNG_DMA	(0)
+#define MEMMNG_DMA	(1)
 
 #if	MEMMNG_DMA
 static DRV_DmaChHndl dmaHndl;
@@ -575,9 +575,11 @@ int MemMng_Mem_layout( int mem_layout )
 
 	pLayout = &mem_layout_setting[mem_layout];
 	if( IsPrint )
-		printf("\nmem_layout         = %d \n",mem_layout);
+	{
+		printf("\nmem_layout         = %d \n", mem_layout);
+	}
 
-	for( cnt = 0; cnt < VIDOE_INFO_END; cnt++ )
+	for( cnt = 0; cnt < VIDOE_INFO_END; cnt++ ) //VIDOE_INFO_END = 4
 	{
 			Video_info_default[cnt].size		= pLayout->profiles[cnt].mem_size;
 			Video_info_default[cnt].extrasize	= pLayout->profiles[cnt].ext_size;

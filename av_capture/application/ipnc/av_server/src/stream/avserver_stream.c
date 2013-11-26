@@ -91,11 +91,9 @@ int VIDEO_streamSysExit()
 
 static Uint32 GetCurTime()
 {
-  struct timeval tv;
-
-  gettimeofday(&tv);
-
-  return (tv.tv_sec * 1000) + (tv.tv_usec + 500) / 1000;
+    struct timeval tv;
+    gettimeofday(&tv);
+    return (tv.tv_sec * 1000) + (tv.tv_usec + 500) / 1000;
 }
 
 int VIDEO_streamShmCopy(int streamId, OSA_BufInfo *pBufInfo)

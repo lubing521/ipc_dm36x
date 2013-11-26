@@ -59,7 +59,7 @@ int stream_init( 	STREAM_PARM *pParm , STREAM_SET *pSet)
 	int cnt = 0;
 
 	/* Init memory manager */
-	pParm->MemInfo.mem_layout = pSet->Mem_layout;
+	pParm->MemInfo.mem_layout = pSet->Mem_layout; //MEM_LAYOUT_3
 	if(MemMng_Init( &(pParm->MemInfo) ) != STREAM_SUCCESS)
 	{
 		ERR("Memory manager init fail\n");
