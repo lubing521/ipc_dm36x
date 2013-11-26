@@ -576,7 +576,7 @@ int MemMng_Mem_layout( int mem_layout )
 	pLayout = &mem_layout_setting[mem_layout];
 	if( IsPrint )
 	{
-		printf("\nmem_layout         = %d \n", mem_layout);
+		printf("\n mem_layout        = %d \n", mem_layout);// mem_layout = 7
 	}
 
 	for( cnt = 0; cnt < VIDOE_INFO_END; cnt++ ) //VIDOE_INFO_END = 4
@@ -598,16 +598,16 @@ int MemMng_Mem_layout( int mem_layout )
 
 			if( IsPrint )
 			{
-				printf("mem_size[%d]       =0x%X \n",cnt,(unsigned int)Video_info_default[cnt].size);
-				printf("mem_blk_size[%d]   =0x%X \n",cnt,Video_info_default[cnt].blk_sz);
-				printf("cache_size[%d]     =0x%X \n",cnt,Cache_mng_default[cnt].size);
-				printf("cache_blk_size[%d] =0x%X \n",cnt,Cache_mng_default[cnt].blk_sz);
+				printf("mem_size[%d]       =%8d byte = %f M\n",cnt, (unsigned int)Video_info_default[cnt].size, (unsigned int)Video_info_default[cnt].size/1024/1024.0);
+				printf("mem_blk_size[%d]   =%8d  \n",cnt,Video_info_default[cnt].blk_sz);
+				printf("cache_size[%d]     =%8d  \n",cnt,Cache_mng_default[cnt].size);
+				printf("cache_blk_size[%d] =%8d  \n",cnt,Cache_mng_default[cnt].blk_sz);
 			}
 	}
 	if( IsPrint )
 	{
-		printf("totalsize          =0x%X \n",totalsize);
-		printf("TOTAL_MEM_SIZE     =0x%X \n",TOTAL_MEM_SIZE);
+		printf("totalsize          =%8d byte = %f M \n", totalsize, totalsize/1024/1024.0);
+		printf("TOTAL_MEM_SIZE     =%8d byte = %f M \n", TOTAL_MEM_SIZE, TOTAL_MEM_SIZE/1024/1024.0);
 	}
 
 	return totalsize;

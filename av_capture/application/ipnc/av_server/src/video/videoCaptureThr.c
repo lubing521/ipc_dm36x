@@ -173,7 +173,7 @@ int VIDEO_captureMemFree()
 
 inline void VIDEO_captureFrameRateCount(const Bool enable, const int num)
 {
-#if 1
+#if 0
     struct timeval pts;
     static int bak = 0;
     static int cntbak = 0;

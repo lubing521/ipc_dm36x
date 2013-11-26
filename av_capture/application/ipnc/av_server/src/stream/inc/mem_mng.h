@@ -17,8 +17,8 @@
 
 /* size of 3 GOP */
 #define MJPG_CACHE_SIZE 			(0x100000)
-#define MP4_CACHE_SIZE 				(0x600000)
-#define MP4_EXT_CACHE_SIZE 			(0x300000)
+#define MP4_CACHE_SIZE 				(0xa00000)
+#define MP4_EXT_CACHE_SIZE 			(0x500000)
 #define AUDIO_CACHE_SIZE 			(0x80000)
 
 #define MJPG_CACHE_BLK_SIZE 		(50*1024)
@@ -29,8 +29,8 @@
 #define CACHE_MEM_SIZE	(MJPG_CACHE_SIZE+MP4_CACHE_SIZE+MP4_EXT_CACHE_SIZE+AUDIO_CACHE_SIZE)
 
 #define MJPG_MEM_SIZE 				(0x100000)
-#define MP4_MEM_SIZE 				(0x600000)
-#define MP4_EXT_MEM_SIZE 			(0x300000)
+#define MP4_MEM_SIZE 				(0xa00000)
+#define MP4_EXT_MEM_SIZE 			(0x500000)
 #define AUDIO_MEM_SIZE 				(0x80000)
 
 #define MJPG_BLK_SIZE				(50*1024)

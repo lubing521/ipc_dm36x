@@ -943,7 +943,7 @@ void UI_setConfig(AVSERVER_Config *config)
 		config->encodeConfig[i].cropWidth                = ALIGN_ENCODE(nWidth);
 		config->encodeConfig[i].cropHeight               = ALIGN_ENCODE(nHeight);
 		config->encodeConfig[i].frameRateBase		 	 = (1*1000);
-		config->encodeConfig[i].frameSkipMask            = 0x01;
+		config->encodeConfig[i].frameSkipMask            = 0x00010000;
 		config->encodeConfig[i].codecType                = ALG_VID_CODEC_MJPEG;
 		config->encodeConfig[i].codecBitrate             = gAVSERVER_UI_config.codecBitrate[1];
 		config->encodeConfig[i].encryptEnable            = FALSE;
@@ -1621,7 +1621,8 @@ void UI_setConfig(AVSERVER_Config *config)
   }
 
   {
-	  if(config->numEncodeStream == 1) {
+	  if(config->numEncodeStream == 1) 
+	  {
 	  	if(config->encodeConfig[0].codecType == ALG_VID_CODEC_MJPEG) //check megapixel JPEG or not
 		 	config->streamConfig.mem_layou_set = MEM_LAYOUT_2;
 		else if(config->sensorMode == DRV_IMGS_SENSOR_MODE_2048x1536) //check 3MP H264 or not
@@ -1631,7 +1632,8 @@ void UI_setConfig(AVSERVER_Config *config)
 		else
 		 	config->streamConfig.mem_layou_set = MEM_LAYOUT_0;
 	  }
-	  else if(config->numEncodeStream == 2) {
+	  else if(config->numEncodeStream == 2) 
+	  {
 		if(gAVSERVER_UI_config.mode == AVSERVER_UI_CAPTURE_MODE_D1_D1) {
 			if(config->encodeConfig[1].codecType == ALG_VID_CODEC_MJPEG) //check second stream JPEG or not
 				config->streamConfig.mem_layou_set = MEM_LAYOUT_4;
@@ -1645,11 +1647,13 @@ void UI_setConfig(AVSERVER_Config *config)
 				config->streamConfig.mem_layou_set = MEM_LAYOUT_5;
 		}
       }
-      else {
+      else 
+      {
 	  	config->streamConfig.mem_layou_set = MEM_LAYOUT_7;  //set default memory layout
-	  	printf("zeng config->streamConfig.mem_layou_set = MEM_LAYOUT_7\n");
 	  }
   }
+
+  printf("config->streamConfig.mem_layou_set = %d\n", config->streamConfig.mem_layou_set);
 
   config->alarmEnable = (AlarmDrvInit(ALARM_AVSERVER_MSG) != 0) ? 0:1;
 
