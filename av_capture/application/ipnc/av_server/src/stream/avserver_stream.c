@@ -178,7 +178,7 @@ int VIDEO_streamShmCopy(int streamId, OSA_BufInfo *pBufInfo)
             timestamp,
             timediff);
         }
-        else 
+        else if (timediff <=30 )
         {
             OSA_printf("count = %4d, frameType=%s, size = %6d, timediff = %d ms\n",
             count++,
@@ -195,8 +195,7 @@ int VIDEO_streamShmCopy(int streamId, OSA_BufInfo *pBufInfo)
 int AUDIO_streamShmCopy(AUDIO_BufInfo *pBufInfo)
 {
   int  status=OSA_SOK;
-
-
+  
   status = stream_write(
         pBufInfo->virtAddr,
         pBufInfo->encFrameSize,
