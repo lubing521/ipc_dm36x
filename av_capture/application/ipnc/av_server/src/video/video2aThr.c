@@ -308,7 +308,7 @@ int VIDEO_aewbTskMain(struct OSA_TskHndl *pTsk, OSA_MsgHndl *pMsg, Uint32 curSta
 
   while(!done) 
   {
-    mSleep(20);
+    mSleep(40);
     status = VIDEO_aewbTskRun();
 
     if(status!=OSA_SOK) {

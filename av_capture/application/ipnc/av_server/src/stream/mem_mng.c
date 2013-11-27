@@ -1004,14 +1004,20 @@ int MemMng_Video_Write( void *pData, int size, int frame_type,
 			int nextframe = pVidInfo->cur_frame + 1;
 			int freeframe = (nextframe + free_cnt)%pVidInfo->frame_num;
 			/* Not enough free blk */
+
 			if( MemMng_VidFrame_Free(  pVidInfo,  freeframe) < 0 )
 			{
 				goto MEM_MNG_WRITE_FAIL;
-			}else{
+			}
+			else
+			{
 				free_cnt++;
+				//if (free_cnt ==1) printf(" Not enough cnt = %d\n", free_cnt);
 				continue;
 			}
-		}else{
+		}
+		else
+		{
 			int nextblk = (pVidInfo->cur_blk + 1)%pVidInfo->blk_num;
 			if( (nextblk+ blk_use ) > pVidInfo->blk_num )
 			{

@@ -103,16 +103,17 @@ int AVSERVER_tskStart(OSA_TskHndl *pTsk, OSA_MsgHndl *pMsg)
     return status;
   }
 
+#if 0
   #ifdef AVSERVER_DEBUG_MAIN_THR
   OSA_printf(" AVSERVER MAIN: Create fdTsk ...\n");
   #endif
-
   status = OSA_tskSendMsg(&gVIDEO_ctrl.fdTsk, pTsk, AVSERVER_CMD_CREATE, NULL, OSA_MBX_WAIT_ACK);
 
   if(status!=OSA_SOK) {
     OSA_ERROR("\n");
     return status;
   }
+#endif
 
   #ifdef AVSERVER_DEBUG_MAIN_THR
   OSA_printf(" AVSERVER MAIN: Create displayTsk ...\n");

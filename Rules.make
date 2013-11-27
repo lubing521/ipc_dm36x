@@ -6,7 +6,7 @@
 MVTOOL_DIR := /opt/mv_pro_5.0/montavista/pro/devkit/arm/v5t_le
 
 BASE_HOME := /home/jiangjx/UbuntuShare/ipnc_project/ipnc_lhy
-DVSDK_BASE_DIR := $(BASE_HOME)/dvsdk_2_10_01_18
+DVSDK_BASE_DIR := $(BASE_HOME)/dvsdk_ipnctools
 
 HOME      := $(BASE_HOME)/ipc_dm36x
 BASE_DIR  := $(BASE_HOME)/ipc_dm36x/av_capture/build
@@ -59,9 +59,9 @@ endif
 
 ifeq ($(SYSTEM), IPNC)
 BOARD_ID := BOARD_AP_IPNC
-#IMGS_ID := IMGS_MICRON_MT9P031_5MP
+IMGS_ID := IMGS_MICRON_MT9P031_5MP
 #IMGS_ID := IMGS_SONY_IMX122_2_3MP
-IMGS_ID := IMGS_AR0130_1.2MP
+#IMGS_ID := IMGS_AR0130_1.2MP
 #IMGS_ID := IMGS_OV9712_1MP
 #IMGS_ID := IMGS_OV2715_2MP
 #IMGS_ID := IMGS_MICRON_MT9M034_1.2MP

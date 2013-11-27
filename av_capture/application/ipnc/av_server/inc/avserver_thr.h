@@ -8,7 +8,7 @@
 #define VIDEO_ENCODE_THR_PRI        (OSA_THR_PRI_MAX-1)
 #define VIDEO_CAPTURE_THR_PRI       (OSA_THR_PRI_MAX-2)
 #define VIDEO_STREAM_THR_PRI        (OSA_THR_PRI_MAX-2)
-#define VIDEO_2A_THR_PRI            (OSA_THR_PRI_MAX-3)
+#define VIDEO_2A_THR_PRI            (OSA_THR_PRI_MAX-5)
 
 #define VIDEO_RESIZE_THR_PRI        (OSA_THR_PRI_MAX-2)
 #define VIDEO_LDC_THR_PRI           (OSA_THR_PRI_MAX-2)

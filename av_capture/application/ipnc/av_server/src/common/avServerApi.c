@@ -616,13 +616,13 @@ int AVSERVER_init()
   status |= VIDEO_vnfCreate();
   status |= VIDEO_vsCreate();
   status |= VIDEO_aewbCreate();
-  status |= VIDEO_fdCreate();
+  //status |= VIDEO_fdCreate();
   status |= VIDEO_encodeCreate();
   status |= VIDEO_swosdCreate();
   status |= VIDEO_encryptCreate();
   status |= VIDEO_motionCreate();
- // status |= AUDIO_audioCreate();
- // status |= AUDIOPLAY_audioCreate();
+  //status |= AUDIO_audioCreate();
+  //status |= AUDIOPLAY_audioCreate();
   status |= AVSERVER_mainCreate();
 
   if(status!=OSA_SOK) {

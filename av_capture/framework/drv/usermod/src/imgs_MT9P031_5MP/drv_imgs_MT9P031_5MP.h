@@ -49,11 +49,11 @@
 #define ROW_BLK_DEF_OFFSET  (0x4B)
 
 #ifdef BOARD_AP_IPNC
-#define IMGS_I2C_ADDR       (0x90)
+#define IMGS_I2C_ADDR       (0xBA)
 #endif
 
 #ifdef BOARD_TI_EVM
-#define IMGS_I2C_ADDR       (0xBA)
+#define IMGS_I2C_ADDR       (0x90)
 #endif
 
 #define IMGS_RESET_GPIO     (57)//(91)

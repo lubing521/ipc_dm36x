@@ -215,6 +215,7 @@ int AVSERVER_bufAlloc()
     }
   }
 
+#if 0
   bufSize = OSA_align(gVIDEO_ctrl.faceDetectStream.fdOffsetH, 32)*gVIDEO_ctrl.faceDetectStream.fdHeight*2;
   bufSize += VIDEO_BUF_HEADER_SIZE;
 
@@ -237,6 +238,7 @@ int AVSERVER_bufAlloc()
 
   if(pBufCreatePrm->numBuf)
     status |= OSA_bufCreate(pBufHndl, pBufCreatePrm);
+#endif
 
   pBufHndl      = &gVIDEO_ctrl.displayStream.bufDisplayIn;
   pBufCreatePrm = &gVIDEO_ctrl.displayStream.bufDisplayInCreatePrm;
