@@ -11,13 +11,11 @@
 #define IMGS_H_PAD          (0)
 #define IMGS_V_PAD          (4)
 
-#define IMGS_W_MAX     (2592)
-#define IMGS_H_MAX     (1944)
+#define IMGS_W_MAX          (1280)
+#define IMGS_H_MAX          (800)
 
-#define IMGS_MHZ        (1000000L)
-
-#define IMGS_PLL_REF_CLK     (24*IMGS_MHZ)
-
+#define IMGS_MHZ            (1000000L)
+#define IMGS_PLL_REF_CLK    (27*IMGS_MHZ)
 #define IMGS_CHIP_ID        (0x9711)
 
 #define   GAIN      0x00
@@ -171,19 +169,10 @@
 #define    DVP_CTRL_12        0xd4
 #define    SC_CTRL_0          0xd6
 
-
-#ifdef BOARD_AP_IPNC
 #define IMGS_I2C_ADDR         (0x60)
-#endif
-
-#ifdef BOARD_TI_EVM
-#define IMGS_I2C_ADDR       (0x90) /* for webcam */
-#endif
-
-#define IMGS_RESET_GPIO     (80)
+#define IMGS_RESET_GPIO       (80)
 
 typedef struct {
-
   int fps;        // Hz
   float t_frame;  // ns
   float t_row;    // ns
@@ -201,14 +190,10 @@ typedef struct {
 } DRV_ImgsFrameTime;
 
 typedef struct {
-
   DRV_I2cHndl i2cHndl;
-
   DRV_ImgsFrameTime curFrameTime;
   DRV_ImgsModeConfig curModeConfig;
-
 } DRV_ImgsObj;
-
 
 extern DRV_ImgsObj gDRV_imgsObj;
 
@@ -235,24 +220,23 @@ extern DRV_ImgsLdcConfig    gDRV_imgsLdcConfig_1312x768_0_VS;
 extern DRV_ImgsLdcConfig    gDRV_imgsLdcConfig_1312x768_1_VS;
 extern DRV_ImgsLdcConfig    gDRV_imgsLdcConfig_1312x768_2_VS;
 
-extern DRV_ImgsIsifConfig   gDRV_imgsIsifConfig_Common;
+extern DRV_ImgsIsifConfig   gDRV_imgsIsifConfig_Common_OV9712;
 
-extern DRV_ImgsIpipeConfig  gDRV_imgsIpipeConfig_Vnfdemo;
-extern DRV_ImgsIpipeConfig  gDRV_imgsIpipeConfig_Common;
+extern DRV_ImgsIpipeConfig  gDRV_imgsIpipeConfig_Vnfdemo_OV9712;
+extern DRV_ImgsIpipeConfig  gDRV_imgsIpipeConfig_Common_OV9712;
 
-extern DRV_ImgsH3aConfig    gDRV_imgsH3aConfig_Appro;
-extern DRV_ImgsH3aConfig    gDRV_imgsH3aConfig_TI;
-extern DRV_ImgsH3aConfig    gDRV_imgsH3aConfig_Common;
+extern DRV_ImgsH3aConfig    gDRV_imgsH3aConfig_Appro_OV9712;
+extern DRV_ImgsH3aConfig    gDRV_imgsH3aConfig_TI_OV9712;
+extern DRV_ImgsH3aConfig    gDRV_imgsH3aConfig_Common_OV9712;
 
-int DRV_imgsReset();
-
-int DRV_imgsCalcFrameTimes(Uint32 fps, Uint32 width, Uint32 height);
-int DRV_imgsCalcFrameRate(Uint32 fps);
-int DRV_imgsCalcSW(int eshutterInUsec, int *SW);
-int DRV_imgsCalcAgain(int aGain);
-int DRV_imgsCheckId();
-int DRV_imgsSetRegs();
-int DRV_imgsSetBlc(int value);
+int DRV_imgsReset_OV9712();
+int DRV_imgsCalcFrameTimes_OV9712(Uint32 fps, Uint32 width, Uint32 height);
+int DRV_imgsCalcFrameRate_OV9712(Uint32 fps);
+int DRV_imgsCalcSW_OV9712(int eshutterInUsec, int *SW);
+int DRV_imgsCalcAgain_OV9712(int aGain);
+int DRV_imgsCheckId_OV9712();
+int DRV_imgsSetRegs_OV9712();
+int DRV_imgsSetBlc_OV9712(int value);
 
 #endif
 

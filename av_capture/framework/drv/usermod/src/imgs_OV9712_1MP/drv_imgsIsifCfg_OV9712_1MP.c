@@ -1,13 +1,13 @@
 
 #include <drv_imgs.h>
 
-DRV_ImgsIsifConfig gDRV_imgsIsifConfig_Common = {
+DRV_ImgsIsifConfig gDRV_imgsIsifConfig_Common_OV9712 = {
 
   .ccdcParams = {
   
     .hLpfEnable = FALSE,
     
-    .inDataMsbPosition = CSL_CCDC_MSB_POSITION_BIT9,//designed by panmingbo 2013-07-31
+    .inDataMsbPosition = CSL_CCDC_MSB_POSITION_BIT9,
     
     .lin = {
       .enable = FALSE,
@@ -46,7 +46,7 @@ DRV_ImgsIsifConfig gDRV_imgsIsifConfig_Common = {
     
     .clamp = {
       .enable = FALSE,
-      .dcOffset = -3, //0x0  designed by panmingbo 2013-07-31
+      .dcOffset = 0x0, 
     },
     
     .lsc = {

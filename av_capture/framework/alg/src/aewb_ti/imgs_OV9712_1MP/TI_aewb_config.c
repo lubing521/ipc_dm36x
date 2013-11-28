@@ -168,7 +168,7 @@ static void TIAE_config_flicker_yes(IAE_DynamicParams * aeDynamicParams, int min
 
     if (step_size == 10000)
     {
-	aeDynamicParams->exposureTimeRange[i].min = min_exp;
+	    aeDynamicParams->exposureTimeRange[i].min = min_exp;
         aeDynamicParams->exposureTimeRange[i].max = min_exp;
         aeDynamicParams->apertureLevelRange[i].min = 1;
         aeDynamicParams->apertureLevelRange[i].max = 1;
@@ -178,7 +178,7 @@ static void TIAE_config_flicker_yes(IAE_DynamicParams * aeDynamicParams, int min
         aeDynamicParams->ipipeGainRange[i].max = 2048;
         i++;
 
-	aeDynamicParams->exposureTimeRange[i].min = min_exp;
+	    aeDynamicParams->exposureTimeRange[i].min = min_exp;
         aeDynamicParams->exposureTimeRange[i].max = step_size * 3;
         aeDynamicParams->apertureLevelRange[i].min = 1;
         aeDynamicParams->apertureLevelRange[i].max = 1;

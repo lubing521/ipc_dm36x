@@ -202,6 +202,7 @@ static struct rgb2rgb_index rgb_matrixes_1[] = {
 static struct rgb2rgb_index* rgb_matrixes[]= {
     rgb_matrixes_0, 
     rgb_matrixes_1,
+    rgb_matrixes_1,
 };
 
 static CSL_IpipeEdgeEnhanceConfig ee_0 = {
@@ -228,49 +229,82 @@ static CSL_IpipeEdgeEnhanceConfig ee_1 = {
     .edgeSharpOffsetGradient = 24, 
     .edgeSharpHpValUpLimit = 32,
 }; 
+
 static CSL_IpipeEdgeEnhanceConfig* ee[] = {
     &ee_0,
     &ee_1,
 };
 
-static CSL_IpipeNfConfig nf2_0 = {
-    .enable = 1,
-    .spreadVal = 3,
-    .lutAddrShift = 2,
-    .greenSampleMethod = 0,
-    .lscGainEnable = 0,
-    .edgeDetectThresMin = 0,
-    .edgeDetectThresMax = 2047,
-    .lutThresTable = {20,30,40,50, 60,70,80,90},
-    .lutIntensityTable = {20,20,18,18, 16,16,16,16},
-};
-static CSL_IpipeNfConfig nf2_1 = {
-    .enable = 1,
-    .spreadVal = 3,
-    .lutAddrShift = 2,
-    .greenSampleMethod = 0,
-    .lscGainEnable = 0,
-    .edgeDetectThresMin = 0,
-    .edgeDetectThresMax = 2047,
-    .lutThresTable = {20,20,20,20, 20,20,20,20},
-    .lutIntensityTable = {16,16,16,16, 16,16,16,16},
-}; 
-static CSL_IpipeNfConfig* nf2[] = {
-    &nf2_0,
-    &nf2_1,
-};
-
-
 static void ISP_config(int i)
 {
-    DRV_ipipeSetEdgeEnhance(ee[i]);
-    DRV_ipipeSetNf2(nf2[i]);
+    //DRV_ipipeSetEdgeEnhance(ee[i]);
+    //DRV_ipipeSetNf2(nf2[i]);
+}
+
+static void ISP_ipipeSetNf2(int aGain, int dGain)
+{
+    static int value_bak = -1;
+    static CSL_IpipeNfConfig nf2 =
+    {
+    .enable             = 1,
+    .spreadVal          = 3,
+    .spreadValSrc       = 0,
+    .lutAddrShift       = 0,
+    .greenSampleMethod  = 0,
+    .lscGainEnable      = 0,
+    .edgeDetectThresMin = 0,
+    .edgeDetectThresMax = 2047,
+    .lutThresTable      = {20, 20, 20, 20, 20, 20, 20, 20},
+    .lutIntensityTable  = {31, 31, 31, 31, 31, 31, 31, 31},
+    .lutSpreadTable     = { 0,  0,  0,  0,  0,  0,  0,  0},
+    };
+    
+    int ag = (aGain > 10000) ? 10000 : aGain;
+    int dg = (dGain >  2048) ?  2048 : dGain;
+    int value = 0;
+    
+    if (ag < 2000)
+    {
+        value = 20;
+    }
+    else
+    {
+        value = 20 + (ag - 2000) / 75 + (dg - 1000) / 10;
+    }
+
+    //value += gALG_AewbDebug.ipipeNf2.Nf2Value_adjust + ALG_aewbGetNoiseLevel();
+    value = (value > 200) ? 200 : value;
+    value = (value <  20) ?  20 : value;
+    
+    if (value == value_bak)
+    {
+        return;
+    }
+    value_bak = value;
+    
+    int i;
+    for (i = 0; i < 8; i++)
+    {
+        nf2.lutThresTable[i] = (Uint32)value + (Uint32)(i * value / 10);
+    }
+
+    //gALG_AewbDebug.ipipeNf2.Nf2Value = value;
+    
+#ifdef ISP_DEBUG
+    printf("ISP_ipipeSetNf2 value = %3d\n", value);
+#endif
+
+    DRV_ipipeSetNf2(&nf2);
 }
 
 static int getSetIndex(int eTime, int aGain, int dGain, int cTemp)
 {
-    if (aGain >= 16000)
+    if (aGain >= 8000 && dGain >= 1536)
     {
+        return 2; 
+    }
+    else if (aGain >= 5000)
+    {  
         return 1;
     }
     else
@@ -288,19 +322,20 @@ int TI_2A_ISP_control(int eTime, int aGain, int dGain, int cTemp)
     int i = getSetIndex(eTime, aGain, dGain, cTemp);
     int j = 0;
 
-    if (steaySet == i) 
+    ISP_ipipeSetNf2(aGain, dGain);
+    
+    if (steaySet == i)
     {
         j = switch_rgb2rgb_matrixes(cTemp, rgb_matrixes[i], 0);
         tempSet = -1;
         tempCnt = 0;
     }
-    else if (tempSet == i && tempCnt >= tempCountLimit) 
+    else if (tempSet == i && tempCnt >= tempCountLimit)
     {
         steaySet = i; 
         tempSet = -1;
         tempCnt = 0;
         j = switch_rgb2rgb_matrixes(cTemp, rgb_matrixes[i], 1);
-        ISP_config(i);
     }
     else if (tempSet == i)
     {
@@ -313,7 +348,4 @@ int TI_2A_ISP_control(int eTime, int aGain, int dGain, int cTemp)
     }
     return 100 * steaySet + j;
 }
-
-
-
 

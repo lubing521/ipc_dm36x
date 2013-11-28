@@ -2,7 +2,7 @@
 #include <drv_imgs.h>
 
 
-DRV_ImgsIpipeConfig gDRV_imgsIpipeConfig_Vnfdemo = {
+DRV_ImgsIpipeConfig gDRV_imgsIpipeConfig_Vnfdemo_OV9712 = {
 
   .ipipeifParams = {
 
@@ -108,21 +108,21 @@ DRV_ImgsIpipeConfig gDRV_imgsIpipeConfig_Vnfdemo = {
     },
 
     .cfa = {
-        .mode = CSL_IPIPE_CFA_MODE_2DAC,
-        .twoDirDirThres      = 16,
-        .twoDirDirSlope      = 10,
-        .twoDirHpMixThres    = 100,
-        .twoDirHpMixSlope    = 10,
-        .twoDirNonDirWeight  = 16,
-        .twoDirHpValLowThres = 600,
-        .twoDirHpValSlope    = 57,
-        .daaThresMin         = 7,
-        .daaThresSlope       = 20,
-        .daaEdgeThres        = 20,
-        .daaSlopeMin         = 200,
-        .daaSlopeSlope       = 20,
-        .daaLpWeight         = 32,
-        .daaHueFrac          = 0,
+      .mode = CSL_IPIPE_CFA_MODE_2DAC,
+      .twoDirHpValLowThres = 600,
+      .twoDirHpValSlope    = 57,
+      .twoDirHpMixThres    = 100,
+      .twoDirHpMixSlope    = 10,
+      .twoDirDirThres      = 4,
+      .twoDirDirSlope      = 10,
+      .twoDirNonDirWeight  = 16,
+      .daaHueFrac          = 0,
+      .daaEdgeThres        = 0,
+      .daaThresMin         = 0,
+      .daaThresSlope       = 0,
+      .daaSlopeMin         = 0,
+      .daaSlopeSlope       = 0,
+      .daaLpWeight         = 0,
     },
 
     .rgb2rgb1 = {
@@ -209,7 +209,7 @@ DRV_ImgsIpipeConfig gDRV_imgsIpipeConfig_Vnfdemo = {
   },
 };
 
-DRV_ImgsIpipeConfig gDRV_imgsIpipeConfig_Common = {
+DRV_ImgsIpipeConfig gDRV_imgsIpipeConfig_Common_OV9712 = {
 
   .ipipeifParams = {
 
@@ -315,24 +315,25 @@ DRV_ImgsIpipeConfig gDRV_imgsIpipeConfig_Common = {
     },
 
     .cfa = {
-            .mode = CSL_IPIPE_CFA_MODE_2DAC,
-            .twoDirDirThres      = 16,
-            .twoDirDirSlope      = 10,
-            .twoDirHpMixThres    = 100,
-            .twoDirHpMixSlope    = 10,
-            .twoDirNonDirWeight  = 16,
-            .twoDirHpValLowThres = 600,
-            .twoDirHpValSlope    = 57,
-            .daaThresMin         = 7,
-            .daaThresSlope       = 20,
-            .daaEdgeThres        = 20,
-            .daaSlopeMin         = 200,
-            .daaSlopeSlope       = 20,
-            .daaLpWeight         = 32,
-            .daaHueFrac          = 0,
+        .mode = CSL_IPIPE_CFA_MODE_2DAC,
+        .twoDirHpValLowThres = 600,
+        .twoDirHpValSlope    = 57,
+        .twoDirHpMixThres    = 100,
+        .twoDirHpMixSlope    = 10,
+        .twoDirDirThres      = 4,
+        .twoDirDirSlope      = 10,
+        .twoDirNonDirWeight  = 16,
+        .daaHueFrac          = 0,
+        .daaEdgeThres        = 0,
+        .daaThresMin         = 0,
+        .daaThresSlope       = 0,
+        .daaSlopeMin         = 0,
+        .daaSlopeSlope       = 0,
+        .daaLpWeight         = 0,
     },
 
     .rgb2rgb1 = {
+
       .matrix = {
         { 0x0100, 0x0000, 0x0000 },
         { 0x0000, 0x0100, 0x0000 },
