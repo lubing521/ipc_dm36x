@@ -171,7 +171,7 @@ int VIDEO_streamShmCopy(int streamId, OSA_BufInfo *pBufInfo)
         int timediff = timenow - timestamp;
         static int count = 0;
 
-        if (timediff >=50 )
+        if (timediff >=50)
         {
             OSA_printf("count = %4d, frameType=%s, size = %6d, time = (%d, %d) %d, timeinterval = %d ****\n",
             count++,
