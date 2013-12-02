@@ -270,13 +270,11 @@ int VIDEO_streamTskRun(int streamId)
       #endif
     #endif  
 
-    if(pInBufHeader->encFrameSize > 0) {
-    
+    if(pInBufHeader->encFrameSize > 0)
+    {
       OSA_prfBegin(&gAVSERVER_ctrl.streamPrf);
-    
       VIDEO_streamShmCopy(streamId, pInBufInfo);
       //VIDEO_streamFileWrite(streamId, pInBufInfo);
-      
       OSA_prfEnd(&gAVSERVER_ctrl.streamPrf, 1);      
     }      
 

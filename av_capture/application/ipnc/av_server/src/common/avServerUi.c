@@ -813,7 +813,6 @@ void UI_setConfig(AVSERVER_Config *config)
 	case AVSERVER_UI_CAPTURE_MODE_960P_QVGA:
 	case AVSERVER_UI_CAPTURE_MODE_960P_D1:
 	case AVSERVER_UI_CAPTURE_MODE_960P_CIF:
-
 	{
 		if(platform==PLATFORM_DM368)
 		{
@@ -852,9 +851,9 @@ void UI_setConfig(AVSERVER_Config *config)
 				break;
 			default:
 				nWidth  = ALIGN_ENCODE(640);
-				nHeight = ALIGN_ENCODE(480);				
+				nHeight = ALIGN_ENCODE(480);
+				break;
 		}
-		
 		
 		config->sensorMode					= DRV_IMGS_SENSOR_MODE_1280x960;
 		config->sensorFps 					= 25;
@@ -865,7 +864,7 @@ void UI_setConfig(AVSERVER_Config *config)
 		config->vnfTskEnable			= gAVSERVER_UI_config.snfEnable|gAVSERVER_UI_config.tnfEnable;
 		config->encryptTskEnable		= FALSE;
 
-		config->captureRawInMode	    = AVSERVER_CAPTURE_RAW_IN_MODE_ISIF_IN;//AVSERVER_CAPTURE_RAW_IN_MODE_DDR_IN;
+		config->captureRawInMode	    = AVSERVER_CAPTURE_RAW_IN_MODE_ISIF_IN;
 		config->captureSingleResize 	= FALSE;
 		config->captureYuvFormat		= DRV_DATA_FORMAT_YUV420;
 	
@@ -882,7 +881,6 @@ void UI_setConfig(AVSERVER_Config *config)
 		config->displayConfig.expandH            = TRUE;
 
 		i=0;
-
 		k=0;
 		config->captureConfig[i].width						= 1280;
 		config->captureConfig[i].height 					= 960;
@@ -890,29 +888,24 @@ void UI_setConfig(AVSERVER_Config *config)
 		config->captureConfig[i].snfEnable					= gAVSERVER_UI_config.snfEnable;
 		config->captureConfig[i].tnfEnable					= gAVSERVER_UI_config.tnfEnable;
 		config->captureConfig[i].vsEnable 					= gAVSERVER_UI_config.vsEnable;
-
-		config->captureConfig[i].numEncodes 				= 1;
+		config->captureConfig[i].numEncodes 				= 2;
 		config->captureConfig[i].encodeStreamId[k++]		= 0;
+		config->captureConfig[i].encodeStreamId[k++]		= 2;
 		config->captureConfig[i].frameSkipMask				= 0x3FFFFFFF;
-		i++;
 
+		i++;
 		k=0;
-		
 		config->captureConfig[i].width						= ALIGN_ENCODE(nWidth);
 		config->captureConfig[i].height 					= ALIGN_ENCODE(nHeight);
 		config->captureConfig[i].ldcEnable					= gAVSERVER_UI_config.ldcEnable;
-		config->captureConfig[i].snfEnable					= (numEncodes>1)?gAVSERVER_UI_config.snfEnable:FALSE;
-		config->captureConfig[i].tnfEnable					= (numEncodes>1)?gAVSERVER_UI_config.tnfEnable:FALSE;
+		config->captureConfig[i].snfEnable					= (numEncodes > 1) ? gAVSERVER_UI_config.snfEnable : FALSE;
+		config->captureConfig[i].tnfEnable					= (numEncodes > 1) ? gAVSERVER_UI_config.tnfEnable : FALSE;
 		config->captureConfig[i].vsEnable 					= gAVSERVER_UI_config.vsEnable;
-		config->captureConfig[i].numEncodes 				= 2;
+		config->captureConfig[i].numEncodes 				= 1;
 		config->captureConfig[i].encodeStreamId[k++]		= 1;
-		config->captureConfig[i].encodeStreamId[k++]		= 2;
-		
 		config->captureConfig[i].frameSkipMask				= 0x3FFFFFFF;
-		i++;
 
 		i=0;
-
 		config->encodeConfig[i].captureStreamId 		 = 0;
 		config->encodeConfig[i].cropWidth 				 = ALIGN_ENCODE(1280);
 		config->encodeConfig[i].cropHeight				 = ALIGN_ENCODE(960);
@@ -924,8 +917,8 @@ void UI_setConfig(AVSERVER_Config *config)
 		config->encodeConfig[i].fileSaveEnable			 = FALSE;
 		config->encodeConfig[i].motionVectorOutputEnable = FALSE;
 		config->encodeConfig[i].qValue					 = gAVSERVER_UI_config.codecBitrate[i];
-		i++;
 
+		i++;
 		config->encodeConfig[i].captureStreamId 		 = 1;
 		config->encodeConfig[i].cropWidth  				 = ALIGN_ENCODE(nWidth);
 		config->encodeConfig[i].cropHeight 				 = ALIGN_ENCODE(nHeight);				
@@ -937,11 +930,11 @@ void UI_setConfig(AVSERVER_Config *config)
 		config->encodeConfig[i].fileSaveEnable			 = FALSE;
 		config->encodeConfig[i].motionVectorOutputEnable = FALSE;
 		config->encodeConfig[i].qValue					 = gAVSERVER_UI_config.codecBitrate[i];
+
 		i++;
-#if 1
-		config->encodeConfig[i].captureStreamId          = 1;
-		config->encodeConfig[i].cropWidth                = ALIGN_ENCODE(nWidth);
-		config->encodeConfig[i].cropHeight               = ALIGN_ENCODE(nHeight);
+		config->encodeConfig[i].captureStreamId          = 0;
+		config->encodeConfig[i].cropWidth                = ALIGN_ENCODE(1280);
+		config->encodeConfig[i].cropHeight               = ALIGN_ENCODE(960);
 		config->encodeConfig[i].frameRateBase		 	 = (1*1000);
 		config->encodeConfig[i].frameSkipMask            = 0x00010000;
 		config->encodeConfig[i].codecType                = ALG_VID_CODEC_MJPEG;
@@ -950,9 +943,7 @@ void UI_setConfig(AVSERVER_Config *config)
 		config->encodeConfig[i].fileSaveEnable           = FALSE;
 		config->encodeConfig[i].motionVectorOutputEnable = FALSE;
 		config->encodeConfig[i].qValue                   = gAVSERVER_UI_config.codecBitrate[1];
-		i++;
-#endif		
-		
+		i++;	
 	}		
 	break;
 

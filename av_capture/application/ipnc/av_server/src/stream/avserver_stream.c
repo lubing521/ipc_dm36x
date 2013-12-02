@@ -164,27 +164,32 @@ int VIDEO_streamShmCopy(int streamId, OSA_BufInfo *pBufInfo)
 #if 1
     if (streamId == 0)
     {
-        int timenow = GetCurTime();
+        static int lasttime = 0;
+        static int timenow = 0;
+        lasttime = timenow;
+        timenow = GetCurTime();
         int timediff = timenow - timestamp;
         static int count = 0;
 
         if (timediff >=50 )
         {
-            OSA_printf("count = %4d, frameType=%s, size = %6d, time = (%d, %d) %d ****\n",
+            OSA_printf("count = %4d, frameType=%s, size = %6d, time = (%d, %d) %d, timeinterval = %d ****\n",
             count++,
             frameType == 1 ? "KEY" : "   ",
             pInBufHeader->encFrameSize,
             timenow,
             timestamp,
-            timediff);
+            timediff,
+            timenow - lasttime);
         }
         else 
         {
-            OSA_printf("count = %4d, frameType=%s, size = %6d, timediff = %d ms\n",
+            OSA_printf("count = %4d, frameType=%s, size = %6d, timediff = %d ms, timeinterval = %d\n",
             count++,
             frameType == 1 ? "KEY" : "   ",
             pInBufHeader->encFrameSize,
-            timediff);
+            timediff,
+            timenow - lasttime);
         }
     }
 #endif
