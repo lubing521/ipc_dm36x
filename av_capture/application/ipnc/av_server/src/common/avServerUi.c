@@ -191,375 +191,13 @@ void UI_setConfig(AVSERVER_Config *config)
   if(platform == PLATFORM_DM365)
     OSA_printf("\nCONFIGURING AVSERVER FOR DM365 .....\n");
 
-  switch(gAVSERVER_UI_config.mode) {
-
-		case AVSERVER_UI_CAPTURE_MODE_D1:
-
-			#ifdef YUV_MODE_INTERLACED
-			config->sensorMode          = gAVSERVER_UI_config.winmodeEnable?DRV_IMGS_SENSOR_MODE_720x480:DRV_IMGS_SENSOR_MODE_720x480;
-			#else
- 			config->sensorMode			= gAVSERVER_UI_config.winmodeEnable?DRV_IMGS_SENSOR_MODE_1920x1080:DRV_IMGS_SENSOR_MODE_720x480;
-			#endif
-			config->sensorFps 					= 30;
-  			config->aewb_config.aewbBinEnable	= TRUE;
-
-			config->vstabTskEnable			= gAVSERVER_UI_config.vsEnable;
-			config->ldcTskEnable			= gAVSERVER_UI_config.ldcEnable;
-			config->vnfTskEnable			= gAVSERVER_UI_config.snfEnable|gAVSERVER_UI_config.tnfEnable;
-			config->encryptTskEnable		= FALSE;
-
-			config->captureSingleResize 	= FALSE;
-			config->captureYuvFormat		= DRV_DATA_FORMAT_YUV420;
-			#ifdef YUV_MODE_INTERLACED
-			config->numCaptureStream        = 1;
-			#else
-			config->numCaptureStream		= 2;
-			#endif
-
-			if(numEncodes > config->numCaptureStream)
-				numEncodes = config->numCaptureStream;
-
-			config->numEncodeStream 		= numEncodes;
-
-			config->faceDetectConfig.captureStreamId = 1;
-			config->faceDetectConfig.fdEnable 		 = gAVSERVER_UI_config.fdEnable;
-
-			config->displayConfig.captureStreamId 	 = 0;
-			config->displayConfig.width 			 = 640;
-			config->displayConfig.height			 = 480;
-      		config->displayConfig.expandH		     = TRUE;
-
-			i=0;
-
-			k=0;
-			config->captureConfig[i].width						= 720;
-			#ifdef YUV_MODE_INTERLACED
-			config->captureConfig[i].height                     = 480;
-			#else
-			config->captureConfig[i].height 					= 512;
-			#endif
-			config->captureConfig[i].ldcEnable					= gAVSERVER_UI_config.ldcEnable;
-			config->captureConfig[i].snfEnable					= gAVSERVER_UI_config.snfEnable;
-			config->captureConfig[i].tnfEnable					= gAVSERVER_UI_config.tnfEnable;
-			config->captureConfig[i].vsEnable 					= gAVSERVER_UI_config.vsEnable;
-
-		    if(numEncodes>0)
-			  config->captureConfig[i].numEncodes 				= 1;
-
-			config->captureConfig[i].encodeStreamId[k++]		= 0;
-			config->captureConfig[i].frameSkipMask				= 0x3FFFFFFF;
-			i++;
-
-			k=0;
-			config->captureConfig[i].width						= 288;
-			config->captureConfig[i].height 					= 192;
-			config->captureConfig[i].ldcEnable					= gAVSERVER_UI_config.ldcEnable;
-			config->captureConfig[i].snfEnable					= (numEncodes>1)?gAVSERVER_UI_config.snfEnable:FALSE;
-			config->captureConfig[i].tnfEnable					= (numEncodes>1)?gAVSERVER_UI_config.tnfEnable:FALSE;
-			config->captureConfig[i].vsEnable 					= gAVSERVER_UI_config.vsEnable;
-
-			if(numEncodes>1)
-				config->captureConfig[i].numEncodes 			= 1;
-
-			config->captureConfig[i].encodeStreamId[k++]		= 1;
-			config->captureConfig[i].frameSkipMask				= 0x3FFFFFFF;
-			i++;
-
-			i=0;
-
-			config->encodeConfig[i].captureStreamId 		 = 0;
-			config->encodeConfig[i].cropWidth 				 = ALIGN_ENCODE(720);
-			config->encodeConfig[i].cropHeight				 = ALIGN_ENCODE(480);
-			config->encodeConfig[i].frameRateBase			 = config->sensorFps*1000;
-			config->encodeConfig[i].frameSkipMask 			 = 0x3FFFFFFF;
-			config->encodeConfig[i].codecType 				 = gAVSERVER_UI_config.codecType[i];
-			config->encodeConfig[i].codecBitrate			 = gAVSERVER_UI_config.codecBitrate[i];
-			config->encodeConfig[i].encryptEnable 			 = FALSE;
-			config->encodeConfig[i].fileSaveEnable			 = FALSE;
-			config->encodeConfig[i].motionVectorOutputEnable = FALSE;
-			config->encodeConfig[i].qValue					 = gAVSERVER_UI_config.codecBitrate[i];
-			i++;
-
-			config->encodeConfig[i].captureStreamId 		 = 1;
-			config->encodeConfig[i].cropWidth 				 = ALIGN_ENCODE(288);
-			config->encodeConfig[i].cropHeight				 = ALIGN_ENCODE(192);
-			config->encodeConfig[i].frameRateBase			 = config->sensorFps*1000;
-			config->encodeConfig[i].frameSkipMask 			 = 0x3FFFFFFF;
-			config->encodeConfig[i].codecType 				 = gAVSERVER_UI_config.codecType[i];
-			config->encodeConfig[i].codecBitrate			 = gAVSERVER_UI_config.codecBitrate[i];
-			config->encodeConfig[i].encryptEnable 			 = FALSE;
-			config->encodeConfig[i].fileSaveEnable			 = FALSE;
-			config->encodeConfig[i].motionVectorOutputEnable = FALSE;
-			config->encodeConfig[i].qValue					 = gAVSERVER_UI_config.codecBitrate[i];
-			i++;
-
-			break;
-
-		case AVSERVER_UI_CAPTURE_MODE_D1_D1:
-
-		  	if(platform==PLATFORM_DM368) {
-				if(gAVSERVER_UI_config.flipH||gAVSERVER_UI_config.flipV) {
-					if(gAVSERVER_UI_config.vsEnable)
-						config->resizerClkdivN = 100;
-					else if(gAVSERVER_UI_config.ldcEnable||gAVSERVER_UI_config.snfEnable||gAVSERVER_UI_config.tnfEnable)
-						config->resizerClkdivN = 100;
-					else
-						config->resizerClkdivN = 80;
-				}
-				else
-					config->resizerClkdivN = gAVSERVER_UI_config.vsEnable ? 60:70;
-		    }
-		    else {
-				if(gAVSERVER_UI_config.flipH||gAVSERVER_UI_config.flipV) {
-					if(gAVSERVER_UI_config.vsEnable)
-						config->resizerClkdivN = 80;
-					else if(gAVSERVER_UI_config.ldcEnable)
-						config->resizerClkdivN = 90;
-					else
-						config->resizerClkdivN = 80;
-				}
-				else
-					config->resizerClkdivN = gAVSERVER_UI_config.vsEnable ? 60:70;
-			}
-
- 			config->sensorMode					= gAVSERVER_UI_config.winmodeEnable?DRV_IMGS_SENSOR_MODE_720x480:DRV_IMGS_SENSOR_MODE_720x480;
-			config->sensorFps 					= 30;
-  			config->aewb_config.aewbBinEnable	= TRUE;
-
-			config->vstabTskEnable			= gAVSERVER_UI_config.vsEnable;
-			config->ldcTskEnable			= gAVSERVER_UI_config.ldcEnable;
-			config->vnfTskEnable			= gAVSERVER_UI_config.snfEnable|gAVSERVER_UI_config.tnfEnable;
-			config->encryptTskEnable		= FALSE;
-
-			config->captureRawInMode		= AVSERVER_CAPTURE_RAW_IN_MODE_DDR_IN;
-			config->captureSingleResize 	= FALSE;
-			config->captureYuvFormat		= DRV_DATA_FORMAT_YUV420;
-
-			config->numCaptureStream		= 3;
-
-			if(numEncodes > config->numCaptureStream)
-				numEncodes = config->numCaptureStream;
-
-			config->numEncodeStream 		= numEncodes;
-
-			config->faceDetectConfig.captureStreamId = 2;
-			config->faceDetectConfig.fdEnable 		 = gAVSERVER_UI_config.fdEnable;
-
-			config->displayConfig.captureStreamId 	 = 0;
-			config->displayConfig.width 			 = 640;
-			config->displayConfig.height			 = 480;
-      		config->displayConfig.expandH		     = TRUE;
-
-			i=0;
-
-			k=0;
-			config->captureConfig[i].width					= 720;
-			config->captureConfig[i].height 				= 480;
-			config->captureConfig[i].ldcEnable				= gAVSERVER_UI_config.ldcEnable;
-			config->captureConfig[i].snfEnable				= gAVSERVER_UI_config.snfEnable;
-			config->captureConfig[i].tnfEnable				= gAVSERVER_UI_config.tnfEnable;
-			config->captureConfig[i].vsEnable 				= gAVSERVER_UI_config.vsEnable;
-
-		    if(numEncodes>0)
-			  config->captureConfig[i].numEncodes 				= 1;
-
-			config->captureConfig[i].encodeStreamId[k++]= 0;
-			config->captureConfig[i].frameSkipMask			= 0x3FFFFFFF;
-			i++;
-
-			k=0;
-			config->captureConfig[i].width					= 720;
-			config->captureConfig[i].height 				= 480;
-			if(gAVSERVER_UI_config.demomode)
-			{
-				config->captureConfig[i].ldcEnable			= FALSE;
-				config->captureConfig[i].snfEnable			= FALSE;
-				config->captureConfig[i].tnfEnable			= FALSE;
-				config->captureConfig[i].vsEnable 			= FALSE;
-			}
-			else {
-				config->captureConfig[i].ldcEnable			= gAVSERVER_UI_config.ldcEnable;
-				config->captureConfig[i].snfEnable			= (numEncodes>1)?gAVSERVER_UI_config.snfEnable:FALSE;
-				config->captureConfig[i].tnfEnable			= (numEncodes>1)?gAVSERVER_UI_config.tnfEnable:FALSE;
-				config->captureConfig[i].vsEnable 			= gAVSERVER_UI_config.vsEnable;
-			}
-
-      		if(numEncodes>1)
-  		   		config->captureConfig[i].numEncodes 		= 1;
-
-			config->captureConfig[i].encodeStreamId[k++]= 1;
-			config->captureConfig[i].frameSkipMask			= 0x3FFFFFFF;
-			i++;
-
-			k=0;
-			config->captureConfig[i].width					= 288;
-			config->captureConfig[i].height 				= 192;
-			config->captureConfig[i].ldcEnable				= gAVSERVER_UI_config.ldcEnable;
-			config->captureConfig[i].snfEnable				= (numEncodes>2)?gAVSERVER_UI_config.snfEnable:FALSE;
-			config->captureConfig[i].tnfEnable				= (numEncodes>2)?gAVSERVER_UI_config.snfEnable:FALSE;
-			config->captureConfig[i].vsEnable 				= gAVSERVER_UI_config.vsEnable;
-
-			if(numEncodes>2)
-				config->captureConfig[i].numEncodes 			= 1;
-
-			config->captureConfig[i].encodeStreamId[k++]= 2;
-			config->captureConfig[i].frameSkipMask			= 0x3FFFFFFF;
-			i++;
-
-			i=0;
-
-			config->encodeConfig[i].captureStreamId 		 = 0;
-			config->encodeConfig[i].cropWidth 				 = ALIGN_ENCODE(720);
-			config->encodeConfig[i].cropHeight				 = ALIGN_ENCODE(480);
-			config->encodeConfig[i].frameRateBase			 = config->sensorFps*1000;
-			config->encodeConfig[i].frameSkipMask 			 = 0x3FFFFFFF;
-			config->encodeConfig[i].codecType 				 = gAVSERVER_UI_config.codecType[i];
-			config->encodeConfig[i].codecBitrate			 = gAVSERVER_UI_config.codecBitrate[i];
-			config->encodeConfig[i].encryptEnable 			 = FALSE;
-			config->encodeConfig[i].fileSaveEnable			 = FALSE;
-			config->encodeConfig[i].motionVectorOutputEnable = FALSE;
-			config->encodeConfig[i].qValue					 = gAVSERVER_UI_config.codecBitrate[i];
-			i++;
-
-			config->encodeConfig[i].captureStreamId 		 = 1;
-			config->encodeConfig[i].cropWidth 				 = ALIGN_ENCODE(720);
-			config->encodeConfig[i].cropHeight				 = ALIGN_ENCODE(480);
-			config->encodeConfig[i].frameRateBase			 = config->sensorFps*1000;
-			config->encodeConfig[i].frameSkipMask 			 = 0x3FFFFFFF;
-			config->encodeConfig[i].codecType 				 = gAVSERVER_UI_config.codecType[i];
-			config->encodeConfig[i].codecBitrate			 = gAVSERVER_UI_config.codecBitrate[i];
-			config->encodeConfig[i].encryptEnable 			 = FALSE;
-			config->encodeConfig[i].fileSaveEnable			 = FALSE;
-			config->encodeConfig[i].motionVectorOutputEnable = FALSE;
-			config->encodeConfig[i].qValue					 = gAVSERVER_UI_config.codecBitrate[i];
-			i++;
-
-			config->encodeConfig[i].captureStreamId 		 = 2;
-			config->encodeConfig[i].cropWidth 				 = ALIGN_ENCODE(288);
-			config->encodeConfig[i].cropHeight				 = ALIGN_ENCODE(192);
-			config->encodeConfig[i].frameRateBase			 = config->sensorFps*1000;
-			config->encodeConfig[i].frameSkipMask 			 = 0x3FFFFFFF;
-			config->encodeConfig[i].codecType 				 = gAVSERVER_UI_config.codecType[i];
-			config->encodeConfig[i].codecBitrate			 = gAVSERVER_UI_config.codecBitrate[i];
-			config->encodeConfig[i].encryptEnable 			 = FALSE;
-			config->encodeConfig[i].fileSaveEnable			 = FALSE;
-			config->encodeConfig[i].motionVectorOutputEnable = FALSE;
-			config->encodeConfig[i].qValue					 = gAVSERVER_UI_config.codecBitrate[i];
-			i++;
-
-			break;
-
-    case AVSERVER_UI_CAPTURE_MODE_720P:
-	case AVSERVER_UI_CAPTURE_MODE_720P_720P:
-	case AVSERVER_UI_CAPTURE_MODE_720P_720P_30:
-
-      config->sensorMode          		= gAVSERVER_UI_config.winmodeEnable?DRV_IMGS_SENSOR_MODE_1920x1080:DRV_IMGS_SENSOR_MODE_1280x720;
-      config->sensorFps           		= 30;
-  	  config->aewb_config.aewbBinEnable	= TRUE;
-
-      config->vstabTskEnable      = gAVSERVER_UI_config.vsEnable;
-      config->ldcTskEnable        = gAVSERVER_UI_config.ldcEnable;
-      config->vnfTskEnable        = (gAVSERVER_UI_config.snfEnable | gAVSERVER_UI_config.tnfEnable);
-      config->encryptTskEnable    = FALSE;
-
-      config->captureSingleResize = FALSE;
-      config->captureYuvFormat    = DRV_DATA_FORMAT_YUV420;
-
-      config->numCaptureStream    = 2;
-
-      if(numEncodes > config->numCaptureStream)
-        numEncodes = config->numCaptureStream;
-
-      config->numEncodeStream     = numEncodes;
-
-      config->faceDetectConfig.captureStreamId = 1;
-      config->faceDetectConfig.fdEnable        = gAVSERVER_UI_config.fdEnable;
-
-      config->displayConfig.captureStreamId    = 0;
-      config->displayConfig.width              = 640;
-      config->displayConfig.height             = 480;
-      config->displayConfig.expandH		       = TRUE;
-
-      i=0;
-
-      k=0;
-      config->captureConfig[i].width              = 1280;
-      config->captureConfig[i].height             = 736;
-      config->captureConfig[i].ldcEnable          = gAVSERVER_UI_config.ldcEnable;
-      config->captureConfig[i].snfEnable          = gAVSERVER_UI_config.snfEnable;
-      config->captureConfig[i].tnfEnable          = gAVSERVER_UI_config.tnfEnable;
-      config->captureConfig[i].vsEnable           = gAVSERVER_UI_config.vsEnable;
-
-      if(numEncodes>0)
-        config->captureConfig[i].numEncodes       = ((gAVSERVER_UI_config.mode==AVSERVER_UI_CAPTURE_MODE_720P_720P)||(gAVSERVER_UI_config.mode==AVSERVER_UI_CAPTURE_MODE_720P_720P_30))?2:1;
-
-      config->captureConfig[i].encodeStreamId[k++]= 0;
-      if((gAVSERVER_UI_config.mode==AVSERVER_UI_CAPTURE_MODE_720P_720P)||(gAVSERVER_UI_config.mode==AVSERVER_UI_CAPTURE_MODE_720P_720P_30))
-      	config->captureConfig[i].encodeStreamId[k++]= 1;
-
-      config->captureConfig[i].frameSkipMask      = 0x3FFFFFFF;
-      i++;
-
-      k=0;
-      config->captureConfig[i].width              = 320;
-      config->captureConfig[i].height             = 192;
-      config->captureConfig[i].ldcEnable          = gAVSERVER_UI_config.ldcEnable;
-	  config->captureConfig[i].snfEnable		  = (numEncodes>1)?gAVSERVER_UI_config.snfEnable:FALSE;
-	  config->captureConfig[i].tnfEnable		  = (numEncodes>1)?gAVSERVER_UI_config.tnfEnable:FALSE;
-      config->captureConfig[i].vsEnable           = gAVSERVER_UI_config.vsEnable;
-
-      if(numEncodes>1)
-        config->captureConfig[i].numEncodes       = ((gAVSERVER_UI_config.mode==AVSERVER_UI_CAPTURE_MODE_720P_720P)||(gAVSERVER_UI_config.mode==AVSERVER_UI_CAPTURE_MODE_720P_720P_30))?0:1;
-
-      config->captureConfig[i].encodeStreamId[k++]= 1;
-
-      config->captureConfig[i].frameSkipMask      = (gAVSERVER_UI_config.mode==AVSERVER_UI_CAPTURE_MODE_720P_720P)?0x1AAAAAAA:0x3FFFFFFF;
-      i++;
-
-      i=0;
-
-      config->encodeConfig[i].captureStreamId          	= 0;
-      config->encodeConfig[i].cropWidth                	= ALIGN_ENCODE(1280);
-      config->encodeConfig[i].cropHeight               	= ALIGN_ENCODE(720);
-      config->encodeConfig[i].frameRateBase			   	= config->sensorFps*1000;
-      config->encodeConfig[i].frameSkipMask            	= 0x3FFFFFFF;
-      config->encodeConfig[i].codecType                	= gAVSERVER_UI_config.codecType[i];
-      config->encodeConfig[i].codecBitrate             	= gAVSERVER_UI_config.codecBitrate[i];
-      config->encodeConfig[i].encryptEnable            	= FALSE;
-      config->encodeConfig[i].fileSaveEnable           	= FALSE;
-      config->encodeConfig[i].motionVectorOutputEnable 	= FALSE;
-      config->encodeConfig[i].qValue                   	= gAVSERVER_UI_config.codecBitrate[i];
-      i++;
-
-	  if((gAVSERVER_UI_config.mode==AVSERVER_UI_CAPTURE_MODE_720P_720P)||(gAVSERVER_UI_config.mode==AVSERVER_UI_CAPTURE_MODE_720P_720P_30)) {
-        config->encodeConfig[i].captureStreamId         = 0;
-      	config->encodeConfig[i].cropWidth               = ALIGN_ENCODE(1280);
-      	config->encodeConfig[i].cropHeight              = ALIGN_ENCODE(720);
-      	config->encodeConfig[i].frameRateBase		 	= (gAVSERVER_UI_config.mode==AVSERVER_UI_CAPTURE_MODE_720P_720P)?(config->sensorFps*1000)>>1:(config->sensorFps*1000);
-	  }
-	  else {
-        config->encodeConfig[i].captureStreamId         = 1;
-      	config->encodeConfig[i].cropWidth               = ALIGN_ENCODE(320);
-      	config->encodeConfig[i].cropHeight              = ALIGN_ENCODE(192);
-      	config->encodeConfig[i].frameRateBase		 	= (config->sensorFps*1000);
-  	  }
-      config->encodeConfig[i].frameSkipMask             = 0x3FFFFFFF;
-      config->encodeConfig[i].codecType                	= gAVSERVER_UI_config.codecType[i];
-      config->encodeConfig[i].codecBitrate             	= gAVSERVER_UI_config.codecBitrate[i];
-      config->encodeConfig[i].encryptEnable            	= FALSE;
-      config->encodeConfig[i].fileSaveEnable           	= FALSE;
-      config->encodeConfig[i].motionVectorOutputEnable 	= FALSE;
-      config->encodeConfig[i].qValue                   	= gAVSERVER_UI_config.codecBitrate[i];
-      i++;
-
-      break;
-
+  switch(gAVSERVER_UI_config.mode) 
+  {
     case AVSERVER_UI_CAPTURE_MODE_720P_VGA:
     case AVSERVER_UI_CAPTURE_MODE_720P_QVGA:
 	case AVSERVER_UI_CAPTURE_MODE_720P_D1:
 	case AVSERVER_UI_CAPTURE_MODE_720P_CIF:
 	{
-
 		if(platform==PLATFORM_DM368)
 		{
 			config->resizerClkdivN = gAVSERVER_UI_config.vsEnable ? 60:70;
@@ -568,19 +206,45 @@ void UI_setConfig(AVSERVER_Config *config)
 		{
 			config->resizerClkdivN = 50;
 		}
+
+		int nWidth	= 0;
+	    int nHeight = 0;
+	    switch(gAVSERVER_UI_config.mode)
+	    {
+		    case AVSERVER_UI_CAPTURE_MODE_960P_D1:
+				nWidth	= ALIGN_ENCODE(720);
+				nHeight = ALIGN_ENCODE(576);				
+				break;
+			case AVSERVER_UI_CAPTURE_MODE_960P_VGA:
+				nWidth	= ALIGN_ENCODE(640);
+				nHeight = ALIGN_ENCODE(480);
+				break;
+			case AVSERVER_UI_CAPTURE_MODE_960P_CIF:
+				nWidth	= ALIGN_ENCODE(352);
+				nHeight = ALIGN_ENCODE(288);	
+				break;					
+			case AVSERVER_UI_CAPTURE_MODE_960P_QVGA:
+				nWidth	= ALIGN_ENCODE(320);
+				nHeight = ALIGN_ENCODE(192);	
+				break;
+			default:
+				nWidth	= ALIGN_ENCODE(640);
+				nHeight = ALIGN_ENCODE(480);
+				break;
+		}
 		
 		config->sensorMode          		= DRV_IMGS_SENSOR_MODE_1280x720;
-		config->sensorFps           		= 30;
+		config->sensorFps           		= 25;
 		config->aewb_config.aewbBinEnable	= TRUE;
 
-      config->vstabTskEnable      = gAVSERVER_UI_config.vsEnable;
-      config->ldcTskEnable        = gAVSERVER_UI_config.ldcEnable;
-      config->vnfTskEnable        = (gAVSERVER_UI_config.snfEnable | gAVSERVER_UI_config.tnfEnable);
-      config->encryptTskEnable    = FALSE;
+        config->vstabTskEnable      = gAVSERVER_UI_config.vsEnable;
+        config->ldcTskEnable        = gAVSERVER_UI_config.ldcEnable;
+        config->vnfTskEnable        = (gAVSERVER_UI_config.snfEnable | gAVSERVER_UI_config.tnfEnable);
+        config->encryptTskEnable    = FALSE;
 
-	  config->captureRawInMode	= AVSERVER_CAPTURE_RAW_IN_MODE_DDR_IN;
-      config->captureSingleResize = FALSE;
-      config->captureYuvFormat    = DRV_DATA_FORMAT_YUV420;
+	    config->captureRawInMode	= AVSERVER_CAPTURE_RAW_IN_MODE_ISIF_IN;
+        config->captureSingleResize = FALSE;
+        config->captureYuvFormat    = DRV_DATA_FORMAT_YUV420;
 
 		config->numCaptureStream    = 2;
 		numEncodes 					= 3;
@@ -592,62 +256,32 @@ void UI_setConfig(AVSERVER_Config *config)
 		config->displayConfig.captureStreamId    = 1;
 		config->displayConfig.width              = 640;
 		config->displayConfig.height             = 480;
-		config->displayConfig.expandH		       = TRUE;
+		config->displayConfig.expandH		     = TRUE;
 
-      i=0;
-
-      k=0;
-      config->captureConfig[i].width              = 1280;
-      config->captureConfig[i].height             = 736;
-      config->captureConfig[i].ldcEnable          = gAVSERVER_UI_config.ldcEnable;
-      config->captureConfig[i].snfEnable          = gAVSERVER_UI_config.snfEnable;
-      config->captureConfig[i].tnfEnable          = gAVSERVER_UI_config.tnfEnable;
-      config->captureConfig[i].vsEnable           = gAVSERVER_UI_config.vsEnable;
-
-		config->captureConfig[i].numEncodes         = 1;
-		config->captureConfig[i].encodeStreamId[k++]= 0;	  
-		config->captureConfig[i].frameSkipMask      = 0x3FFFFFFF;
-		i++;
-
-		int nWidth  = 0;
-		int nHeight = 0;
-		switch(gAVSERVER_UI_config.mode)
-		  {
-		case AVSERVER_UI_CAPTURE_MODE_960P_D1:
-			nWidth  = ALIGN_ENCODE(720);
-			nHeight = ALIGN_ENCODE(576);				
-			break;
-		case AVSERVER_UI_CAPTURE_MODE_960P_VGA:
-			nWidth  = ALIGN_ENCODE(640);
-			nHeight = ALIGN_ENCODE(480);
-			break;
-		case AVSERVER_UI_CAPTURE_MODE_960P_CIF:
-			nWidth  = ALIGN_ENCODE(352);
-			nHeight = ALIGN_ENCODE(288);	
-			break;					
-		case AVSERVER_UI_CAPTURE_MODE_960P_QVGA:
-			nWidth  = ALIGN_ENCODE(320);
-			nHeight = ALIGN_ENCODE(192);	
-			break;
-		default:
-			nWidth  = ALIGN_ENCODE(640);
-			nHeight = ALIGN_ENCODE(480);				
-		}
-
-		k=0;
-		config->captureConfig[i].width  			  = ALIGN_ENCODE(nWidth);
-		config->captureConfig[i].height 			  = ALIGN_ENCODE(nHeight);
-		config->captureConfig[i].ldcEnable          = gAVSERVER_UI_config.ldcEnable;
-		config->captureConfig[i].snfEnable		  = (numEncodes>1)?gAVSERVER_UI_config.snfEnable:FALSE;
-		config->captureConfig[i].tnfEnable		  = (numEncodes>1)?gAVSERVER_UI_config.tnfEnable:FALSE;
-		config->captureConfig[i].vsEnable           = gAVSERVER_UI_config.vsEnable;
-
-		config->captureConfig[i].numEncodes 		  = 2;   
-		config->captureConfig[i].encodeStreamId[k++]= 1;
+        i=0;
+        k=0;
+        config->captureConfig[i].width              = 1280;
+        config->captureConfig[i].height             = 736;
+        config->captureConfig[i].ldcEnable          = gAVSERVER_UI_config.ldcEnable;
+        config->captureConfig[i].snfEnable          = gAVSERVER_UI_config.snfEnable;
+        config->captureConfig[i].tnfEnable          = gAVSERVER_UI_config.tnfEnable;
+        config->captureConfig[i].vsEnable           = gAVSERVER_UI_config.vsEnable;
+		config->captureConfig[i].numEncodes         = 2;
+		config->captureConfig[i].encodeStreamId[k++]= 0;	
 		config->captureConfig[i].encodeStreamId[k++]= 2;
-
 		config->captureConfig[i].frameSkipMask      = 0x3FFFFFFF;
+
 		i++;
+		k=0;
+		config->captureConfig[i].width  			= ALIGN_ENCODE(nWidth);
+		config->captureConfig[i].height 			= ALIGN_ENCODE(nHeight);
+		config->captureConfig[i].ldcEnable          = gAVSERVER_UI_config.ldcEnable;
+		config->captureConfig[i].snfEnable		    = (numEncodes > 1) ? gAVSERVER_UI_config.snfEnable : FALSE;
+		config->captureConfig[i].tnfEnable		    = (numEncodes > 1) ? gAVSERVER_UI_config.tnfEnable : FALSE;
+		config->captureConfig[i].vsEnable           = gAVSERVER_UI_config.vsEnable;
+		config->captureConfig[i].numEncodes 	    = 1;   
+		config->captureConfig[i].encodeStreamId[k++]= 1;
+		config->captureConfig[i].frameSkipMask      = 0x3FFFFFFF;
 
 		i=0;
 		config->encodeConfig[i].captureStreamId          	= 0;
@@ -661,8 +295,8 @@ void UI_setConfig(AVSERVER_Config *config)
 		config->encodeConfig[i].fileSaveEnable           	= FALSE;
 		config->encodeConfig[i].motionVectorOutputEnable 	= FALSE;
 		config->encodeConfig[i].qValue                   	= gAVSERVER_UI_config.codecBitrate[i];
-		i++;
 
+		i++;
 		config->encodeConfig[i].captureStreamId         	= 1;
 		config->encodeConfig[i].cropWidth  			 		= ALIGN_ENCODE(nWidth);
 		config->encodeConfig[i].cropHeight					= ALIGN_ENCODE(nHeight);	
@@ -674,141 +308,22 @@ void UI_setConfig(AVSERVER_Config *config)
 		config->encodeConfig[i].fileSaveEnable           	= FALSE;
 		config->encodeConfig[i].motionVectorOutputEnable 	= FALSE;
 		config->encodeConfig[i].qValue                   	= gAVSERVER_UI_config.codecBitrate[i];
-		i++;
 
-#if 1
-		config->encodeConfig[i].captureStreamId          = 2;
-		config->encodeConfig[i].cropWidth                = ALIGN_ENCODE(nWidth);
-		config->encodeConfig[i].cropHeight               = ALIGN_ENCODE(nHeight);	
-		config->encodeConfig[i].frameRateBase		 	 = (1*1000);
-		config->encodeConfig[i].frameSkipMask            = 0x3FFFFFFF;
-		config->encodeConfig[i].codecType                = ALG_VID_CODEC_MJPEG;
-		config->encodeConfig[i].codecBitrate             = gAVSERVER_UI_config.codecBitrate[1];
-		config->encodeConfig[i].encryptEnable            = FALSE;
-		config->encodeConfig[i].fileSaveEnable           = FALSE;
-		config->encodeConfig[i].motionVectorOutputEnable = FALSE;
-		config->encodeConfig[i].qValue                   = gAVSERVER_UI_config.codecBitrate[1];
 		i++;
-#endif
-
+		config->encodeConfig[i].captureStreamId             = 0;
+		config->encodeConfig[i].cropWidth                   = ALIGN_ENCODE(1280);
+		config->encodeConfig[i].cropHeight                  = ALIGN_ENCODE(720);	
+		config->encodeConfig[i].frameRateBase		 	    = (1*1000);
+		config->encodeConfig[i].frameSkipMask               = 0x00010000;
+		config->encodeConfig[i].codecType                   = ALG_VID_CODEC_MJPEG;
+		config->encodeConfig[i].codecBitrate                = gAVSERVER_UI_config.codecBitrate[1];
+		config->encodeConfig[i].encryptEnable               = FALSE;
+		config->encodeConfig[i].fileSaveEnable              = FALSE;
+		config->encodeConfig[i].motionVectorOutputEnable    = FALSE;
+		config->encodeConfig[i].qValue                      = gAVSERVER_UI_config.codecBitrate[1];
 	}
 	break;
 	  
-	case AVSERVER_UI_CAPTURE_MODE_720P_VGA_JPG:
-	case AVSERVER_UI_CAPTURE_MODE_720P_QVGA_JPG:
-		if(platform==PLATFORM_DM368)
-		{
-			config->resizerClkdivN = gAVSERVER_UI_config.vsEnable ? 60:70;
-		}
-		else
-		{
-			config->resizerClkdivN = 50;
-		}
-
-		config->sensorMode          		= gAVSERVER_UI_config.winmodeEnable?DRV_IMGS_SENSOR_MODE_1280x720:DRV_IMGS_SENSOR_MODE_1280x720;
-		config->sensorFps           		= 30;
-		config->aewb_config.aewbBinEnable	= TRUE;
-
-		config->vstabTskEnable      = gAVSERVER_UI_config.vsEnable;
-		config->ldcTskEnable        = gAVSERVER_UI_config.ldcEnable;
-		config->vnfTskEnable        = gAVSERVER_UI_config.snfEnable|gAVSERVER_UI_config.tnfEnable;
-		config->encryptTskEnable    = FALSE;
-
-		config->captureRawInMode	= AVSERVER_CAPTURE_RAW_IN_MODE_DDR_IN;
-		config->captureSingleResize = FALSE;
-		config->captureYuvFormat    = DRV_DATA_FORMAT_YUV420;
-
-
-		config->numCaptureStream    = 2;
-
-		numEncodes = 3;
-		config->numEncodeStream     = numEncodes;
-
-		config->faceDetectConfig.captureStreamId = 2;
-		config->faceDetectConfig.fdEnable        = gAVSERVER_UI_config.fdEnable;
-
-		config->displayConfig.captureStreamId    = 1;
-		config->displayConfig.width              = 640;
-		config->displayConfig.height             = 480;
-		config->displayConfig.expandH		       = TRUE;
-
-		i=0;
-
-		k=0;
-		config->captureConfig[i].width              = 1280;
-		config->captureConfig[i].height             = 736;
-		config->captureConfig[i].ldcEnable          = gAVSERVER_UI_config.ldcEnable;
-		config->captureConfig[i].snfEnable          = gAVSERVER_UI_config.snfEnable;
-		config->captureConfig[i].tnfEnable          = gAVSERVER_UI_config.tnfEnable;
-		config->captureConfig[i].vsEnable           = gAVSERVER_UI_config.vsEnable;
-
-		config->captureConfig[i].numEncodes         = 1;
-		config->captureConfig[i].encodeStreamId[k++]= 0;
-
-		config->captureConfig[i].frameSkipMask      = 0x3FFFFFFF;
-		i++;
-
-		k=0;
-
-		config->captureConfig[i].width			= (gAVSERVER_UI_config.mode==AVSERVER_UI_CAPTURE_MODE_720P_VGA_JPG)?640:320;
-		config->captureConfig[i].height 		= (gAVSERVER_UI_config.mode==AVSERVER_UI_CAPTURE_MODE_720P_VGA_JPG)?480:192;
-		config->captureConfig[i].ldcEnable      = gAVSERVER_UI_config.ldcEnable;
-		config->captureConfig[i].snfEnable      = (numEncodes>1)?gAVSERVER_UI_config.snfEnable:FALSE;
-		config->captureConfig[i].tnfEnable      = (numEncodes>1)?gAVSERVER_UI_config.tnfEnable:FALSE;
-		config->captureConfig[i].vsEnable       = gAVSERVER_UI_config.vsEnable;
-
-		config->captureConfig[i].numEncodes       = 2;
-		config->captureConfig[i].encodeStreamId[k++]= 1;
-		config->captureConfig[i].encodeStreamId[k++]= 2;	
-		config->captureConfig[i].frameSkipMask    = 0x3FFFFFFF;
-
-		i++;
-
-
-		i=0;
-		config->encodeConfig[i].captureStreamId          = 0;
-		config->encodeConfig[i].cropWidth                = ALIGN_ENCODE(1280);
-		config->encodeConfig[i].cropHeight               = ALIGN_ENCODE(720);
-		config->encodeConfig[i].frameRateBase			 = config->sensorFps*1000;
-		config->encodeConfig[i].frameSkipMask            = 0x3FFFFFFF;
-		config->encodeConfig[i].codecType                = gAVSERVER_UI_config.codecType[0];
-		config->encodeConfig[i].codecBitrate             = gAVSERVER_UI_config.codecBitrate[0];
-		config->encodeConfig[i].encryptEnable            = FALSE;
-		config->encodeConfig[i].fileSaveEnable           = FALSE;
-		config->encodeConfig[i].motionVectorOutputEnable = FALSE;
-		config->encodeConfig[i].qValue                   = gAVSERVER_UI_config.codecBitrate[0];
-		i++;
-
-		config->encodeConfig[i].captureStreamId          = 1;
-		config->encodeConfig[i].cropWidth                = (gAVSERVER_UI_config.mode==AVSERVER_UI_CAPTURE_MODE_720P_VGA_JPG)?640:320;
-		config->encodeConfig[i].cropHeight             	 = (gAVSERVER_UI_config.mode==AVSERVER_UI_CAPTURE_MODE_720P_VGA_JPG)?480:192;
-
-		config->encodeConfig[i].frameRateBase		     = config->sensorFps*1000;
-		config->encodeConfig[i].frameSkipMask            = 0x3FFFFFFF;
-		config->encodeConfig[i].codecType                = gAVSERVER_UI_config.codecType[1];
-		config->encodeConfig[i].codecBitrate             = gAVSERVER_UI_config.codecBitrate[1];
-		config->encodeConfig[i].encryptEnable            = FALSE;
-		config->encodeConfig[i].fileSaveEnable           = FALSE;
-		config->encodeConfig[i].motionVectorOutputEnable = FALSE;
-		config->encodeConfig[i].qValue                   = gAVSERVER_UI_config.codecBitrate[1];
-		i++;
-
-		config->encodeConfig[i].captureStreamId          = 1;
-		config->encodeConfig[i].cropWidth                = (gAVSERVER_UI_config.mode==AVSERVER_UI_CAPTURE_MODE_720P_VGA_JPG)?640:320;
-		config->encodeConfig[i].cropHeight               = (gAVSERVER_UI_config.mode==AVSERVER_UI_CAPTURE_MODE_720P_VGA_JPG)?480:192;
-		config->encodeConfig[i].frameRateBase		 	 = (gAVSERVER_UI_config.mode==AVSERVER_UI_CAPTURE_MODE_720P_VGA_JPG) ? (1*1000) : (3*1000);
-		config->encodeConfig[i].frameSkipMask            = 0x3FFFFFFF;
-		config->encodeConfig[i].codecType                = ALG_VID_CODEC_MJPEG;
-		config->encodeConfig[i].codecBitrate             = gAVSERVER_UI_config.codecBitrate[0];
-		config->encodeConfig[i].encryptEnable            = FALSE;
-		config->encodeConfig[i].fileSaveEnable           = FALSE;
-		config->encodeConfig[i].motionVectorOutputEnable = FALSE;
-		config->encodeConfig[i].qValue                   = gAVSERVER_UI_config.codecBitrate[0];
-		i++;
-
-		break;
-
-		
 	case AVSERVER_UI_CAPTURE_MODE_960P_VGA:
 	case AVSERVER_UI_CAPTURE_MODE_960P_QVGA:
 	case AVSERVER_UI_CAPTURE_MODE_960P_D1:
@@ -830,7 +345,6 @@ void UI_setConfig(AVSERVER_Config *config)
 
 		int nWidth  = 0;
 		int nHeight = 0;
-
 		switch(gAVSERVER_UI_config.mode)
 		{
 			case AVSERVER_UI_CAPTURE_MODE_960P_D1:
@@ -942,14 +456,15 @@ void UI_setConfig(AVSERVER_Config *config)
 		config->encodeConfig[i].encryptEnable            = FALSE;
 		config->encodeConfig[i].fileSaveEnable           = FALSE;
 		config->encodeConfig[i].motionVectorOutputEnable = FALSE;
-		config->encodeConfig[i].qValue                   = gAVSERVER_UI_config.codecBitrate[1];
-		i++;	
+		config->encodeConfig[i].qValue                   = gAVSERVER_UI_config.codecBitrate[1];	
 	}		
 	break;
-
-	case AVSERVER_UI_CAPTURE_MODE_960P_VGA_JPG:
-	case AVSERVER_UI_CAPTURE_MODE_960P_QVGA_JPG:
 		
+    case AVSERVER_UI_CAPTURE_MODE_1080P_VGA:
+	case AVSERVER_UI_CAPTURE_MODE_1080P_QVGA:
+	case AVSERVER_UI_CAPTURE_MODE_1080P_D1:
+	case AVSERVER_UI_CAPTURE_MODE_1080P_CIF:
+    {
 		if(platform==PLATFORM_DM368)
 		{
 			config->resizerClkdivN = gAVSERVER_UI_config.vsEnable ? 60:70;
@@ -964,651 +479,118 @@ void UI_setConfig(AVSERVER_Config *config)
 			config->resizerClkdivN = 50;
 		}
 
-		config->sensorMode          		= DRV_IMGS_SENSOR_MODE_1280x960;
-		config->sensorFps           		= 30;
+		int nWidth  = 0;
+		int nHeight = 0;
+		switch(gAVSERVER_UI_config.mode)
+		{
+			case AVSERVER_UI_CAPTURE_MODE_1080P_VGA:
+				nWidth  = ALIGN_ENCODE(640);
+				nHeight = ALIGN_ENCODE(480);
+				break;
+			case AVSERVER_UI_CAPTURE_MODE_1080P_CIF:
+				nWidth  = ALIGN_ENCODE(352);
+				nHeight = ALIGN_ENCODE(288);	
+				break;					
+			case AVSERVER_UI_CAPTURE_MODE_1080P_QVGA:
+				nWidth  = ALIGN_ENCODE(320);
+				nHeight = ALIGN_ENCODE(192);	
+				break;
+			default:
+				nWidth  = ALIGN_ENCODE(640);
+				nHeight = ALIGN_ENCODE(480);
+				break;
+		}
+		
+		config->sensorMode					= DRV_IMGS_SENSOR_MODE_1920x1080;
+		config->sensorFps 					= 25;
 		config->aewb_config.aewbBinEnable	= TRUE;
 
-		config->vstabTskEnable      = gAVSERVER_UI_config.vsEnable;
-		config->ldcTskEnable        = gAVSERVER_UI_config.ldcEnable;
-		config->vnfTskEnable        = gAVSERVER_UI_config.snfEnable|gAVSERVER_UI_config.tnfEnable;
-		config->encryptTskEnable    = FALSE;
+		config->vstabTskEnable			= gAVSERVER_UI_config.vsEnable;
+		config->ldcTskEnable			= gAVSERVER_UI_config.ldcEnable;
+		config->vnfTskEnable			= gAVSERVER_UI_config.snfEnable|gAVSERVER_UI_config.tnfEnable;
+		config->encryptTskEnable		= FALSE;
 
-		config->captureRawInMode	  = AVSERVER_CAPTURE_RAW_IN_MODE_DDR_IN;
-		config->captureSingleResize = FALSE;
-		config->captureYuvFormat    = DRV_DATA_FORMAT_YUV420;
+		config->captureRawInMode	    = AVSERVER_CAPTURE_RAW_IN_MODE_ISIF_IN;
+		config->captureSingleResize 	= FALSE;
+		config->captureYuvFormat		= DRV_DATA_FORMAT_YUV420;
+	
+		config->numCaptureStream		= 2;
+		numEncodes 						= 3;
+		config->numEncodeStream 		= numEncodes;
 
+		config->faceDetectConfig.captureStreamId = 1;
+		config->faceDetectConfig.fdEnable 		 = gAVSERVER_UI_config.fdEnable;
 
-		config->numCaptureStream    = 2;
-
-		numEncodes = 3;
-		config->numEncodeStream     = numEncodes;
-
-		config->faceDetectConfig.captureStreamId = 2;
-		config->faceDetectConfig.fdEnable        = gAVSERVER_UI_config.fdEnable;
-
-		config->displayConfig.captureStreamId    = 1;
-		config->displayConfig.width              = 640;
-		config->displayConfig.height             = 480;
-		config->displayConfig.expandH		       = TRUE;
+		config->displayConfig.captureStreamId 	 = 1;
+		config->displayConfig.width 			 = 640;
+		config->displayConfig.height			 = 480;
+		config->displayConfig.expandH            = TRUE;
 
 		i=0;
-
 		k=0;
-		config->captureConfig[i].width              = 1280;
-		config->captureConfig[i].height             = 960;
-		config->captureConfig[i].ldcEnable          = gAVSERVER_UI_config.ldcEnable;
-		config->captureConfig[i].snfEnable          = gAVSERVER_UI_config.snfEnable;
-		config->captureConfig[i].tnfEnable          = gAVSERVER_UI_config.tnfEnable;
-		config->captureConfig[i].vsEnable           = gAVSERVER_UI_config.vsEnable;
-
-		config->captureConfig[i].numEncodes         = 1;
-		config->captureConfig[i].encodeStreamId[k++]= 0;
-
-		config->captureConfig[i].frameSkipMask      = 0x3FFFFFFF;
-		i++;
-
-		k=0;
-
-		config->captureConfig[i].width			= (gAVSERVER_UI_config.mode==AVSERVER_UI_CAPTURE_MODE_960P_VGA_JPG)?640:320;
-		config->captureConfig[i].height 		= (gAVSERVER_UI_config.mode==AVSERVER_UI_CAPTURE_MODE_960P_VGA_JPG)?480:192;
-		config->captureConfig[i].ldcEnable      = gAVSERVER_UI_config.ldcEnable;
-		config->captureConfig[i].snfEnable      = (numEncodes>1)?gAVSERVER_UI_config.snfEnable:FALSE;
-		config->captureConfig[i].tnfEnable      = (numEncodes>1)?gAVSERVER_UI_config.tnfEnable:FALSE;
-		config->captureConfig[i].vsEnable       = gAVSERVER_UI_config.vsEnable;
-
-		config->captureConfig[i].numEncodes       = 2;
-		config->captureConfig[i].encodeStreamId[k++]= 1;
-		config->captureConfig[i].encodeStreamId[k++]= 2;
-		
-		config->captureConfig[i].frameSkipMask    = 0x3FFFFFFF;
+		config->captureConfig[i].width						= 1920;
+		config->captureConfig[i].height 					= 1080;
+		config->captureConfig[i].ldcEnable					= gAVSERVER_UI_config.ldcEnable;
+		config->captureConfig[i].snfEnable					= gAVSERVER_UI_config.snfEnable;
+		config->captureConfig[i].tnfEnable					= gAVSERVER_UI_config.tnfEnable;
+		config->captureConfig[i].vsEnable 					= gAVSERVER_UI_config.vsEnable;
+		config->captureConfig[i].numEncodes 				= 2;
+		config->captureConfig[i].encodeStreamId[k++]		= 0;
+		config->captureConfig[i].encodeStreamId[k++]		= 2;
+		config->captureConfig[i].frameSkipMask				= 0x3FFFFFFF;
 
 		i++;
-
+		k=0;
+		config->captureConfig[i].width						= ALIGN_ENCODE(nWidth);
+		config->captureConfig[i].height 					= ALIGN_ENCODE(nHeight);
+		config->captureConfig[i].ldcEnable					= gAVSERVER_UI_config.ldcEnable;
+		config->captureConfig[i].snfEnable					= (numEncodes > 1) ? gAVSERVER_UI_config.snfEnable : FALSE;
+		config->captureConfig[i].tnfEnable					= (numEncodes > 1) ? gAVSERVER_UI_config.tnfEnable : FALSE;
+		config->captureConfig[i].vsEnable 					= gAVSERVER_UI_config.vsEnable;
+		config->captureConfig[i].numEncodes 				= 1;
+		config->captureConfig[i].encodeStreamId[k++]		= 1;
+		config->captureConfig[i].frameSkipMask				= 0x3FFFFFFF;
 
 		i=0;
-		config->encodeConfig[i].captureStreamId          = 0;
-		config->encodeConfig[i].cropWidth                = ALIGN_ENCODE(1280);
-		config->encodeConfig[i].cropHeight               = ALIGN_ENCODE(960);
+		config->encodeConfig[i].captureStreamId 		 = 0;
+		config->encodeConfig[i].cropWidth 				 = ALIGN_ENCODE(1920);
+		config->encodeConfig[i].cropHeight				 = ALIGN_ENCODE(1080);
 		config->encodeConfig[i].frameRateBase			 = config->sensorFps*1000;
-		config->encodeConfig[i].frameSkipMask            = 0x3FFFFFFF;
-		config->encodeConfig[i].codecType                = gAVSERVER_UI_config.codecType[0];
-		config->encodeConfig[i].codecBitrate             = gAVSERVER_UI_config.codecBitrate[0];
-		config->encodeConfig[i].encryptEnable            = FALSE;
-		config->encodeConfig[i].fileSaveEnable           = FALSE;
+		config->encodeConfig[i].frameSkipMask 			 = 0x3FFFFFFF;
+		config->encodeConfig[i].codecType 				 = gAVSERVER_UI_config.codecType[i];
+		config->encodeConfig[i].codecBitrate			 = gAVSERVER_UI_config.codecBitrate[i];
+		config->encodeConfig[i].encryptEnable 			 = FALSE;
+		config->encodeConfig[i].fileSaveEnable			 = FALSE;
 		config->encodeConfig[i].motionVectorOutputEnable = FALSE;
-		config->encodeConfig[i].qValue                   = gAVSERVER_UI_config.codecBitrate[0];
+		config->encodeConfig[i].qValue					 = gAVSERVER_UI_config.codecBitrate[i];
+
 		i++;
-
-		config->encodeConfig[i].captureStreamId          = 1;
-		config->encodeConfig[i].cropWidth                = (gAVSERVER_UI_config.mode==AVSERVER_UI_CAPTURE_MODE_960P_VGA_JPG)?640:320;
-		config->encodeConfig[i].cropHeight             	 = (gAVSERVER_UI_config.mode==AVSERVER_UI_CAPTURE_MODE_960P_VGA_JPG)?480:192;
-
-		config->encodeConfig[i].frameRateBase		     = config->sensorFps*1000;
-		config->encodeConfig[i].frameSkipMask            = 0x3FFFFFFF;
-		config->encodeConfig[i].codecType                = gAVSERVER_UI_config.codecType[1];
-		config->encodeConfig[i].codecBitrate             = gAVSERVER_UI_config.codecBitrate[1];
-		config->encodeConfig[i].encryptEnable            = FALSE;
-		config->encodeConfig[i].fileSaveEnable           = FALSE;
+		config->encodeConfig[i].captureStreamId 		 = 1;
+		config->encodeConfig[i].cropWidth  				 = ALIGN_ENCODE(nWidth);
+		config->encodeConfig[i].cropHeight 				 = ALIGN_ENCODE(nHeight);				
+		config->encodeConfig[i].frameRateBase			 = config->sensorFps*1000;
+		config->encodeConfig[i].frameSkipMask 			 = 0x3FFFFFFF;
+		config->encodeConfig[i].codecType 				 = gAVSERVER_UI_config.codecType[i];
+		config->encodeConfig[i].codecBitrate			 = gAVSERVER_UI_config.codecBitrate[i];
+		config->encodeConfig[i].encryptEnable 			 = FALSE;
+		config->encodeConfig[i].fileSaveEnable			 = FALSE;
 		config->encodeConfig[i].motionVectorOutputEnable = FALSE;
-		config->encodeConfig[i].qValue                   = gAVSERVER_UI_config.codecBitrate[1];
-		i++;
+		config->encodeConfig[i].qValue					 = gAVSERVER_UI_config.codecBitrate[i];
 
-		config->encodeConfig[i].captureStreamId          = 1;
-		config->encodeConfig[i].cropWidth                = (gAVSERVER_UI_config.mode==AVSERVER_UI_CAPTURE_MODE_720P_VGA_JPG)?640:320;
-		config->encodeConfig[i].cropHeight               = (gAVSERVER_UI_config.mode==AVSERVER_UI_CAPTURE_MODE_720P_VGA_JPG)?480:192;
-		config->encodeConfig[i].frameRateBase		 	 = (gAVSERVER_UI_config.mode==AVSERVER_UI_CAPTURE_MODE_960P_VGA_JPG) ? (1*1000) : (3*1000);
-		config->encodeConfig[i].frameSkipMask            = 0x11111111;
+		i++;
+		config->encodeConfig[i].captureStreamId          = 0;
+		config->encodeConfig[i].cropWidth                = ALIGN_ENCODE(1920);
+		config->encodeConfig[i].cropHeight               = ALIGN_ENCODE(1080);
+		config->encodeConfig[i].frameRateBase		 	 = (1*1000);
+		config->encodeConfig[i].frameSkipMask            = 0x00010000;
 		config->encodeConfig[i].codecType                = ALG_VID_CODEC_MJPEG;
 		config->encodeConfig[i].codecBitrate             = gAVSERVER_UI_config.codecBitrate[1];
 		config->encodeConfig[i].encryptEnable            = FALSE;
 		config->encodeConfig[i].fileSaveEnable           = FALSE;
 		config->encodeConfig[i].motionVectorOutputEnable = FALSE;
 		config->encodeConfig[i].qValue                   = gAVSERVER_UI_config.codecBitrate[1];
-		i++;
-
-		break;
-		
-	case AVSERVER_UI_CAPTURE_MODE_SXVGA:
-
-      		gAVSERVER_UI_config.ldcEnable = FALSE;
-      		gAVSERVER_UI_config.vsEnable  = FALSE;
-
-			config->sensorMode					= gAVSERVER_UI_config.winmodeEnable?DRV_IMGS_SENSOR_MODE_1600x1200:DRV_IMGS_SENSOR_MODE_1280x960;
-			config->sensorFps 					= 30;
-  			config->aewb_config.aewbBinEnable	= FALSE;
-
-			config->vstabTskEnable			= gAVSERVER_UI_config.vsEnable;
-			config->ldcTskEnable			= gAVSERVER_UI_config.ldcEnable;
-			config->vnfTskEnable			= gAVSERVER_UI_config.snfEnable|gAVSERVER_UI_config.tnfEnable;
-			config->encryptTskEnable		= FALSE;
-
-			config->captureSingleResize 	= FALSE;
-			config->captureYuvFormat		= DRV_DATA_FORMAT_YUV420;
-
-			config->numCaptureStream		= 2;
-
-			if(numEncodes > config->numCaptureStream)
-				numEncodes = config->numCaptureStream;
-
-			config->numEncodeStream 		= numEncodes;
-
-			config->faceDetectConfig.captureStreamId = 1;
-			config->faceDetectConfig.fdEnable 		 = gAVSERVER_UI_config.fdEnable;
-
-			config->displayConfig.captureStreamId 	 = 1;
-			config->displayConfig.width 			 = 640;
-			config->displayConfig.height			 = 480;
-			config->displayConfig.expandH            = TRUE;
-
-			i=0;
-
-			k=0;
-			config->captureConfig[i].width							= 1280;
-			config->captureConfig[i].height 						= 960;
-			config->captureConfig[i].ldcEnable					= gAVSERVER_UI_config.ldcEnable;
-			config->captureConfig[i].snfEnable					= gAVSERVER_UI_config.snfEnable;
-			config->captureConfig[i].tnfEnable					= gAVSERVER_UI_config.tnfEnable;
-			config->captureConfig[i].vsEnable 					= gAVSERVER_UI_config.vsEnable;
-
-			if(numEncodes>0)
-				config->captureConfig[i].numEncodes 				= 1;
-
-			config->captureConfig[i].encodeStreamId[k++]= 0;
-			config->captureConfig[i].frameSkipMask			= 0x3FFFFFFF;
-			i++;
-
-			k=0;
-			config->captureConfig[i].width							= 256;
-			config->captureConfig[i].height 						= 192;
-			config->captureConfig[i].ldcEnable					= gAVSERVER_UI_config.ldcEnable;
-			config->captureConfig[i].snfEnable					= (numEncodes>1)?gAVSERVER_UI_config.snfEnable:FALSE;
-			config->captureConfig[i].tnfEnable					= (numEncodes>1)?gAVSERVER_UI_config.tnfEnable:FALSE;
-			config->captureConfig[i].vsEnable 					= gAVSERVER_UI_config.vsEnable;
-
-			if(numEncodes>1)
-				config->captureConfig[i].numEncodes 	= 1;
-
-			config->captureConfig[i].encodeStreamId[k++]= 1;
-			config->captureConfig[i].frameSkipMask			= 0x3FFFFFFF;
-			i++;
-
-			i=0;
-
-			config->encodeConfig[i].captureStreamId 		 = 0;
-			config->encodeConfig[i].cropWidth 				 = ALIGN_ENCODE(1280);
-			config->encodeConfig[i].cropHeight				 = ALIGN_ENCODE(960);
-			config->encodeConfig[i].frameRateBase			 = config->sensorFps*1000;
-			config->encodeConfig[i].frameSkipMask 			 = 0x3FFFFFFF;
-			config->encodeConfig[i].codecType 				 = gAVSERVER_UI_config.codecType[i];
-			config->encodeConfig[i].codecBitrate			 = gAVSERVER_UI_config.codecBitrate[i];
-			config->encodeConfig[i].encryptEnable 			 = FALSE;
-			config->encodeConfig[i].fileSaveEnable			 = FALSE;
-			config->encodeConfig[i].motionVectorOutputEnable = FALSE;
-			config->encodeConfig[i].qValue					 = gAVSERVER_UI_config.codecBitrate[i];
-			i++;
-
-			config->encodeConfig[i].captureStreamId 		 = 1;
-			config->encodeConfig[i].cropWidth 				 = ALIGN_ENCODE(256);
-			config->encodeConfig[i].cropHeight				 = ALIGN_ENCODE(192);
-			config->encodeConfig[i].frameRateBase			 = config->sensorFps*1000;
-			config->encodeConfig[i].frameSkipMask 			 = 0x3FFFFFFF;
-			config->encodeConfig[i].codecType 				 = gAVSERVER_UI_config.codecType[i];
-			config->encodeConfig[i].codecBitrate			 = gAVSERVER_UI_config.codecBitrate[i];
-			config->encodeConfig[i].encryptEnable 			 = FALSE;
-			config->encodeConfig[i].fileSaveEnable			 = FALSE;
-			config->encodeConfig[i].motionVectorOutputEnable = FALSE;
-			config->encodeConfig[i].qValue					 = gAVSERVER_UI_config.codecBitrate[i];
-			i++;
-
-			break;
-		case AVSERVER_UI_CAPTURE_MODE_1080P_ONLY:
-			break;
-			
-		case AVSERVER_UI_CAPTURE_MODE_720P_ONLY:
-			break;
-
-		case AVSERVER_UI_CAPTURE_MODE_1080P_VGA:
-		case AVSERVER_UI_CAPTURE_MODE_1080P_QVGA:
-		case AVSERVER_UI_CAPTURE_MODE_1080P_D1:
-		case AVSERVER_UI_CAPTURE_MODE_1080P_CIF:
-
-		    gAVSERVER_UI_config.ldcEnable = FALSE;
-		    gAVSERVER_UI_config.vsEnable  = FALSE;
-
-			config->sensorMode					= DRV_IMGS_SENSOR_MODE_1920x1080;
-			config->sensorFps 					= (platform == PLATFORM_DM368)?30:23;
-  			config->aewb_config.aewbBinEnable	= FALSE;//¿í¶¯Ì¬
-			config->aewb_config.saldreEnable 	= FALSE;
-
-			config->vstabTskEnable			= gAVSERVER_UI_config.vsEnable;
-			config->ldcTskEnable			= gAVSERVER_UI_config.ldcEnable;
-			config->vnfTskEnable			= gAVSERVER_UI_config.snfEnable|gAVSERVER_UI_config.tnfEnable;
-			config->encryptTskEnable		= FALSE;
-
-			config->captureSingleResize 	= FALSE;
-			config->captureYuvFormat		= DRV_DATA_FORMAT_YUV420;
-
-			config->numCaptureStream		= 2;
-			numEncodes = config->numCaptureStream;
-			config->numEncodeStream 		= numEncodes;
-
-			config->faceDetectConfig.captureStreamId = 1;
-			config->faceDetectConfig.fdEnable 		 = (gAVSERVER_UI_config.mode==AVSERVER_UI_CAPTURE_MODE_1080P_VGA)?FALSE:gAVSERVER_UI_config.fdEnable;
-
-			config->displayConfig.captureStreamId 	 = 1;
-			config->displayConfig.width 			 = 640;
-			config->displayConfig.height			 = 480;
-			config->displayConfig.expandH            = TRUE;
-
-			i=0;
-
-			k=0;
-			config->captureConfig[i].width						= 1920;
-			config->captureConfig[i].height 					= 1080;
-			config->captureConfig[i].ldcEnable					= gAVSERVER_UI_config.ldcEnable;
-			config->captureConfig[i].snfEnable					= gAVSERVER_UI_config.snfEnable;
-			config->captureConfig[i].tnfEnable					= gAVSERVER_UI_config.tnfEnable;
-			config->captureConfig[i].vsEnable 					= gAVSERVER_UI_config.vsEnable;
-
-				config->captureConfig[i].numEncodes 			= 1;
-			config->captureConfig[i].encodeStreamId[k++]		= 0;
-
-			config->captureConfig[i].frameSkipMask				= 0x3FFFFFFF;
-			i++;
-
-
-			k=0;
-			config->captureConfig[i].width			= (gAVSERVER_UI_config.mode==AVSERVER_UI_CAPTURE_MODE_1080P_VGA)?640:320;
-			config->captureConfig[i].height 		= (gAVSERVER_UI_config.mode==AVSERVER_UI_CAPTURE_MODE_1080P_VGA)?480:192;
-			config->captureConfig[i].ldcEnable		= gAVSERVER_UI_config.ldcEnable;
-	  		config->captureConfig[i].snfEnable		= (numEncodes>1)?gAVSERVER_UI_config.snfEnable:FALSE;
-	  		config->captureConfig[i].tnfEnable		= (numEncodes>1)?gAVSERVER_UI_config.tnfEnable:FALSE;
-			config->captureConfig[i].vsEnable 		= gAVSERVER_UI_config.vsEnable;
-
-			config->captureConfig[i].numEncodes 	= 2;
-			config->captureConfig[i].encodeStreamId[k++]= 1;
-			config->captureConfig[i].encodeStreamId[k++]= 2;
-
-			config->captureConfig[i].frameSkipMask		= 0x3FFFFFFF;
-			i++;
-
-			i=0;
-
-			config->encodeConfig[i].captureStreamId 			= 0;
-			config->encodeConfig[i].cropWidth 					= 1920;
-			config->encodeConfig[i].cropHeight					= 1080;
-			config->encodeConfig[i].frameRateBase				= config->sensorFps*1000;
-			config->encodeConfig[i].frameSkipMask 				= 0x3FFFFFFF;
-			config->encodeConfig[i].codecType 					= gAVSERVER_UI_config.codecType[0];
-			config->encodeConfig[i].codecBitrate				= gAVSERVER_UI_config.codecBitrate[0];
-			config->encodeConfig[i].encryptEnable 				= FALSE;
-			config->encodeConfig[i].fileSaveEnable				= FALSE;
-			config->encodeConfig[i].motionVectorOutputEnable	= FALSE;
-			config->encodeConfig[i].qValue						= gAVSERVER_UI_config.codecBitrate[0];
-			i++;
-
-			config->encodeConfig[i].captureStreamId 		 	= 1;
-			config->encodeConfig[i].cropWidth 					= (gAVSERVER_UI_config.mode==AVSERVER_UI_CAPTURE_MODE_1080P_VGA)?640:320;
-			config->encodeConfig[i].cropHeight					= (gAVSERVER_UI_config.mode==AVSERVER_UI_CAPTURE_MODE_1080P_VGA)?480:192;
-			config->encodeConfig[i].frameRateBase				= config->sensorFps*1000;
-			config->encodeConfig[i].frameSkipMask 				= 0x3FFFFFFF;
-			config->encodeConfig[i].codecType 					= gAVSERVER_UI_config.codecType[1];
-			config->encodeConfig[i].codecBitrate				= gAVSERVER_UI_config.codecBitrate[1];
-			config->encodeConfig[i].encryptEnable 				= FALSE;
-			config->encodeConfig[i].fileSaveEnable				= FALSE;
-			config->encodeConfig[i].motionVectorOutputEnable 	= FALSE;
-			config->encodeConfig[i].qValue						= gAVSERVER_UI_config.codecBitrate[1];
-			i++;
-
-#if 0		
-			config->encodeConfig[i].captureStreamId 		 	= 1;
-			config->encodeConfig[i].cropWidth 					= (gAVSERVER_UI_config.mode==AVSERVER_UI_CAPTURE_MODE_1080P_VGA)?640:320;
-			config->encodeConfig[i].cropHeight					= (gAVSERVER_UI_config.mode==AVSERVER_UI_CAPTURE_MODE_1080P_VGA)?480:192;
-			config->encodeConfig[i].frameRateBase				= 10*1000;
-			config->encodeConfig[i].frameSkipMask 				= 0x3FFFFFFF;
-			config->encodeConfig[i].codecType 					= ALG_VID_CODEC_MJPEG;//gAVSERVER_UI_config.codecType[1];
-			config->encodeConfig[i].codecBitrate				= 10*1000;//gAVSERVER_UI_config.codecBitrate[1];
-			config->encodeConfig[i].encryptEnable 				= FALSE;
-			config->encodeConfig[i].fileSaveEnable				= FALSE;
-			config->encodeConfig[i].motionVectorOutputEnable 	= FALSE;
-			config->encodeConfig[i].qValue						= 70;//gAVSERVER_UI_config.codecBitrate[1];
-			i++;
-#endif
-
-			config->numEncodeStream  = i;
-
-			break;
-
-		case AVSERVER_UI_CAPTURE_MODE_2_MEGA:
-
-      		gAVSERVER_UI_config.ldcEnable = FALSE;
-      		gAVSERVER_UI_config.vsEnable  = FALSE;
-      		gAVSERVER_UI_config.snfEnable = FALSE;
-      		gAVSERVER_UI_config.tnfEnable = FALSE;
-
-			config->sensorMode					= DRV_IMGS_SENSOR_MODE_1600x1200;
-			config->sensorFps 					= 30;
-  			config->aewb_config.aewbBinEnable	= FALSE;
-			config->aewb_config.saldreEnable 	= FALSE;
-
-			config->vstabTskEnable				= gAVSERVER_UI_config.vsEnable;
-			config->ldcTskEnable				= gAVSERVER_UI_config.ldcEnable;
-			config->vnfTskEnable				= gAVSERVER_UI_config.snfEnable|gAVSERVER_UI_config.tnfEnable;
-			config->encryptTskEnable			= FALSE;
-
-			config->captureSingleResize 		= FALSE;
-			config->captureYuvFormat			= DRV_DATA_FORMAT_YUV420;
-
-			config->numCaptureStream			= 2;
-
-			if(numEncodes > config->numCaptureStream)
-				numEncodes = config->numCaptureStream;
-
-			config->numEncodeStream 			= numEncodes;
-
-			config->faceDetectConfig.captureStreamId = 1;
-			config->faceDetectConfig.fdEnable 		 = gAVSERVER_UI_config.fdEnable;
-
-			config->displayConfig.captureStreamId 	 = 1;
-			config->displayConfig.width 			 = 640;
-			config->displayConfig.height			 = 480;
-			config->displayConfig.expandH            = TRUE;
-
-			i=0;
-
-			k=0;
-			config->captureConfig[i].width						= 1600;
-			config->captureConfig[i].height 					= 1200;
-			config->captureConfig[i].ldcEnable					= gAVSERVER_UI_config.ldcEnable;
-			config->captureConfig[i].snfEnable					= gAVSERVER_UI_config.snfEnable;
-			config->captureConfig[i].tnfEnable					= gAVSERVER_UI_config.tnfEnable;
-			config->captureConfig[i].vsEnable 					= gAVSERVER_UI_config.vsEnable;
-
-			if(numEncodes>0)
-				config->captureConfig[i].numEncodes 			= 1;
-
-			config->captureConfig[i].encodeStreamId[k++]= 0;
-			config->captureConfig[i].frameSkipMask				= 0x3FFFFFFF;
-			i++;
-
-			k=0;
-			config->captureConfig[i].width						= 256;
-			config->captureConfig[i].height 					= 192;
-			config->captureConfig[i].ldcEnable					= gAVSERVER_UI_config.ldcEnable;
-			config->captureConfig[i].snfEnable					= (numEncodes>1)?gAVSERVER_UI_config.snfEnable:FALSE;
-			config->captureConfig[i].tnfEnable					= (numEncodes>1)?gAVSERVER_UI_config.tnfEnable:FALSE;
-			config->captureConfig[i].vsEnable 					= gAVSERVER_UI_config.vsEnable;
-
-			if(numEncodes>1)
-				config->captureConfig[i].numEncodes 		= 1;
-
-			config->captureConfig[i].encodeStreamId[k++]	= 1;
-			config->captureConfig[i].frameSkipMask			= 0x3FFFFFFF;
-			i++;
-
-			i=0;
-
-			config->encodeConfig[i].captureStreamId 			= 0;
-			config->encodeConfig[i].cropWidth 					= ALIGN_ENCODE(1600);
-			config->encodeConfig[i].cropHeight					= ALIGN_ENCODE(1200);
-			config->encodeConfig[i].frameRateBase				= config->sensorFps*1000;
-			config->encodeConfig[i].frameSkipMask 				= 0x3FFFFFFF;
-			config->encodeConfig[i].codecType 				 	= gAVSERVER_UI_config.codecType[i];
-			config->encodeConfig[i].codecBitrate			 	= gAVSERVER_UI_config.codecBitrate[i];
-			config->encodeConfig[i].encryptEnable 			 	= FALSE;
-			config->encodeConfig[i].fileSaveEnable			 	= FALSE;
-			config->encodeConfig[i].motionVectorOutputEnable 	= FALSE;
-			config->encodeConfig[i].qValue					 	= gAVSERVER_UI_config.codecBitrate[i];
-			i++;
-
-			config->encodeConfig[i].captureStreamId 		 	= 1;
-			config->encodeConfig[i].cropWidth 				 	= ALIGN_ENCODE(256);
-			config->encodeConfig[i].cropHeight				 	= ALIGN_ENCODE(192);
-			config->encodeConfig[i].frameRateBase			 	= config->sensorFps*1000;
-			config->encodeConfig[i].frameSkipMask 			 	= 0x3FFFFFFF;
-			config->encodeConfig[i].codecType 				 	= gAVSERVER_UI_config.codecType[i];
-			config->encodeConfig[i].codecBitrate				= gAVSERVER_UI_config.codecBitrate[i];
-			config->encodeConfig[i].encryptEnable 			 	= FALSE;
-			config->encodeConfig[i].fileSaveEnable			 	= FALSE;
-			config->encodeConfig[i].motionVectorOutputEnable 	= FALSE;
-			config->encodeConfig[i].qValue					 	= gAVSERVER_UI_config.codecBitrate[i];
-			i++;
-
-			break;
-
-		case AVSERVER_UI_CAPTURE_MODE_3_MEGA:
-
-		   gAVSERVER_UI_config.ldcEnable = FALSE;
-		   gAVSERVER_UI_config.vsEnable  = FALSE;
-		   gAVSERVER_UI_config.snfEnable = FALSE;
-		   gAVSERVER_UI_config.tnfEnable = FALSE;
-
-			config->sensorMode					= DRV_IMGS_SENSOR_MODE_2048x1536;
-			config->sensorFps 					= (platform == PLATFORM_DM368)?20:15;
-  			config->aewb_config.aewbBinEnable	= FALSE;
-			config->aewb_config.saldreEnable 	= FALSE;
-
-			config->vstabTskEnable				= gAVSERVER_UI_config.vsEnable;
-			config->ldcTskEnable				= gAVSERVER_UI_config.ldcEnable;
-			config->vnfTskEnable				= gAVSERVER_UI_config.snfEnable|gAVSERVER_UI_config.tnfEnable;
-			config->encryptTskEnable			= FALSE;
-
-			config->captureSingleResize 		= FALSE;
-			config->captureYuvFormat			= DRV_DATA_FORMAT_YUV420;
-
-			config->numCaptureStream			= 2;
-
-			if(numEncodes > config->numCaptureStream)
-				numEncodes = config->numCaptureStream;
-
-			config->numEncodeStream 					= numEncodes;
-
-			config->faceDetectConfig.captureStreamId 	= 1;
-			config->faceDetectConfig.fdEnable 			= gAVSERVER_UI_config.fdEnable;
-
-			config->displayConfig.captureStreamId 	 	= 1;
-			config->displayConfig.width 				= 640;
-			config->displayConfig.height				= 480;
-			config->displayConfig.expandH            	= TRUE;
-
-			i=0;
-
-			k=0;
-			config->captureConfig[i].width				= 2048;
-			config->captureConfig[i].height 			= 1536;
-			config->captureConfig[i].ldcEnable			= gAVSERVER_UI_config.ldcEnable;
-			config->captureConfig[i].snfEnable			= gAVSERVER_UI_config.snfEnable;
-			config->captureConfig[i].tnfEnable			= gAVSERVER_UI_config.tnfEnable;
-			config->captureConfig[i].vsEnable 			= gAVSERVER_UI_config.vsEnable;
-
-			if(numEncodes>0)
-				config->captureConfig[i].numEncodes 		= 1;
-
-			config->captureConfig[i].encodeStreamId[k++]	= 0;
-			config->captureConfig[i].frameSkipMask			= 0x3FFFFFFF;
-			i++;
-
-			k=0;
-			config->captureConfig[i].width					= 256;
-			config->captureConfig[i].height 				= 192;
-			config->captureConfig[i].ldcEnable				= gAVSERVER_UI_config.ldcEnable;
-			config->captureConfig[i].snfEnable				= (numEncodes>1)?gAVSERVER_UI_config.snfEnable:FALSE;
-			config->captureConfig[i].tnfEnable				= (numEncodes>1)?gAVSERVER_UI_config.tnfEnable:FALSE;
-			config->captureConfig[i].vsEnable 				= gAVSERVER_UI_config.vsEnable;
-
-			if(numEncodes>1)
-				config->captureConfig[i].numEncodes 		= 1;
-
-			config->captureConfig[i].encodeStreamId[k++]	= 1;
-			config->captureConfig[i].frameSkipMask			= 0x3FFFFFFF;
-			i++;
-
-			i=0;
-
-			config->encodeConfig[i].captureStreamId 		 = 0;
-			config->encodeConfig[i].cropWidth 				 = ALIGN_ENCODE(2048);
-			config->encodeConfig[i].cropHeight				 = ALIGN_ENCODE(1536);
-			config->encodeConfig[i].frameRateBase			 = config->sensorFps*1000;
-			config->encodeConfig[i].frameSkipMask 			 = 0x3FFFFFFF;
-			config->encodeConfig[i].codecType 				 = gAVSERVER_UI_config.codecType[i];
-			config->encodeConfig[i].codecBitrate			 = gAVSERVER_UI_config.codecBitrate[i];
-			config->encodeConfig[i].encryptEnable 			 = FALSE;
-			config->encodeConfig[i].fileSaveEnable			 = FALSE;
-			config->encodeConfig[i].motionVectorOutputEnable = FALSE;
-			config->encodeConfig[i].qValue					 = gAVSERVER_UI_config.codecBitrate[i];
-			i++;
-
-			config->encodeConfig[i].captureStreamId 		 = 1;
-			config->encodeConfig[i].cropWidth 				 = ALIGN_ENCODE(256);
-			config->encodeConfig[i].cropHeight				 = ALIGN_ENCODE(192);
-			config->encodeConfig[i].frameRateBase			 = config->sensorFps*1000;
-			config->encodeConfig[i].frameSkipMask 			 = 0x3FFFFFFF;
-			config->encodeConfig[i].codecType 				 = gAVSERVER_UI_config.codecType[i];
-			config->encodeConfig[i].codecBitrate			 = gAVSERVER_UI_config.codecBitrate[i];
-			config->encodeConfig[i].encryptEnable 			 = FALSE;
-			config->encodeConfig[i].fileSaveEnable			 = FALSE;
-			config->encodeConfig[i].motionVectorOutputEnable = FALSE;
-			config->encodeConfig[i].qValue					 = gAVSERVER_UI_config.codecBitrate[i];
-			i++;
-
-			break;
-
-		case AVSERVER_UI_CAPTURE_MODE_5_MEGA:
-
-		    gAVSERVER_UI_config.ldcEnable 		= FALSE;
-		    gAVSERVER_UI_config.vsEnable  		= FALSE;
-		    gAVSERVER_UI_config.snfEnable 		= FALSE;
-		    gAVSERVER_UI_config.tnfEnable 		= FALSE;
-
-			config->resizerClkdivN				= 60;
-			config->sensorMode					= DRV_IMGS_SENSOR_MODE_2592x1920;
-			config->sensorFps 					= 10;
-  			config->aewb_config.aewbBinEnable	= FALSE;
-			config->aewb_config.saldreEnable 	= FALSE;
-
-			config->vstabTskEnable				= gAVSERVER_UI_config.vsEnable;
-			config->ldcTskEnable				= gAVSERVER_UI_config.ldcEnable;
-			config->vnfTskEnable				= gAVSERVER_UI_config.snfEnable|gAVSERVER_UI_config.tnfEnable;
-			config->encryptTskEnable			= FALSE;
-
-      		config->captureRawInMode			= AVSERVER_CAPTURE_RAW_IN_MODE_DDR_IN;
-			config->captureSingleResize 		= TRUE;
-			config->captureYuvFormat			= DRV_DATA_FORMAT_YUV420;
-
-	  		config->numCaptureStream		  	= 1;
-
-			if(numEncodes > config->numCaptureStream)
-				numEncodes = config->numCaptureStream;
-
-			config->numEncodeStream 					= numEncodes;
-
-			config->faceDetectConfig.captureStreamId 	= 1;
-			config->faceDetectConfig.fdEnable 		 	= FALSE;
-			config->faceDetectConfig.fdTracker 		 	= FALSE;
-
-	  		config->displayConfig.captureStreamId    	= 0;
-			config->displayConfig.width 			 	= 640;
-			config->displayConfig.height			 	= 480;
-			config->displayConfig.expandH            	= TRUE;
-
-			i=0;
-
-			k=0;
-			config->captureConfig[i].width				= 2592;
-			config->captureConfig[i].height 			= 1920;
-			config->captureConfig[i].ldcEnable			= gAVSERVER_UI_config.ldcEnable;
-			config->captureConfig[i].snfEnable			= gAVSERVER_UI_config.snfEnable;
-			config->captureConfig[i].tnfEnable			= gAVSERVER_UI_config.tnfEnable;
-			config->captureConfig[i].vsEnable 			= gAVSERVER_UI_config.vsEnable;
-
-			if(numEncodes>0)
-				config->captureConfig[i].numEncodes 	= 1;
-
-			config->captureConfig[i].encodeStreamId[k++]= 0;
-			config->captureConfig[i].frameSkipMask		= 0x3FFFFFFF;
-
-			i=0;
-			config->encodeConfig[i].captureStreamId 			= 0;
-			config->encodeConfig[i].cropWidth 					= ALIGN_ENCODE(2592);
-			config->encodeConfig[i].cropHeight					= ALIGN_ENCODE(1920);
-			config->encodeConfig[i].frameRateBase				= config->sensorFps*1000;
-			config->encodeConfig[i].frameSkipMask 				= 0x3FFFFFFF;
-			config->encodeConfig[i].codecType 					= gAVSERVER_UI_config.codecType[i];
-			config->encodeConfig[i].codecBitrate				= gAVSERVER_UI_config.codecBitrate[i];
-			config->encodeConfig[i].encryptEnable 				= FALSE;
-			config->encodeConfig[i].fileSaveEnable				= FALSE;
-			config->encodeConfig[i].motionVectorOutputEnable 	= FALSE;
-			config->encodeConfig[i].qValue					 	= gAVSERVER_UI_config.codecBitrate[i];
-
-			break;
-
-		case AVSERVER_UI_CAPTURE_MODE_720P_MAX:
-
-		    gAVSERVER_UI_config.ldcEnable 		= FALSE;
-		    gAVSERVER_UI_config.vsEnable  		= FALSE;
-		    gAVSERVER_UI_config.snfEnable 		= FALSE;
-		    gAVSERVER_UI_config.tnfEnable 		= FALSE;
-
-			config->sensorMode					= DRV_IMGS_SENSOR_MODE_1280x720;
-			config->sensorFps 					= (platform == PLATFORM_DM368)?60:45;
-  			config->aewb_config.aewbBinEnable	= FALSE;
-  			config->aewb_config.reduceShutter	= 200;
-			config->aewb_config.saldreEnable 	= FALSE;
-
-			config->vstabTskEnable				= gAVSERVER_UI_config.vsEnable;
-			config->ldcTskEnable				= gAVSERVER_UI_config.ldcEnable;
-			config->vnfTskEnable				= gAVSERVER_UI_config.snfEnable|gAVSERVER_UI_config.tnfEnable;
-			config->encryptTskEnable			= FALSE;
-
-			config->captureSingleResize 		= FALSE;
-			config->captureYuvFormat			= DRV_DATA_FORMAT_YUV420;
-
-	  		config->numCaptureStream		  	= 1;
-
-			if(numEncodes > config->numCaptureStream)
-				numEncodes = config->numCaptureStream;
-
-			config->numEncodeStream 					= numEncodes;
-
-			config->faceDetectConfig.captureStreamId 	= 1;
-			config->faceDetectConfig.fdEnable 		 	= FALSE;
-			config->faceDetectConfig.fdTracker 		 	= FALSE;
-
-	  		config->displayConfig.captureStreamId    	= 0;
-			config->displayConfig.width 			 	= 640;
-			config->displayConfig.height			 	= 480;
-			config->displayConfig.expandH            	= TRUE;
-
-			i=0;
-
-			k=0;
-			config->captureConfig[i].width				= 1280;
-			config->captureConfig[i].height 			= 720;
-			config->captureConfig[i].ldcEnable			= gAVSERVER_UI_config.ldcEnable;
-			config->captureConfig[i].snfEnable			= gAVSERVER_UI_config.snfEnable;
-			config->captureConfig[i].tnfEnable			= gAVSERVER_UI_config.tnfEnable;
-			config->captureConfig[i].vsEnable 			= gAVSERVER_UI_config.vsEnable;
-
-			if(numEncodes>0)
-				config->captureConfig[i].numEncodes 	= 1;
-
-			config->captureConfig[i].encodeStreamId[k++]= 0;
-			config->captureConfig[i].frameSkipMask		= 0x3FFFFFFF;
-
-			i=0;
-			config->encodeConfig[i].captureStreamId 			= 0;
-			config->encodeConfig[i].cropWidth 					= ALIGN_ENCODE(1280);
-			config->encodeConfig[i].cropHeight					= ALIGN_ENCODE(720);
-			config->encodeConfig[i].frameRateBase				= config->sensorFps*1000;
-			config->encodeConfig[i].frameSkipMask 				= 0x3FFFFFFF;
-			config->encodeConfig[i].codecType 					= gAVSERVER_UI_config.codecType[i];
-			config->encodeConfig[i].codecBitrate				= gAVSERVER_UI_config.codecBitrate[i];
-			config->encodeConfig[i].encryptEnable 				= FALSE;
-			config->encodeConfig[i].fileSaveEnable				= FALSE;
-			config->encodeConfig[i].motionVectorOutputEnable 	= FALSE;
-			config->encodeConfig[i].qValue					 	= gAVSERVER_UI_config.codecBitrate[i];
-
-			break;
+	}		
+	break;
   }
 
   {
