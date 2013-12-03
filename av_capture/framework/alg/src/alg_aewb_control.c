@@ -261,6 +261,7 @@ short ALG_aewbSetRgb2Rgb2(RGB2RGB_PARAM  *pRgb2Rgb )
 
   return 0;
 }
+
 short ALG_aewbSetOtfCorrect( int level )
 {
 	static int prevalue = -1;

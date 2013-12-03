@@ -214,14 +214,13 @@ void* ALG_aewbCreate(ALG_AewbCreate *create)
     Aew_ext_parameter.env_50_60Hz       = create->flickerType;
     Aew_ext_parameter.binning_mode      = create->aewbBinEnable?SENSOR_BINNING:SENSOR_SKIP;
 
+    Aew_ext_parameter.MEDIAN_SETUP(1);
+
     gITTAwb.awbNumWinH = create->pH3aInfo->aewbNumWinH;
     gITTAwb.awbNumWinV = create->pH3aInfo->aewbNumWinV;
     gITTAwb.aewbNumSPCInWin= create->pH3aInfo->aewbNumSamplesPerColorInWin;
     gITTAwb.awbRgbData = rgbData;
     OSA_mutexCreate(&gITTAwb.statusLock);
-
-	 // test by fan
-      OSA_printf(" ****ALG_aewbCreate end***** \n");
 
     if(create->aewbVendor == ALG_AEWB_ID_APPRO) {
         //Initial AE
