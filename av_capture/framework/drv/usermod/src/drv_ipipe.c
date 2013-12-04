@@ -1435,41 +1435,32 @@ int DRV_ipipeSetYoffet(int Yoffset)
 
 int DRV_ipipeSetRgb2Yuv(CSL_IpipeRgb2YuvConfig *config)
 {
-  int status;
-  status = CSL_ipipeSetRgb2YuvConfig(&gCSL_ipipeHndl, config);
-  IMAGE_TUNE_SetIpipeRgb2Yuv(config);
-
-  return status;
+    int status;
+    status = CSL_ipipeSetRgb2YuvConfig(&gCSL_ipipeHndl, config);
+    IMAGE_TUNE_SetIpipeRgb2Yuv(config);
+    return status;
 }
 
 int DRV_ipipeSetEdgeEnhance(CSL_IpipeEdgeEnhanceConfig *config)
 {
-  int status;
-
-  status = CSL_ipipeSetEdgeEnhanceConfig(&gCSL_ipipeHndl, config);
-
-  IMAGE_TUNE_SetIpipeEdgeEnhance(config);
-
-  return status;
+    int status;
+    status = CSL_ipipeSetEdgeEnhanceConfig(&gCSL_ipipeHndl, config);
+    IMAGE_TUNE_SetIpipeEdgeEnhance(config);
+    return status;
 }
 
 int DRV_ipipeSetNf2(CSL_IpipeNfConfig *config)
 {
-  int status;
-
-  status = CSL_ipipeSetNf2Config(&gCSL_ipipeHndl, config);
-
-  IMAGE_TUNE_SetIpipeNf2(config);
-
-  return status;
+    int status;
+    status = CSL_ipipeSetNf2Config(&gCSL_ipipeHndl, config);
+    IMAGE_TUNE_SetIpipeNf2(config);
+    return status;
 }
 int DRV_ipipeSetDpcConfig(CSL_IpipeDpcConfig *config)
 {
-  int status;
-
-  status = CSL_ipipeSetDpcConfig(&gCSL_ipipeHndl, config);
-
-  return status;
+    int status;
+    status = CSL_ipipeSetDpcConfig(&gCSL_ipipeHndl, config);
+    return status;
 }
 
 

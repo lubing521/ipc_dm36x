@@ -193,7 +193,7 @@ void* ALG_aewbCreate(ALG_AewbCreate *create)
     Aew_ext_parameter.RGB2RGB_SETUP         = ALG_aewbSetRgb2Rgb           ;
     Aew_ext_parameter.MEDIAN_SETUP          = ALG_aewbSetOtfCorrect        ;
     Aew_ext_parameter.EDGE_SETUP            = ALG_aewbSetEdgeEnhancement   ;
-    Aew_ext_parameter.BRT_CTR_SET           = ALG_aewbSetContrastBrightness;
+    //Aew_ext_parameter.BRT_CTR_SET           = ALG_aewbSetContrastBrightness;
     Aew_ext_parameter.BINNING_SKIP_SETUP    = ALG_aewbSetSensorBinSkip     ;
     Aew_ext_parameter.ENV_50_60HZ_SETUP     = ALG_aewbSetSensor50_60Hz     ;
     Aew_ext_parameter.SENSOR_FRM_RATE_SETUP = ALG_aewbSetSensorFrameRate   ;
@@ -591,10 +591,9 @@ void AEW_SETUP_CONTROL( CONTROL3AS *CONTROL3A )
 
     /* 50/60Hz switch & brightness & contrast support for TI 2A */
     if(gALG_aewbObj.aewbVendor==ALG_AEWB_ID_TI) {
-        BRT_CRT_PARAM brtCtrParam;
-        brtCtrParam.yuv_adj_ctr = CONTROL3A->IMAGE_CONTRAST >> 3;
-        brtCtrParam.yuv_adj_brt = CONTROL3A->IMAGE_BRIGHTNESS;
-        ALG_aewbSetContrastBrightness(&brtCtrParam);
+        ALG_aewbSetBrightness(CONTROL3A->IMAGE_BRIGHTNESS);
+        ALG_aewbSetContrast(CONTROL3A->IMAGE_CONTRAST >> 3);
+        
         if(env_50_60Hz != CONTROL3A->VIDEO_MODE) {
             env_50_60Hz = CONTROL3A->VIDEO_MODE;
 
@@ -664,6 +663,8 @@ void TI2AFunc(void *pAddr)
 {
     int i = 0, retval = OSA_SOK ;
     CONTROL3AS TI_Control3A;
+    EDGE_PARAM EE_Param;
+    
 #ifdef AR0331_WDR
     getSensorStatistics();
 #endif
@@ -759,6 +760,16 @@ void TI2AFunc(void *pAddr)
         if (aewbFrames % NUM_STEPS == 0)
         {
             AEW_SETUP_CONTROL( &TI_Control3A );
+            if (gALG_aewbObj.AE_InArgs.curAe.sensorGain < 10000)
+            {
+                EE_Param.es_gain = Aew_ext_parameter.sharpness - 20;  
+            }
+            else
+            {
+                EE_Param.es_gain = 125 - (gALG_aewbObj.AE_InArgs.curAe.sensorGain - 10000) / 400;  
+            }
+            
+            ALG_aewbSetEdgeEnhancement(&EE_Param);
         }
         ALG_aewbSetDayNight();
     }

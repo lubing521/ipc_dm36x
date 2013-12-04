@@ -1549,9 +1549,7 @@ void stream_feature_setup( int nFeature, void *pParm )
 		case STREAM_FEATURE_SHARPNESS:
 		{
 			int input_val = *(int *)pParm;
-
 			Aew_ext_parameter.sharpness = input_val;
-
 			break;
 		}
 
@@ -1560,8 +1558,6 @@ void stream_feature_setup( int nFeature, void *pParm )
 			int input_val = *(int *)pParm;
 			printf("Chang Contrast = %d \n", input_val);
 			Aew_ext_parameter.contrast = input_val;
-
-
 			break;
 		}
 		case STREAM_FEATURE_BRIGHTNESS:

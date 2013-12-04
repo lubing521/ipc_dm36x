@@ -71,6 +71,8 @@ short ALG_aewbSetSensorBinSkip(int Is_binning);
 short ALG_aewbSetSensor50_60Hz(int Is50Hz);
 short ALG_aewbSetSensorFrameRate(int frame_rate_mode);
 void  ALG_aewbSetDayNight(void);
+short ALG_aewbSetContrast(int Contrast);
+short ALG_aewbSetBrightness(int Yoffset);
 
 
 #endif /* _ALG_AEWB_PRIV_H_ */

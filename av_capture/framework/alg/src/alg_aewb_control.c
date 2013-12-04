@@ -9,11 +9,111 @@
 
 extern IMAGE_TUNE_Ctrl gIMAGE_TUNE_ctrl;
 
-static Uint32 yee_table[] = {
-	#include "alg_aewb_ee_table.txt"
+static Uint32 TI_YEE_TABLE[1024] = 
+{
+    0   ,0   ,0   ,1   ,1   ,1   ,1   ,1   ,2   ,2   ,2   ,2   ,2   ,3   ,3   ,3   ,
+    3   ,3   ,4   ,4   ,4   ,4   ,4   ,5   ,5   ,5   ,5   ,5   ,6   ,6   ,6   ,6   ,
+    6   ,7   ,7   ,7   ,7   ,7   ,8   ,8   ,8   ,8   ,8   ,9   ,9   ,9   ,9   ,9   ,
+    10  ,10  ,10  ,10  ,10  ,11  ,11  ,11  ,11  ,11  ,12  ,12  ,12  ,12  ,12  ,13  ,
+    13  ,13  ,13  ,13  ,14  ,14  ,14  ,14  ,14  ,15  ,15  ,15  ,15  ,15  ,16  ,16  ,
+    16  ,16  ,16  ,17  ,17  ,17  ,17  ,17  ,18  ,18  ,18  ,18  ,18  ,19  ,19  ,19  ,
+    19  ,19  ,20  ,20  ,20  ,20  ,20  ,21  ,21  ,21  ,21  ,21  ,22  ,22  ,22  ,22  ,
+    22  ,23  ,23  ,23  ,23  ,23  ,24  ,24  ,24  ,24  ,24  ,25  ,25  ,25  ,25  ,25  ,
+    26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,
+    26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,
+    26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,
+    26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,
+    26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,
+    26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,
+    26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,
+    26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,
+    26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,
+    26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,
+    26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,
+    26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,
+    26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,
+    26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,
+    26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,
+    26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,
+    26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,
+    26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,
+    26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,
+    26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,
+    26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,
+    26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,
+    26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,
+    26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,26  ,
+    -26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,
+    -26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,
+    -26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,
+    -26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,
+    -26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,
+    -26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,
+    -26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,
+    -26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,
+    -26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,
+    -26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,
+    -26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,
+    -26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,
+    -26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,
+    -26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,
+    -26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,
+    -26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,
+    -26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,
+    -26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,
+    -26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,
+    -26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,
+    -26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,
+    -26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,
+    -26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,
+    -26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,-26 ,
+    -26 ,-25 ,-25 ,-25 ,-25 ,-25 ,-24 ,-24 ,-24 ,-24 ,-24 ,-23 ,-23 ,-23 ,-23 ,-23 ,
+    -22 ,-22 ,-22 ,-22 ,-22 ,-21 ,-21 ,-21 ,-21 ,-21 ,-20 ,-20 ,-20 ,-20 ,-20 ,-19 ,
+    -19 ,-19 ,-19 ,-19 ,-18 ,-18 ,-18 ,-18 ,-18 ,-17 ,-17 ,-17 ,-17 ,-17 ,-16 ,-16 ,
+    -16 ,-16 ,-16 ,-15 ,-15 ,-15 ,-15 ,-15 ,-14 ,-14 ,-14 ,-14 ,-14 ,-13 ,-13 ,-13 ,
+    -13 ,-13 ,-12 ,-12 ,-12 ,-12 ,-12 ,-11 ,-11 ,-11 ,-11 ,-11 ,-10 ,-10 ,-10 ,-10 ,
+    -10 ,-9  ,-9  ,-9  ,-9  ,-9  ,-8  ,-8  ,-8  ,-8  ,-8  ,-7  ,-7  ,-7  ,-7  ,-7  ,
+    -6  ,-6  ,-6  ,-6  ,-6  ,-5  ,-5  ,-5  ,-5  ,-5  ,-4  ,-4  ,-4  ,-4  ,-4  ,-3  ,
+    -3  ,-3  ,-3  ,-3  ,-2  ,-2  ,-2  ,-2  ,-2  ,-1  ,-1  ,-1  ,-1  ,-1  ,0   ,0   ,
 };
 
 #define ENABLE_COMPENSATION  (200) // 100 = 1.00x compensation i.e none, 150 = 1.5x compensation
+
+CSL_IpipeRgb2YuvConfig rgb2yuv_color = 
+{
+    .matrix = {
+        { 0x004d, 0x0096, 0x001d },
+        { 0x0fd5, 0x0fab, 0x0080 },
+        { 0x0080, 0x0f95, 0x0feb },
+    },
+    .offset = {
+        0x00, 0x80, 0x80
+    },
+
+    .cLpfEnable = FALSE,
+    .cPos = CSL_IPIPE_YUV_CHROMA_POS_LUM,
+};
+
+CSL_IpipeRgb2YuvConfig rgb2yuv_mono = 
+{
+    .matrix = {
+        { 0x004d, 0x0096, 0x001d },
+        { 0x0, 0x0, 0x0 },
+        { 0x0, 0x0, 0x0 },
+    },
+    .offset = {
+        0x00, 0x80, 0x80
+    },
+
+    .cLpfEnable = FALSE,
+    .cPos = CSL_IPIPE_YUV_CHROMA_POS_LUM,
+};
+
+CSL_IpipeRgb2YuvConfig* rgb2yuv[] = 
+{
+    &rgb2yuv_color,
+    &rgb2yuv_mono,
+};
 
 short ALG_aewbSetSensorGain(int gain)
 {
@@ -231,6 +331,7 @@ short ALG_aewbSetRgb2Rgb(RGB2RGB_PARAM  *pRgb2Rgb )
 
   return 0;
 }
+
 short ALG_aewbSetRgb2Rgb2(RGB2RGB_PARAM  *pRgb2Rgb )
 {
   CSL_IpipeRgb2RgbConfig rgb2rgb;
@@ -311,66 +412,113 @@ short ALG_aewbSetOtfCorrect( int level )
   return 0;
 }
 
-short ALG_aewbSetEdgeEnhancement(EDGE_PARAM  *pParm )
+short ALG_aewbSetEdgeEnhancement(EDGE_PARAM *pParm)
 {
-  CSL_IpipeEdgeEnhanceConfig config;
-  static CSL_IpipeEdgeEnhanceConfig prev_config = {0};
+    static int es_gain = -1;
+    static CSL_IpipeEdgeEnhanceConfig config =
+    {
+    .enable                   = TRUE,
+    .haloReduceEnable         = TRUE,
 
+    .mergeMethod              = CSL_IPIPE_YEE_EE_ES_MERGING_METHOD_SUMMATION,
+    .hpfShift                 = 3,//shift=3 for 1080P/720P, shift=4 for D1
+    .hpfCoeff[0][0]           = 48,
+    .hpfCoeff[0][1]           = 12,
+    .hpfCoeff[0][2]           = 1024-10,
+    .hpfCoeff[1][0]           = 12,
+    .hpfCoeff[1][1]           = 0,
+    .hpfCoeff[1][2]           = 1024-6,
+    .hpfCoeff[2][0]           = 1024-10,
+    .hpfCoeff[2][1]           = 1024-6,
+    .hpfCoeff[2][2]           = 1024-2,
 
+    .lowerThres               = 8,//32; //changed based on Gang Comment
+    .edgeSharpGain            = 0,
+    .edgeSharpHpValLowThres   = 255,
+    .edgeSharpHpValUpLimit    = 255,
+    .edgeSharpGainGradient    = 64, 
+    .edgeSharpOffsetGradient  = 32,  
+    .table                    = TI_YEE_TABLE,//NULL;
+    };
 
-  config.enable                   = pParm->yee_en;
-  config.haloReduceEnable         = pParm->en_halo_red;
-  config.mergeMethod              = pParm->merge_meth;
-  config.hpfShift                 = pParm->yee_shf;
-  config.hpfCoeff[0][0]           = pParm->yee_mul_00;
-  config.hpfCoeff[0][1]           = pParm->yee_mul_01;
-  config.hpfCoeff[0][2]           = pParm->yee_mul_02;
-  config.hpfCoeff[1][0]           = pParm->yee_mul_10;
-  config.hpfCoeff[1][1]           = pParm->yee_mul_11;
-  config.hpfCoeff[1][2]           = pParm->yee_mul_12;
-  config.hpfCoeff[2][0]           = pParm->yee_mul_20;
-  config.hpfCoeff[2][1]           = pParm->yee_mul_21;
-  config.hpfCoeff[2][2]           = pParm->yee_mul_22;
-  config.lowerThres               = pParm->yee_thr;
-  config.edgeSharpGain            = pParm->es_gain;
-  config.edgeSharpHpValLowThres   = (pParm->es_thr1&0x3F);
-  config.edgeSharpHpValUpLimit    = (pParm->es_thr2&0x3F);
-  config.edgeSharpGainGradient    = pParm->es_gain_grad;
-  config.edgeSharpOffsetGradient  = pParm->es_ofst_grad;
-  config.table                    = yee_table;
+    if (pParm->es_gain == es_gain)
+    {
+        return 0;
+    }
+    es_gain = pParm->es_gain; 
+    
+    config.edgeSharpGain = (pParm->es_gain > 0xE0) ? 0xE0 : pParm->es_gain;
+    config.edgeSharpGain = (pParm->es_gain < 0x10) ? 0x10 : pParm->es_gain;
+    
+//#ifdef ALG_AEWB_DEBUG
+    OSA_printf(" AEWB: EDGE ENHANCEMENTEE_Param es_gain = %d\n", config.edgeSharpGain);
+//#endif
 
-  if(memcmp(&prev_config, &config, sizeof(config))==0)
+    if (gALG_aewbObj.vnfDemoCfg == 0)
+    {
+        DRV_ipipeSetEdgeEnhance(&config);
+    }
+
     return 0;
-
-  #ifdef ALG_AEWB_DEBUG
-  OSA_printf(" AEWB: EDGE ENHANCEMENT \n");
-  #endif
-
-  memcpy(&prev_config, &config, sizeof(config));
-
-  if(gALG_aewbObj.vnfDemoCfg == 0)
-	DRV_ipipeSetEdgeEnhance(&config);
-
-  return 0;
 }
 
-short ALG_aewbSetContrastBrightness(BRT_CRT_PARAM  *pParm )
+int g_bEnableTurnColor = 0;
+void ALG_aewbSetDayNight(void)
 {
-	static BRT_CRT_PARAM  ParmSet;
+    static int daynight_bak = -1;
+    int daynight = 0;
 
-	if( memcmp(&ParmSet, pParm, sizeof(BRT_CRT_PARAM))== 0 )
-		return 0;
+    daynight = g_bEnableTurnColor; ////0 代表彩色，1代表黑色 
 
-	ParmSet = *pParm;
+    if (daynight == daynight_bak || daynight > 1 || daynight < 0)
+    {
+        return;      
+    }
+    daynight_bak = daynight;
+    
+//#if ALG_AEWB_DEBUG
+    OSA_printf("AEWB: daynight = %s\n", daynight == 0 ? "COLOR_IRCUT" : "MONO_IRCUT");
+//#endif
+    rgb2yuv[daynight]->offset[0] = Aew_ext_parameter.brightness-128;
+    DRV_ipipeSetRgb2Yuv(rgb2yuv[daynight]);
+}
 
-  #ifdef ALG_AEWB_DEBUG
-  OSA_printf(" AEWB: Contrast = %5d, Brightness = %5d\n", pParm->yuv_adj_ctr, pParm->yuv_adj_brt);
-  #endif
-  DRV_ipipeSetYoffet((pParm->yuv_adj_brt-128));
+short ALG_aewbSetBrightness(int Yoffset)
+{
+    static int YoffsetBak = -1;
+    
+    if (YoffsetBak == Yoffset)
+    {
+        return 0;
+    }
+    
+    YoffsetBak = Yoffset;
 
-  DRV_ipipeSetContrastBrightness(pParm->yuv_adj_ctr, 0x0);
+    int daynight = g_bEnableTurnColor;
+//#ifdef ALG_AEWB_DEBUG   
+OSA_printf("AEWB: Brightness = %5d\n", Yoffset-128);
+//#endif 
+    rgb2yuv[daynight]->offset[0] = Yoffset-128;
+    DRV_ipipeSetRgb2Yuv(rgb2yuv[daynight]);
+    return 0;
+}
 
-  return 0;
+short ALG_aewbSetContrast(int Contrast)
+{
+    static int ContrastBak = -1;
+
+    if (ContrastBak == Contrast)
+    {
+        return 0;
+    }
+
+    ContrastBak = Contrast;
+
+//#ifdef ALG_AEWB_DEBUG
+    OSA_printf(" AEWB: Contrast = %5d", Contrast);
+//#endif
+    DRV_ipipeSetContrastBrightness(Contrast, 0x0);
+    return 0;
 }
 
 short ALG_aewbSetSensorBinSkip(int Is_binning)
@@ -485,62 +633,5 @@ void ALG_aewbGetRgb2Rgb(Int16*matrix)
 		matrix[8]= gIMAGE_TUNE_ctrl.curPrm.ipipePrm.rgb2rgb1.matrix[2][2];
 	}
 
-}
-
-CSL_IpipeRgb2YuvConfig rgb2yuv_color = 
-{
-    .matrix = {
-        { 0x004d, 0x0096, 0x001d },
-        { 0x0fd5, 0x0fab, 0x0080 },
-        { 0x0080, 0x0f95, 0x0feb },
-    },
-    .offset = {
-        0x00, 0x80, 0x80
-    },
-
-    .cLpfEnable = FALSE,
-    .cPos = CSL_IPIPE_YUV_CHROMA_POS_LUM,
-};
-
-CSL_IpipeRgb2YuvConfig rgb2yuv_mono = 
-{
-    .matrix = {
-        { 0x004d, 0x0096, 0x001d },
-        { 0x0, 0x0, 0x0 },
-        { 0x0, 0x0, 0x0 },
-    },
-    .offset = {
-        0x00, 0x80, 0x80
-    },
-
-    .cLpfEnable = FALSE,
-    .cPos = CSL_IPIPE_YUV_CHROMA_POS_LUM,
-};
-
-CSL_IpipeRgb2YuvConfig* rgb2yuv[] = 
-{
-    &rgb2yuv_color,
-    &rgb2yuv_mono,
-};
-
-int g_bEnableTurnColor = 0;
-void ALG_aewbSetDayNight(void)
-{
-    static int daynight_bak = -1;
-    int daynight = 0;
-
-    daynight = g_bEnableTurnColor; ////0 代表彩色，1代表黑色 
-
-    if (daynight == daynight_bak || daynight > 1 || daynight < 0)
-    {
-        return;      
-    }
-    daynight_bak = daynight;
-    
-//#if ALG_AEWB_DEBUG
-    OSA_printf("AEWB: daynight = %s\n", daynight == 0 ? "COLOR_IRCUT" : "MONO_IRCUT");
-//#endif
-    rgb2yuv[daynight]->offset[0] = Aew_ext_parameter.brightness-128;
-    DRV_ipipeSetRgb2Yuv(rgb2yuv[daynight]);
 }
 
