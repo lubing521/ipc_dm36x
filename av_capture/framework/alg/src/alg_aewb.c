@@ -632,48 +632,6 @@ static void TIAWB_applySettings(IAEWB_Wb* nextWb)
 
 static void TIAE_applySettings(IAEWB_Ae *curAe, IAEWB_Ae *nextAe, int actStep, int step)
 {
-#if 0 //debug
-    static int ii = 1, jj = 0;
-    static int kk = 0, ll = 0, mm = 0;
-    if (step == actStep)
-    {
-        ii++;
-        if (ii == 5)
-        {
-            ii = 0;
-        }
-
-        int e[] = {
-             8333, 16666,  8333,  8333, 16666, 8333, 8333,  8333,
-        };
-        int a[] = {
-             2000,  1000,  2000,  1000,  1000, 1000, 1000,  1000,
-        };
-        int d[] = {
-             1024,  1024,  1024,  2048,  1024, 2048, 1024,  1024,
-        };
-
-        if (ii == 0)
-        {
-#ifdef _AEWB_DEBUG_PRINT_
-            printf("Gang: jj = %d, e=%d, a=%d, d=%d\n", jj, e[jj], a[jj], d[jj]);
-#endif
-            ALG_aewbSetExposureGain(e[jj], a[jj], d[jj], 1);
-            kk = 1; ll = a[jj]; mm = d[jj];
-
-            jj++;
-            if (jj > 7)
-            {
-                jj = 0;
-            }
-        }
-    }
-    else
-    {
-        ALG_aewbSetExposureGain(0, 0, 0, 0);
-    }
-#else
-
     if (step == actStep)
     {
 #ifdef _AEWB_DEBUG_PRINT_
@@ -700,8 +658,6 @@ static void TIAE_applySettings(IAEWB_Ae *curAe, IAEWB_Ae *nextAe, int actStep, i
     {
         ALG_aewbSetExposureGain(0, 0, 0, 0);
     }
-
-#endif
 }
 
 void TI2AFunc(void *pAddr)
@@ -800,19 +756,16 @@ void TI2AFunc(void *pAddr)
 #endif
         }
 
-        //GUI
         if (aewbFrames % NUM_STEPS == 0)
         {
             AEW_SETUP_CONTROL( &TI_Control3A );
         }
+        ALG_aewbSetDayNight();
     }
 
     /* remove the count and put it into the process */
     aewbFrames ++;
 }
-
-
-
 
 short ALG_aewbDummy(int setval)
 {

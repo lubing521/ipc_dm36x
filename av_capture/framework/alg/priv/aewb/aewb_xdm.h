@@ -183,10 +183,7 @@ int ApproWBSetPrm_xDM(int mode);
 void DRVApproSend3A_xDM(void);
 void Appro3Afunction_xDM(void);
 
-
 extern AEW_EXT_PARAM 		Aew_ext_parameter;
-
-////zeng add 2013-09-24
 extern int					g_bEnableTurnColor;
 
 #endif

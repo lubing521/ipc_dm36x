@@ -4,8 +4,6 @@
 #include "drv_ipipe.h"
 #include "TI_aewb_ISP.h"
 
-int g_bEnableTurnColor;
-
 struct rgb2rgb_index rgb_matrixes_0[]= {
  {
     //U30-1080 (T=3000K)
@@ -96,82 +94,75 @@ static struct rgb2rgb_index rgb_matrixes_1[] = {
         .color_temp = 0,
     }
 };
-static struct rgb2rgb_index rgb_matrixes_2[] = {
-    {
-        .color_temp = 3000,
-        .rgb2rgbparam = {
-            77, 150, 29,
-            77, 150, 29,
-            77, 150, 29,
-            0, 0, 0},
-        .rgb2rgb2param = {
-            256, 0, 0,
-            0, 256, 0,
-            0, 0, 256,
-            0, 0, 0}
-    },
-    //end
-    {
-        .color_temp = 0,
-    }
-};
 
-static CSL_IpipeEdgeEnhanceConfig ee_0 = {
-    .enable = 1,
-    .hpfShift = 3,
-    .table = TI_YEE_TABLE,
-    .lowerThres = 32,
-    .hpfCoeff = {{80, -10, 0}, {-10,-10,0}, {0,0,0}},
-    .edgeSharpGain = 0,
-};
-static CSL_IpipeEdgeEnhanceConfig ee_1 = {
-    .enable = 0,
-    .hpfShift = 4,
-    .table = TI_YEE_TABLE,
-    .lowerThres = 32,
-    .hpfCoeff = {{80, -10, 0}, {-10,-10,0}, {0,0,0}},
-    .edgeSharpGain = 0,
-};
-
-static CSL_IpipeNfConfig nf2_0 = {
-    .enable = 1,
-    .spreadVal = 3,
-    .lutAddrShift = 2,
-    .greenSampleMethod = 0,
-    .lscGainEnable = 0,
-    .edgeDetectThresMin = 0,
-    .edgeDetectThresMax = 2047,
-    .lutThresTable = {14,26,36,44, 50,56,64,70},
-    .lutIntensityTable = {20,20,18,18, 16,16,16,16},
-};
-static CSL_IpipeNfConfig nf2_1 = {
-    .enable = 1,
-    .spreadVal = 3,
-    .lutAddrShift = 2,
-    .greenSampleMethod = 0,
-    .lscGainEnable = 0,
-    .edgeDetectThresMin = 0,
-    .edgeDetectThresMax = 2047,
-    .lutThresTable = {20,20,20,20, 20,20,20,20},
-    .lutIntensityTable = {16,16,16,16, 16,16,16,16},
-}; 
-
-static void ISP_config(int i)
+static struct rgb2rgb_index* rgb_matrixes[]= 
 {
-    CSL_IpipeNfConfig* nf2[] = { &nf2_0, &nf2_1, &nf2_1, };
-    CSL_IpipeEdgeEnhanceConfig* ee[] = { &ee_0, &ee_1, &ee_1, };
-    DRV_ipipeSetEdgeEnhance(ee[i]);
-    DRV_ipipeSetNf2(nf2[i]);
+    rgb_matrixes_0, 
+    rgb_matrixes_1,
+    rgb_matrixes_1,
+};
+
+static void ISP_ipipeSetNf2(int aGain, int dGain)
+{
+    static int value_bak = -1;
+    static CSL_IpipeNfConfig nf2 =
+    {
+    .enable             = 1,
+    .spreadVal          = 3,
+    .spreadValSrc       = 0,
+    .lutAddrShift       = 0,
+    .greenSampleMethod  = 0,
+    .lscGainEnable      = 0,
+    .edgeDetectThresMin = 0,
+    .edgeDetectThresMax = 2047,
+    .lutThresTable      = {20, 20, 20, 20, 20, 20, 20, 20},
+    .lutIntensityTable  = {24, 25, 26, 26, 27, 28, 29, 30},
+    .lutSpreadTable     = { 0,  0,  0,  0,  0,  0,  0,  0},
+    };
+    
+    int ag = (aGain > 40000) ? 40000 : aGain;
+    int dg = (dGain >  1536) ?  1536 : dGain;
+    int value = 0;
+    
+    if (ag < 10000)
+    {
+        value = 20;
+    }
+    else
+    {
+        value = 20 + (ag - 10000) / 300 + (dg - 1000) / 10;
+    }
+
+    value = (value > 200) ? 200 : value;
+    value = (value <  16) ?  16 : value;
+    
+    if (value == value_bak)
+    {
+        return;
+    }
+    value_bak = value;
+    
+    int i;
+    for (i = 0; i < 8; i++)
+    {
+        nf2.lutThresTable[i] = (Uint32)value + (Uint32)(i * value / 10);
+    }
+    
+#if ISP_DEBUG
+    printf("ISP_ipipeSetNf2 value = %3d\n", value);
+#endif
+
+    DRV_ipipeSetNf2(&nf2);
 }
 
 static int getSetIndex(int eTime, int aGain, int dGain, int cTemp)
 {
-    if (aGain >= 125000 && dGain >= 4096)
+    if (aGain >= 40000 && dGain >= 2048)
     {
-        return 2;
+        return 2; 
     }
-    else if (aGain >= 125000)
-    {
+    else if (aGain >= 20000)
+    {  
         return 1;
     }
     else
@@ -188,8 +179,9 @@ int TI_2A_ISP_control(int eTime, int aGain, int dGain, int cTemp)
 
     int i = getSetIndex(eTime, aGain, dGain, cTemp);
     int j = 0;
-
-    struct rgb2rgb_index* rgb_matrixes[]= {rgb_matrixes_0, rgb_matrixes_1, rgb_matrixes_2};
+    
+    ISP_ipipeSetNf2(aGain, dGain);
+    
     if (steaySet == i) 
     {
         j = switch_rgb2rgb_matrixes(cTemp, rgb_matrixes[i], 0);
@@ -202,7 +194,6 @@ int TI_2A_ISP_control(int eTime, int aGain, int dGain, int cTemp)
         tempSet = -1;
         tempCnt = 0;
         j = switch_rgb2rgb_matrixes(cTemp, rgb_matrixes[i], 1);
-        ISP_config(i);
     }
     else if (tempSet == i)
     {
@@ -215,7 +206,4 @@ int TI_2A_ISP_control(int eTime, int aGain, int dGain, int cTemp)
     }
     return 100 * steaySet + j;
 }
-
-
-
 

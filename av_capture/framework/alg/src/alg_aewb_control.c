@@ -161,8 +161,6 @@ short ALG_aewbSetIsifDGain(int dGain)
   return 0;
 }
 
-
-
 short ALG_aewbSetSensorDcsub(int dcsub)
 {
 	static int prevValue=-1;
@@ -488,3 +486,61 @@ void ALG_aewbGetRgb2Rgb(Int16*matrix)
 	}
 
 }
+
+CSL_IpipeRgb2YuvConfig rgb2yuv_color = 
+{
+    .matrix = {
+        { 0x004d, 0x0096, 0x001d },
+        { 0x0fd5, 0x0fab, 0x0080 },
+        { 0x0080, 0x0f95, 0x0feb },
+    },
+    .offset = {
+        0x00, 0x80, 0x80
+    },
+
+    .cLpfEnable = FALSE,
+    .cPos = CSL_IPIPE_YUV_CHROMA_POS_LUM,
+};
+
+CSL_IpipeRgb2YuvConfig rgb2yuv_mono = 
+{
+    .matrix = {
+        { 0x004d, 0x0096, 0x001d },
+        { 0x0, 0x0, 0x0 },
+        { 0x0, 0x0, 0x0 },
+    },
+    .offset = {
+        0x00, 0x80, 0x80
+    },
+
+    .cLpfEnable = FALSE,
+    .cPos = CSL_IPIPE_YUV_CHROMA_POS_LUM,
+};
+
+CSL_IpipeRgb2YuvConfig* rgb2yuv[] = 
+{
+    &rgb2yuv_color,
+    &rgb2yuv_mono,
+};
+
+int g_bEnableTurnColor = 0;
+void ALG_aewbSetDayNight(void)
+{
+    static int daynight_bak = -1;
+    int daynight = 0;
+
+    daynight = g_bEnableTurnColor; ////0 代表彩色，1代表黑色 
+
+    if (daynight == daynight_bak || daynight > 1 || daynight < 0)
+    {
+        return;      
+    }
+    daynight_bak = daynight;
+    
+//#if ALG_AEWB_DEBUG
+    OSA_printf("AEWB: daynight = %s\n", daynight == 0 ? "COLOR_IRCUT" : "MONO_IRCUT");
+//#endif
+    rgb2yuv[daynight]->offset[0] = Aew_ext_parameter.brightness-128;
+    DRV_ipipeSetRgb2Yuv(rgb2yuv[daynight]);
+}
+

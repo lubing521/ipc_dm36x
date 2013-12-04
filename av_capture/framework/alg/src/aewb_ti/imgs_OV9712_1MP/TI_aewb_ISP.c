@@ -2,112 +2,7 @@
 #include "alg_aewb_priv.h"
 #include "TI_aewb.h"
 #include "drv_ipipe.h"
-
-int g_bEnableTurnColor;
-
-static int RGB2RGB_stablize(int curr_RGB2RGBIndex, int reset)
-{
-#define AWB_AVG_BUF_LENGTH 12
-    static int history_index[AWB_AVG_BUF_LENGTH];
-    static int awb_count = 1;
-    static int prev_RGB2RGBIndex = 0;
-
-    int i, history_length;
-    int index_histogram[NUM_RGB2RGB_MATRIXES];
-
-    if (reset == 1)
-    {
-        awb_count = 1;
-        prev_RGB2RGBIndex = 0;
-    }
-
-    if (awb_count < AWB_AVG_BUF_LENGTH)
-    {
-        history_length = awb_count;
-        awb_count++;
-    }
-    else
-    {
-        history_length = AWB_AVG_BUF_LENGTH;
-    }
-
-    if (history_length == AWB_AVG_BUF_LENGTH)
-    {
-        for (i = 0; i < history_length - 1; i++)
-        {
-            history_index[i] = history_index[i + 1];
-        }
-    }
-    history_index[history_length - 1] = curr_RGB2RGBIndex;
-
-    for (i = 0; i < NUM_RGB2RGB_MATRIXES; i++)
-    {
-        index_histogram[i] = 0;
-    }
-    for (i = 0; i < history_length; i++)
-    {
-        index_histogram[history_index[i]]++;
-    }
-
-    int max = 0, max_index = 0;
-    for (i = 0; i < NUM_RGB2RGB_MATRIXES; i++)
-    {
-        if (index_histogram[i] > max)
-        {
-            max = index_histogram[i];
-            max_index = i;
-        }
-    }
-
-    if (history_length < AWB_AVG_BUF_LENGTH)
-    {
-        curr_RGB2RGBIndex = max_index;
-    }
-    else
-    {
-        if (max * 10 >= (AWB_AVG_BUF_LENGTH * 8))
-        {
-            curr_RGB2RGBIndex = max_index;
-        }
-        else
-        {
-            curr_RGB2RGBIndex = prev_RGB2RGBIndex;
-        }
-    }
-    prev_RGB2RGBIndex = curr_RGB2RGBIndex;
-
-    return (curr_RGB2RGBIndex);
-}
-
-static int switch_rgb2rgb_matrixes(int colorTemp, struct rgb2rgb_index m[], int reset)
-{
-    int i, diff, next_diff;
-
-    for (i = 0; i < NUM_RGB2RGB_MATRIXES - 1 && m[i+1].color_temp > 0; i++)
-    {
-        diff = colorTemp - m[i].color_temp;
-        next_diff = m[i + 1].color_temp - colorTemp;
-        if ((next_diff >= 0 && diff >= 0) || diff < 0)
-        {
-            if (next_diff < diff)
-            {
-                i++;
-            }
-            break;
-        }
-    }
-    i = RGB2RGB_stablize(i, reset);
-
-    static prev_i = -1;
-    if (prev_i != i || reset)
-    {
-        ALG_aewbSetRgb2Rgb(&m[i].rgb2rgbparam);
-        ALG_aewbSetRgb2Rgb2(&m[i].rgb2rgb2param);
-        prev_i = i;
-    }
-
-    return i;
-}
+#include "TI_aewb_ISP.h"
 
 struct rgb2rgb_index rgb_matrixes_0[]= {
     {
@@ -199,47 +94,12 @@ static struct rgb2rgb_index rgb_matrixes_1[] = {
         .color_temp = 0,
     }
 };
+
 static struct rgb2rgb_index* rgb_matrixes[]= {
     rgb_matrixes_0, 
     rgb_matrixes_1,
     rgb_matrixes_1,
 };
-
-static CSL_IpipeEdgeEnhanceConfig ee_0 = {
-    .enable = 1,
-    .haloReduceEnable = 1,
-    .mergeMethod = 0,    
-    .hpfShift = 15,
-    .table = NULL,
-    .edgeSharpGain = 64,
-    .edgeSharpGainGradient = 96,
-    .edgeSharpHpValLowThres = 300,
-    .edgeSharpOffsetGradient = 24, 
-    .edgeSharpHpValUpLimit = 32,
-};
-static CSL_IpipeEdgeEnhanceConfig ee_1 = {
-    .enable = 1,
-    .haloReduceEnable = 1,
-    .mergeMethod = 0,    
-    .hpfShift = 15,      
-    .table = NULL, 
-    .edgeSharpGain = 32,
-    .edgeSharpGainGradient = 48,
-    .edgeSharpHpValLowThres = 900,
-    .edgeSharpOffsetGradient = 24, 
-    .edgeSharpHpValUpLimit = 32,
-}; 
-
-static CSL_IpipeEdgeEnhanceConfig* ee[] = {
-    &ee_0,
-    &ee_1,
-};
-
-static void ISP_config(int i)
-{
-    //DRV_ipipeSetEdgeEnhance(ee[i]);
-    //DRV_ipipeSetNf2(nf2[i]);
-}
 
 static void ISP_ipipeSetNf2(int aGain, int dGain)
 {
@@ -272,7 +132,6 @@ static void ISP_ipipeSetNf2(int aGain, int dGain)
         value = 20 + (ag - 2000) / 75 + (dg - 1000) / 10;
     }
 
-    //value += gALG_AewbDebug.ipipeNf2.Nf2Value_adjust + ALG_aewbGetNoiseLevel();
     value = (value > 200) ? 200 : value;
     value = (value <  20) ?  20 : value;
     
@@ -288,8 +147,6 @@ static void ISP_ipipeSetNf2(int aGain, int dGain)
         nf2.lutThresTable[i] = (Uint32)value + (Uint32)(i * value / 10);
     }
 
-    //gALG_AewbDebug.ipipeNf2.Nf2Value = value;
-    
 #ifdef ISP_DEBUG
     printf("ISP_ipipeSetNf2 value = %3d\n", value);
 #endif

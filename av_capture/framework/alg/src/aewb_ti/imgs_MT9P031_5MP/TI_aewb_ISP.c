@@ -3,8 +3,6 @@
 #include "TI_aewb.h"
 #include "drv_ipipe.h"
 
-int g_bEnableTurnColor;
-
 static int RGB2RGB_stablize(int curr_RGB2RGBIndex, int reset)
 {
 #define AWB_AVG_BUF_LENGTH 12
@@ -301,10 +299,4 @@ int TI_2A_ISP_control(int eTime, int aGain, int dGain, int cTemp)
     }
     return 100 * steaySet + j;
 }
-
-
-
-
-
-
 

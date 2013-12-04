@@ -85,7 +85,7 @@ static int RGB2RGB_stablize(int curr_RGB2RGBIndex, int reset)
     return (curr_RGB2RGBIndex);
 }
 
-static int switch_rgb2rgb_matrixes(int colorTemp, struct rgb2rgb_index m[], int reset)
+int switch_rgb2rgb_matrixes(int colorTemp, struct rgb2rgb_index m[], int reset)
 {
     int i, diff, next_diff;
     static int prev_i = -1;

@@ -70,6 +70,8 @@ short ALG_aewbSetContrastBrightness(BRT_CRT_PARAM  *pParm );
 short ALG_aewbSetSensorBinSkip(int Is_binning);
 short ALG_aewbSetSensor50_60Hz(int Is50Hz);
 short ALG_aewbSetSensorFrameRate(int frame_rate_mode);
+void  ALG_aewbSetDayNight(void);
+
 
 #endif /* _ALG_AEWB_PRIV_H_ */
 
