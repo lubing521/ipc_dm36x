@@ -619,14 +619,35 @@ void AEW_SETUP_CONTROL( CONTROL3AS *CONTROL3A )
 static void TIAWB_applySettings(IAEWB_Wb* nextWb)
 {
     AWB_PARAM awb_gain;
-    awb_gain.rGain = nextWb->rGain >> 3;
-    awb_gain.grGain = nextWb->gGain >> 3;
-    awb_gain.gbGain = nextWb->gGain >> 3;
-    awb_gain.bGain = nextWb->bGain >> 3;
+    if (Aew_ext_parameter.saturation >= 128)
+    {
+        awb_gain.rGain  = ((nextWb->rGain >> 3)) + Aew_ext_parameter.saturation / 4 - 32;
+        awb_gain.grGain = ((nextWb->gGain >> 3)) + Aew_ext_parameter.saturation / 4 - 32;
+        awb_gain.gbGain = ((nextWb->gGain >> 3)) + Aew_ext_parameter.saturation / 4 - 32;
+        awb_gain.bGain  = ((nextWb->bGain >> 3));
+    }
+    else
+    {
+        awb_gain.rGain  = ((nextWb->rGain >> 3));
+        awb_gain.grGain = ((nextWb->gGain >> 3)) + 32 - Aew_ext_parameter.saturation / 4;
+        awb_gain.gbGain = ((nextWb->gGain >> 3)) + 32 - Aew_ext_parameter.saturation / 4;
+        awb_gain.bGain  = ((nextWb->bGain >> 3)) + 32 - Aew_ext_parameter.saturation / 4;
+    }
 #ifdef _AEWB_DEBUG_PRINT_
     printf("AEWB debug: r=%d, g=%d, b=%d\n", nextWb->rGain, nextWb->gGain, nextWb->bGain);
 #endif
     ALG_aewbSetIpipeWb2(&awb_gain);
+
+#if AEWB_DEBUG
+    struct timeval pts;
+    static int bak = 0;
+    gettimeofday(&pts, NULL);     
+    if (pts.tv_sec != bak)
+    {
+        printf("AWB debug: cTemp=%d, r=%d, g=%d, b=%d\n", nextWb->colorTemp, awb_gain.rGain, awb_gain.grGain, awb_gain.bGain);
+        bak = pts.tv_sec;
+    }
+#endif 
 }
 
 static void TIAE_applySettings(IAEWB_Ae *curAe, IAEWB_Ae *nextAe, int actStep, int step)

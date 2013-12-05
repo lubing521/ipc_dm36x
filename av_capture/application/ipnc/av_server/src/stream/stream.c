@@ -1556,7 +1556,7 @@ void stream_feature_setup( int nFeature, void *pParm )
 		case STREAM_FEATURE_CONTRAST:
 		{
 			int input_val = *(int *)pParm;
-			printf("Chang Contrast = %d \n", input_val);
+			printf("Change Contrast = %d \n", input_val);
 			Aew_ext_parameter.contrast = input_val;
 			break;
 		}
@@ -1596,7 +1596,6 @@ void stream_feature_setup( int nFeature, void *pParm )
 			int input_val = *(int *)pParm;
 			printf("Change Saturation = %d \n", input_val);
 			Aew_ext_parameter.saturation = input_val;
-
 			break;
 		}
 
