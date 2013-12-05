@@ -179,9 +179,14 @@ void DRV_imgGetWidthHeight(int sensorMode, Uint16 *width, Uint16 *height)
       *height = 720;
       break;
 
+    case DRV_IMGS_SENSOR_MODE_1280x840 :
+      *width  = 1280;
+      *height = 840;
+      break;
+      
     case DRV_IMGS_SENSOR_MODE_1280x960 :
       *width  = 1280;
-      *height = 800;
+      *height = 960;
       break;
 
     case DRV_IMGS_SENSOR_MODE_1280x1024:
@@ -211,7 +216,7 @@ void DRV_imgGetWidthHeight(int sensorMode, Uint16 *width, Uint16 *height)
    }
 
   //DRV_imgWidthHeightPad(sensorMode, width, height);
-
+#if 0
   if(sensorMode & DRV_IMGS_SENSOR_MODE_VSTAB) {
 	  /* Done here to keep the same Field of View when VNF is ON */
 	  if(sensorMode & DRV_IMGS_SENSOR_MODE_PIXEL_PAD){
@@ -226,7 +231,7 @@ void DRV_imgGetWidthHeight(int sensorMode, Uint16 *width, Uint16 *height)
   // align width to 32, height 32 for LDC
   *width  = OSA_align(*width, 32);
   *height = OSA_align(*height,32);
-
+#endif
 }
 
 void DRV_imgWidthHeightPad(int sensorMode, Uint16 *width, Uint16 *height)

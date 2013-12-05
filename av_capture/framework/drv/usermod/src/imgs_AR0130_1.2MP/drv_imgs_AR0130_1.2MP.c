@@ -53,15 +53,15 @@ int DRV_imgsOpen(DRV_ImgsConfig *config)
 
     DRV_imgGetWidthHeight(config->sensorMode, &width, &height);
 
-    //if (config->sensorMode == DRV_IMGS_SENSOR_MODE_1280x840)
+    if (config->sensorMode == DRV_IMGS_SENSOR_MODE_1280x840)
     {
-        //gImgsVPad = 120;
+        gImgsVPad = 120;
     }
-    //else
+    else
     {
         gImgsVPad = 4;
     }
-    //printf("\n-------gImgs_v_Pad = %d\n", gImgsVPad);
+    printf("\n-------gImgs_v_Pad = %d\n", gImgsVPad);
     
     width  += IMGS_H_PAD;
     height += IMGS_V_PAD;
