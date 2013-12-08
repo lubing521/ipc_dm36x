@@ -32,6 +32,13 @@ int DRV_init()
     goto error_exit;
   }
 
+  status = CheckSensor();
+  if (status != OSA_SOK)
+  {
+      OSA_ERROR("Can not identify sensor\n");
+      goto error_exit;
+  }
+    
   status = DRV_vpssInit();
   if(status!=OSA_SOK) {
     OSA_ERROR("VPSS init\n");
