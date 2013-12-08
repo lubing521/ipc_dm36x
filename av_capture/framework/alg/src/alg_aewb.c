@@ -1,4 +1,5 @@
 #include "alg_aewb_priv.h"
+#include "alg_aewb.h"
 #include "alg_ti_aewb_priv.h"
 #include "alg_ti_flicker_detect.h"
 
@@ -12,9 +13,11 @@
 #include "awb_ti.h"
 #include "ae_appro.h"
 #include "awb_appro.h"
-
 #include "Appro_aewb.h"
 #include "TI_aewb.h"
+#include "imageTune.h"
+#include "imageTuneCmdHandler.h"
+#include "imagetools.h"
 
 #include <drv_gpio.h>
 
@@ -135,6 +138,14 @@ CHECK_END:
         fclose(pfile);
     }
     return ret;
+}
+
+int ALG_aewbGetBLC(void)
+{
+	int blc = Aew_ext_parameter.blc;
+	
+    blc = (blc == 0) ? 0 : 1;	
+    return blc;
 }
 
 int ALG_aewbCheckAutoIris(void)
@@ -345,10 +356,47 @@ void* ALG_aewbCreate(ALG_AewbCreate *create)
                 &gALG_aewbObj.AWB_OutArgs
                 );
     }
-    else if(create->aewbVendor == ALG_AEWB_ID_TI) {
-        TI_2A_init_tables(create->pH3aInfo->aewbNumWinH, create->pH3aInfo->aewbNumWinV);
+    else if(create->aewbVendor == ALG_AEWB_ID_TI) 
+    {
+        eSensorType sensorid = GetSensorId();
+
+        if (sensorid == OV9712)
+        {
+            gALG_aewbObj.algTiAEWB = &TI_AWEB_OV9712;
+        }
+        else if (sensorid == AR0130)
+        {
+            gALG_aewbObj.algTiAEWB = &TI_AWEB_ar130;
+        }
+        else if (sensorid == MT9M034)
+        {
+            gALG_aewbObj.algTiAEWB = &TI_AWEB_MT9M034;
+        }
+        else if (sensorid == IMX122)
+        {
+            gALG_aewbObj.algTiAEWB = &TI_AWEB_IMX122;
+        }
+        else if (sensorid == AR0330)
+        {
+            gALG_aewbObj.algTiAEWB = &TI_AWEB_ar0330;
+        }
+        else if (sensorid == AR0331)
+        {
+            gALG_aewbObj.algTiAEWB = &TI_AWEB_ar0331;
+        }
+        else if (sensorid == MT9P031)
+        {
+            gALG_aewbObj.algTiAEWB = &TI_AWEB_MT9P031;
+        }
+        else
+        {
+            return (void *) - 1;
+        }
+        
+        TFC_2A_init_tables(create->pH3aInfo->aewbNumWinV, create->pH3aInfo->aewbNumWinH);
+        //TI_2A_init_tables(create->pH3aInfo->aewbNumWinH, create->pH3aInfo->aewbNumWinV);
         //Initial AE
-        gALG_aewbObj.weight = TI_WEIGHTING_MATRIX;
+        gALG_aewbObj.weight = TFC_WEIGHTING_MATRIX;
         aeParams.size = sizeof(aeParams);
         aeParams.numHistory = 10;
         aeParams.numSmoothSteps = 6;
@@ -438,9 +486,7 @@ int TI_2A_config(int flicker_detection, int saldre)
     OSA_printf("min_exp = %d, step_size = %d final\n", min_exp, step_size);
 #endif
 
-
-    TI_2A_AE_config(&aeDynamicParams, min_exp, step_size);
-
+    gALG_aewbObj.algTiAEWB->AE_config(&aeDynamicParams, min_exp, step_size);
     memcpy( (void *)&gALG_aewbObj.AE_InArgs.statMat,
             (void *)&gALG_aewbObj.IAEWB_StatMatdata,
             sizeof(IAEWB_StatMat) );
@@ -456,9 +502,12 @@ int TI_2A_config(int flicker_detection, int saldre)
     }
 
     /* Pass calibration data to TI AWB */
-    retval = IMAGE_TUNE_GetAwbParams(&awb_calc_data);   
+    retval = IMAGE_TUNE_GetAwbParams(gALG_aewbObj.algTiAEWB->calc_data);
 	//上面要改动如颜色偏色，就改这个表。
-    retval = AWB_TI_AWB.control((IAWB_Handle)gALG_aewbObj.handle_awb, TIAWB_CMD_CALIBRATION, &awb_calc_data, NULL);
+    retval = AWB_TI_AWB.control((IAWB_Handle)gALG_aewbObj.handle_awb, 
+                                               TIAWB_CMD_CALIBRATION, 
+                                               gALG_aewbObj.algTiAEWB->calc_data, 
+                                               NULL);
     if(retval == -1) {
         OSA_ERROR("AWB_TI_AWB.control()\n");
         return retval;
@@ -566,7 +615,7 @@ void AEW_SETUP_CONTROL( CONTROL3AS *CONTROL3A )
             gALG_aewbObj.weight= APPRO_WEIGHTING_MATRIX;
         }
         else   if(gALG_aewbObj.aewbVendor==ALG_AEWB_ID_TI) {
-            gALG_aewbObj.weight= TI_WEIGHTING_MATRIX;
+            gALG_aewbObj.weight= TFC_WEIGHTING_MATRIX;
         }
     }
     else if(CONTROL3A->IMAGE_BACKLIGHT==BACKLIGHT_HIGH ||
@@ -576,7 +625,7 @@ void AEW_SETUP_CONTROL( CONTROL3AS *CONTROL3A )
             gALG_aewbObj.weight=APPRO_WEIGHTING_SPOT;
         }
         else   if(gALG_aewbObj.aewbVendor==ALG_AEWB_ID_TI) {
-            gALG_aewbObj.weight=TI_WEIGHTING_SPOT;
+            gALG_aewbObj.weight=TFC_WEIGHTING_MATRIX;
         }
     }
     else
@@ -585,7 +634,7 @@ void AEW_SETUP_CONTROL( CONTROL3AS *CONTROL3A )
             gALG_aewbObj.weight=APPRO_WEIGHTING_CENTER;
         }
         else   if(gALG_aewbObj.aewbVendor==ALG_AEWB_ID_TI) {
-            gALG_aewbObj.weight=TI_WEIGHTING_CENTER;
+            gALG_aewbObj.weight=TFC_WEIGHTING_MATRIX;
         }
     }
 
@@ -633,6 +682,9 @@ static void TIAWB_applySettings(IAEWB_Wb* nextWb)
         awb_gain.gbGain = ((nextWb->gGain >> 3)) + 32 - Aew_ext_parameter.saturation / 4;
         awb_gain.bGain  = ((nextWb->bGain >> 3)) + 32 - Aew_ext_parameter.saturation / 4;
     }
+
+    //gALG_aewbObj.algTiAEWB->awb_adjust(&awb_gain, Aew_ext_parameter.awb_mode);
+    
 #ifdef _AEWB_DEBUG_PRINT_
     printf("AEWB debug: r=%d, g=%d, b=%d\n", nextWb->rGain, nextWb->gGain, nextWb->bGain);
 #endif
@@ -672,11 +724,11 @@ static void TIAE_applySettings(IAEWB_Ae *curAe, IAEWB_Ae *nextAe, int actStep, i
         int AG = nextAe->sensorGain;
         int DG = nextAe->ipipeGain;
         int EX = nextAe->exposureTime;
-        ALG_aewbSetExposureGain(EX, AG, DG, 1);
+        gALG_aewbObj.algTiAEWB->SetExposureGain(EX, AG, DG, 1);
     }
     else
     {
-        ALG_aewbSetExposureGain(0, 0, 0, 0);
+        gALG_aewbObj.algTiAEWB->SetExposureGain(0, 0, 0, 0);
     }
 }
 
@@ -760,7 +812,8 @@ void TI2AFunc(void *pAddr)
                 gALG_aewbObj.AE_OutArgs.nextAe.exposureTime == gALG_aewbObj.AE_InArgs.curAe.exposureTime &&
                 gALG_aewbObj.AE_OutArgs.nextAe.sensorGain == gALG_aewbObj.AE_InArgs.curAe.sensorGain)
         {
-            int i = TI_2A_ISP_control(gALG_aewbObj.AE_OutArgs.nextAe.exposureTime,
+            int i = gALG_aewbObj.algTiAEWB->ISP_control(
+                    gALG_aewbObj.AE_OutArgs.nextAe.exposureTime,
                     gALG_aewbObj.AE_OutArgs.nextAe.sensorGain,
                     gALG_aewbObj.AE_OutArgs.nextAe.ipipeGain,
                     gALG_aewbObj.AWB_OutArgs.nextWb.colorTemp);

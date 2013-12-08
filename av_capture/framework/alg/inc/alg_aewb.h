@@ -106,6 +106,10 @@ typedef struct {
 
 }ALG_AewbData_ITTAwb;
 
+extern void TFC_2A_init_tables(int width, int height);
+
+int ALG_aewbGetBLC(void);
+
 void *ALG_aewbCreate(ALG_AewbCreate *create);
 int ALG_aewbRun(void *hndl, ALG_AewbRunPrm *prm, ALG_AewbStatus *status);
 int ALG_aewbDelete(void *hndl);

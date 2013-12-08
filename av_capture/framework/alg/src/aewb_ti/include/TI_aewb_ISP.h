@@ -5,8 +5,6 @@
 extern "C" {
 #endif
 
-#include "drv_ipipe.h"
-
 static int RGB2RGB_stablize(int curr_RGB2RGBIndex, int reset)
 {
 #define AWB_AVG_BUF_LENGTH 12
@@ -85,7 +83,7 @@ static int RGB2RGB_stablize(int curr_RGB2RGBIndex, int reset)
     return (curr_RGB2RGBIndex);
 }
 
-int switch_rgb2rgb_matrixes(int colorTemp, struct rgb2rgb_index m[], int reset)
+static int switch_rgb2rgb_matrixes(int colorTemp, struct rgb2rgb_index m[], int reset)
 {
     int i, diff, next_diff;
     static int prev_i = -1;
@@ -117,6 +115,7 @@ int switch_rgb2rgb_matrixes(int colorTemp, struct rgb2rgb_index m[], int reset)
     return i;
 }
 
+#if 0
 #define AC_MAX_DC 80
 #define AC_MAX_GN 80
 static void auto_contrast(int reset)
@@ -210,6 +209,7 @@ static void auto_contrast(int reset)
 
 #ifdef __cplusplus
 }
+#endif
 #endif
 
 #endif

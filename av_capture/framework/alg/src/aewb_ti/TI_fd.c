@@ -5,16 +5,16 @@
 #include "awb_ti.h"
 #include "TI_aewb.h"
 
-#define FD_FRAME_STEPS 				(5) 				//number of frames to wait between FD stages
-
 //#define FD_DEBUG
+
+#define FD_FRAME_STEPS (5) //number of frames to wait between FD stages
 
 int TI_fd_get_config(int sensorMode, int* row_time, int* pinp, int* h3aWinHeight);
 int TI_fd_trigger(IAEWB_Ae *curAe, IAEWB_Ae *nextAe);
 
 static int TI_fd_init(int h3a_w, int h3a_h, int row_time, int h3aWinHeight, int *fd_mem, int fd_mem_size)
 {
-    int w=h3a_w, h=h3a_h; //H3A AEWB has w x h windows
+    int w = h3a_w, h = h3a_h; //H3A AEWB has w x h windows
     //(1) first API call to get persistent memory size
     int ms = flicker_alloc(w, h);
 #ifdef FD_DEBUG
@@ -31,44 +31,43 @@ static int TI_fd_init(int h3a_w, int h3a_h, int row_time, int h3aWinHeight, int 
 #ifdef FD_DEBUG
     printf("FD debug: %d, %d, %d, %d\n", w, h, row_time, h3aWinHeight);
 #endif
-    return (ret == 0);
+    return(ret == 0);
 }
 
 //convert H3A RGB data into the luma image (int16) the FD algorithm needed
 static void GETTING_RGB_BLOCK_VALUE_Y(unsigned short * BLOCK_DATA_ADDR, short *y, int shift,
-        int aew_win_hz_cnt, int aew_win_vt_cnt)
+                                      int aew_win_hz_cnt, int aew_win_vt_cnt)
 {
-  unsigned short i,j, numWin;
-  Uint8 *curAewbAddr;
-  CSL_H3aAewbOutSumModeOverlay *pAewbWinData;
-  int r, g, b;
-  short *py = y;
+    unsigned short i,j, numWin;
+    Uint8 *curAewbAddr;
+    CSL_H3aAewbOutSumModeOverlay *pAewbWinData;
+    int r, g, b;
+    short *py = y;
 
-  curAewbAddr = (Uint8*)BLOCK_DATA_ADDR;
-  numWin=0;
+    curAewbAddr = (Uint8*)BLOCK_DATA_ADDR;
+    numWin=0;
 
-  for(i=0;i<aew_win_vt_cnt; i++)
-  {
-    for(j=0;j<aew_win_hz_cnt; j++)
+    for (i = 0; i < aew_win_vt_cnt; i++)
     {
+        for (j = 0; j < aew_win_hz_cnt; j++)
+        {
+            pAewbWinData = (CSL_H3aAewbOutSumModeOverlay *)curAewbAddr;
+            g = (pAewbWinData->subSampleAcc[0] + pAewbWinData->subSampleAcc[3]) >> (1+shift);
+            r = pAewbWinData->subSampleAcc[1] >> shift;
+            b = pAewbWinData->subSampleAcc[2] >> shift;
+            *py++ = ((0x4D * r) + (0x96 * g) + (0x1D * b) + 128 ) / 256;
 
-      pAewbWinData = (CSL_H3aAewbOutSumModeOverlay *)curAewbAddr;
+            curAewbAddr += sizeof(CSL_H3aAewbOutSumModeOverlay);
 
-      g = (pAewbWinData->subSampleAcc[0] + pAewbWinData->subSampleAcc[3]) >> (1+shift);
-      r = pAewbWinData->subSampleAcc[1] >> shift;
-      b = pAewbWinData->subSampleAcc[2] >> shift;
-      *py++ = ((0x4D * r) + (0x96 * g) + (0x1D * b) + 128 ) / 256;
+            numWin++;
 
-      curAewbAddr += sizeof(CSL_H3aAewbOutSumModeOverlay);
-
-      numWin++;
-
-      if(numWin%8==0) {
-        curAewbAddr += sizeof(CSL_H3aAewbOutUnsatBlkCntOverlay);
-      }
+            if (numWin % 8 == 0)
+            {
+                curAewbAddr += sizeof(CSL_H3aAewbOutUnsatBlkCntOverlay);
+            }
+        }
+        curAewbAddr = (Uint8*)OSA_align((Uint32)curAewbAddr, 32);
     }
-    curAewbAddr = (Uint8*)OSA_align( (Uint32)curAewbAddr, 32);
-  }
 }
 
 //return: -1 on going; otherwise as fd lib return value 
@@ -81,12 +80,15 @@ static int TI_fd_run(int16* h3aDataVirtAddr, int pinp, int* fd_mem, int exp, int
     int exp1, gain1;
 
     /* begin Flicker Detection process */
-    if(frame_cnt_fd == 0)
+    if (frame_cnt_fd == 0)
     {
         //1st exposure
-        exp1 = 10000*((exp + 5000)/10000);
-        if(exp1 <10000) exp1 = 10000;
-        gain1 = gain*exp/exp1;
+        exp1 = 10000 * ((exp + 5000) / 10000);
+        if (exp1 <10000)
+        {
+            exp1 = 10000;
+        }
+        gain1 = gain * exp / exp1;
 
         /* Set sensor exposure time and analog gain for 1st stage FD */
 #ifdef FD_DEBUG
@@ -96,13 +98,16 @@ static int TI_fd_run(int16* h3aDataVirtAddr, int pinp, int* fd_mem, int exp, int
         ALG_aewbSetSensorExposure(exp1);
         DRV_isifSetDgain(gain1/2, gain1/2, gain1/2, gain1/2, 0);
     }
-    else if(frame_cnt_fd == FD_FRAME_STEPS)
+    else if (frame_cnt_fd == FD_FRAME_STEPS)
     {
         //2nd exposure
-        exp1 = 10000*((exp + 5000)/10000);
-        if(exp1 <10000) exp1 = 10000;
+        exp1 = 10000 * ((exp + 5000) / 10000);
+        if (exp1 <10000)
+        {
+            exp1 = 10000;
+        }
         exp1 -= 5000;
-        gain1 = gain*exp/exp1;
+        gain1 = gain * exp / exp1;
 
         //(3) API call for detection
         /* Pass H3A buffer to data conversion function */
@@ -114,14 +119,17 @@ static int TI_fd_run(int16* h3aDataVirtAddr, int pinp, int* fd_mem, int exp, int
         printf("\n\nFD debug exp2=%d, gain2=%d\n", exp1, gain1);
 #endif
         ALG_aewbSetSensorExposure(exp1);
-        DRV_isifSetDgain(gain1/2, gain1/2, gain1/2, gain1/2, 0);
+        DRV_isifSetDgain(gain1 / 2, gain1 / 2, gain1 / 2, gain1 / 2, 0);
     }
-    else if(frame_cnt_fd == FD_FRAME_STEPS*2)
+    else if (frame_cnt_fd == FD_FRAME_STEPS * 2)
     {
         //3rd exposure
-        exp1 = 8333 * ((exp + 4167)/8333);
-        if(exp1 <8333) exp1 = 8333;
-        gain1 = gain*exp/exp1;
+        exp1 = 8333 * ((exp + 4167) / 8333);
+        if (exp1 < 8333) 
+        {
+            exp1 = 8333;
+        }
+        gain1 = gain * exp / exp1;
 
         //(3) API call for detection
         /* Pass H3A buffer to data conversion function */
@@ -133,15 +141,18 @@ static int TI_fd_run(int16* h3aDataVirtAddr, int pinp, int* fd_mem, int exp, int
         printf("\n\nFD debug exp3=%d, gain3=%d\n", exp1, gain1);
 #endif
         ALG_aewbSetSensorExposure(exp1);
-        DRV_isifSetDgain(gain1/2, gain1/2, gain1/2, gain1/2, 0);
+        DRV_isifSetDgain(gain1 / 2, gain1 / 2, gain1 / 2, gain1 / 2, 0);
     }
-    else if(frame_cnt_fd == FD_FRAME_STEPS*3)
+    else if (frame_cnt_fd == FD_FRAME_STEPS * 3)
     {
         //4th exposure
-        exp1 = 8333 * ((exp + 4167)/8333);
-        if(exp1 <8333) exp1 = 8333;
+        exp1 = 8333 * ((exp + 4167) / 8333);
+        if (exp1 <8333) 
+        {
+            exp1 = 8333;
+        }
         exp1 -= 4167;
-        gain1 = gain*exp/exp1;
+        gain1 = gain * exp / exp1;
 
         //(3) API call for detection
         /* Pass H3A buffer to data conversion function */
@@ -153,9 +164,9 @@ static int TI_fd_run(int16* h3aDataVirtAddr, int pinp, int* fd_mem, int exp, int
         printf("\n\nFD debug exp4=%d, gain4=%d\n", exp1, gain1);
 #endif
         ALG_aewbSetSensorExposure(exp1);
-        DRV_isifSetDgain(gain1/2, gain1/2, gain1/2, gain1/2, 0);
+        DRV_isifSetDgain(gain1 / 2, gain1 / 2, gain1 / 2, gain1 / 2, 0);
     }
-    else if(frame_cnt_fd == FD_FRAME_STEPS*4)
+    else if (frame_cnt_fd == FD_FRAME_STEPS * 4)
     {
         //(3) API call for detection
         /* Pass H3A buffer to data conversion function */
@@ -166,7 +177,7 @@ static int TI_fd_run(int16* h3aDataVirtAddr, int pinp, int* fd_mem, int exp, int
         printf("\n\nFD debug exp5=%d, gain5=%d\n", exp, gain);
 #endif
         ALG_aewbSetSensorExposure(exp);
-        DRV_isifSetDgain(gain/2, gain/2, gain/2, gain/2, 0);
+        DRV_isifSetDgain(gain / 2, gain / 2, gain / 2, gain / 2, 0);
 
 #ifdef FD_DEBUG_MSG
         OSA_printf("\n ret_st=%d\n", ret_st);
@@ -183,11 +194,12 @@ static int fd_trigger = 1;
 static int fd_trigger_ret = 0;
 
 int TI_fd_sequence(int sensorMode, void* h3aDataVirtAddr, 
-        int h3a_w, int h3a_h, int saldre, 
-        IAEWB_Ae *curAe, IAEWB_Ae *nextAe, int env_50_60Hz,
-        int *fd_mem, int fd_mem_size)
+                   int h3a_w, int h3a_h, int saldre, 
+                   IAEWB_Ae *curAe, IAEWB_Ae *nextAe, int env_50_60Hz,
+                   int *fd_mem, int fd_mem_size)
 {
-    if (env_50_60Hz != VIDEO_NTSC && env_50_60Hz != VIDEO_PAL)
+    if (env_50_60Hz != VIDEO_NTSC && 
+        env_50_60Hz != VIDEO_PAL)
     {
         return 0;
     }
@@ -209,19 +221,19 @@ int TI_fd_sequence(int sensorMode, void* h3aDataVirtAddr,
     flicker_ret_st ret_st;
     if (fd_trigger == 1)
     {
-        int res_support, init = 0;
+        int res_support;
         fd_trigger = 0;
-        res_support = TI_fd_get_config(sensorMode, &row_time, &pinp, &h3aWinHeight);
+        res_support = gALG_aewbObj.algTiAEWB->fd_get_config(sensorMode, &row_time, &pinp, &h3aWinHeight);
         if (res_support)
         {
-            init = TI_fd_init(h3a_w, h3a_h, row_time, h3aWinHeight, fd_mem, fd_mem_size);
+            int init = TI_fd_init(h3a_w, h3a_h, row_time, h3aWinHeight, fd_mem, fd_mem_size);
             if (init)
             {
                 fd_trigger = 2;
             }
         }
 #ifdef FD_DEBUG
-        printf("FD debug 1: res=%d, init=%d\n", res_support, init);
+//        printf("FD debug 1: res=%d, init=%d\n", res_support, init);
 #endif
     }
 
@@ -232,7 +244,7 @@ int TI_fd_sequence(int sensorMode, void* h3aDataVirtAddr,
         if (nextAe->exposureTime == curAe->exposureTime && nextAe->sensorGain == curAe->sensorGain)
         {
             stab_count++;
-            if(stab_count==5)
+            if (stab_count==5)
             {
                 fd_trigger = 3;
                 stab_count = 0;
@@ -258,14 +270,12 @@ int TI_fd_sequence(int sensorMode, void* h3aDataVirtAddr,
         {
             ret_st = ret;
             fd_trigger = 4;
-#ifdef FD_DEBUG
+//#ifdef FD_DEBUG
             printf("FD debug 3: ret=%d\n", ret);
-#endif
-#if 1
-	    fd_trigger_ret = ret;
             char* info[] = {"none", "unknow", "50Hz", "60Hz"};
-            printf("\n\n FD result: %s \n\n", info[ret]);
-#endif
+            printf("FD result: %s\n", info[ret]);
+//#endif
+            fd_trigger_ret = ret;
         }
     }
 
@@ -280,9 +290,8 @@ int TI_fd_sequence(int sensorMode, void* h3aDataVirtAddr,
             nf_count++;
         }
 
-        if ( ((ret_st == 2) && (env_50_60Hz == VIDEO_PAL))  ||
-             ((ret_st == 3) && (env_50_60Hz == VIDEO_NTSC))
-           )
+        if (((ret_st == 2) && (env_50_60Hz == VIDEO_PAL))  ||
+            ((ret_st == 3) && (env_50_60Hz == VIDEO_NTSC)))
         {
             fd_count = nf_count = fd_trigger = 0;
             TI_2A_config(ret_st, saldre);
@@ -321,9 +330,8 @@ int TI_fd_sequence(int sensorMode, void* h3aDataVirtAddr,
 
 int TI_fd_enable()
 {
-	fd_trigger = 1;
-	sleep(1);
-	
-	return fd_trigger_ret;
+    fd_trigger = 1;
+    sleep(1);
+    return fd_trigger_ret;
 }
 

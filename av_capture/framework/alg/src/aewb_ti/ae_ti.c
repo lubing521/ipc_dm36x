@@ -1,19 +1,4 @@
-/*
- *  Copyright 2007
- *  Texas Instruments Incorporated
- *
- *  All rights reserved.  Property of Texas Instruments Incorporated
- *  Restricted rights to use, duplicate or disclose this code are
- *  granted through contract.
- *
- */
-/*
- *  ======== ae_ti.c ========
- *  TI's implementation of the AE algorithm.
- *
- *  This file contains an implementation of the IALG interface
- *  required by xDAIS.
- */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -34,21 +19,22 @@ extern IALG_Fxns AE_TI_IALG;
 #endif
 #define IALGFXNS  \
     &AE_TI_IALG,        /* module ID */                         \
-NULL,               /* activate */                          \
-AE_TI_alloc,        /* alloc */                             \
-NULL,               /* control (NULL => no control ops) */  \
-NULL,               /* deactivate */                        \
-AE_TI_free,         /* free */                              \
-AE_TI_init,         /* init */                              \
-NULL,               /* moved */                             \
-NULL                        /* numAlloc (NULL => IALG_MAXMEMRECS) */
+    NULL,               /* activate */                          \
+    AE_TI_alloc,        /* alloc */                             \
+    NULL,               /* control (NULL => no control ops) */  \
+    NULL,               /* deactivate */                        \
+    AE_TI_free,         /* free */                              \
+    AE_TI_init,         /* init */                              \
+    NULL,               /* moved */                             \
+    NULL                        /* numAlloc (NULL => IALG_MAXMEMRECS) */
 
 /*
  *  ======== AE_TI_IAE ========
  *  This structure defines TI's implementation of the IAE interface
  *  for the AE_TI module.
  */
-IAE_Fxns AE_TI_AE = {           /* module_vendor_interface */
+IAE_Fxns AE_TI_AE =             /* module_vendor_interface */
+{
     {IALGFXNS},
     AE_TI_process,
     AE_TI_control,
@@ -59,29 +45,30 @@ IAE_Fxns AE_TI_AE = {           /* module_vendor_interface */
  *  This structure defines TI's implementation of the IALG interface
  *  for the AE_TI module.
  */
-IALG_Fxns AE_TI_IALG = {        /* module_vendor_interface */
+IALG_Fxns AE_TI_IALG =          /* module_vendor_interface */
+{
     IALGFXNS
 };
 
 /*
  *  ======== AE_TI_alloc ========
  */
-Int AE_TI_alloc(const IALG_Params * algParams,
-        IALG_Fxns ** pf, IALG_MemRec memTab[])
+Int AE_TI_alloc(const IALG_Params *algParams,
+                IALG_Fxns **pf, IALG_MemRec memTab[])
 {
     IAE_Params *params = (IAE_Params *) algParams;
     int numTabs = 1;
 
     /* Request memory for my object */
-    memTab[0].size = sizeof(AE_TI_Obj);
+    memTab[0].size      = sizeof(AE_TI_Obj);
     memTab[0].alignment = 0;
-    memTab[0].space = IALG_EXTERNAL;
-    memTab[0].attrs = IALG_PERSIST;
+    memTab[0].space     = IALG_EXTERNAL;
+    memTab[0].attrs     = IALG_PERSIST;
 
-    memTab[1].size = sizeof(XDAS_UInt32) * (params->numHistory + 1);
+    memTab[1].size      = sizeof(XDAS_UInt32) * (params->numHistory + 1);
     memTab[1].alignment = 0;
-    memTab[1].space = IALG_EXTERNAL;
-    memTab[1].attrs = IALG_PERSIST;
+    memTab[1].space     = IALG_EXTERNAL;
+    memTab[1].attrs     = IALG_PERSIST;
     numTabs++;
     return (numTabs);
 }
@@ -94,15 +81,15 @@ Int AE_TI_free(IALG_Handle handle, IALG_MemRec memTab[])
     AE_TI_Obj *h = (AE_TI_Obj *) handle;
     int numTabs = 0;
     /* Request memory for my object */
-    memTab[0].size = sizeof(AE_TI_Obj);
+    memTab[0].size      = sizeof(AE_TI_Obj);
     memTab[0].alignment = 0;
-    memTab[0].space = IALG_EXTERNAL;
-    memTab[0].attrs = IALG_PERSIST;
+    memTab[0].space     = IALG_EXTERNAL;
+    memTab[0].attrs     = IALG_PERSIST;
 
-    memTab[1].size = sizeof(XDAS_UInt32) * h->numHistory + 1;
+    memTab[1].size      = sizeof(XDAS_UInt32) * h->numHistory + 1;
     memTab[1].alignment = 0;
-    memTab[1].space = IALG_EXTERNAL;
-    memTab[1].attrs = IALG_PERSIST;
+    memTab[1].space     = IALG_EXTERNAL;
+    memTab[1].attrs     = IALG_PERSIST;
     numTabs++;
     return (numTabs);
 }
@@ -111,15 +98,16 @@ Int AE_TI_free(IALG_Handle handle, IALG_MemRec memTab[])
  *  ======== AE_TI_initObj ========
  */
 Int AE_TI_init(IALG_Handle handle,
-        const IALG_MemRec memTab[], IALG_Handle p,
-        const IALG_Params * algParams)
+               const IALG_MemRec memTab[], IALG_Handle p,
+               const IALG_Params *algParams)
 {
     AE_TI_Obj *h = (AE_TI_Obj *) handle;
     IAE_Params *params = (IAE_Params *) algParams;
-    int i;
 
     if (handle == NULL)
+    {
         return (IAE_EFAIL);
+    }
     if (params == NULL)
     {
         /* no static parameters passed in, use default */
@@ -133,6 +121,7 @@ Int AE_TI_init(IALG_Handle handle,
     }
     else
     {
+        int i = 0;
         h->numHistory = params->numHistory + 1;
         h->numSmoothSteps = params->numSmoothSteps;
         if (h->numSmoothSteps < 0) h->numSmoothSteps = 1;
@@ -170,18 +159,18 @@ static int clip_int(int v, int vmin, int vmax)
 }
 
 
-static void search_in_range(float ex, 
-        int Amin, int Amax, int* pA, 
-        int Tmin, int Tmax, int Tstep, int* pT,
-        int AGmin, int AGmax, int* pAG,  
-        int DGmin, int DGmax, int* pDG)
+static void search_in_range(float ex,
+                            int Amin, int Amax, int *pA,
+                            int Tmin, int Tmax, int Tstep, int *pT,
+                            int AGmin, int AGmax, int *pAG,
+                            int DGmin, int DGmax, int *pDG)
 {
     ex *= Amin;
     *pA = clip_int(ex, Amin, Amax);
     ex /= (*pA);
 
     ex *= Tmin;
-    *pT = clip_int((int)(ex/Tstep)*Tstep, Tmin, Tmax);
+    *pT = clip_int((int)(ex / Tstep) * Tstep, Tmin, Tmax);
     ex /= (*pT);
 
     ex *= AGmin;
@@ -195,14 +184,14 @@ static void search_in_range(float ex,
 }
 
 static int search_range_ATG_dec_gain(int adjRatio,
-        int cA, int cT, int cAG, int cDG,
-        IAE_Range rA, IAE_Range rT, IAE_Range rAG,
-        IAE_Range rDG, int Tstep, int *pA, int *pT,
-        int *pAG, int *pDG)
+                                     int cA, int cT, int cAG, int cDG,
+                                     IAE_Range rA, IAE_Range rT, IAE_Range rAG,
+                                     IAE_Range rDG, int Tstep, int *pA, int *pT,
+                                     int *pAG, int *pDG)
 {
-    int Tmin = (rT.min+Tstep-1) / Tstep * Tstep;
+    int Tmin = (rT.min + Tstep - 1) / Tstep * Tstep;
     int Tmax = rT.max / Tstep * Tstep;
-    if (Tmin > Tmax || Tmin <= 0) 
+    if (Tmin > Tmax || Tmin <= 0)
     {
         Tmin = Tmax;
     }
@@ -212,14 +201,14 @@ static int search_range_ATG_dec_gain(int adjRatio,
     float tm = (float)rA.min * Tmin * rAG.min * rDG.min;
     float tc = (float)cA * cT * cAG * cDG;
 
-    if (tm*1024 <= adjRatio*tc)
+    if (tm * 1024 <= adjRatio * tc)
     {
         float ex = tc * adjRatio / 1024 / tm;
-        search_in_range(ex, 
-                rA.min, rA.max, pA, 
-                Tmin, Tmax, Tstep, pT, 
-                rAG.min, rAG.max, pAG,
-                rDG.min, rDG.max, pDG);
+        search_in_range(ex,
+                        rA.min, rA.max, pA,
+                        Tmin, Tmax, Tstep, pT,
+                        rAG.min, rAG.max, pAG,
+                        rDG.min, rDG.max, pDG);
         return 1;
     }
     *pA = rA.min;
@@ -231,14 +220,14 @@ static int search_range_ATG_dec_gain(int adjRatio,
 }
 
 static int search_range_ATG_inc_gain(int adjRatio,
-        int cA, int cT, int cAG, int cDG,
-        IAE_Range rA, IAE_Range rT, IAE_Range rAG,
-        IAE_Range rDG, int Tstep, int *pA, int *pT,
-        int *pAG, int *pDG)
+                                     int cA, int cT, int cAG, int cDG,
+                                     IAE_Range rA, IAE_Range rT, IAE_Range rAG,
+                                     IAE_Range rDG, int Tstep, int *pA, int *pT,
+                                     int *pAG, int *pDG)
 {
-    int Tmin = (rT.min+Tstep-1) / Tstep * Tstep;
+    int Tmin = (rT.min + Tstep - 1) / Tstep * Tstep;
     int Tmax = rT.max / Tstep * Tstep;
-    if (Tmin > Tmax || Tmin <= 0) 
+    if (Tmin > Tmax || Tmin <= 0)
     {
         Tmin = Tmax;
     }
@@ -248,14 +237,14 @@ static int search_range_ATG_inc_gain(int adjRatio,
     float tm = (float)rA.max * Tmax * rAG.max * rDG.max;
     float tc = (float)cA * cT * cAG * cDG;
 
-    if (tm*1024 >= adjRatio*tc)
+    if (tm * 1024 >= adjRatio * tc)
     {
         float ex = tc * adjRatio / 1024 / rA.min / Tmin / rAG.min / rDG.min;
-        search_in_range(ex, 
-                rA.min, rA.max, pA, 
-                Tmin, Tmax, Tstep, pT, 
-                rAG.min, rAG.max, pAG,
-                rDG.min, rDG.max, pDG);
+        search_in_range(ex,
+                        rA.min, rA.max, pA,
+                        Tmin, Tmax, Tstep, pT,
+                        rAG.min, rAG.max, pAG,
+                        rDG.min, rDG.max, pDG);
         return 1;
     }
     *pA = rA.max;
@@ -270,9 +259,9 @@ static int search_range_ATG_inc_gain(int adjRatio,
  *  ======== AE_TI_process ========
  */
 #define SAT_Y              180
-XDAS_Int32 AE_TI_process(IAE_Handle handle, IAE_InArgs * inArgs,
-        IAE_OutArgs * outArgs, IAEWB_Rgb * rgbData,
-        XDAS_UInt8 * weight, void *customData)
+XDAS_Int32 AE_TI_process(IAE_Handle handle, IAE_InArgs *inArgs,
+                         IAE_OutArgs *outArgs, IAEWB_Rgb *rgbData,
+                         XDAS_UInt8 *weight, void *customData)
 {
 #ifdef AE_DEBUG_PRINTS
     static int frames = 0;
@@ -301,7 +290,6 @@ XDAS_Int32 AE_TI_process(IAE_Handle handle, IAE_InArgs * inArgs,
     AE_TI_Obj *h = (AE_TI_Obj *) handle;
     int adjRatio;
     unsigned int y, max_y = 0, min_y = 255 * numPixels;
-    unsigned int temp;
 
     int reset = ((h->avgY == -1) || (inArgs->curAe.exposureTime % h->exposureTimeStepSize != 0));
 
@@ -335,8 +323,8 @@ XDAS_Int32 AE_TI_process(IAE_Handle handle, IAE_InArgs * inArgs,
             weightSum += weight[i * width + j];
 
             y = (rgbData[i * width + j].r * rY
-                    + rgbData[i * width + j].g * gY
-                    + rgbData[i * width + j].b * bY + 128) >> 8;
+                 + rgbData[i * width + j].g * gY
+                 + rgbData[i * width + j].b * bY + 128) >> 8;
             if (max_y < y)
                 max_y = y;
             if (min_y > y)
@@ -388,7 +376,8 @@ XDAS_Int32 AE_TI_process(IAE_Handle handle, IAE_InArgs * inArgs,
     curY_sat = (totalY + (weightSum >> 1)) / weightSum;
 
     if (0) //Gang:use 1 for  CPSE demo from Tuff
-    {                           //(weightSum - weightSum_unsat)* 10  < weightSum){
+    {
+        //(weightSum - weightSum_unsat)* 10  < weightSum){
         curY = curY_unsat;
     }
     else
@@ -436,7 +425,7 @@ XDAS_Int32 AE_TI_process(IAE_Handle handle, IAE_InArgs * inArgs,
     }
 
 #ifdef AE_DEBUG
-    printf("AE debug: curY=%d, avgY=%d, locked=%d, lockcnt=%d\n", curY, avgY/h->numHistory, h->locked, h->lockCnt);
+    printf("AE debug: curY=%d, avgY=%d, locked=%d, lockcnt=%d\n", curY, avgY / h->numHistory, h->locked, h->lockCnt);
 #endif
     if (!reset)
     {
@@ -445,8 +434,8 @@ XDAS_Int32 AE_TI_process(IAE_Handle handle, IAE_InArgs * inArgs,
             outArgs->nextAe = inArgs->curAe;
             return (IAE_EOK);
         }
-        if ((curY > h->targetBrightnessRange.min && curY < h->targetBrightnessRange.max)
-                || (avgY > h->targetBrightnessRange.min * h->numHistory && avgY < h->targetBrightnessRange.max * h->numHistory))
+        if ((curY > h->targetBrightnessRange.min && curY < h->targetBrightnessRange.max) ||
+                (avgY > h->targetBrightnessRange.min * h->numHistory && avgY < h->targetBrightnessRange.max * h->numHistory))
         {
             h->lockCnt++;
         }
@@ -454,7 +443,7 @@ XDAS_Int32 AE_TI_process(IAE_Handle handle, IAE_InArgs * inArgs,
         {
             h->lockCnt--;
         }
-        
+
         if (h->lockCnt >= 3)
         {
             h->lockCnt = 3;
@@ -481,7 +470,7 @@ XDAS_Int32 AE_TI_process(IAE_Handle handle, IAE_InArgs * inArgs,
 #endif
 
     // adjust the ratio
-    int delta = 100 * (11-h->numSmoothSteps) / 10;
+    int delta = 100 * (11 - h->numSmoothSteps) / 10;
     if (adjRatio > 4096)
     {
         adjRatio = 4096;
@@ -533,13 +522,13 @@ XDAS_Int32 AE_TI_process(IAE_Handle handle, IAE_InArgs * inArgs,
         for (i = 0; i < h->numRanges; i++)
         {
             r = search_range_ATG_inc_gain(adjRatio,
-                    cA, cT, cAG, cDG,
-                    h->apertureLevelRange[i],
-                    h->exposureTimeRange[i],
-                    h->sensorGainRange[i],
-                    h->ipipeGainRange[i],
-                    h->exposureTimeStepSize,
-                    &nA, &nT, &nAG, &nDG);
+                                          cA, cT, cAG, cDG,
+                                          h->apertureLevelRange[i],
+                                          h->exposureTimeRange[i],
+                                          h->sensorGainRange[i],
+                                          h->ipipeGainRange[i],
+                                          h->exposureTimeStepSize,
+                                          &nA, &nT, &nAG, &nDG);
 #ifdef AE_DEBUG
             printf("\nAE debug: i=%d, r=%d, num=%d\n", i, r, h->numRanges);
 #endif
@@ -551,16 +540,16 @@ XDAS_Int32 AE_TI_process(IAE_Handle handle, IAE_InArgs * inArgs,
     }
     else if (adjRatio < 1024) //decrease gain
     {
-        for (i = h->numRanges-1; i>=0; i--)
+        for (i = h->numRanges - 1; i >= 0; i--)
         {
-            r = search_range_ATG_dec_gain(adjRatio, 
-                    cA, cT, cAG, cDG,
-                    h->apertureLevelRange[i],
-                    h->exposureTimeRange[i],
-                    h->sensorGainRange[i],
-                    h->ipipeGainRange[i],
-                    h->exposureTimeStepSize,
-                    &nA, &nT, &nAG, &nDG);
+            r = search_range_ATG_dec_gain(adjRatio,
+                                          cA, cT, cAG, cDG,
+                                          h->apertureLevelRange[i],
+                                          h->exposureTimeRange[i],
+                                          h->sensorGainRange[i],
+                                          h->ipipeGainRange[i],
+                                          h->exposureTimeStepSize,
+                                          &nA, &nT, &nAG, &nDG);
 #ifdef AE_DEBUG
             printf("\nAE debug: i=%d, r=%d, num=%d\n", i, r, h->numRanges);
 #endif
@@ -582,81 +571,81 @@ XDAS_Int32 AE_TI_process(IAE_Handle handle, IAE_InArgs * inArgs,
     outArgs->nextAe.ipipeGain = nDG;
 
     return (IAE_EOK);
-    }
+}
 
-    /*
-     *  ======== AE_TI_control ========
-     */
-    XDAS_Int32 AE_TI_control(IAE_Handle handle, IAE_Cmd id,
-            IAE_DynamicParams * params, IAE_Status * status)
+/*
+ *  ======== AE_TI_control ========
+ */
+XDAS_Int32 AE_TI_control(IAE_Handle handle, IAE_Cmd id,
+                         IAE_DynamicParams *params, IAE_Status *status)
+{
+    XDAS_Int32 retVal;
+    AE_TI_Obj *h = (AE_TI_Obj *) handle;
+    int i;
+    /* validate arguments - this codec only supports "base" xDM. */
+    if (params->size != sizeof(*params))
     {
-        XDAS_Int32 retVal;
-        AE_TI_Obj *h = (AE_TI_Obj *) handle;
-        int i;
-        /* validate arguments - this codec only supports "base" xDM. */
-        if (params->size != sizeof(*params))
-        {
 
-            return (IAE_EUNSUPPORTED);
-        }
-
-        switch (id)
-        {
-            case IAE_CMD_SET_CONFIG:
-                if (params->numRanges > IAE_MAX_RANGES)
-                {
-                    retVal = IAE_EFAIL;
-                }
-                else
-                {
-                    h->numRanges = params->numRanges;
-                    for (i = 0; i < h->numRanges; i++)
-                    {
-                        h->exposureTimeRange[i] = params->exposureTimeRange[i];
-                        h->apertureLevelRange[i] = params->apertureLevelRange[i];
-                        h->sensorGainRange[i] = params->sensorGainRange[i];
-                        h->ipipeGainRange[i] = params->ipipeGainRange[i];
-                    }
-                    h->targetBrightnessRange = params->targetBrightnessRange;
-                    h->thrld = params->thrld;
-                    h->targetBrightness = params->targetBrightness;
-                    h->exposureTimeStepSize = params->exposureTimeStepSize;
-                    h->locked = FALSE;
-                    h->lockCnt = 0;
-                    for (i = 0; i < h->numHistory; i++)
-                    {
-                        h->historyBrightness[i] = -1;
-                    }
-                    h->avgY = -1;
-#ifdef AE_DEBUG_PRINTS
-                    dprintf("exposureTime Range = %d, %d, %d\n",
-                            h->exposureTimeRange[0].min, h->exposureTimeRange[0].max,
-                            h->exposureTimeStepSize);
-                    dprintf("setup dynamic parameters \n");
-#endif
-                    retVal = IAE_EOK;
-                }
-                break;
-            case IAE_CMD_GET_CONFIG:
-                params->numRanges = h->numRanges;
-                for (i = 0; i < h->numRanges; i++)
-                {
-                    params->exposureTimeRange[i] = h->exposureTimeRange[i];
-                    params->apertureLevelRange[i] = h->apertureLevelRange[i];
-                    params->sensorGainRange[i] = h->sensorGainRange[i];
-                    params->ipipeGainRange[i] = h->ipipeGainRange[i];
-                }
-                params->targetBrightnessRange = h->targetBrightnessRange;
-                params->thrld = h->thrld;
-                params->targetBrightness = h->targetBrightness;
-                params->exposureTimeStepSize = h->exposureTimeStepSize;
-                retVal = IAE_EOK;
-                break;
-
-            default:
-                /* unsupported cmd */
-                retVal = IAE_EUNSUPPORTED;
-                break;
-        }
-        return (retVal);
+        return (IAE_EUNSUPPORTED);
     }
+
+    switch (id)
+    {
+    case IAE_CMD_SET_CONFIG:
+        if (params->numRanges > IAE_MAX_RANGES)
+        {
+            retVal = IAE_EFAIL;
+        }
+        else
+        {
+            h->numRanges = params->numRanges;
+            for (i = 0; i < h->numRanges; i++)
+            {
+                h->exposureTimeRange[i] = params->exposureTimeRange[i];
+                h->apertureLevelRange[i] = params->apertureLevelRange[i];
+                h->sensorGainRange[i] = params->sensorGainRange[i];
+                h->ipipeGainRange[i] = params->ipipeGainRange[i];
+            }
+            h->targetBrightnessRange = params->targetBrightnessRange;
+            h->thrld = params->thrld;
+            h->targetBrightness = params->targetBrightness;
+            h->exposureTimeStepSize = params->exposureTimeStepSize;
+            h->locked = FALSE;
+            h->lockCnt = 0;
+            for (i = 0; i < h->numHistory; i++)
+            {
+                h->historyBrightness[i] = -1;
+            }
+            h->avgY = -1;
+#ifdef AE_DEBUG_PRINTS
+            dprintf("exposureTime Range = %d, %d, %d\n",
+                    h->exposureTimeRange[0].min, h->exposureTimeRange[0].max,
+                    h->exposureTimeStepSize);
+            dprintf("setup dynamic parameters \n");
+#endif
+            retVal = IAE_EOK;
+        }
+        break;
+    case IAE_CMD_GET_CONFIG:
+        params->numRanges = h->numRanges;
+        for (i = 0; i < h->numRanges; i++)
+        {
+            params->exposureTimeRange[i] = h->exposureTimeRange[i];
+            params->apertureLevelRange[i] = h->apertureLevelRange[i];
+            params->sensorGainRange[i] = h->sensorGainRange[i];
+            params->ipipeGainRange[i] = h->ipipeGainRange[i];
+        }
+        params->targetBrightnessRange = h->targetBrightnessRange;
+        params->thrld = h->thrld;
+        params->targetBrightness = h->targetBrightness;
+        params->exposureTimeStepSize = h->exposureTimeStepSize;
+        retVal = IAE_EOK;
+        break;
+
+    default:
+        /* unsupported cmd */
+        retVal = IAE_EUNSUPPORTED;
+        break;
+    }
+    return (retVal);
+}

@@ -8,14 +8,14 @@
 static void TIAE_config_flicker_none(IAE_DynamicParams * aeDynamicParams, int min_exp)
 {
     int i = 0;
-    aeDynamicParams->exposureTimeRange[i].min = min_exp;
-    aeDynamicParams->exposureTimeRange[i].max = 33333;
+    aeDynamicParams->exposureTimeRange[i].min  = min_exp;
+    aeDynamicParams->exposureTimeRange[i].max  = 33333;
     aeDynamicParams->apertureLevelRange[i].min = 1;
     aeDynamicParams->apertureLevelRange[i].max = 1;
-    aeDynamicParams->sensorGainRange[i].min = 1000;
-    aeDynamicParams->sensorGainRange[i].max = 16000;
-    aeDynamicParams->ipipeGainRange[i].min = 1024;
-    aeDynamicParams->ipipeGainRange[i].max = 4096;
+    aeDynamicParams->sensorGainRange[i].min    = 1000;
+    aeDynamicParams->sensorGainRange[i].max    = 16000;
+    aeDynamicParams->ipipeGainRange[i].min     = 1024;
+    aeDynamicParams->ipipeGainRange[i].max     = 4096;
     i++;
 
     aeDynamicParams->numRanges = i;
@@ -29,36 +29,36 @@ static void TIAE_config_flicker_yes(IAE_DynamicParams * aeDynamicParams, int min
     int i = 0;
     if (min_exp < step_size)
     {
-        aeDynamicParams->exposureTimeRange[i].min = min_exp;
-        aeDynamicParams->exposureTimeRange[i].max = step_size;
+        aeDynamicParams->exposureTimeRange[i].min  = min_exp;
+        aeDynamicParams->exposureTimeRange[i].max  = step_size;
         aeDynamicParams->apertureLevelRange[i].min = 1;
         aeDynamicParams->apertureLevelRange[i].max = 1;
-        aeDynamicParams->sensorGainRange[i].min = 1000;
-        aeDynamicParams->sensorGainRange[i].max = 1000;
-        aeDynamicParams->ipipeGainRange[i].min = 1024;
-        aeDynamicParams->ipipeGainRange[i].max = 1024;
+        aeDynamicParams->sensorGainRange[i].min    = 1000;
+        aeDynamicParams->sensorGainRange[i].max    = 1000;
+        aeDynamicParams->ipipeGainRange[i].min     = 1024;
+        aeDynamicParams->ipipeGainRange[i].max     = 1024;
         i++;
 
-        aeDynamicParams->exposureTimeRange[i].min = step_size;
-        aeDynamicParams->exposureTimeRange[i].max = step_size;
+        aeDynamicParams->exposureTimeRange[i].min  = step_size;
+        aeDynamicParams->exposureTimeRange[i].max  = step_size;
         aeDynamicParams->apertureLevelRange[i].min = 1;
         aeDynamicParams->apertureLevelRange[i].max = 1;
-        aeDynamicParams->sensorGainRange[i].min = 1000;
-        aeDynamicParams->sensorGainRange[i].max = 2000;
-        aeDynamicParams->ipipeGainRange[i].min = 1024;
-        aeDynamicParams->ipipeGainRange[i].max = 1024;
+        aeDynamicParams->sensorGainRange[i].min    = 1000;
+        aeDynamicParams->sensorGainRange[i].max    = 2000;
+        aeDynamicParams->ipipeGainRange[i].min     = 1024;
+        aeDynamicParams->ipipeGainRange[i].max     = 1024;
         i++;
     }
     else
     {
-        aeDynamicParams->exposureTimeRange[i].min = step_size;
-        aeDynamicParams->exposureTimeRange[i].max = step_size;
+        aeDynamicParams->exposureTimeRange[i].min  = step_size;
+        aeDynamicParams->exposureTimeRange[i].max  = step_size;
         aeDynamicParams->apertureLevelRange[i].min = 1;
         aeDynamicParams->apertureLevelRange[i].max = 1;
-        aeDynamicParams->sensorGainRange[i].min = 1000;
-        aeDynamicParams->sensorGainRange[i].max = 1000;
-        aeDynamicParams->ipipeGainRange[i].min = 256;
-        aeDynamicParams->ipipeGainRange[i].max = 1024;
+        aeDynamicParams->sensorGainRange[i].min    = 1000;
+        aeDynamicParams->sensorGainRange[i].max    = 1000;
+        aeDynamicParams->ipipeGainRange[i].min     = 256;
+        aeDynamicParams->ipipeGainRange[i].max     = 1024;
         i++;
         aeDynamicParams->exposureTimeRange[i].min = step_size;
         aeDynamicParams->exposureTimeRange[i].max = step_size;
@@ -124,15 +124,15 @@ static void TIAE_config_flicker_yes(IAE_DynamicParams * aeDynamicParams, int min
 
 static void TIAE_config_fixed(IAE_DynamicParams * aeDynamicParams, int exp)
 {
-    int i;
-    aeDynamicParams->exposureTimeRange[i].min = exp;
-    aeDynamicParams->exposureTimeRange[i].max = exp;
+    int i = 0;
+    aeDynamicParams->exposureTimeRange[i].min  = exp;
+    aeDynamicParams->exposureTimeRange[i].max  = exp;
     aeDynamicParams->apertureLevelRange[i].min = 1;
     aeDynamicParams->apertureLevelRange[i].max = 1;
-    aeDynamicParams->sensorGainRange[i].min = 1000;
-    aeDynamicParams->sensorGainRange[i].max = 1000;
-    aeDynamicParams->ipipeGainRange[i].min = 1024;
-    aeDynamicParams->ipipeGainRange[i].max = 1024;
+    aeDynamicParams->sensorGainRange[i].min    = 1000;
+    aeDynamicParams->sensorGainRange[i].max    = 1000;
+    aeDynamicParams->ipipeGainRange[i].min     = 1024;
+    aeDynamicParams->ipipeGainRange[i].max     = 1024;
     i++;
     aeDynamicParams->numRanges = i;
     aeDynamicParams->exposureTimeStepSize = 1;

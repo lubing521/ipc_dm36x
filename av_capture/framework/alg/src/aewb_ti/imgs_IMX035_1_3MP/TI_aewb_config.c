@@ -124,7 +124,7 @@ static void TIAE_config_flicker_yes(IAE_DynamicParams * aeDynamicParams, int min
 
 static void TIAE_config_fixed(IAE_DynamicParams * aeDynamicParams, int exp)
 {
-    int i;
+    int i = 0;
     aeDynamicParams->exposureTimeRange[i].min = exp;
     aeDynamicParams->exposureTimeRange[i].max = exp;
     aeDynamicParams->apertureLevelRange[i].min = 1;

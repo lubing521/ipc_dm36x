@@ -33,12 +33,15 @@ enum {
 	AE_DAY
 };
 
-enum {
-
-	INDOOR = 0,
-	OUTDOOR,
-	AWB_AUTO
+enum
+{
+    AWB_AUTO = 0,
+    OUTDOOR,
+    INDOOR,
+    FLUORESCENT,
+    MANUAL
 };
+
 
 enum {
 	SATURATION_LOW = 0,
@@ -170,6 +173,9 @@ typedef struct _AEW_EXT_PARAM{
 	int				special_mode;
 	int				sensor_frame_rate;
 	int 			ipipe_dgain_base;
+	int             iNoise;
+    int             iRedGain;
+    int             iBlueGain;
 } AEW_EXT_PARAM;
 
 typedef struct _aewDataEntry {
