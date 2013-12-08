@@ -17,7 +17,7 @@ struct rgb2rgb_index
 };
 
 int TI_2A_config(int flicker_detection, int saldre);
-void TI_2A_init_tables(int width, int height);
+void TI2A_init_tables(int width, int height);
 void TI2A_applySettings(IAEWB_Ae *curAe, IAEWB_Ae *nextAe, IAEWB_Wb* nextWb, int numSmoothSteps, int step);
 short TI_2A_SetEEValues(int shift_val);
 int TI_2A_ISP_control(int eTime, int aGain, int dGain, int cTemp);

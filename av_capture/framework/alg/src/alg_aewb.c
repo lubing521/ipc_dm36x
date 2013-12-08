@@ -170,7 +170,7 @@ void* ALG_aewbCreate(ALG_AewbCreate *create)
     int retval;
     int sensorMode;
 
-    TFC_ImageToolsInit();
+    ImageToolsInit();
     
     memset(&gALG_aewbObj, 0, sizeof(gALG_aewbObj));
     memset(&Aew_ext_parameter, 0, sizeof(Aew_ext_parameter));
@@ -183,16 +183,10 @@ void* ALG_aewbCreate(ALG_AewbCreate *create)
 
     gALG_aewbObj.vsEnable 		= (create->sensorMode & DRV_IMGS_SENSOR_MODE_VSTAB) ? 1 : 0;
     gALG_aewbObj.aewbVendor   	= create->aewbVendor;
-    gALG_aewbObj.reduceShutter   	= create->reduceShutter;
+    gALG_aewbObj.reduceShutter  = create->reduceShutter;
     gALG_aewbObj.saldre   		= create->saldre;
-     // test by fan
-      OSA_printf(" ****fan2:ALG_aewbCreate starting***** \n");
-	   // aew thread start from here
-	   // 很多初始化的参数要改动
 	 
-   Aew_ext_parameter.GAIN_SETUP            = ALG_aewbSetSensorGain        ;
-	  
-    Aew_ext_parameter.SHUTTER_SETUP         = ALG_aewbSetSensorExposure    ;
+    Aew_ext_parameter.GAIN_SETUP            = ALG_aewbSetSensorGain        ;
 	//上面两个是回调函数，如图像偏暗或偏量，可适当调整这里的参数。
     Aew_ext_parameter.AWB_SETUP             = ALG_aewbSetIpipeWb           ;
     Aew_ext_parameter.DCSUB_SETUP           = ALG_aewbSetSensorDcsub       ;
@@ -212,14 +206,14 @@ void* ALG_aewbCreate(ALG_AewbCreate *create)
     Aew_ext_parameter.auto_iris         = ALG_aewbCheckAutoIris();
     Aew_ext_parameter.day_night         = AE_DAY;
     Aew_ext_parameter.awb_mode          = AWB_AUTO;
-    Aew_ext_parameter.saturation        =  100;  //128;  by fan
+    Aew_ext_parameter.saturation        = 128; 
     Aew_ext_parameter.blc               = BACKLIGHT_NORMAL;
-    Aew_ext_parameter.sharpness         = 110 ; //128;
-    Aew_ext_parameter.brightness        = 140; //128;
-    Aew_ext_parameter.contrast          =  135 ;//128;
+    Aew_ext_parameter.sharpness         = 128;
+    Aew_ext_parameter.brightness        = 128;
+    Aew_ext_parameter.contrast          = 128;
     Aew_ext_parameter.aew_enable        = AEW_ENABLE;
     Aew_ext_parameter.env_50_60Hz       = create->flickerType;
-    Aew_ext_parameter.binning_mode      = create->aewbBinEnable?SENSOR_BINNING:SENSOR_SKIP;
+    Aew_ext_parameter.binning_mode      = create->aewbBinEnable ? SENSOR_BINNING : SENSOR_SKIP;
 
     Aew_ext_parameter.MEDIAN_SETUP(1);
 
@@ -389,10 +383,10 @@ void* ALG_aewbCreate(ALG_AewbCreate *create)
             return (void *) - 1;
         }
         
-        TFC_2A_init_tables(create->pH3aInfo->aewbNumWinV, create->pH3aInfo->aewbNumWinH);
-        //TI_2A_init_tables(create->pH3aInfo->aewbNumWinH, create->pH3aInfo->aewbNumWinV);
+        TI2A_init_tables(create->pH3aInfo->aewbNumWinV, create->pH3aInfo->aewbNumWinH);
+
         //Initial AE
-        gALG_aewbObj.weight = TFC_WEIGHTING_MATRIX;
+        gALG_aewbObj.weight = TI_WEIGHTING_MATRIX;
         aeParams.size = sizeof(aeParams);
         aeParams.numHistory = 10;
         aeParams.numSmoothSteps = 6;
@@ -456,28 +450,35 @@ int TI_2A_config(int flicker_detection, int saldre)
 #endif
 
     /* set stepSize based on input from Flicker detectiom and PAL/NTSC environment */
-    int step_size = 10000, min_exp = 100;
+    int step_size = 8333, min_exp = 100;
     if (Aew_ext_parameter.env_50_60Hz == VIDEO_NTSC)
     {
-        step_size = 10000;
+        step_size = 8333;
+        #if 0
         if (flicker_detection == 3)
         {
             //min_exp = 8333;
         }
+        #endif
     }
     else if (Aew_ext_parameter.env_50_60Hz == VIDEO_PAL)
     {
-        step_size = 8333;
+        step_size = 10000;
+        #if 0
         if (flicker_detection == 2)
         {
             //min_exp = 10000;
         }
+        #endif
     }
     else if (Aew_ext_parameter.env_50_60Hz == VIDEO_NONE)
     {
-        step_size = 0;
+        step_size = 8333;
+        if (flicker_detection == 3)
+        {
+            //min_exp = 8333;
+        } 
     }
-
 #ifdef FD_DEBUG_MSG
     OSA_printf("min_exp = %d, step_size = %d final\n", min_exp, step_size);
 #endif
@@ -611,7 +612,7 @@ void AEW_SETUP_CONTROL( CONTROL3AS *CONTROL3A )
             gALG_aewbObj.weight= APPRO_WEIGHTING_MATRIX;
         }
         else   if(gALG_aewbObj.aewbVendor==ALG_AEWB_ID_TI) {
-            gALG_aewbObj.weight= TFC_WEIGHTING_MATRIX;
+            gALG_aewbObj.weight= TI_WEIGHTING_MATRIX;
         }
     }
     else if(CONTROL3A->IMAGE_BACKLIGHT==BACKLIGHT_HIGH ||
@@ -621,7 +622,7 @@ void AEW_SETUP_CONTROL( CONTROL3AS *CONTROL3A )
             gALG_aewbObj.weight=APPRO_WEIGHTING_SPOT;
         }
         else   if(gALG_aewbObj.aewbVendor==ALG_AEWB_ID_TI) {
-            gALG_aewbObj.weight=TFC_WEIGHTING_MATRIX;
+            gALG_aewbObj.weight=TI_WEIGHTING_MATRIX;
         }
     }
     else
@@ -630,7 +631,7 @@ void AEW_SETUP_CONTROL( CONTROL3AS *CONTROL3A )
             gALG_aewbObj.weight=APPRO_WEIGHTING_CENTER;
         }
         else   if(gALG_aewbObj.aewbVendor==ALG_AEWB_ID_TI) {
-            gALG_aewbObj.weight=TFC_WEIGHTING_MATRIX;
+            gALG_aewbObj.weight=TI_WEIGHTING_MATRIX;
         }
     }
 
@@ -942,8 +943,8 @@ int ALG_aewbRun(void *hndl, ALG_AewbRunPrm *prm, ALG_AewbStatus *status)
     gALG_aewbObj.vnfDemoCfg   	= prm->vnfDemoCfg;
     gALG_aewbObj.aewbType     	= prm->aewbType;
     gALG_aewbObj.aewbVendor   	= prm->aewbVendor;
-    gALG_aewbObj.aewbPriority   	= prm->aewbPriority;
-    gALG_aewbObj.reduceShutter   	= prm->reduceShutter;
+    gALG_aewbObj.aewbPriority   = prm->aewbPriority;
+    gALG_aewbObj.reduceShutter  = prm->reduceShutter;
     gALG_aewbObj.saldre   		= prm->saldre;
 
     if(prm->aewbVendor == ALG_AEWB_ID_APPRO) {

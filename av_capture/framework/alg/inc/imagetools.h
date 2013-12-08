@@ -47,7 +47,7 @@ typedef struct
     int (*SavePara)(void);
     int (*FactorySet)(void);
     
-} TFC_IMAGE_TOOLS;
+} IMAGE_TOOLS;
 
 int SavePara(void);
 int FactorySet(void);
@@ -58,10 +58,10 @@ int Saturation(int wr, int *value);
 int NF2(int wr, int *value);
 int Metering(int wr, int *value);
 int AutoIRIS(int wr, int *value);
-void TFC_ImageToolsInit(void);
+void ImageToolsInit(void);
 
 extern ALG_AEWB_DEBUG gALG_AewbDebug;
-extern TFC_IMAGE_TOOLS gTFC_Image_Tools;
+extern IMAGE_TOOLS gImage_Tools;
 
 #endif
 

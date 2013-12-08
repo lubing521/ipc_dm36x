@@ -3,17 +3,17 @@
 
 //#define AEWB_PRINTS
 
-#define TFC_AEW_WIN_HZ_CNT	        32	//12
-#define TFC_AEW_WIN_VT_CNT	        12	//16
+#define TI_AEW_WIN_HZ_CNT	        32	//12
+#define TI_AEW_WIN_VT_CNT	        12	//16
 
-unsigned char TFC_WEIGHTING_TOP[TFC_AEW_WIN_HZ_CNT * TFC_AEW_WIN_VT_CNT];
-unsigned char TFC_WEIGHTING_BOTTOM[TFC_AEW_WIN_HZ_CNT * TFC_AEW_WIN_VT_CNT];
-unsigned char TFC_WEIGHTING_LEFT[TFC_AEW_WIN_HZ_CNT * TFC_AEW_WIN_VT_CNT];
-unsigned char TFC_WEIGHTING_RIGHT[TFC_AEW_WIN_HZ_CNT * TFC_AEW_WIN_VT_CNT];
+unsigned char TI_WEIGHTING_TOP[TI_AEW_WIN_HZ_CNT * TI_AEW_WIN_VT_CNT];
+unsigned char TI_WEIGHTING_BOTTOM[TI_AEW_WIN_HZ_CNT * TI_AEW_WIN_VT_CNT];
+unsigned char TI_WEIGHTING_LEFT[TI_AEW_WIN_HZ_CNT * TI_AEW_WIN_VT_CNT];
+unsigned char TI_WEIGHTING_RIGHT[TI_AEW_WIN_HZ_CNT * TI_AEW_WIN_VT_CNT];
 
-unsigned char TFC_WEIGHTING_MATRIX[TFC_AEW_WIN_HZ_CNT * TFC_AEW_WIN_VT_CNT];
-unsigned char TFC_WEIGHTING_SPOT[TFC_AEW_WIN_HZ_CNT * TFC_AEW_WIN_VT_CNT];
-unsigned char TFC_WEIGHTING_CENTER[TFC_AEW_WIN_HZ_CNT * TFC_AEW_WIN_VT_CNT];
+unsigned char TI_WEIGHTING_MATRIX[TI_AEW_WIN_HZ_CNT * TI_AEW_WIN_VT_CNT];
+unsigned char TI_WEIGHTING_SPOT[TI_AEW_WIN_HZ_CNT * TI_AEW_WIN_VT_CNT];
+unsigned char TI_WEIGHTING_CENTER[TI_AEW_WIN_HZ_CNT * TI_AEW_WIN_VT_CNT];
 
 static void generate_windows(int width1, int height1, 
                                     int h_start2, int v_start2, 
@@ -98,29 +98,29 @@ void printf_tables(unsigned char *tables, int width, int height)
     OSA_printf("-------------------------------------------------------\n");
 }
 
-void TFC_2A_init_tables(int width, int height)
+void TI2A_init_tables(int width, int height)
 {
 #ifdef AEWB_PRINTS
-    OSA_printf("TFC 2A weight matrix: width = %d, height = %d\n", width, height);
+    OSA_printf("TI 2A weight matrix: width = %d, height = %d\n", width, height);
 #endif
-    generate_windows(width, height, 0,         0,        width,   height/2, 99, TFC_WEIGHTING_TOP);
-    generate_windows(width, height, 0,         0,        width,   height/2,  1, TFC_WEIGHTING_BOTTOM);
-    generate_windows(width, height, 0,         0,        width/2,   height, 99, TFC_WEIGHTING_LEFT);
-    generate_windows(width, height, 0,         0,        width/2,   height,  1, TFC_WEIGHTING_RIGHT);
+    generate_windows(width, height, 0,         0,        width,   height/2, 99, TI_WEIGHTING_TOP);
+    generate_windows(width, height, 0,         0,        width,   height/2,  1, TI_WEIGHTING_BOTTOM);
+    generate_windows(width, height, 0,         0,        width/2,   height, 99, TI_WEIGHTING_LEFT);
+    generate_windows(width, height, 0,         0,        width/2,   height,  1, TI_WEIGHTING_RIGHT);
 
-    generate_windows(width, height, width*3/8, height/3, width/4, height/4, 80, TFC_WEIGHTING_SPOT);
-    generate_windows(width, height, width/4,   height/4, width/2, height/2, 50, TFC_WEIGHTING_CENTER);
-    generate_windows(width, height, 0,         0,        width,   height/2, 50, TFC_WEIGHTING_MATRIX);
+    generate_windows(width, height, width*3/8, height/3, width/4, height/4, 80, TI_WEIGHTING_SPOT);
+    generate_windows(width, height, width/4,   height/4, width/2, height/2, 50, TI_WEIGHTING_CENTER);
+    generate_windows(width, height, 0,         0,        width,   height/2, 50, TI_WEIGHTING_MATRIX);
 
 #if 0
-    OSA_printf("TFC_WEIGHTING_TOP\n");    printf_tables(TFC_WEIGHTING_TOP,    width, height);
-    OSA_printf("TFC_WEIGHTING_BOTTOM\n"); printf_tables(TFC_WEIGHTING_BOTTOM, width, height);
-    OSA_printf("TFC_WEIGHTING_LEFT\n");   printf_tables(TFC_WEIGHTING_LEFT,   width, height);
-    OSA_printf("TFC_WEIGHTING_RIGHT\n");  printf_tables(TFC_WEIGHTING_RIGHT,  width, height);
+    OSA_printf("WEIGHTING_TOP\n");    printf_tables(TI_WEIGHTING_TOP,    width, height);
+    OSA_printf("WEIGHTING_BOTTOM\n"); printf_tables(TI_WEIGHTING_BOTTOM, width, height);
+    OSA_printf("WEIGHTING_LEFT\n");   printf_tables(TI_WEIGHTING_LEFT,   width, height);
+    OSA_printf("WEIGHTING_RIGHT\n");  printf_tables(TI_WEIGHTING_RIGHT,  width, height);
 
-    OSA_printf("TFC_WEIGHTING_SPOT\n");   printf_tables(TFC_WEIGHTING_SPOT,   width, height);
-    OSA_printf("TFC_WEIGHTING_CENTER\n"); printf_tables(TFC_WEIGHTING_CENTER, width, height);
-    OSA_printf("TFC_WEIGHTING_MATRIX\n"); printf_tables(TFC_WEIGHTING_MATRIX, width, height);
+    OSA_printf("WEIGHTING_SPOT\n");   printf_tables(TI_WEIGHTING_SPOT,   width, height);
+    OSA_printf("WEIGHTING_CENTER\n"); printf_tables(TI_WEIGHTING_CENTER, width, height);
+    OSA_printf("WEIGHTING_MATRIX\n"); printf_tables(TI_WEIGHTING_MATRIX, width, height);
 #endif
 }
 

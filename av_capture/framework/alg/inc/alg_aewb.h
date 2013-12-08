@@ -106,7 +106,7 @@ typedef struct {
 
 }ALG_AewbData_ITTAwb;
 
-extern void TFC_2A_init_tables(int width, int height);
+extern void TI2A_init_tables(int width, int height);
 
 int ALG_aewbGetBLC(void);
 

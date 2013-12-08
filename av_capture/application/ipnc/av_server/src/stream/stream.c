@@ -1668,11 +1668,11 @@ void stream_feature_setup( int nFeature, void *pParm )
 		{
 			int input_val = *(int *)pParm;
 
-			if( input_val == 0 )
+			if(input_val == 1)
 			{
 				Aew_ext_parameter.env_50_60Hz = VIDEO_PAL;
 			}
-			else if( input_val == 1 )
+			else if(input_val == 0)
 			{
 				Aew_ext_parameter.env_50_60Hz = VIDEO_NTSC;
 			}
@@ -1680,7 +1680,7 @@ void stream_feature_setup( int nFeature, void *pParm )
 			{
 				Aew_ext_parameter.env_50_60Hz = VIDEO_NTSC;
 			}
-			printf("[stream]zeng add env_50_60Hz=%d\n\n" , Aew_ext_parameter.env_50_60Hz);
+			printf("[stream] env_50_60Hz=%d \n" , Aew_ext_parameter.env_50_60Hz);
 			
 			break;
 		}

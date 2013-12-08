@@ -1,5 +1,3 @@
-
-
 #ifndef _OSA_CMEM_H_
 #define _OSA_CMEM_H_
 

@@ -1,5 +1,3 @@
-
-
 #ifndef _OSA_MBX_H_
 #define _OSA_MBX_H_
 
@@ -7,17 +5,12 @@
 
 #define OSA_MBX_WAIT_ACK      0x0002   ///< Message Flag : Wait for ACK
 #define OSA_MBX_FREE_PRM      0x0004   ///< Message Flag : Message parameters are malloc'ed and need to be free'ed
+#define OSA_MBX_BROADCAST_MAX 10       ///< Max message queues/PRC's that can be broadcast to
 
-#define OSA_MBX_BROADCAST_MAX     10   ///< Max message queues/PRC's that can be broadcast to
-
-/**
-  \brief Mailbox handle
-*/
-typedef struct {
-
-  OSA_MsgqHndl rcvMbx;    ///< Receive mailbox
-  OSA_MsgqHndl ackMbx;    ///< ACK mailbox
-
+typedef struct
+{
+    OSA_MsgqHndl rcvMbx;    ///< Receive mailbox
+    OSA_MsgqHndl ackMbx;    ///< ACK mailbox
 } OSA_MbxHndl;
 
 

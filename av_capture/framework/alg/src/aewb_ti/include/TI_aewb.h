@@ -15,16 +15,16 @@ struct rgb2rgb_index
     RGB2RGB_PARAM rgb2rgb2param;
 };
 
-extern unsigned char TFC_WEIGHTING_TOP[];
-extern unsigned char TFC_WEIGHTING_BOTTOM[];
-extern unsigned char TFC_WEIGHTING_LEFT[];
-extern unsigned char TFC_WEIGHTING_RIGHT[];
-extern unsigned char TFC_WEIGHTING_SPOT[];
-extern unsigned char TFC_WEIGHTING_CENTER[];
-extern unsigned char TFC_WEIGHTING_MATRIX[];
+extern unsigned char TI_WEIGHTING_TOP[];
+extern unsigned char TI_WEIGHTING_BOTTOM[];
+extern unsigned char TI_WEIGHTING_LEFT[];
+extern unsigned char TI_WEIGHTING_RIGHT[];
+extern unsigned char TI_WEIGHTING_SPOT[];
+extern unsigned char TI_WEIGHTING_CENTER[];
+extern unsigned char TI_WEIGHTING_MATRIX[];
 
 int   TI_2A_config(int flicker_detection, int saldre);
-void  TI_2A_init_tables(int width, int height);
+void  TI2A_init_tables(int width, int height);
 short TI_2A_SetEEValues(int shift_val);
 int   TI_2A_ISP_control(int eTime, int aGain, int dGain, int cTemp);
 void  TI_2A_AE_config(IAE_DynamicParams * aeDynamicParams, int min_exp, int step_size);

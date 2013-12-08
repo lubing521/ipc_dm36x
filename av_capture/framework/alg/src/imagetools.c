@@ -20,21 +20,21 @@
 #include "imagetools.h"
 
 ALG_AEWB_DEBUG gALG_AewbDebug;
-TFC_IMAGE_TOOLS gTFC_Image_Tools;
+IMAGE_TOOLS gImage_Tools;
 
-void TFC_ImageToolsInit(void)
+void ImageToolsInit(void)
 {
-    memset(&gTFC_Image_Tools, 0, sizeof(gTFC_Image_Tools)); 
+    memset(&gImage_Tools, 0, sizeof(gImage_Tools)); 
 
-    gTFC_Image_Tools.Sharpness   = Sharpness;
-    gTFC_Image_Tools.Contrast    = Contrast;
-    gTFC_Image_Tools.Brightness  = Brightness;
-    gTFC_Image_Tools.Saturation  = Saturation;
-    gTFC_Image_Tools.NF2         = NF2;
-    gTFC_Image_Tools.Metering    = Metering;
-    gTFC_Image_Tools.AutoIRIS    = AutoIRIS;
-    gTFC_Image_Tools.SavePara    = SavePara;
-    gTFC_Image_Tools.FactorySet  = FactorySet;
+    gImage_Tools.Sharpness   = Sharpness;
+    gImage_Tools.Contrast    = Contrast;
+    gImage_Tools.Brightness  = Brightness;
+    gImage_Tools.Saturation  = Saturation;
+    gImage_Tools.NF2         = NF2;
+    gImage_Tools.Metering    = Metering;
+    gImage_Tools.AutoIRIS    = AutoIRIS;
+    gImage_Tools.SavePara    = SavePara;
+    gImage_Tools.FactorySet  = FactorySet;
 }
 
 int SavePara(void)

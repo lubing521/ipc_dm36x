@@ -1,5 +1,3 @@
-
-
 #ifndef _OSA_FILE_H_
 #define _OSA_FILE_H_
 

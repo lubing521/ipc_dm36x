@@ -6,12 +6,10 @@
 #include <alg_aewb.h>
 #include <alg_vnf.h>
 
-// Defines
-
 #define IMAGE_TUNE_SERVER_DEFAULT_IP_ADDR "127.0.0.1"
 #define IMAGE_TUNE_SERVER_DEFAULT_PORT    (5000)
 
-#define IMAGE_TUNE_VERSION                    (0x00010002)
+#define IMAGE_TUNE_VERSION                (0x00010002)
 
 /*
 If IMAGE_TUNE_USE_FACTORY_PARAMSET enabled, uses the paramset in the code (hard coded) as
@@ -71,63 +69,59 @@ is available and may change based on the boot paramset ID - now in vnf - Revisit
 
 #define IMAGE_TUNE_LDC_PRM                    (0x50)
 #define IMAGE_TUNE_VNF_PRM                    (0x51)
-/* IMAGE_TUNE_AWB_PRM */
+
 #define IMAGE_TUNE_AWB_PRM                    (0x52)
 
 #define IMAGE_TUNE_CMD_MAX                    (0x60)
 
-#define IMAGE_TUNE_PACKET_SIZE_MAX            (142*2*KB) //(128*2*KB)  //    //AwbChange
+#define IMAGE_TUNE_PACKET_SIZE_MAX            (142 * 2 * KB)
 
 #define IMAGE_TUNE_CMD_FLAG_SEND_REPLY        (0x00000001)
 #define IMAGE_TUNE_CMD_FLAG_STATUS_ERROR      (0x00000010)
 
-#define IMAGE_TUNE_CMD_PRMSET_ID_ST         5        // bits (5- 12)  ANR - IT
-#define IMAGE_TUNE_CMD_PRMSET_ID_MUL      0xFF   // need 8bits
+#define IMAGE_TUNE_CMD_PRMSET_ID_ST           5      // bits (5- 12)  ANR - IT
+#define IMAGE_TUNE_CMD_PRMSET_ID_MUL          0xFF   // need 8bits
 
 // Data Structures
 
 /**
   \brief  Command info structure
 */
-typedef struct {
-
-  Uint32 commandId;            ///< command id
-  Uint32 commandFlags;         ///< command flags
-  Uint32 *prm;                 ///< command parameters
-  Uint32 prmSize;              ///< size of command parameters
-
+typedef struct
+{
+    Uint32 commandId;            ///< command id
+    Uint32 commandFlags;         ///< command flags
+    Uint32 *prm;                 ///< command parameters
+    Uint32 prmSize;              ///< size of command parameters
 } IMAGE_TUNE_CmdInfo;
 
 
-typedef struct {
-
-  IMAGE_TUNE_CcdcParams     *pCcdcPrm;
-  IMAGE_TUNE_IpipeifParams  *pIpipeifPrm;
-  IMAGE_TUNE_IpipeParams    *pIpipePrm;
-  IMAGE_TUNE_LdcParams      *pLdcPrm;
-  ALG_vnfParams 			*pVnfPrm;
-  awb_calc_data_t           *pAwbPrm;
-
+typedef struct
+{
+    IMAGE_TUNE_CcdcParams     *pCcdcPrm;
+    IMAGE_TUNE_IpipeifParams  *pIpipeifPrm;
+    IMAGE_TUNE_IpipeParams    *pIpipePrm;
+    IMAGE_TUNE_LdcParams      *pLdcPrm;
+    ALG_vnfParams             *pVnfPrm;
+    awb_calc_data_t           *pAwbPrm;
 } IMAGE_TUNE_Params;
 
-typedef struct {
-
-  Uint16 dataFormat;      // 0: RAW, 1: YUV422, 2: YUV420
-  Uint16 frameWidth;      // in pixels
-  Uint16 frameHeight;     // in lines
-  Uint16 frameOffsetH;    // in pixels for YUV422, YUV420, in bytes for RAW
-  Uint16 frameOffsetV;    // in lines for YUV422, YUV420, NOT USED for RAW
-  Uint8  *frameVirtAddr;  // virt address of frame data
-  Uint16 rawDataStartPhase;   ///< 0: R, 1: Gr, 2: Gb, 3: B
-  Uint16 rawDataBitsPerPixel; ///< 8..14 bits
-  Uint16 rawDataFormat;       ///< 0: Normal 1pixel in 16-bits, no compression, 1: Alaw compressed, 2: Dpcm compressed
-  ALG_AewbData_ITTAwb awbData;    // IT
-
+typedef struct
+{
+    Uint16 dataFormat;      // 0: RAW, 1: YUV422, 2: YUV420
+    Uint16 frameWidth;      // in pixels
+    Uint16 frameHeight;     // in lines
+    Uint16 frameOffsetH;    // in pixels for YUV422, YUV420, in bytes for RAW
+    Uint16 frameOffsetV;    // in lines for YUV422, YUV420, NOT USED for RAW
+    Uint8  *frameVirtAddr;  // virt address of frame data
+    Uint16 rawDataStartPhase;   ///< 0: R, 1: Gr, 2: Gb, 3: B
+    Uint16 rawDataBitsPerPixel; ///< 8..14 bits
+    Uint16 rawDataFormat;       ///< 0: Normal 1pixel in 16-bits, no compression, 1: Alaw compressed, 2: Dpcm compressed
+    ALG_AewbData_ITTAwb awbData;    // IT
 } IMAGE_TUNE_SaveDataInfo;
 
 typedef int (*IMAGE_TUNE_CmdHandler)(IMAGE_TUNE_CmdInfo *cmdInfo, IMAGE_TUNE_CmdInfo *statusInfo);
 
-// Functions
 
 int IMAGE_TUNE_Init();
 int IMAGE_TUNE_Exit();
@@ -148,9 +142,8 @@ int IMAGE_TUNE_SetIsifGainOffset(CSL_CcdcGainOffsetConfig *prm);
 int IMAGE_TUNE_SetIsifDcsub(Int16 dcSub);
 
 int IMAGE_TUNE_SetIpipeRgb2Rgb1(CSL_IpipeRgb2RgbConfig *prm);
-#if 1 //Gang: rgb2rgb2
 int IMAGE_TUNE_SetIpipeRgb2Rgb2(CSL_IpipeRgb2RgbConfig *prm);
-#endif
+
 int IMAGE_TUNE_SetIpipeRgb2Yuv(CSL_IpipeRgb2YuvConfig *prm);
 int IMAGE_TUNE_SetIpipeWb(Uint16 gainR, Uint16 gainGr, Uint16 gainGb, Uint16 gainB);
 int IMAGE_TUNE_SetIpipeCntBrt(CSL_IpipeCntBrtConfig *prm);
@@ -164,6 +157,7 @@ int IMAGE_TUNE_LoadParams(int paramSetId);
 
 int IMAGE_TUNE_GetVnfParams(ALG_vnfParams *vnfParams);
 int IMAGE_TUNE_SetVnfParams(ALG_vnfParams *vnfParams);
+
 /* IT */
 int IMAGE_TUNE_GetAwbParams(awb_calc_data_t *awbParams);
 int IMAGE_TUNE_SetAwbParams(awb_calc_data_t *awbParams);
@@ -173,5 +167,7 @@ int IMAGE_TUNE_SetSendYuvData(int val);
 int IMAGE_TUNE_CmdDataSendSetUp(int headerSize, int dSize, Uint8 *headerData, Uint8 *ImgData);
 int IMAGE_TUNE_CmdDataSend(IMAGE_TUNE_CmdInfo *statusInfo);
 int IMAGE_TUNE_CopyImageData(int hSize, int dSize, Uint8 *headerData, Uint8 *ImgData);
+int IMAGE_TUNE_SaveParamSetList(IMAGE_TUNE_ParamSet *prm, int pID);
+int IMAGE_TUNE_ReadParamset(int value);
 
 #endif /* _IMAGE_TUNE_H_ */

@@ -4,6 +4,7 @@
 
 //#define AEWB_PRINTS
 
+#if 0
 #define TI_AEW_WIN_HZ_CNT	        32	//12
 #define TI_AEW_WIN_VT_CNT	        12	//16
 
@@ -228,4 +229,5 @@ void TI_2A_init_tables(int width, int height)
     generate_windows(width, height, width*3/8, height/3, width/4, height/4, 80, TI_WEIGHTING_SPOT);
 
 }
+#endif
 
