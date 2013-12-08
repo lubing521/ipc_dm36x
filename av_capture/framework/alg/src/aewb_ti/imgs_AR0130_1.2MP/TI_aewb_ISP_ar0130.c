@@ -6,7 +6,7 @@
 #include <imageTunePriv.h>
 #include "imagetools.h"
 
-#define ISP_DEBUG 0
+#define ISP_DEBUG 1
 
 static struct rgb2rgb_index rgb_matrixes_0[] = 
 {

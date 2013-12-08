@@ -21,6 +21,10 @@
 
 #include <drv_gpio.h>
 
+
+//#define FD_DEBUG_MSG
+#define AEWB_DEBUG 1
+
 ALG_AewbObj gALG_aewbObj;
 AEW_EXT_PARAM Aew_ext_parameter;
 
@@ -150,21 +154,11 @@ int ALG_aewbGetBLC(void)
 
 int ALG_aewbCheckAutoIris(void)
 {
-    int ret = 0;
-
-    DRV_gpioSetMode(GIO_AUTO_IRIS, CSL_GPIO_INPUT);
-
-    if( ALG_aewbPlatformCheck() == 1 )
-    {
-        ret = DRV_gpioGet(GIO_AUTO_IRIS);
-        OSA_printf("IPNC AUTO_IRIS = %d \n",!ret);
-        return !ret;
-    }
-    else {
-        ret = MANUAL_IRIS;
-        OSA_printf("EVM AUTO_IRIS = %d \n",ret);
-        return ret;
-    }
+#if 0
+    return Aew_ext_parameter.auto_iris;
+#else
+    return 0;
+#endif
 }
 
 void* ALG_aewbCreate(ALG_AewbCreate *create)
@@ -176,6 +170,8 @@ void* ALG_aewbCreate(ALG_AewbCreate *create)
     int retval;
     int sensorMode;
 
+    TFC_ImageToolsInit();
+    
     memset(&gALG_aewbObj, 0, sizeof(gALG_aewbObj));
     memset(&Aew_ext_parameter, 0, sizeof(Aew_ext_parameter));
 
@@ -460,10 +456,10 @@ int TI_2A_config(int flicker_detection, int saldre)
 #endif
 
     /* set stepSize based on input from Flicker detectiom and PAL/NTSC environment */
-    int step_size = 8333, min_exp = 200;
+    int step_size = 10000, min_exp = 100;
     if (Aew_ext_parameter.env_50_60Hz == VIDEO_NTSC)
     {
-        step_size = 8333;
+        step_size = 10000;
         if (flicker_detection == 3)
         {
             //min_exp = 8333;
@@ -471,7 +467,7 @@ int TI_2A_config(int flicker_detection, int saldre)
     }
     else if (Aew_ext_parameter.env_50_60Hz == VIDEO_PAL)
     {
-        step_size = 8333; // 10000; by fan
+        step_size = 8333;
         if (flicker_detection == 2)
         {
             //min_exp = 10000;
@@ -668,6 +664,9 @@ void AEW_SETUP_CONTROL( CONTROL3AS *CONTROL3A )
 static void TIAWB_applySettings(IAEWB_Wb* nextWb)
 {
     AWB_PARAM awb_gain;
+
+    Aew_ext_parameter.saturation = 128;
+#if 1
     if (Aew_ext_parameter.saturation >= 128)
     {
         awb_gain.rGain  = ((nextWb->rGain >> 3)) + Aew_ext_parameter.saturation / 4 - 32;
@@ -684,13 +683,14 @@ static void TIAWB_applySettings(IAEWB_Wb* nextWb)
     }
 
     //gALG_aewbObj.algTiAEWB->awb_adjust(&awb_gain, Aew_ext_parameter.awb_mode);
+#endif
     
 #ifdef _AEWB_DEBUG_PRINT_
     printf("AEWB debug: r=%d, g=%d, b=%d\n", nextWb->rGain, nextWb->gGain, nextWb->bGain);
 #endif
     ALG_aewbSetIpipeWb2(&awb_gain);
 
-#if AEWB_DEBUG
+#if 0
     struct timeval pts;
     static int bak = 0;
     gettimeofday(&pts, NULL);     
@@ -706,35 +706,53 @@ static void TIAE_applySettings(IAEWB_Ae *curAe, IAEWB_Ae *nextAe, int actStep, i
 {
     if (step == actStep)
     {
-#ifdef _AEWB_DEBUG_PRINT_
-        if (       (nextAe->sensorGain != curAe->sensorGain)
-                || (nextAe->exposureTime != curAe->exposureTime)
-                || (nextAe->ipipeGain != curAe->ipipeGain)
-           )
+#if AEWB_DEBUG
+        if ((nextAe->apertureLevel != curAe->apertureLevel) ||
+            (nextAe->sensorGain    != curAe->sensorGain   ) ||
+            (nextAe->exposureTime  != curAe->exposureTime ) ||
+            (nextAe->ipipeGain     != curAe->ipipeGain    ))
         {
-            printf("AEWB debug: T=(%d->%d), AG=(%d->%d), DG=(%d->%d)\n",
-                    (int)curAe->exposureTime,
-                    (int)nextAe->exposureTime,
-                    (int)curAe->sensorGain,
-                    (int)nextAe->sensorGain,
-                    (int)curAe->ipipeGain,
-                    (int)nextAe->ipipeGain);
+            printf(" AE debug: Aperture=(%d->%d), T=(%d->%d), AG=(%d->%d), DG=(%d->%d)\n",
+                   (int)curAe->apertureLevel,
+                   (int)nextAe->apertureLevel,
+                   (int)curAe->exposureTime,
+                   (int)nextAe->exposureTime,
+                   (int)curAe->sensorGain,
+                   (int)nextAe->sensorGain,
+                   (int)curAe->ipipeGain,
+                   (int)nextAe->ipipeGain);
         }
 #endif
+        int AL = nextAe->apertureLevel;
+        int EX = nextAe->exposureTime;
         int AG = nextAe->sensorGain;
         int DG = nextAe->ipipeGain;
-        int EX = nextAe->exposureTime;
+
+        if (ALG_aewbCheckAutoIris() > 0)
+        {
+            AdjustApertureLevel((Uint8)AL);
+        }
+        else
+        {
+            AdjustApertureLevel(100);
+        }
         gALG_aewbObj.algTiAEWB->SetExposureGain(EX, AG, DG, 1);
-    }
-    else
-    {
-        gALG_aewbObj.algTiAEWB->SetExposureGain(0, 0, 0, 0);
+
+        //Aewb Debug
+        if (gALG_AewbDebug.DebugEnable)
+        {
+            gALG_AewbDebug.AewbStatus.apertureLevel      = nextAe->apertureLevel;
+            gALG_AewbDebug.AewbStatus.exposureTimeInUsec = nextAe->exposureTime;
+            gALG_AewbDebug.AewbStatus.sensorGain         = nextAe->sensorGain;
+            gALG_AewbDebug.AewbStatus.ipipeGain          = nextAe->ipipeGain;
+        }
     }
 }
 
+
 void TI2AFunc(void *pAddr)
 {
-    int i = 0, retval = OSA_SOK ;
+    int i = 0;
     CONTROL3AS TI_Control3A;
     EDGE_PARAM EE_Param;
     
@@ -748,8 +766,8 @@ void TI2AFunc(void *pAddr)
        the following code needs to be enabled for to pass new tuning data in */
     if(IMAGE_TUNE_CmdGetAwbPrmStatus(&i) )
     {
-        retval = IMAGE_TUNE_GetAwbParams(&awb_calc_data);
-        retval = AWB_TI_AWB.control((IAWB_Handle)gALG_aewbObj.handle_awb, TIAWB_CMD_CALIBRATION, &awb_calc_data, NULL);
+        int retval = IMAGE_TUNE_GetAwbParams(gALG_aewbObj.algTiAEWB->calc_data);
+        retval = AWB_TI_AWB.control((IAWB_Handle)gALG_aewbObj.handle_awb, TIAWB_CMD_CALIBRATION, gALG_aewbObj.algTiAEWB->calc_data, NULL);
         IMAGE_TUNE_CmdSetAwbPrmStatus(0); //reset flag
     }
 
@@ -760,7 +778,7 @@ void TI2AFunc(void *pAddr)
         {
             if (aewbFrames % NUM_STEPS == 0) 
             {
-                gALG_aewbObj.AE_InArgs.curAe.apertureLevel = 1;
+                gALG_aewbObj.AE_InArgs.curAe.apertureLevel = gALG_aewbObj.AE_OutArgs.nextAe.apertureLevel;
                 gALG_aewbObj.AE_InArgs.curAe.exposureTime = gALG_aewbObj.AE_OutArgs.nextAe.exposureTime;
                 gALG_aewbObj.AE_InArgs.curAe.sensorGain = gALG_aewbObj.AE_OutArgs.nextAe.sensorGain;
                 gALG_aewbObj.AE_InArgs.curAe.ipipeGain = gALG_aewbObj.AE_OutArgs.nextAe.ipipeGain;

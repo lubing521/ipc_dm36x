@@ -1,11 +1,9 @@
-
 #include "alg_aewb_priv.h"
 #include "imageTunePriv.h"
 #include <drv_capture.h>
 #include <drv_display.h>
 
-// add by fan
-//#define ALG_AEWB_DEBUG
+#define ENABLE_COMPENSATION  (200) // 100 = 1.00x compensation i.e none, 150 = 1.5x compensation
 
 extern IMAGE_TUNE_Ctrl gIMAGE_TUNE_ctrl;
 
@@ -77,8 +75,6 @@ static Uint32 TI_YEE_TABLE[1024] =
     -3  ,-3  ,-3  ,-3  ,-2  ,-2  ,-2  ,-2  ,-2  ,-1  ,-1  ,-1  ,-1  ,-1  ,0   ,0   ,
 };
 
-#define ENABLE_COMPENSATION  (200) // 100 = 1.00x compensation i.e none, 150 = 1.5x compensation
-
 CSL_IpipeRgb2YuvConfig rgb2yuv_color = 
 {
     .matrix = {
@@ -117,302 +113,336 @@ CSL_IpipeRgb2YuvConfig* rgb2yuv[] =
 
 short ALG_aewbSetSensorGain(int gain)
 {
-  static int prevValue = -1;
-  int gain32;
+    static int prevValue = -1;
+    int gain32;
 
-  if(prevValue==gain)
+    if (prevValue == gain)
+    {
+        return 0;
+    }
+
+    prevValue = gain;
+
+    gain32 = (int)gain * 1;
+
+    if (gALG_aewbObj.vsEnable)
+    {
+        gain32 = (int)(gain * ENABLE_COMPENSATION) / 100;
+    }
+    else if (gALG_aewbObj.vnfDemoCfg)
+    {
+        gain32 = (int)(gain * 2);
+    }
+
+#ifdef ALG_AEWB_DEBUG
+        OSA_printf(" AEWB: Sensor A Gain = %d, Gain32 = %d\n", gain, gain32);
+#endif
+
+    drvImgsFunc->imgsSetAgain(gain32, 0);
+
     return 0;
-
-  #ifdef ALG_AEWB_DEBUG
-  OSA_printf(" AEWB: Sensor A Gain = %d\n", gain);
-  #endif
-
-  prevValue = gain;
-
-  gain32 = (int)gain*1;
-
-  if(gALG_aewbObj.vsEnable)
-    gain32 = (int)(gain*ENABLE_COMPENSATION)/100;
-  else if(gALG_aewbObj.vnfDemoCfg)
-  	gain32 = (int)(gain*2);
-
-  drvImgsFunc->imgsSetAgain(gain32, 0);
-
-  return 0;
 }
 
+/*
 short ALG_aewbSetSensorDGain(int gain)
 {
-  static int prevValue = -1;
+    static int prevValue = -1;
 
-  if(prevValue==gain)
+    if (prevValue == gain)
+    {
+        return 0;
+    }
+
+#ifdef ALG_AEWB_DEBUG
+    OSA_printf(" AEWB: Sensor D Gain = %d\n", gain);
+#endif
+
+    prevValue = gain;
+    drvImgsFunc->imgsSetDgain(gain);
+
     return 0;
-
-  #ifdef ALG_AEWB_DEBUG
-  OSA_printf(" AEWB: Sensor D Gain = %d\n", gain);
-  #endif
-
-  prevValue = gain;
-  drvImgsFunc->imgsSetDgain(gain);
-
-  return 0;
-}
+}*/
 
 short ALG_aewbSetSensorExposure(int shutter)
 {
-  static int prevValue = -1;
-  int shutter32;
+    static int prevValue = -1;
+    int shutter32 = 0;
 
-  if(prevValue==shutter)
+    if (prevValue == shutter)
+    {
+        return 0;
+    }
+
+    prevValue = shutter;
+
+#ifdef ALG_AEWB_DEBUG
+    OSA_printf(" AEWB: Sensor Exposure = %d\n", shutter);
+#endif
+    
+    shutter32 = (int)(shutter * 100) / 100;//gALG_aewbObj.reduceShutter;
+
+#if 0
+    if (gALG_aewbObj.vsEnable)
+    {
+        shutter32 = (shutter32 * 100) / ENABLE_COMPENSATION;
+    }
+#endif
+
+    shutter32 = shutter32 < 10 ? 10 : shutter32;
+    
+    drvImgsFunc->imgsSetEshutter(shutter32, 0);
+
     return 0;
-
-  #ifdef ALG_AEWB_DEBUG
-  OSA_printf(" AEWB: Sensor Exposure = %d\n", shutter);
-  #endif
-
-  prevValue = shutter;
-
-  shutter32 = (int)(shutter*100)/gALG_aewbObj.reduceShutter;
-
-  if(gALG_aewbObj.vsEnable)
-    shutter32 = (shutter32*100)/ENABLE_COMPENSATION;
-  /*else if(gALG_aewbObj.vnfDemoCfg)
-    shutter32 = (shutter32*200)/ENABLE_COMPENSATION;*/
-
-  drvImgsFunc->imgsSetEshutter(shutter32, 0);
-
-  return 0;
 }
 
-short ALG_aewbSetIpipeWb(AWB_PARAM  *pAwb_Data )
+short ALG_aewbSetIpipeWb(AWB_PARAM  *pAwb_Data)
 {
-  DRV_IpipeWb ipipeWb;
-  static AWB_PARAM PreAwb_Data;
-  int dGain;
+    DRV_IpipeWb ipipeWb;
+    static AWB_PARAM PreAwb_Data;
+    int dGain = 0;
 
-	if( memcmp( &PreAwb_Data, pAwb_Data, sizeof(AWB_PARAM))== 0 )
-		return 0;
+    if (memcmp(&PreAwb_Data, pAwb_Data, sizeof(AWB_PARAM)) == 0)
+    {
+        return 0;
+    }
 
-	PreAwb_Data = *pAwb_Data;
+    PreAwb_Data = *pAwb_Data;
 
-  #ifdef ALG_AEWB_DEBUG
-  OSA_printf(" AEWB: R Gr Gb B = (%d, %d, %d, %d) DGAIN = %d\n",
-    pAwb_Data->rGain, pAwb_Data->grGain, pAwb_Data->gbGain, pAwb_Data->bGain, pAwb_Data->dGain
-    );
-  #endif
+#ifdef ALG_AEWB_DEBUG
+    OSA_printf(" AEWB: R Gr Gb B = (%d, %d, %d, %d) DGAIN = %d\n",
+               pAwb_Data->rGain, 
+               pAwb_Data->grGain, 
+               pAwb_Data->gbGain, 
+               pAwb_Data->bGain, 
+               pAwb_Data->dGain);
+#endif
 
-  ipipeWb.gainR  = 4*pAwb_Data->rGain;
-  ipipeWb.gainGr = 4*pAwb_Data->grGain;
-  ipipeWb.gainGb = 4*pAwb_Data->gbGain;
-  ipipeWb.gainB  = 4*pAwb_Data->bGain;
+    ipipeWb.gainR  = 4 * pAwb_Data->rGain;
+    ipipeWb.gainGr = 4 * pAwb_Data->grGain;
+    ipipeWb.gainGb = 4 * pAwb_Data->gbGain;
+    ipipeWb.gainB  = 4 * pAwb_Data->bGain;
 
-  DRV_ipipeSetWb(&ipipeWb);
+    DRV_ipipeSetWb(&ipipeWb);
 
-  dGain = pAwb_Data->dGain*2;
+    dGain = pAwb_Data->dGain * 2;
 
-  if(gALG_aewbObj.vnfDemoCfg)
-	dGain = (512*8)-1;
+    if (gALG_aewbObj.vnfDemoCfg)
+    {
+        dGain = (512 * 8) - 1;
+    }
 
-  DRV_isifSetDgain(dGain, dGain, dGain, dGain, 0);
-
-
-  return 0;
+    DRV_isifSetDgain(dGain, dGain, dGain, dGain, 0);
+    return 0;
 }
 
-short ALG_aewbSetIpipeWb2(AWB_PARAM  *pAwb_Data )
+short ALG_aewbSetIpipeWb2(AWB_PARAM  *pAwb_Data)
 {
-  DRV_IpipeWb ipipeWb;
-  static AWB_PARAM PreAwb_Data;
-  pAwb_Data->dGain = 256;
+    DRV_IpipeWb ipipeWb;
+    static AWB_PARAM PreAwb_Data;
 
-  if( memcmp( &PreAwb_Data, pAwb_Data, sizeof(AWB_PARAM))== 0 )
-	  return 0;
+    pAwb_Data->dGain = 256;
 
-  PreAwb_Data = *pAwb_Data;
+    if (memcmp(&PreAwb_Data, pAwb_Data, sizeof(AWB_PARAM)) == 0)
+    {
+        return 0;
+    }
 
-  #ifdef ALG_AEWB_DEBUG
-  OSA_printf(" AEWB: R Gr Gb B = (%d, %d, %d, %d)\n",
-    pAwb_Data->rGain, pAwb_Data->grGain, pAwb_Data->gbGain, pAwb_Data->bGain);
-  #endif
+    PreAwb_Data = *pAwb_Data;
 
-  ipipeWb.gainR  = 4*pAwb_Data->rGain;
-  ipipeWb.gainGr = 4*pAwb_Data->grGain;
-  ipipeWb.gainGb = 4*pAwb_Data->gbGain;
-  ipipeWb.gainB  = 4*pAwb_Data->bGain;
+#ifdef ALG_AEWB_DEBUG
+    OSA_printf(" AEWB: R Gr Gb B = (%d, %d, %d, %d)\n",
+               pAwb_Data->rGain, pAwb_Data->grGain, pAwb_Data->gbGain, pAwb_Data->bGain);
+#endif
 
-  DRV_ipipeSetWb(&ipipeWb);
+    ipipeWb.gainR  = 4 * pAwb_Data->rGain;
+    ipipeWb.gainGr = 4 * pAwb_Data->grGain;
+    ipipeWb.gainGb = 4 * pAwb_Data->gbGain;
+    ipipeWb.gainB  = 4 * pAwb_Data->bGain;
 
-  return 0;
+    DRV_ipipeSetWb(&ipipeWb);
+
+    return 0;
 }
 
 short ALG_aewbSetIsifDGain(int dGain)
 {
-  static int pre_dGain = -1;
-  if(dGain == pre_dGain) return 0;
+    static int pre_dGain = -1;
+    if (dGain == pre_dGain)
+    {
+        return 0;
+    }
+    pre_dGain = dGain;
+#ifdef ALG_AEWB_DEBUG
+    OSA_printf(" AEWB: ISIF D Gain = %d\n", dGain);
+#endif
 
-  pre_dGain = dGain;
-  #ifdef ALG_AEWB_DEBUG
-  OSA_printf(" AEWB: ISIF D Gain = %d\n", dGain);
-  #endif
-
-  dGain /= 2;
-  DRV_isifSetDgain(dGain, dGain, dGain, dGain, 0);
-
-  return 0;
+    dGain /= 2;
+    DRV_isifSetDgain(dGain, dGain, dGain, dGain, 0);
+    return 0;
 }
 
 short ALG_aewbSetSensorDcsub(int dcsub)
 {
-	static int prevValue=-1;
+    static int prevValue = -1;
+    if (prevValue == dcsub)
+    {
+        return 0;
+    }
 
-  if( prevValue == dcsub )
-  	return 0;
+#ifdef ALG_AEWB_DEBUG
+    OSA_printf(" AEWB: Sensor DCSUB = %d\n", dcsub);
+#endif
 
-	#ifdef ALG_AEWB_DEBUG
-		OSA_printf(" AEWB: Sensor DCSUB = %d\n", dcsub);
-  #endif
+    prevValue = dcsub;
 
-  prevValue = dcsub;
+    dcsub = -dcsub;
 
-  dcsub = -dcsub;
+    DRV_isifSetDcSub(dcsub);
 
-  DRV_isifSetDcSub(dcsub);
-
-  return 0;
+    return 0;
 }
 
 short ALG_aewbSetSensorBin(int bin)
 {
-  static int prevValue=-1;
+    static int prevValue = -1;
 
-  if(prevValue==bin)
+    if (prevValue == bin)
+    {
+        return 0;
+    }
+
+#ifdef ALG_AEWB_DEBUG
+    OSA_printf(" AEWB: Sensor BIN = %d!!!!!!!!!!!!!!!!!Switch\n", bin);
+#endif
+
+    prevValue = bin;
+
+    if (gALG_aewbObj.vnfDemoCfg)
+    {
+        drvImgsFunc->imgsBinMode(bin = 0x20);
+    }
+    else
+    {
+        drvImgsFunc->imgsBinMode(bin);
+    }
+
     return 0;
-
-  #ifdef ALG_AEWB_DEBUG
-  OSA_printf(" AEWB: Sensor BIN = %d!!!!!!!!!!!!!!!!!Switch\n", bin);
-  #endif
-
-  prevValue = bin;
-
-  if(gALG_aewbObj.vnfDemoCfg)
-   	drvImgsFunc->imgsBinMode(bin=0x20);
-  else
-   	drvImgsFunc->imgsBinMode(bin);
-
-  return 0;
 }
 
-short ALG_aewbSetRgb2Rgb(RGB2RGB_PARAM  *pRgb2Rgb )
+short ALG_aewbSetRgb2Rgb(RGB2RGB_PARAM  *pRgb2Rgb)
 {
-  CSL_IpipeRgb2RgbConfig rgb2rgb;
+    CSL_IpipeRgb2RgbConfig rgb2rgb;
 
-  #ifdef ALG_AEWB_DEBUG
-  OSA_printf(" AEWB: RGB2RGB \n");
-  #endif
+#ifdef ALG_AEWB_DEBUG
+    OSA_printf(" AEWB: RGB2RGB \n");
+#endif
 
-  rgb2rgb.matrix[0][0] = pRgb2Rgb->rgb_mul_rr;
-  rgb2rgb.matrix[0][1] = pRgb2Rgb->rgb_mul_gr;
-  rgb2rgb.matrix[0][2] = pRgb2Rgb->rgb_mul_br;
+    rgb2rgb.matrix[0][0] = pRgb2Rgb->rgb_mul_rr;
+    rgb2rgb.matrix[0][1] = pRgb2Rgb->rgb_mul_gr;
+    rgb2rgb.matrix[0][2] = pRgb2Rgb->rgb_mul_br;
 
-  rgb2rgb.matrix[1][0] = pRgb2Rgb->rgb_mul_rg;
-  rgb2rgb.matrix[1][1] = pRgb2Rgb->rgb_mul_gg;
-  rgb2rgb.matrix[1][2] = pRgb2Rgb->rgb_mul_bg;
+    rgb2rgb.matrix[1][0] = pRgb2Rgb->rgb_mul_rg;
+    rgb2rgb.matrix[1][1] = pRgb2Rgb->rgb_mul_gg;
+    rgb2rgb.matrix[1][2] = pRgb2Rgb->rgb_mul_bg;
 
-  rgb2rgb.matrix[2][0] = pRgb2Rgb->rgb_mul_rb;
-  rgb2rgb.matrix[2][1] = pRgb2Rgb->rgb_mul_gb;
-  rgb2rgb.matrix[2][2] = pRgb2Rgb->rgb_mul_bb;
+    rgb2rgb.matrix[2][0] = pRgb2Rgb->rgb_mul_rb;
+    rgb2rgb.matrix[2][1] = pRgb2Rgb->rgb_mul_gb;
+    rgb2rgb.matrix[2][2] = pRgb2Rgb->rgb_mul_bb;
 
-  rgb2rgb.offset[0] = pRgb2Rgb->rgb_oft_or;
-  rgb2rgb.offset[1] = pRgb2Rgb->rgb_oft_og;
-  rgb2rgb.offset[2] = pRgb2Rgb->rgb_oft_ob;
+    rgb2rgb.offset[0] = pRgb2Rgb->rgb_oft_or;
+    rgb2rgb.offset[1] = pRgb2Rgb->rgb_oft_og;
+    rgb2rgb.offset[2] = pRgb2Rgb->rgb_oft_ob;
 
-  if(gALG_aewbObj.vnfDemoCfg == 0)
-	DRV_ipipeSetRgb2Rgb(&rgb2rgb);
+    if (gALG_aewbObj.vnfDemoCfg == 0)
+    {
+        DRV_ipipeSetRgb2Rgb(&rgb2rgb);
+    }
 
-  return 0;
+    return 0;
 }
 
 short ALG_aewbSetRgb2Rgb2(RGB2RGB_PARAM  *pRgb2Rgb )
 {
-  CSL_IpipeRgb2RgbConfig rgb2rgb;
+    CSL_IpipeRgb2RgbConfig rgb2rgb;
 
-  #ifdef ALG_AEWB_DEBUG
-  OSA_printf(" AEWB: RGB2RGB2 \n");
-  #endif
+#ifdef ALG_AEWB_DEBUG
+    OSA_printf(" AEWB: RGB2RGB2 \n");
+#endif
 
-  rgb2rgb.matrix[0][0] = pRgb2Rgb->rgb_mul_rr;
-  rgb2rgb.matrix[0][1] = pRgb2Rgb->rgb_mul_gr;
-  rgb2rgb.matrix[0][2] = pRgb2Rgb->rgb_mul_br;
+    rgb2rgb.matrix[0][0] = pRgb2Rgb->rgb_mul_rr;
+    rgb2rgb.matrix[0][1] = pRgb2Rgb->rgb_mul_gr;
+    rgb2rgb.matrix[0][2] = pRgb2Rgb->rgb_mul_br;
 
-  rgb2rgb.matrix[1][0] = pRgb2Rgb->rgb_mul_rg;
-  rgb2rgb.matrix[1][1] = pRgb2Rgb->rgb_mul_gg;
-  rgb2rgb.matrix[1][2] = pRgb2Rgb->rgb_mul_bg;
+    rgb2rgb.matrix[1][0] = pRgb2Rgb->rgb_mul_rg;
+    rgb2rgb.matrix[1][1] = pRgb2Rgb->rgb_mul_gg;
+    rgb2rgb.matrix[1][2] = pRgb2Rgb->rgb_mul_bg;
 
-  rgb2rgb.matrix[2][0] = pRgb2Rgb->rgb_mul_rb;
-  rgb2rgb.matrix[2][1] = pRgb2Rgb->rgb_mul_gb;
-  rgb2rgb.matrix[2][2] = pRgb2Rgb->rgb_mul_bb;
+    rgb2rgb.matrix[2][0] = pRgb2Rgb->rgb_mul_rb;
+    rgb2rgb.matrix[2][1] = pRgb2Rgb->rgb_mul_gb;
+    rgb2rgb.matrix[2][2] = pRgb2Rgb->rgb_mul_bb;
 
-  rgb2rgb.offset[0] = pRgb2Rgb->rgb_oft_or;
-  rgb2rgb.offset[1] = pRgb2Rgb->rgb_oft_og;
-  rgb2rgb.offset[2] = pRgb2Rgb->rgb_oft_ob;
+    rgb2rgb.offset[0] = pRgb2Rgb->rgb_oft_or;
+    rgb2rgb.offset[1] = pRgb2Rgb->rgb_oft_og;
+    rgb2rgb.offset[2] = pRgb2Rgb->rgb_oft_ob;
 
-  DRV_ipipeSetRgb2Rgb2(&rgb2rgb);
+    DRV_ipipeSetRgb2Rgb2(&rgb2rgb);
 
-  return 0;
+    return 0;
 }
 
-short ALG_aewbSetOtfCorrect( int level )
+short ALG_aewbSetOtfCorrect(int level)
 {
-	static int prevalue = -1;
-	CSL_IpipeDpcConfig config;
-	int levelD = 64;
-	int levelC = 255;
+    static int prevalue = -1;
+    CSL_IpipeDpcConfig config;
+    int levelD = 64;
+    int levelC = 255;
 
-	if( level == prevalue )
-		return 0;
+    if (level == prevalue)
+    {
+        return 0;
+    }
+    prevalue = level;
 
-	prevalue = level;
+#ifdef ALG_AEWB_DEBUG
+    OSA_printf(" AEWB: Sensor OTF Level = %d\n", level);
+#endif
 
-  #ifdef ALG_AEWB_DEBUG
-  OSA_printf(" AEWB: Sensor OTF Level = %d\n", level);
-  #endif
+    config.lutEnable                  = 0;
+    config.lutType                    = 0;
+    config.lutOption0CorMethod        = 0;
+    config.lutStartAddr               = 0;
+    config.lutNumEntries              = 0;
+    config.lutAddr                    = 0;
 
-  config.lutEnable						= 0;
-  config.lutType							= 0;
-  config.lutOption0CorMethod	= 0;
-  config.lutStartAddr					= 0;
-  config.lutNumEntries				= 0;
-  config.lutAddr							= 0;
+    config.otfEnable                  = (level > 0) ? 1 : 0;
+    config.otfType                    = 0;
+    config.otfAlg                     = 0;
+    config.otf2DetThres[0]            = level * levelD;
+    config.otf2DetThres[1]            = level * levelD;
+    config.otf2DetThres[2]            = level * levelD;
+    config.otf2DetThres[3]            = level * levelD;
 
-  config.otfEnable						= 1;
-  config.otfType							= 0;
-  config.otfAlg								= 0;
-  config.otf2DetThres[0]			= level*levelD;
-  config.otf2DetThres[1]			= level*levelD;
-  config.otf2DetThres[2]			= level*levelD;
-  config.otf2DetThres[3]			= level*levelD;
-
-  config.otf2CorThres[0]			= level*levelC;
-  config.otf2CorThres[1]			= level*levelC;
-  config.otf2CorThres[2]			= level*levelC;
-  config.otf2CorThres[3]			= level*levelC;
+    config.otf2CorThres[0]            = level * levelC;
+    config.otf2CorThres[1]            = level * levelC;
+    config.otf2CorThres[2]            = level * levelC;
+    config.otf2CorThres[3]            = level * levelC;
 
 
-	config.otf3ActAdjust			= 0;
-	config.otf3DetThres				= 0;
-	config.otf3DetThresSlope	    = 0;
-	config.otf3DetThresMin		    = 0;
-	config.otf3DetThresMax		    = 0;
-	config.otf3CorThres				= 0;
-	config.otf3CorThresSlope	    = 0;
-	config.otf3CorThresMin		    = 0;
-	config.otf3CorThresMax		    = 0;
+    config.otf3ActAdjust            = 0;
+    config.otf3DetThres             = 0;
+    config.otf3DetThresSlope        = 0;
+    config.otf3DetThresMin          = 0;
+    config.otf3DetThresMax          = 0;
+    config.otf3CorThres             = 0;
+    config.otf3CorThresSlope        = 0;
+    config.otf3CorThresMin          = 0;
+    config.otf3CorThresMax          = 0;
 
-	DRV_ipipeSetDpcConfig(&config);
-  return 0;
+    DRV_ipipeSetDpcConfig(&config);
+    return 0;
 }
 
-short ALG_aewbSetEdgeEnhancement(EDGE_PARAM *pParm)
+short ALG_aewbSetEdgeEnhancement(EDGE_PARAM  *pParm)
 {
     static int es_gain = -1;
     static CSL_IpipeEdgeEnhanceConfig config =
@@ -450,9 +480,9 @@ short ALG_aewbSetEdgeEnhancement(EDGE_PARAM *pParm)
     config.edgeSharpGain = (pParm->es_gain > 0xE0) ? 0xE0 : pParm->es_gain;
     config.edgeSharpGain = (pParm->es_gain < 0x10) ? 0x10 : pParm->es_gain;
     
-//#ifdef ALG_AEWB_DEBUG
+#ifdef ALG_AEWB_DEBUG
     OSA_printf(" AEWB: EDGE ENHANCEMENTEE_Param es_gain = %d\n", config.edgeSharpGain);
-//#endif
+#endif
 
     if (gALG_aewbObj.vnfDemoCfg == 0)
     {
@@ -463,26 +493,6 @@ short ALG_aewbSetEdgeEnhancement(EDGE_PARAM *pParm)
 }
 
 int g_bEnableTurnColor = 0;
-void ALG_aewbSetDayNight(void)
-{
-    static int daynight_bak = -1;
-    int daynight = 0;
-
-    daynight = g_bEnableTurnColor; ////0 代表彩色，1代表黑色 
-
-    if (daynight == daynight_bak || daynight > 1 || daynight < 0)
-    {
-        return;      
-    }
-    daynight_bak = daynight;
-    
-//#if ALG_AEWB_DEBUG
-    OSA_printf("AEWB: daynight = %s\n", daynight == 0 ? "COLOR_IRCUT" : "MONO_IRCUT");
-//#endif
-    rgb2yuv[daynight]->offset[0] = Aew_ext_parameter.brightness-128;
-    DRV_ipipeSetRgb2Yuv(rgb2yuv[daynight]);
-}
-
 short ALG_aewbSetBrightness(int Yoffset)
 {
     static int YoffsetBak = -1;
@@ -495,9 +505,9 @@ short ALG_aewbSetBrightness(int Yoffset)
     YoffsetBak = Yoffset;
 
     int daynight = g_bEnableTurnColor;
-//#ifdef ALG_AEWB_DEBUG   
+#ifdef ALG_AEWB_DEBUG   
 OSA_printf("AEWB: Brightness = %5d\n", Yoffset-128);
-//#endif 
+#endif 
     rgb2yuv[daynight]->offset[0] = Yoffset-128;
     DRV_ipipeSetRgb2Yuv(rgb2yuv[daynight]);
     return 0;
@@ -514,124 +524,152 @@ short ALG_aewbSetContrast(int Contrast)
 
     ContrastBak = Contrast;
 
-//#ifdef ALG_AEWB_DEBUG
+#ifdef ALG_AEWB_DEBUG
     OSA_printf(" AEWB: Contrast = %5d", Contrast);
-//#endif
+#endif
     DRV_ipipeSetContrastBrightness(Contrast, 0x0);
     return 0;
 }
 
+void ALG_aewbSetDayNight(void)
+{
+    static int daynight_bak = -1;
+    int daynight = 0;
+
+    daynight = g_bEnableTurnColor;
+
+    if (daynight == daynight_bak || daynight > 1 || daynight < 0)
+    {
+        return;      
+    }
+    daynight_bak = daynight;
+    
+#if ALG_AEWB_DEBUG
+    OSA_printf("AEWB: daynight = %s\n", daynight == COLOR_IRCUT? "COLOR_IRCUT":"MONO_IRCUT");
+#endif
+    rgb2yuv[daynight]->offset[0] = Aew_ext_parameter.brightness-128;
+    DRV_ipipeSetRgb2Yuv(rgb2yuv[daynight]);
+}
+
 short ALG_aewbSetSensorBinSkip(int Is_binning)
 {
-  static int prevValue=-1;
+    static int prevValue = -1;
+    if (prevValue == Is_binning)
+    {
+        return 0;
+    }
 
-  if(prevValue==Is_binning)
+#ifdef ALG_AEWB_DEBUG
+    OSA_printf(" AEWB: Sensor BinOrSkip = %d\n", Is_binning);
+#endif
+
+    prevValue = Is_binning;
+
+    drvImgsFunc->imgsBinEnable(Is_binning);
+  
     return 0;
-
-  #ifdef ALG_AEWB_DEBUG
-  OSA_printf(" AEWB: Sensor BinOrSkip = %d\n", Is_binning);
-  #endif
-
-  prevValue = Is_binning;
-
-  drvImgsFunc->imgsBinEnable(Is_binning);
-
-  return 0;
 }
 
 short ALG_aewbSetSensor50_60Hz(int Is50Hz)
 {
-  static int prevValue = -1;
+    static int prevValue = -1;
+    if (prevValue == Is50Hz)
+    {
+        return 0;
+    }
+    prevValue = Is50Hz;
 
+    drvImgsFunc->imgsSet50_60Hz(Is50Hz);
 
+    if (Is50Hz)
+    {
+        DRV_displaySetMode(DRV_DISPLAY_MODE_PAL);
+    } 
+    else
+    {
+        DRV_displaySetMode(DRV_DISPLAY_MODE_NTSC);
+    }
+    
+//#ifdef ALG_AEWB_DEBUG
+    OSA_printf(" AEWB: Sensor 50_60Hz = %s\n", (Is50Hz == VIDEO_NTSC)? "60Hz" : "50Hz");
+//#endif
 
-  if(prevValue==Is50Hz)
+    OSA_waitMsecs(50);
+    
     return 0;
-
-  #ifdef ALG_AEWB_DEBUG
-  OSA_printf(" AEWB: Sensor 50_60Hz = %d\n", Is50Hz);
-  #endif
-
-  prevValue = Is50Hz;
-
-  drvImgsFunc->imgsSet50_60Hz(Is50Hz);
-
-  if( Is50Hz )
-  {
-		DRV_displaySetMode(DRV_DISPLAY_MODE_PAL);
-  }else{
-		DRV_displaySetMode(DRV_DISPLAY_MODE_NTSC);
-  }
-
-  return 0;
 }
 
 short ALG_aewbSetSensorFrameRate(int frame_rate_mode)
 {
-  static int prevValue=-1;
+    static int prevValue = -1;
+    if (prevValue == frame_rate_mode)
+    {
+        return 0;
+    }
 
-  if(prevValue==frame_rate_mode)
+#ifdef ALG_AEWB_DEBUG
+    OSA_printf(" AEWB: Sensor frame-rate = %d\n", frame_rate_mode);
+#endif
+
+    prevValue = frame_rate_mode;
+
     return 0;
-
-  #ifdef ALG_AEWB_DEBUG
-  OSA_printf(" AEWB: Sensor frame-rate = %d\n", frame_rate_mode);
-  #endif
-
-  prevValue = frame_rate_mode;
-
-  //drvImgsFunc->imgsSetFramerate(frame_rate_mode);
-
-  return 0;
 }
 
 void ALG_aewbGetAEValues(Int32 *exposureTime, Int32 *apertureLevel, Int32 *sensorGain, Int32 *ipipeGain)
 {
-    *exposureTime 	= gALG_aewbObj.AE_OutArgs.nextAe.exposureTime;
-    *apertureLevel 	= gALG_aewbObj.AE_OutArgs.nextAe.apertureLevel;
-    *sensorGain 	= gALG_aewbObj.AE_OutArgs.nextAe.sensorGain;
-    *ipipeGain 		= gALG_aewbObj.AE_OutArgs.nextAe.ipipeGain;
+    *exposureTime   = gALG_aewbObj.AE_OutArgs.nextAe.exposureTime;
+    *apertureLevel  = gALG_aewbObj.AE_OutArgs.nextAe.apertureLevel;
+    *sensorGain     = gALG_aewbObj.AE_OutArgs.nextAe.sensorGain;
+    *ipipeGain      = gALG_aewbObj.AE_OutArgs.nextAe.ipipeGain;
 }
 
 void ALG_aewbGetAWBGains(Uint16 *rGain, Uint16 *grGain, Uint16 *gbGain, Uint16 *bGain)
 {
-	if(gALG_aewbObj.aewbVendor == ALG_AEWB_ID_APPRO) {
-		*rGain= gALG_aewbObj.AWB_OutArgs.nextWb.rGain;
-		*grGain= gALG_aewbObj.AWB_OutArgs.nextWb.gGain;
-		*gbGain= gALG_aewbObj.AWB_OutArgs.nextWb.gGain;
-		*bGain= gALG_aewbObj.AWB_OutArgs.nextWb.bGain;
-	}
-	else {
-		*rGain= gIMAGE_TUNE_ctrl.curPrm.ipipePrm.wb.gain[0];
-		*grGain= gIMAGE_TUNE_ctrl.curPrm.ipipePrm.wb.gain[1];
-		*gbGain= gIMAGE_TUNE_ctrl.curPrm.ipipePrm.wb.gain[2];
-		*bGain= gIMAGE_TUNE_ctrl.curPrm.ipipePrm.wb.gain[3];
-	}
+    if (gALG_aewbObj.aewbVendor == ALG_AEWB_ID_APPRO)
+    {
+        *rGain  = gALG_aewbObj.AWB_OutArgs.nextWb.rGain;
+        *grGain = gALG_aewbObj.AWB_OutArgs.nextWb.gGain;
+        *gbGain = gALG_aewbObj.AWB_OutArgs.nextWb.gGain;
+        *bGain  = gALG_aewbObj.AWB_OutArgs.nextWb.bGain;
+    } 
+    else
+    {
+        *rGain  = gIMAGE_TUNE_ctrl.curPrm.ipipePrm.wb.gain[0];
+        *grGain = gIMAGE_TUNE_ctrl.curPrm.ipipePrm.wb.gain[1];
+        *gbGain = gIMAGE_TUNE_ctrl.curPrm.ipipePrm.wb.gain[2];
+        *bGain  = gIMAGE_TUNE_ctrl.curPrm.ipipePrm.wb.gain[3];
+    }
 }
 
 void ALG_aewbGetRgb2Rgb(Int16*matrix)
 {
-	Uint32 i;
-	static Int16 approMatrix[9]={
-			  551, -324, 29,
-			 -39, 383, -88,
-			  9, -207, 454
-			};
+    Uint32 i = 0;
+    static Int16 approMatrix[9] =
+    {
+        551, -324, 29,
+        -39,  383, -88,
+        9,   -207, 454
+    };
 
-	if(gALG_aewbObj.aewbVendor==ALG_AEWB_ID_APPRO) {
-		for (i=0;i<9;i++)
-     		matrix[i]= approMatrix[i];
-	}
-	else {
-		matrix[0]= gIMAGE_TUNE_ctrl.curPrm.ipipePrm.rgb2rgb1.matrix[0][0];
-		matrix[1]= gIMAGE_TUNE_ctrl.curPrm.ipipePrm.rgb2rgb1.matrix[0][1];
-		matrix[2]= gIMAGE_TUNE_ctrl.curPrm.ipipePrm.rgb2rgb1.matrix[0][2];
-		matrix[3]= gIMAGE_TUNE_ctrl.curPrm.ipipePrm.rgb2rgb1.matrix[1][0];
-		matrix[4]= gIMAGE_TUNE_ctrl.curPrm.ipipePrm.rgb2rgb1.matrix[1][1];
-		matrix[5]= gIMAGE_TUNE_ctrl.curPrm.ipipePrm.rgb2rgb1.matrix[1][2];
-		matrix[6]= gIMAGE_TUNE_ctrl.curPrm.ipipePrm.rgb2rgb1.matrix[2][0];
-		matrix[7]= gIMAGE_TUNE_ctrl.curPrm.ipipePrm.rgb2rgb1.matrix[2][1];
-		matrix[8]= gIMAGE_TUNE_ctrl.curPrm.ipipePrm.rgb2rgb1.matrix[2][2];
-	}
-
+    if (gALG_aewbObj.aewbVendor == ALG_AEWB_ID_APPRO)
+    {
+        for (i = 0; i < 9; i++)
+        {
+            matrix[i] = approMatrix[i];
+        }
+    } 
+    else
+    {
+        matrix[0] = gIMAGE_TUNE_ctrl.curPrm.ipipePrm.rgb2rgb1.matrix[0][0];
+        matrix[1] = gIMAGE_TUNE_ctrl.curPrm.ipipePrm.rgb2rgb1.matrix[0][1];
+        matrix[2] = gIMAGE_TUNE_ctrl.curPrm.ipipePrm.rgb2rgb1.matrix[0][2];
+        matrix[3] = gIMAGE_TUNE_ctrl.curPrm.ipipePrm.rgb2rgb1.matrix[1][0];
+        matrix[4] = gIMAGE_TUNE_ctrl.curPrm.ipipePrm.rgb2rgb1.matrix[1][1];
+        matrix[5] = gIMAGE_TUNE_ctrl.curPrm.ipipePrm.rgb2rgb1.matrix[1][2];
+        matrix[6] = gIMAGE_TUNE_ctrl.curPrm.ipipePrm.rgb2rgb1.matrix[2][0];
+        matrix[7] = gIMAGE_TUNE_ctrl.curPrm.ipipePrm.rgb2rgb1.matrix[2][1];
+        matrix[8] = gIMAGE_TUNE_ctrl.curPrm.ipipePrm.rgb2rgb1.matrix[2][2];
+    }
 }
 

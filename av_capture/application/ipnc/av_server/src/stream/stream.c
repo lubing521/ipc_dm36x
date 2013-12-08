@@ -1670,11 +1670,11 @@ void stream_feature_setup( int nFeature, void *pParm )
 
 			if( input_val == 0 )
 			{
-				Aew_ext_parameter.env_50_60Hz = VIDEO_NTSC;
+				Aew_ext_parameter.env_50_60Hz = VIDEO_PAL;
 			}
 			else if( input_val == 1 )
 			{
-				Aew_ext_parameter.env_50_60Hz = VIDEO_PAL;
+				Aew_ext_parameter.env_50_60Hz = VIDEO_NTSC;
 			}
 			else
 			{
