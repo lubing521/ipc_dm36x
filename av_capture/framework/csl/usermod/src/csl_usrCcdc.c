@@ -213,12 +213,13 @@ CSL_Status CSL_ccdcIntClear(CSL_CcdcHandle hndl, Uint8 intType)
   return CSL_usrDrvIoctl(hndl->fd, CSL_CCDC_CMD_INT_CLEAR, (void *) (Uint32)intType);
 }
 
-CSL_Status CSL_ccdcIntWait(CSL_CcdcHandle hndl, Uint8 intType, Uint32 numIntWait)
+CSL_Status CSL_ccdcIntWait(CSL_CcdcHandle hndl, Uint8 intType, Uint32 numIntWait, Uint32 timeout)
 {
   CSL_CcdcIntWaitPrm intWaitPrm;
 
   intWaitPrm.intType = intType;
   intWaitPrm.numIntWait = numIntWait;
+  intWaitPrm.timeout    = timeout;
 
   return CSL_usrDrvIoctl(hndl->fd, CSL_CCDC_CMD_INT_WAIT, &intWaitPrm);
 }

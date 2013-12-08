@@ -127,22 +127,25 @@ CSL_Status CSL_ccdcIntClear(CSL_CcdcHandle hndl, Uint8 intType)
   return status;
 }
 
-CSL_Status CSL_ccdcIntWait(CSL_CcdcHandle hndl, Uint8 intType, Uint32 numIntWait)
+CSL_Status CSL_ccdcIntWait(CSL_CcdcHandle hndl, Uint8 intType, Uint32 numIntWait, Uint32 timeout)
 {
-  CSL_Status status = CSL_SOK;
+    CSL_Status status = CSL_SOK;
 
-  if (hndl == NULL)
-    return CSL_EFAIL;
+    if (hndl == NULL)
+        return CSL_EFAIL;
 
-  if (intType >= CSL_CCDC_INT_TYPE_MAX)
-    return CSL_EFAIL;
+    if (intType >= CSL_CCDC_INT_TYPE_MAX)
+        return CSL_EFAIL;
 
-  while (numIntWait) {
-    status = CSL_sysFlagWait(&hndl->intFlag[intType], CSL_SYS_TIMEOUT_FOREVER);
-    if (status != CSL_SOK)
-      break;
-    numIntWait--;
-  }
+    while (numIntWait)
+    {
+        //status = CSL_sysFlagWait(&hndl->intFlag[intType], CSL_SYS_TIMEOUT_FOREVER);
+        status = CSL_sysFlagWait(&hndl->intFlag[intType], timeout);
+        if (status != CSL_SOK)
+            break;
+        numIntWait--;
+    }
 
-  return status;
+    return status;
 }
+

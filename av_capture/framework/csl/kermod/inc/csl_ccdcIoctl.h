@@ -52,7 +52,7 @@ typedef struct {
 
   Uint8   intType;
   Uint32  numIntWait;
-
+  Uint32  timeout; //ms
 } CSL_CcdcIntWaitPrm;
 
 typedef struct {

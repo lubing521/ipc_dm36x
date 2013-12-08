@@ -75,7 +75,7 @@ CSL_Status CSL_sysFlagWait(CSL_SysFlag * hndl, Uint32 timeout)
 
   if (timeout != CSL_SYS_TIMEOUT_FOREVER) {
   
-    timeout /= 10; // convert it to msecs
+    timeout /= 20; // convert it to msecs
 
     if(wait_for_completion_interruptible_timeout(pFlag, timeout))
       return CSL_EFAIL;

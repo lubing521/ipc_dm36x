@@ -63,7 +63,7 @@ int DRV_isifEnable(Bool enable);
 int DRV_isifSetDcSub(Int16 dcSub);
 int DRV_isifSetDgain(Uint16 gainR, Uint16 gainGb, Uint16 gainGr, Uint16 gainB, Uint16 offset);
 
-int DRV_isifWaitInt(Uint16 intId, Uint16 numIntsToWait);
+int DRV_isifWaitInt(Uint16 intId, Uint16 numIntsToWait, Uint32 timeout);
 
 int DRV_isifGetOutBuf(int *bufId, int timeout);
 int DRV_isifPutOutBuf(int bufId);

@@ -920,7 +920,7 @@ extern  "C" {
 
   \return CSL_SOK on success, else CSL_Exxxx
 */
-  CSL_Status CSL_ccdcIntWait(CSL_CcdcHandle hndl, Uint8 intType, Uint32 numIntWait);
+  CSL_Status CSL_ccdcIntWait(CSL_CcdcHandle hndl, Uint8 intType, Uint32 numIntWait, Uint32 timeout);
 
 
 /**

@@ -531,7 +531,7 @@ CSL_Status CSL_ccdcHwControl(CSL_CcdcHandle hndl, Uint32 cmd, void *prm)
     status = CSL_copyFromUser(&intWaitPrm, prm, sizeof(intWaitPrm));
 
     if (status == CSL_SOK)
-      status = CSL_ccdcIntWait(hndl, intWaitPrm.intType, intWaitPrm.numIntWait);
+      status = CSL_ccdcIntWait(hndl, intWaitPrm.intType, intWaitPrm.numIntWait, intWaitPrm.timeout);
 
     break;
 
