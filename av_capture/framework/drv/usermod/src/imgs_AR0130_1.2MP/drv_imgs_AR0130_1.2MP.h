@@ -18,7 +18,7 @@
 
 #define IMGS_CHIP_ID        (0x2402) 
 #define IMGS_I2C_ADDR       (0x20)
-#define IMGS_RESET_GPIO     80
+#define IMGS_RESET_GPIO     57
 
 /* register addresses */
 #define AR0130_CHIP_VERSION        0x3000
@@ -141,7 +141,7 @@ extern DRV_ImgsH3aConfig    gDRV_imgsH3aConfig_Appro_AR0130;
 extern DRV_ImgsH3aConfig    gDRV_imgsH3aConfig_TI_AR0130;
 extern DRV_ImgsH3aConfig    gDRV_imgsH3aConfig_Common_AR0130;
 
-int DRV_imgsReset();
+int DRV_imgsReset_AR0130();
 int DRV_imgsCalcFrameTime_AR0130(Uint32 fps, Uint32 dataW, Uint32 dataH, Bool binEnable);
 int DRV_imgsCalcSW_AR0130(int exposureTimeInUsecs);
 int DRV_imgsCalcAgain_AR0130(int aGain);

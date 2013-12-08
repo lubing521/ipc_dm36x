@@ -41,7 +41,7 @@ int DRV_h3aOpen(DRV_H3aConfig *config)
     return OSA_EFAIL;
   }
 
-  gDRV_h3aObj.pImgsH3aConfig = DRV_imgsGetH3aConfig(config->sensorMode, config->aewbVendor);
+  gDRV_h3aObj.pImgsH3aConfig = drvImgsFunc->imgsGetH3aConfig(config->sensorMode, config->aewbVendor);
   if(gDRV_h3aObj.pImgsH3aConfig==NULL) {
     OSA_ERROR("DRV_imgsGetH3aConfig(%d , %d)\n", config->sensorMode, config->aewbVendor);
     return OSA_EFAIL;
@@ -75,13 +75,13 @@ int DRV_h3aOpen(DRV_H3aConfig *config)
   gDRV_h3aObj.pImgsH3aConfig->afVfvFir2Threshold = 500;
   gDRV_h3aObj.pImgsH3aConfig->afHfvFir2Threshold = 100;
 
-  if(DRV_imgsGetModeConfig(config->sensorMode)==NULL) {
+  if(drvImgsFunc->imgsGetModeConfig(config->sensorMode)==NULL) {
     OSA_ERROR("DRV_imgsGetModeConfig(%d)\n", config->sensorMode);
     return OSA_EFAIL;
   }
 
   memcpy(&gDRV_h3aObj.config, config, sizeof(gDRV_h3aObj.config));
-  memcpy(&gDRV_h3aObj.imgsModeConfig, DRV_imgsGetModeConfig(config->sensorMode), sizeof(gDRV_h3aObj.imgsModeConfig));
+  memcpy(&gDRV_h3aObj.imgsModeConfig, drvImgsFunc->imgsGetModeConfig(config->sensorMode), sizeof(gDRV_h3aObj.imgsModeConfig));
 
   status = DRV_h3aCalcParams();
   if(status!=OSA_SOK) {

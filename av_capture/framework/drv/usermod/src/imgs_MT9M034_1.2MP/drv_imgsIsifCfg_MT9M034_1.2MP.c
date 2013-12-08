@@ -1,7 +1,7 @@
 
 #include <drv_imgs.h>
 
-DRV_ImgsIsifConfig gDRV_imgsIsifConfig_Common = {
+DRV_ImgsIsifConfig gDRV_imgsIsifConfig_Common_MT9M034 = {
 
   .ccdcParams = {
   
@@ -45,8 +45,8 @@ DRV_ImgsIsifConfig gDRV_imgsIsifConfig_Common = {
     },
     
     .clamp = {
-      .enable = FALSE,
-      .dcOffset = -167, 
+      .enable = TRUE,
+      .dcOffset = -200, 
     },
     
     .lsc = {

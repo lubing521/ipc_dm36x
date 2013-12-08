@@ -42,9 +42,9 @@ int DRV_imageTuneInit()
   IMAGE_TUNE_AttachCmdHandler(IMAGE_TUNE_SYS_SEND_RAW_DATA, DRV_imageTuneCmdExecuteSendRawData);
   IMAGE_TUNE_AttachCmdHandler(IMAGE_TUNE_SYS_SEND_YUV_DATA, DRV_imageTuneCmdExecuteSendYuvData);
 
-  pIsifCfg  = DRV_imgsGetIsifConfig(DRV_IMGS_SENSOR_MODE_DEFAULT);
-  pIpipeCfg = DRV_imgsGetIpipeConfig(DRV_IMGS_SENSOR_MODE_DEFAULT, 0);
-  pLdcCfg   = DRV_imgsGetLdcConfig(DRV_IMGS_SENSOR_MODE_DEFAULT, 0, 0);
+  pIsifCfg  = drvImgsFunc->imgsGetIsifConfig(DRV_IMGS_SENSOR_MODE_DEFAULT);
+  pIpipeCfg = drvImgsFunc->imgsGetIpipeConfig(DRV_IMGS_SENSOR_MODE_DEFAULT, 0);
+  pLdcCfg   = drvImgsFunc->imgsGetLdcConfig(DRV_IMGS_SENSOR_MODE_DEFAULT, 0, 0);
   pAwbCfg   = ImageTune_imgsGetAwbConfig(0);
   pVnfCfg   = ImageTune_imgsGetVnfConfig(0);
    
@@ -390,9 +390,9 @@ int DRV_imageTuneLoadParams(int mode, int paramSetId)
   retVal = IMAGE_TUNE_LoadParams(paramSetId);
   if(retVal==OSA_SOK) {
 
-    pIsifCfg  = DRV_imgsGetIsifConfig(mode);
-    pIpipeCfg = DRV_imgsGetIpipeConfig(mode, 0);
-    pLdcCfg   = DRV_imgsGetLdcConfig(mode, 0, 0);
+    pIsifCfg  = drvImgsFunc->imgsGetIsifConfig(mode);
+    pIpipeCfg = drvImgsFunc->imgsGetIpipeConfig(mode, 0);
+    pLdcCfg   = drvImgsFunc->imgsGetLdcConfig(mode, 0, 0);
     pAwbCfg = ImageTune_imgsGetAwbConfig(mode);
     pVnfCfg = ImageTune_imgsGetVnfConfig(mode);
 		
@@ -435,9 +435,9 @@ int DRV_imageTuneSaveParams(int mode, int paramSetId, Bool saveDefaultParams)
   awb_calc_data_t       *pAwbCfg;
   ALG_vnfParams           *pVnfCfg;
 
-  pIsifCfg  = DRV_imgsGetIsifConfig(mode);
-  pIpipeCfg = DRV_imgsGetIpipeConfig(mode, 0);
-  pLdcCfg   = DRV_imgsGetLdcConfig(mode, 0, 0);
+  pIsifCfg  = drvImgsFunc->imgsGetIsifConfig(mode);
+  pIpipeCfg = drvImgsFunc->imgsGetIpipeConfig(mode, 0);
+  pLdcCfg   = drvImgsFunc->imgsGetLdcConfig(mode, 0, 0);
   pAwbCfg   = ImageTune_imgsGetAwbConfig(mode);
   pVnfCfg   = ImageTune_imgsGetVnfConfig(mode);
 

@@ -1,7 +1,7 @@
 
 #include <drv_imgs.h>
 
-DRV_ImgsH3aConfig gDRV_imgsH3aConfig_Appro = {
+DRV_ImgsH3aConfig gDRV_imgsH3aConfig_Appro_IMX122 = {
 
   .medFiltThreshold  = 0,
 
@@ -19,7 +19,7 @@ DRV_ImgsH3aConfig gDRV_imgsH3aConfig_Appro = {
 
 };
 
-DRV_ImgsH3aConfig gDRV_imgsH3aConfig_TI = {
+DRV_ImgsH3aConfig gDRV_imgsH3aConfig_TI_IMX122 = {
 
   .medFiltThreshold = 0,
 
@@ -37,7 +37,7 @@ DRV_ImgsH3aConfig gDRV_imgsH3aConfig_TI = {
 
 };
 
-DRV_ImgsH3aConfig gDRV_imgsH3aConfig_Common = {
+DRV_ImgsH3aConfig gDRV_imgsH3aConfig_Common_IMX122 = {
 
   .medFiltThreshold  = 0,
 

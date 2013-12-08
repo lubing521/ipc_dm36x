@@ -39,7 +39,7 @@ int DRV_ldcOpen(int streamId, DRV_LdcConfig *config)
   
   if(config->pLdcConfig==NULL) {
     // get config from sensor driver
-    pImgsLdcConfig = DRV_imgsGetLdcConfig(config->sensorMode, config->inWidth, config->inHeight);
+    pImgsLdcConfig = drvImgsFunc->imgsGetLdcConfig(config->sensorMode, config->inWidth, config->inHeight);
     if(pImgsLdcConfig==NULL) {
       OSA_ERROR("DRV_imgsGetLdcConfig(%d, %d x %d)\n", config->sensorMode, config->inWidth, config->inHeight);
       return OSA_EFAIL;

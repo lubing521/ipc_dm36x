@@ -16,7 +16,7 @@ int DRV_isifOpen(DRV_IsifConfig *config)
 
   memset(&gDRV_isifObj, 0, sizeof(gDRV_isifObj));
 
-  gDRV_isifObj.pImgsIsifConfig = DRV_imgsGetIsifConfig(config->sensorMode);
+  gDRV_isifObj.pImgsIsifConfig = drvImgsFunc->imgsGetIsifConfig(config->sensorMode);
   if(gDRV_isifObj.pImgsIsifConfig==NULL)
   {
     OSA_ERROR("DRV_imgsGetIsifConfig(%d)\n", config->sensorMode);
@@ -28,7 +28,7 @@ int DRV_isifOpen(DRV_IsifConfig *config)
     return OSA_EFAIL;
   }
 
-  if(DRV_imgsGetModeConfig(config->sensorMode)==NULL)
+  if(drvImgsFunc->imgsGetModeConfig(config->sensorMode)==NULL)
   {
     OSA_ERROR("DRV_imgsGetModeConfig()\n");
     return OSA_EFAIL;
@@ -37,7 +37,7 @@ int DRV_isifOpen(DRV_IsifConfig *config)
   if(config->alawEnable)
     config->dpcmEnable = FALSE;
 
-  memcpy(&gDRV_isifObj.imgsModeInfo, DRV_imgsGetModeConfig(config->sensorMode), sizeof(gDRV_isifObj.imgsModeInfo) );
+  memcpy(&gDRV_isifObj.imgsModeInfo, drvImgsFunc->imgsGetModeConfig(config->sensorMode), sizeof(gDRV_isifObj.imgsModeInfo) );
   memcpy(&gDRV_isifObj.config, config, sizeof(gDRV_isifObj.config));
 
   gDRV_isifObj.info.ddrOutDataOffsetH = gDRV_isifObj.imgsModeInfo.validWidth;
@@ -616,7 +616,7 @@ int DRV_isifSetParams()
   isifInConfig.dpcEnable      = FALSE;
   isifInConfig.dpcThreshold   = 0;
 
-  pIpipeConfig = DRV_imgsGetIpipeConfig(gDRV_isifObj.config.sensorMode, gDRV_isifObj.config.vnfDemoCfg);
+  pIpipeConfig = drvImgsFunc->imgsGetIpipeConfig(gDRV_isifObj.config.sensorMode, gDRV_isifObj.config.vnfDemoCfg);
   if(pIpipeConfig) {
     isifInConfig.dpcEnable      = pIpipeConfig->ipipeifParams.vpiIsifInDpcEnable;
     isifInConfig.dpcThreshold   = pIpipeConfig->ipipeifParams.vpiIsifInDpcThreshold;
@@ -812,7 +812,7 @@ int DRV_isifTestMain(int argc, char **argv)
   isifConfig.numBuf     = DRV_ISIF_TEST_NUM_BUF;
 
   OSA_printf(" ISIF: Opening imager.\n");
-  status = DRV_imgsOpen(&imgsConfig);
+  status = drvImgsFunc->imgsOpen(&imgsConfig);
   if(status!=OSA_SOK)
     goto error_exit;
 
@@ -835,7 +835,7 @@ int DRV_isifTestMain(int argc, char **argv)
   DRV_isifEnable(TRUE);
 
   OSA_printf(" ISIF: Starting imager.\n");
-  DRV_imgsEnable(TRUE);
+  drvImgsFunc->imgsEnable(TRUE);
 
   DRV_isifWaitInt(DRV_ISIF_INT_VD0, 2);
 
@@ -852,7 +852,7 @@ int DRV_isifTestMain(int argc, char **argv)
   DRV_isifEnable(FALSE);
 
   OSA_printf(" ISIF: Stoping imager.\n");
-  DRV_imgsEnable(FALSE);
+  drvImgsFunc->imgsEnable(FALSE);
 
   OSA_printf(" ISIF: Closing ISIF.\n");
   DRV_isifClose();
@@ -860,7 +860,7 @@ int DRV_isifTestMain(int argc, char **argv)
 isif_exit:
 
   OSA_printf(" ISIF: Closing imager.\n");
-  DRV_imgsClose();
+  drvImgsFunc->imgsClose();
 
 error_exit:
   OSA_printf(" ISIF: Exiting.\n");
@@ -884,7 +884,7 @@ int DRV_isifGetBayerPhase(int sensorMode)
 	DRV_ImgsIsifConfig  *isifConfig;
 	CSL_CcdcColPatConfig *colPat;
 
-	isifConfig= DRV_imgsGetIsifConfig(sensorMode);
+	isifConfig= drvImgsFunc->imgsGetIsifConfig(sensorMode);
 	colPat= &isifConfig->ccdcParams.colPat;
 
 	switch(colPat->colPat0[0][0])

@@ -6,10 +6,10 @@ int DRV_captureOpen(DRV_CaptureConfig *config, DRV_CaptureInfo *info)
   int status;
 
   #ifdef DRV_SHOW_INFO
-  OSA_printf(" CAPTURE: Opening imager %s.\n", DRV_imgsGetImagerName());
+  OSA_printf(" CAPTURE: Opening imager %s.\n", drvImgsFunc->imgsGetImagerName());
   #endif
 
-  status = DRV_imgsOpen(&config->imgsConfig);
+  status = drvImgsFunc->imgsOpen(&config->imgsConfig);
   if(status!=OSA_SOK)
     goto error_exit;
 
@@ -56,7 +56,7 @@ h3a_exit:
   DRV_isifClose();
 
 isif_exit:
-  DRV_imgsClose();
+  drvImgsFunc->imgsClose();
 
 error_exit:
 
@@ -71,7 +71,7 @@ int DRV_captureClose()
   OSA_printf(" CAPTURE: Closing imager.\n");
   #endif
 
-  DRV_imgsClose();
+  drvImgsFunc->imgsClose();
 
   #ifdef DRV_SHOW_INFO
   OSA_printf(" CAPTURE: Closing ISIF.\n");
@@ -119,7 +119,7 @@ int DRV_captureStart(Bool rawOutEnable, Bool yuvOutEnable)
   OSA_printf(" CAPTURE: Starting imager.\n");
   #endif
 
-  DRV_imgsEnable(TRUE);
+  drvImgsFunc->imgsEnable(TRUE);
 
   DRV_isifWaitInt(DRV_ISIF_INT_VD0, 2);
 
@@ -167,7 +167,7 @@ int DRV_captureStop()
   OSA_printf(" CAPTURE: Stopping imager.\n");
   #endif
 
-  DRV_imgsEnable(FALSE);
+  drvImgsFunc->imgsEnable(FALSE);
 
   #ifdef DRV_SHOW_INFO
   OSA_printf(" CAPTURE: Stop DONE.\n");

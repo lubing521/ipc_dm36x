@@ -46,7 +46,7 @@ DRV_ImgsIsifConfig gDRV_imgsIsifConfig_Common = {
     
     .clamp = {
       .enable = FALSE,
-      .dcOffset = -10,//0x0, 
+      .dcOffset = 0x0, 
     },
     
     .lsc = {

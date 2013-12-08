@@ -136,7 +136,7 @@ short ALG_aewbSetSensorGain(int gain)
   else if(gALG_aewbObj.vnfDemoCfg)
   	gain32 = (int)(gain*2);
 
-  DRV_imgsSetAgain(gain32, 0);
+  drvImgsFunc->imgsSetAgain(gain32, 0);
 
   return 0;
 }
@@ -153,7 +153,7 @@ short ALG_aewbSetSensorDGain(int gain)
   #endif
 
   prevValue = gain;
-  DRV_imgsSetDgain(gain);
+  drvImgsFunc->imgsSetDgain(gain);
 
   return 0;
 }
@@ -179,7 +179,7 @@ short ALG_aewbSetSensorExposure(int shutter)
   /*else if(gALG_aewbObj.vnfDemoCfg)
     shutter32 = (shutter32*200)/ENABLE_COMPENSATION;*/
 
-  DRV_imgsSetEshutter(shutter32, 0);
+  drvImgsFunc->imgsSetEshutter(shutter32, 0);
 
   return 0;
 }
@@ -295,9 +295,9 @@ short ALG_aewbSetSensorBin(int bin)
   prevValue = bin;
 
   if(gALG_aewbObj.vnfDemoCfg)
-   	DRV_imgsBinMode(bin=0x20);
+   	drvImgsFunc->imgsBinMode(bin=0x20);
   else
-   	DRV_imgsBinMode(bin);
+   	drvImgsFunc->imgsBinMode(bin);
 
   return 0;
 }
@@ -534,7 +534,7 @@ short ALG_aewbSetSensorBinSkip(int Is_binning)
 
   prevValue = Is_binning;
 
-  DRV_imgsBinEnable(Is_binning);
+  drvImgsFunc->imgsBinEnable(Is_binning);
 
   return 0;
 }
@@ -554,7 +554,7 @@ short ALG_aewbSetSensor50_60Hz(int Is50Hz)
 
   prevValue = Is50Hz;
 
-  DRV_imgsSet50_60Hz(Is50Hz);
+  drvImgsFunc->imgsSet50_60Hz(Is50Hz);
 
   if( Is50Hz )
   {
@@ -579,7 +579,7 @@ short ALG_aewbSetSensorFrameRate(int frame_rate_mode)
 
   prevValue = frame_rate_mode;
 
-  //DRV_imgsSetFramerate(frame_rate_mode);
+  //drvImgsFunc->imgsSetFramerate(frame_rate_mode);
 
   return 0;
 }

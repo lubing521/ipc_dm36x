@@ -66,56 +66,50 @@
 #define GAIN_GLOBAL         (0x35)
 #define ROW_BLK_DEF_OFFSET  (0x4B)
 */
-#ifdef BOARD_AP_IPNC
-#define IMGS_I2C_ADDR       (0x20)
-#endif
 
-#ifdef BOARD_TI_EVM
-#define IMGS_I2C_ADDR       (0xBA)
-#endif
+#define IMGS_I2C_ADDR        (0x20)
 
-#define IMGS_RESET_GPIO     (36)
+#define IMGS_RESET_GPIO     (57)
 
-typedef struct {
+typedef struct
+{
 
-  int fps;        // Hz
-  float t_frame;  // ns
-  float t_row;    // ns
-  float t_pclk;   // ns
-  int W;
-  int H;
-  int SW;
-  int SD;
-  int HB;
-  int VB;
-  int HBmin;
-  int VBmin;
-  int f_pclk;     // Hz
+    int fps;        // Hz
+    float t_frame;  // ns
+    float t_row;    // ns
+    float t_pclk;   // ns
+    int W;
+    int H;
+    int SW;
+    int SD;
+    int HB;
+    int VB;
+    int HBmin;
+    int VBmin;
+    int f_pclk;     // Hz
 
-  float shutterOverhead;
+    float shutterOverhead;
 
-  int col_size;
-  int row_size;
-  int col_skip;
-  int row_skip;
-  int col_bin;
-  int row_bin;
-  int col_start;
-  int row_start;
+    int col_size;
+    int row_size;
+    int col_skip;
+    int row_skip;
+    int col_bin;
+    int row_bin;
+    int col_start;
+    int row_start;
 
-  int pll_M;
-  int pll_N;
-  int pll_DIV;
+    int pll_M;
+    int pll_N;
+    int pll_DIV;
 
 } DRV_ImgsFrameTime;
 
-typedef struct {
-
-  DRV_I2cHndl i2cHndl;
-
-  DRV_ImgsFrameTime curFrameTime;
-  DRV_ImgsModeConfig curModeConfig;
-
+typedef struct
+{
+    DRV_I2cHndl        i2cHndl;
+    DRV_ImgsFrameTime  curFrameTime;
+    DRV_ImgsModeConfig curModeConfig;
 } DRV_ImgsObj;
 
 
@@ -153,21 +147,23 @@ extern DRV_ImgsH3aConfig    gDRV_imgsH3aConfig_Appro;
 extern DRV_ImgsH3aConfig    gDRV_imgsH3aConfig_TI;
 extern DRV_ImgsH3aConfig    gDRV_imgsH3aConfig_Common;
 
-int DRV_imgsReset();
+int DRV_imgsReset_AR0331();
+int DRV_imgsCalcFrameTime_AR0331(Uint32 fps, Uint32 dataW, Uint32 dataH, Bool binEnable);
+int DRV_imgsCalcSW_AR0331(int exposureTimeInUsecs);
+int DRV_imgsCalcAgain_AR0331(int aGain);
+int DRV_imgsCalcFrameRate_AR0331(int fps);
+int DRV_imgsGetEshutter_AR0331(Uint32 *eshutterInUsec);
+int DRV_imgsGetAgain_AR0331(int *again);
+//int AR0331_HDR_Enable(int enable);
+int DRV_imgsCheckId_AR0331();
+int DRV_imgsSetRegs_AR0331();
 
-int DRV_imgsCalcFrameTime(Uint32 fps, Uint32 dataW, Uint32 dataH, Bool binEnable);
-int DRV_imgsCalcSW(int exposureTimeInUsecs);
-int DRV_imgsCalcAgain(int aGain);
-int DRV_imgsCalcFrameRate(int fps);
-int DRV_imgsGetEshutter(Uint32 *eshutterInUsec);
-int DRV_imgsGetAgain(int *again);
-int AR0331_HDR_Enable(int enable);
-int DRV_imgsCheckId();
-int DRV_imgsSetRegs();
-#ifdef AR0331_WDR
-int DRV_ImgsGetMean(unsigned int *highMean, unsigned int *lowMean);
-int DRV_ImgsGetWDRSetting(unsigned int *wdrMode, unsigned int *ratioT1T2);
-int DRV_ImgsSetWDRSetting(unsigned int wdrMode, unsigned int ratioT1T2);
-#endif
+//#ifdef AR0331_WDR
+//int DRV_ImgsGetMean(unsigned int *highMean, unsigned int *lowMean);
+//int DRV_ImgsGetWDRSetting(unsigned int *wdrMode, unsigned int *ratioT1T2);
+//int DRV_ImgsSetWDRSetting(unsigned int wdrMode, unsigned int ratioT1T2);
+//#endif
+
+
 #endif
 

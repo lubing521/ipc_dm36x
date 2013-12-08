@@ -58,7 +58,7 @@ int VIDEO_aewbApplyPrm()
   }
 
   if(prm.sensorGain) {
-    DRV_imgsSetAgain(prm.sensorGain, 1231);
+    drvImgsFunc->imgsSetAgain(prm.sensorGain, 1231);
 
     #ifdef AVSERVER_DEBUG_VIDEO_2A_THR
       #ifdef AVSERVER_DEBUG_RUNNING
@@ -68,7 +68,7 @@ int VIDEO_aewbApplyPrm()
   }
 
   if(prm.exposureTimeInUsec) {
-    DRV_imgsSetEshutter(prm.exposureTimeInUsec, 33333);
+    drvImgsFunc->imgsSetEshutter(prm.exposureTimeInUsec, 33333);
 
     #ifdef AVSERVER_DEBUG_VIDEO_2A_THR
       #ifdef AVSERVER_DEBUG_RUNNING

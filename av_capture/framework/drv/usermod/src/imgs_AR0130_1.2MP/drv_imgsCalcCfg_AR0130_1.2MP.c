@@ -1,8 +1,6 @@
 
 #include "drv_imgs_AR0130_1.2MP.h"
 
-extern int gImgsVPad;
-
 int DRV_imgsCalcFrameRate_AR0130(int fps)
 {
     if (fps < 5)

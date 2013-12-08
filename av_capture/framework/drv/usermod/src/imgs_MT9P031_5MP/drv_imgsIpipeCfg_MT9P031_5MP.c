@@ -2,11 +2,11 @@
 #include <drv_imgs.h>
 
 
-DRV_ImgsIpipeConfig gDRV_imgsIpipeConfig_Vnfdemo = {
-
+DRV_ImgsIpipeConfig gDRV_imgsIpipeConfig_Vnfdemo_MT9P031 = 
+{
     .ipipeifParams = {
 
-        .vpiIsifInDpcEnable	    = FALSE,
+        .vpiIsifInDpcEnable     = FALSE,
         .vpiIsifInDpcThreshold  = 0,
         .ddrInDpcEnable         = FALSE,
         .ddrInDpcThreshold      = 0,
@@ -22,8 +22,8 @@ DRV_ImgsIpipeConfig gDRV_imgsIpipeConfig_Vnfdemo = {
 
             .colPat = {
 
-                { CSL_IPIPE_SOURCE_COLOUR_GR, CSL_IPIPE_SOURCE_COLOUR_R   },
-                { CSL_IPIPE_SOURCE_COLOUR_B , CSL_IPIPE_SOURCE_COLOUR_GB  },
+                { CSL_IPIPE_SOURCE_COLOUR_GR, CSL_IPIPE_SOURCE_COLOUR_R},
+                { CSL_IPIPE_SOURCE_COLOUR_B , CSL_IPIPE_SOURCE_COLOUR_GB},
 
             },
         },
@@ -129,9 +129,9 @@ DRV_ImgsIpipeConfig gDRV_imgsIpipeConfig_Vnfdemo = {
 
         .rgb2rgb1 = {
             .matrix = {
-                { 0x0100, 0x0000, 0x0000 },
-                { 0x0000, 0x0100, 0x0000 },
-                { 0x0000, 0x0000, 0x0100 },
+                { 0x0100, 0x0000, 0x0000},
+                { 0x0000, 0x0100, 0x0000},
+                { 0x0000, 0x0000, 0x0100},
             },
             .offset = {
                 0, 0, 0
@@ -160,9 +160,9 @@ DRV_ImgsIpipeConfig gDRV_imgsIpipeConfig_Vnfdemo = {
         .rgb2rgb2 = {
 
             .matrix = {
-                { 0x0100, 0x0000, 0x0000 },
-                { 0x0000, 0x0100, 0x0000 },
-                { 0x0000, 0x0000, 0x0100 },
+                { 0x0100, 0x0000, 0x0000},
+                { 0x0000, 0x0100, 0x0000},
+                { 0x0000, 0x0000, 0x0100},
             },
             .offset = {
                 0, 0, 0
@@ -176,9 +176,9 @@ DRV_ImgsIpipeConfig gDRV_imgsIpipeConfig_Vnfdemo = {
         .rgb2yuv = {
 
             .matrix = {
-                { 0x004d, 0x0096, 0x001d },
-                { 0x0fd5, 0x0fab, 0x0080 },
-                { 0x0080, 0x0f95, 0x0feb },
+                { 0x004d, 0x0096, 0x001d},
+                { 0x0fd5, 0x0fab, 0x0080},
+                { 0x0080, 0x0f95, 0x0feb},
             },
             .offset = {
                 0x00, 0x80, 0x80
@@ -211,11 +211,11 @@ DRV_ImgsIpipeConfig gDRV_imgsIpipeConfig_Vnfdemo = {
     },
 };
 
-DRV_ImgsIpipeConfig gDRV_imgsIpipeConfig_Common = {
+DRV_ImgsIpipeConfig gDRV_imgsIpipeConfig_Common_MT9P031 = {
 
     .ipipeifParams = {
 
-        .vpiIsifInDpcEnable	    = FALSE,
+        .vpiIsifInDpcEnable     = FALSE,
         .vpiIsifInDpcThreshold  = 0,
         .ddrInDpcEnable         = FALSE,
         .ddrInDpcThreshold      = 0,
@@ -231,8 +231,8 @@ DRV_ImgsIpipeConfig gDRV_imgsIpipeConfig_Common = {
 
             .colPat = {
 
-                { CSL_IPIPE_SOURCE_COLOUR_GR, CSL_IPIPE_SOURCE_COLOUR_R   },
-                { CSL_IPIPE_SOURCE_COLOUR_B , CSL_IPIPE_SOURCE_COLOUR_GB  },
+                { CSL_IPIPE_SOURCE_COLOUR_GR, CSL_IPIPE_SOURCE_COLOUR_R},
+                { CSL_IPIPE_SOURCE_COLOUR_B , CSL_IPIPE_SOURCE_COLOUR_GB},
 
             },
         },
@@ -339,9 +339,9 @@ DRV_ImgsIpipeConfig gDRV_imgsIpipeConfig_Common = {
         .rgb2rgb1 = {
 
             .matrix = {
-                { 0x0100, 0x0000, 0x0000 },
-                { 0x0000, 0x0100, 0x0000 },
-                { 0x0000, 0x0000, 0x0100 },
+                { 0x0100, 0x0000, 0x0000},
+                { 0x0000, 0x0100, 0x0000},
+                { 0x0000, 0x0000, 0x0100},
             },
             .offset = {
                 0, 0, 0
@@ -370,9 +370,9 @@ DRV_ImgsIpipeConfig gDRV_imgsIpipeConfig_Common = {
         .rgb2rgb2 = {
 
             .matrix = {
-                { 0x0100, 0x0000, 0x0000 },
-                { 0x0000, 0x0100, 0x0000 },
-                { 0x0000, 0x0000, 0x0100 },
+                { 0x0100, 0x0000, 0x0000},
+                { 0x0000, 0x0100, 0x0000},
+                { 0x0000, 0x0000, 0x0100},
             },
             .offset = {
                 0, 0, 0
@@ -386,9 +386,9 @@ DRV_ImgsIpipeConfig gDRV_imgsIpipeConfig_Common = {
         .rgb2yuv = {
 
             .matrix = {
-                { 0x004d, 0x0096, 0x001d },
-                { 0x0fd5, 0x0fab, 0x0080 },
-                { 0x0080, 0x0f95, 0x0feb },
+                { 0x004d, 0x0096, 0x001d},
+                { 0x0fd5, 0x0fab, 0x0080},
+                { 0x0080, 0x0f95, 0x0feb},
             },
             .offset = {
                 0x00, 0x80, 0x80

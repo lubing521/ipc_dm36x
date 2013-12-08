@@ -52,7 +52,6 @@
 #endif
 
 #ifdef BOARD_AP_IPNC
-// #define IMGS_I2C_ADDR       (0x90)
 #define IMGS_I2C_ADDR       (0xBA)  //Tuff: test 9D111
 #endif
 
@@ -60,7 +59,6 @@
 #define IMGS_I2C_ADDR       (0xBA)
 #endif
 
-// #define IMGS_RESET_GPIO     (91)
 #define IMGS_RESET_GPIO     (31)
 
 typedef struct {

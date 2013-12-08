@@ -97,7 +97,7 @@ int DRV_captureTestOpen()
 
   DRV_displayGetBufInfo(&gDRV_testCtrl.displayHndl, &gDRV_testCtrl.displayInfo);
 
-  OSA_printf(" CAPTURE: Opening capture on imager %s.\n", DRV_imgsGetImagerName());
+  OSA_printf(" CAPTURE: Opening capture on imager %s.\n", drvImgsFunc->imgsGetImagerName());
 
   status = DRV_captureOpen(&gDRV_testCtrl.captureConfig, &gDRV_testCtrl.captureInfo);
   if(status!=OSA_SOK)
@@ -116,7 +116,7 @@ int DRV_captureTestOpen()
     ALG_VstabCreate vsCreatePrm;
     DRV_ImgsModeConfig *pImgsMode;
 
-    pImgsMode = DRV_imgsGetModeConfig(gDRV_testCtrl.captureConfig.imgsConfig.sensorMode);
+    pImgsMode = drvImgsFunc->imgsGetModeConfig(gDRV_testCtrl.captureConfig.imgsConfig.sensorMode);
 
     if(pImgsMode==NULL)
       goto alloc_exit;
@@ -406,7 +406,7 @@ int DRV_captureTestH3aRun(int count)
 
       aGain = 8000 - (avgG*4000)/512;
 
-      DRV_imgsSetAgain(aGain, 0);
+      drvImgsFunc->imgsSetAgain(aGain, 0);
 
       #ifdef DRV_CAPTURE_TEST_PRINT_H3A_INFO
       OSA_printf(" AEWB Avg Color: %5d, %5d, %5d, %5d (AE aGain = %d)\n", accValue[0], accValue[1], accValue[2], accValue[3], aGain);

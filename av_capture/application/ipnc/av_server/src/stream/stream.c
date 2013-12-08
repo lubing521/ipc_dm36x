@@ -934,7 +934,7 @@ void *Msg_CTRL(void* args)
 					unsigned int value;
 					value = *(unsigned int*)(&msgbuf.mem_info);
 					stream_feature_setup(STREAM_FEATURE_FRAMERATE1, &value);
-               DRV_imgsSetFramerate(value/1000);
+                    //drvImgsFunc->imgsSetFramerate(value/1000);
 					msgbuf.ret = 0;
 					break;
 				}

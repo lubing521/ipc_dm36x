@@ -218,16 +218,9 @@
 #define AVG_END_POSITION_AT_VERTICAL_L     	0x5687       
 #define AVG_R10 														0x5690   
 
-
-#ifdef BOARD_AP_IPNC
 #define IMGS_I2C_ADDR       (0x6C)
-#endif
 
-#ifdef BOARD_TI_EVM
-#define IMGS_I2C_ADDR       (0x6C)
-#endif
-
-#define IMGS_RESET_GPIO     (92)//(36)
+#define IMGS_RESET_GPIO     (36)
 
 typedef struct {
 

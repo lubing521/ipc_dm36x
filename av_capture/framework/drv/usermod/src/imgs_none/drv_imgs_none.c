@@ -1,85 +1,115 @@
 
 #include <drv_imgs.h>
 
-int DRV_imgsOpen(DRV_ImgsConfig *config)
+static int DRV_imgsOpen_none(DRV_ImgsConfig *config)
 {
-  return -1;
+    return OSA_SOK;
 }
 
-int DRV_imgsClose()
+static int DRV_imgsClose_none()
 {
-  return -1;
+    return OSA_SOK;
 }
 
-char* DRV_imgsGetImagerName()
+static char* DRV_imgsGetImagerName_none()
 {
-  return "NO_IMAGER";
+    return "NO_IMAGER";
 }
 
-int DRV_imgsSet50_60Hz(Bool is50Hz)
+static int DRV_imgsSet50_60Hz_none(Bool is50Hz)
 {
-  return -1;
+    return OSA_SOK;
 }
 
-int DRV_imgsSetFramerate(int fps)
+static int DRV_imgsSetFramerate_none(int fps)
 {
-  return -1;
+    return OSA_SOK;
 }
 
-int DRV_imgsBinEnable(Bool enable)
+static int DRV_imgsBinEnable_none(Bool enable)
 {
-  return -1;
+    return OSA_SOK;
 }
 
-int DRV_imgsSetDgain(int dgain)
+static int DRV_imgsSetDgain_none(int dgain)
 {
-    return -1;
+    return OSA_SOK;
 }
 
-int DRV_imgsSetAgain(int again, int setRegDirect)
+static int DRV_imgsSetAgain_none(int again, int setRegDirect)
 {
-  return -1;
+    return OSA_SOK;
 }
 
-int DRV_imgsSetEshutter(Uint32 eshutterInUsec, int setRegDirect)
+static int DRV_imgsSetEshutter_none(Uint32 eshutterInUsec, int setRegDirect)
 {
-  return -1;
+    return OSA_SOK;
 }
 
-int DRV_imgsSetDcSub(Uint32 dcSub, int setRegDirect)
+static int DRV_imgsSetDcSub_none(Uint32 dcSub, int setRegDirect)
 {
-
-  return 0;
+    return OSA_SOK;
 }
 
-int DRV_imgsEnable(Bool enable)
+static int DRV_imgsEnable_none(Bool enable)
 {
-  return -1;
+    return OSA_SOK;
 }
 
-DRV_ImgsModeConfig      *DRV_imgsGetModeConfig(int sensorMode)
+static DRV_ImgsModeConfig *DRV_imgsGetModeConfig_none(int sensorMode)
 {
-  return NULL;
+    return NULL;
 }
 
-DRV_ImgsIsifConfig      *DRV_imgsGetIsifConfig(int sensorMode)
+static DRV_ImgsIsifConfig *DRV_imgsGetIsifConfig_none(int sensorMode)
 {
-  return NULL;
+    return NULL;
 }
 
-DRV_ImgsIpipeConfig     *DRV_imgsGetIpipeConfig(int sensorMode, int vnfDemoCfg)
+static DRV_ImgsIpipeConfig *DRV_imgsGetIpipeConfig_none(int sensorMode, int vnfDemoCfg)
 {
-  return NULL;
+    return NULL;
 }
 
-DRV_ImgsH3aConfig       *DRV_imgsGetH3aConfig(int sensorMode, int aewbVendor)
+static DRV_ImgsH3aConfig *DRV_imgsGetH3aConfig_none(int sensorMode, int aewbVendor)
 {
-  return NULL;
+    return NULL;
 }
 
-DRV_ImgsLdcConfig       *DRV_imgsGetLdcConfig(int sensorMode, Uint16 ldcInFrameWidth, Uint16 ldcInFrameHeight)
+static DRV_ImgsLdcConfig *DRV_imgsGetLdcConfig_none(int sensorMode, Uint16 ldcInFrameWidth, Uint16 ldcInFrameHeight)
 {
-  return NULL;
+    return NULL;
 }
 
+int DRV_imgsSpecificSetting_none(void)
+{
+    return OSA_SOK;
+}
+
+int DRV_imgsBinMode_none(Bool enable)
+{
+    return OSA_SOK;
+}
+
+DRV_ImgsFuncs noneImgsFuncs = 
+{
+    .imgsOpen            = DRV_imgsOpen_none,
+    .imgsClose           = DRV_imgsClose_none,
+    .imgsSetMirror       = NULL,
+    .imgsGetImagerName   = DRV_imgsGetImagerName_none,
+    .imgsSetAgain        = DRV_imgsSetAgain_none,
+    .imgsSetDgain        = DRV_imgsSetDgain_none,
+    .imgsSetEshutter     = DRV_imgsSetEshutter_none,
+    .imgsSetDcSub        = DRV_imgsSetDcSub_none,
+    .imgsBinEnable       = DRV_imgsBinEnable_none,
+    .imgsBinMode         = DRV_imgsBinMode_none,
+    .imgsSetFramerate    = DRV_imgsSetFramerate_none,
+    .imgsSet50_60Hz      = DRV_imgsSet50_60Hz_none, 
+    .imgsEnable          = DRV_imgsEnable_none,
+    .imgsGetModeConfig   = DRV_imgsGetModeConfig_none,
+    .imgsGetIsifConfig   = DRV_imgsGetIsifConfig_none,
+    .imgsGetH3aConfig    = DRV_imgsGetH3aConfig_none,
+    .imgsGetIpipeConfig  = DRV_imgsGetIpipeConfig_none,
+    .imgsGetLdcConfig    = DRV_imgsGetLdcConfig_none
+};
 

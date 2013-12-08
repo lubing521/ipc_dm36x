@@ -1,7 +1,7 @@
 
 #include <drv_imgs.h>
 
-DRV_ImgsIsifConfig gDRV_imgsIsifConfig_Common = {
+DRV_ImgsIsifConfig gDRV_imgsIsifConfig_Common_IMX122 = {
 
   .ccdcParams = {
   
@@ -44,8 +44,8 @@ DRV_ImgsIsifConfig gDRV_imgsIsifConfig_Common = {
     },
     
     .clamp = {
-      .enable = FALSE,
-      .dcOffset = -240, // black level
+      .enable = TRUE,
+      .dcOffset = -246, // black level
     },
     
     .lsc = {

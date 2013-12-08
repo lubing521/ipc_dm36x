@@ -1,157 +1,174 @@
-
 #include "drv_imgs_MT9M034_1.2MP.h"
 #include <drv_gpio.h>
 
 DRV_ImgsObj gDRV_imgsObj;
 
-#define INPUT_CLK 24  //27MHz //24
-#define PLL_M  37//37//30     //22      //30
-#define PLL_N  1
-#define PLL_P1 2
-#define PLL_P2 6//16     // 8      //16
+#define INPUT_CLK 24
+#define PLL_M     37
+#define PLL_N     2
+#define PLL_P1    1
+#define PLL_P2    6
 #define OUT_CLK ((INPUT_CLK * PLL_M) / (PLL_N * PLL_P1 * PLL_P2)) //74.25M //45M
 
-#define LINE_LENGTH (0x056E)//(0x9b8)  // 0x07D0 =  2000    0x0672 = 1650(MIN)
-#define ROW_TIME (LINE_LENGTH / OUT_CLK)  //26.936us  //44.444us
+#define LINE_LENGTH (0x056E)  // 0x07D0 =  2000    0x0672 = 1650(MIN)
+//#define ROW_TIME    (LINE_LENGTH / OUT_CLK)  //26.936us  //44.444us
+#define ROW_TIME    20  //26.936us  //44.444us
 
-#define FRAME_LENGTH (0x0852)//(0x03de)  // 0x0384 =  45M 25fps;  0x02EE = 45M 30fps   /* 0x03DE */ 
+#define FRAME_LENGTH (0x0852)  // 0x0384 =  45M 25fps;  0x02EE = 45M 30fps   /* 0x03DE */ 
 #define Y_ADDR_END   (0x03C5)  // 0x02E1 = 736; 0x03C5 =  964; 
 
 #define DGAIN_STEP 3125
-#define DGAIN_MUTI 0x40 //0b00100000: *1, 0b00110000: *1.5
+#define DGAIN_MUTI 0x40 // 0b00100000: *1, 0b00110000: *1.5
 
-int DRV_imgsOpen(DRV_ImgsConfig *config)
+int DRV_imgsCheckId_MT9M034();
+int DRV_imgsEnable_MT9M034(Bool enable);
+
+int DRV_imgsOpen_MT9M034(DRV_ImgsConfig *config)
 {
-  int status, retry=10;
-  Uint16 width, height;
+    int status, retry=10;
+    Uint16 width, height;
 
-  memset(&gDRV_imgsObj, 0, sizeof(gDRV_imgsObj));
+    memset(&gDRV_imgsObj, 0, sizeof(gDRV_imgsObj));
 
-  DRV_imgGetWidthHeight(config->sensorMode, &width, &height);
+    DRV_imgGetWidthHeight(config->sensorMode, &width, &height);
 
-  width+=IMGS_H_PAD;
-  height+=IMGS_V_PAD;
+    if (config->sensorMode == DRV_IMGS_SENSOR_MODE_1280x840)
+    {
+        gImgsVPad = 120;
+    }
+    else
+    {
+        gImgsVPad = 4;
+    }
+    //printf("\n-------gImgs_v_Pad = %d\n", gImgsVPad);
 
-  DRV_imgsCalcFrameTime(config->fps, width, height, config->binEnable);
+    width  += IMGS_H_PAD;
+    height += IMGS_V_PAD;
 
-  status = DRV_i2cOpen(&gDRV_imgsObj.i2cHndl, IMGS_I2C_ADDR);
-  if(status!=OSA_SOK) {
-    OSA_ERROR("DRV_i2cOpen()\n");
+    DRV_imgsCalcFrameTime_MT9M034(config->fps, width, height, config->binEnable);
+
+    status = DRV_i2cOpen(&gDRV_imgsObj.i2cHndl, IMGS_I2C_ADDR);
+    if (status != OSA_SOK)
+    {
+        OSA_ERROR("DRV_i2cOpen()\n");
+        return status;
+    }
+
+#ifdef BOARD_AP_IPNC
+    DRV_gpioSetMode(IMGS_RESET_GPIO, DRV_GPIO_DIR_OUT);
+    DRV_gpioClr(IMGS_RESET_GPIO);
+    OSA_waitMsecs(100);
+    DRV_gpioSet(IMGS_RESET_GPIO);
+    OSA_waitMsecs(100);
+#endif
+
+    do
+    {
+        status = DRV_imgsCheckId_MT9M034();
+        if (status == OSA_SOK)
+        {
+            break;
+        }
+        OSA_waitMsecs(10);
+    } while (retry--);
+
+    if (status != OSA_SOK)
+    {
+        OSA_ERROR("DRV_imgsCheckId()\n");
+        DRV_i2cClose(&gDRV_imgsObj.i2cHndl);
+        return status;
+    }
+    return 0;
+}
+
+int DRV_imgsClose_MT9M034()
+{
+    int status = DRV_imgsEnable_MT9M034(FALSE);
+    status |= DRV_i2cClose(&gDRV_imgsObj.i2cHndl);
     return status;
-  }
-
-  #ifdef BOARD_AP_IPNC
-  DRV_gpioSetMode(IMGS_RESET_GPIO, DRV_GPIO_DIR_OUT);
-  DRV_gpioSet(IMGS_RESET_GPIO);
-  DRV_gpioClr(IMGS_RESET_GPIO);
-  OSA_waitMsecs(50);
-  DRV_gpioSet(IMGS_RESET_GPIO);
-  OSA_waitMsecs(50);
-  #endif
-
-  do {
-    status = DRV_imgsCheckId();
-    if(status==OSA_SOK)
-      break;
-    OSA_waitMsecs(10);
-  } while(retry--);
-
-  if(status!=OSA_SOK) {
-    OSA_ERROR("DRV_imgsCheckId()\n");
-    DRV_i2cClose(&gDRV_imgsObj.i2cHndl);
-    return status;
-  }
-
-  return 0;
 }
 
-int DRV_imgsClose()
+char *DRV_imgsGetImagerName_MT9M034()
 {
-  int status;
-
-  status = DRV_imgsEnable(FALSE);
-  status |= DRV_i2cClose(&gDRV_imgsObj.i2cHndl);
-
-  return status;
+    return "APTINA_MT9M034_1.2MP";
 }
-
-char* DRV_imgsGetImagerName()
-{
-  return "APTINA_MT9M034_1.2MP";
-}
-
 
 static int mt9m034_enable_AE_for_linear_mode(void)
 {
-	Uint16 regAddr[20];
-	Uint16 regValue[20];
-	Uint32 reg_cnt;
-	int i = 0;
-	int status = 0;
-	
-i=0;
-	// [Enable AE and Load Optimized Settings For Linear Mode]1: Load=Enable Embedded Data and Stats
-	// [Enable Embedded Data and Stats]1: FIELD_WR=EMBEDDED_DATA_CTRL, EMBEDDED_STATS_EN, 0x0001
-	regAddr[i] = 0x3064; regValue[i] = 0x1982; i++; 	// EMBEDDED_DATA_CTRL
-	// [Enable Embedded Data and Stats]2: FIELD_WR=EMBEDDED_DATA_CTRL, EMBEDDED_DATA, 0x0001
-	regAddr[i] = 0x3064; regValue[i] = 0x1982; i++; 	// EMBEDDED_DATA_CTRL
+    Uint16 regAddr[20];
+    Uint16 regValue[20];
+    Uint32 reg_cnt = 0;
+    int status = 0;
+    int i = 0;
 
-   regAddr[i] = 0x306e; regValue[i] = 0x9011; i++;	//Dark Control = 1028
-	// [Enable AE and Load Optimized Settings For Linear Mode]2: Load=Linear Mode Devware Color Setup
-	regAddr[i] = 0x3058; regValue[i] = 0x003F; i++; 	// BLUE_GAIN
-	// [Enable AE and Load Optimized Settings For Linear Mode]3: REG=0x3100, 0x001B	
-	regAddr[i] = 0x3100; regValue[i] = 0x0000; i++; 	// AE_CTRL_REG
-	// [Enable AE and Load Optimized Settings For Linear Mode]4: REG=0x3112, 0x029F	
-	regAddr[i] = 0x3112; regValue[i] = 0x029F; i++; 	// AE_DCG_EXPOSURE_HIGH_REG
-	// [Enable AE and Load Optimized Settings For Linear Mode]5: REG=0x3114, 0x008C	
-	regAddr[i] = 0x3114; regValue[i] = 0x008C; i++; 	// AE_DCG_EXPOSURE_LOW_REG
-	// [Enable AE and Load Optimized Settings For Linear Mode]6: REG=0x3116, 0x02C0	
-	regAddr[i] = 0x3116; regValue[i] = 0x02C0; i++; 	// AE_DCG_GAIN_FACTOR_REG
-	// [Enable AE and Load Optimized Settings For Linear Mode]7: REG=0x3118, 0x005B	
-	regAddr[i] = 0x3118; regValue[i] = 0x005B; i++; 	// AE_DCG_GAIN_FACTOR_INV_REG
-	// [Enable AE and Load Optimized Settings For Linear Mode]8: REG=0x3102, 0x0384	
-	regAddr[i] = 0x3102; regValue[i] = 0x0384; i++; 	// AE_LUMA_TARGET_REG
-	// [Enable AE and Load Optimized Settings For Linear Mode]9: REG=0x3104, 0x1000	
-	regAddr[i] = 0x3104; regValue[i] = 0x1000; i++; 	// AE_HIST_TARGET_REG
-	// [Enable AE and Load Optimized Settings For Linear Mode]10: REG=0x3126, 0x0080	
-	regAddr[i] = 0x3126; regValue[i] = 0x0080; i++; 	// AE_ALPHA_V1_REG
-	// [Enable AE and Load Optimized Settings For Linear Mode]11: REG=0x311C, 0x03DD	
-	regAddr[i] = 0x311C; regValue[i] = 0x03DD; i++; 	// AE_MAX_EXPOSURE_REG
-	// [Enable AE and Load Optimized Settings For Linear Mode]12: REG=0x311E, 0x0002	
-	regAddr[i] = 0x311E; regValue[i] = 0x0002; i++; 	// AE_MIN_EXPOSURE_REG
+    // [Enable AE and Load Optimized Settings For Linear Mode]1: Load=Enable Embedded Data and Stats
+    // [Enable Embedded Data and Stats]1: FIELD_WR=EMBEDDED_DATA_CTRL, EMBEDDED_STATS_EN, 0x0001
+    regAddr[i] = 0x3064; regValue[i] = 0x1982; i++;     // EMBEDDED_DATA_CTRL
+    // [Enable Embedded Data and Stats]2: FIELD_WR=EMBEDDED_DATA_CTRL, EMBEDDED_DATA, 0x0001
+    regAddr[i] = 0x3064; regValue[i] = 0x1982; i++;     // EMBEDDED_DATA_CTRL
 
-	status = DRV_i2c16Write16(&gDRV_imgsObj.i2cHndl, regAddr, regValue, i);
-	if(status!=OSA_SOK) {
-		OSA_ERROR("DRV_i2c16Write16()\n");
-		return status;
-	}
-	return status;
+    regAddr[i] = 0x306e; regValue[i] = 0x9011; i++;  //Dark Control = 1028
+    // [Enable AE and Load Optimized Settings For Linear Mode]2: Load=Linear Mode Devware Color Setup
+    regAddr[i] = 0x3058; regValue[i] = 0x003F; i++;     // BLUE_GAIN
+    // [Enable AE and Load Optimized Settings For Linear Mode]3: REG=0x3100, 0x001B	
+    regAddr[i] = 0x3100; regValue[i] = 0x0000; i++;     // AE_CTRL_REG
+    // [Enable AE and Load Optimized Settings For Linear Mode]4: REG=0x3112, 0x029F	
+    regAddr[i] = 0x3112; regValue[i] = 0x029F; i++;     // AE_DCG_EXPOSURE_HIGH_REG
+    // [Enable AE and Load Optimized Settings For Linear Mode]5: REG=0x3114, 0x008C	
+    regAddr[i] = 0x3114; regValue[i] = 0x008C; i++;     // AE_DCG_EXPOSURE_LOW_REG
+    // [Enable AE and Load Optimized Settings For Linear Mode]6: REG=0x3116, 0x02C0	
+    regAddr[i] = 0x3116; regValue[i] = 0x02C0; i++;     // AE_DCG_GAIN_FACTOR_REG
+    // [Enable AE and Load Optimized Settings For Linear Mode]7: REG=0x3118, 0x005B	
+    regAddr[i] = 0x3118; regValue[i] = 0x005B; i++;     // AE_DCG_GAIN_FACTOR_INV_REG
+    // [Enable AE and Load Optimized Settings For Linear Mode]8: REG=0x3102, 0x0384	
+    regAddr[i] = 0x3102; regValue[i] = 0x0384; i++;     // AE_LUMA_TARGET_REG
+    // [Enable AE and Load Optimized Settings For Linear Mode]9: REG=0x3104, 0x1000	
+    regAddr[i] = 0x3104; regValue[i] = 0x1000; i++;     // AE_HIST_TARGET_REG
+    // [Enable AE and Load Optimized Settings For Linear Mode]10: REG=0x3126, 0x0080	
+    regAddr[i] = 0x3126; regValue[i] = 0x0080; i++;     // AE_ALPHA_V1_REG
+    // [Enable AE and Load Optimized Settings For Linear Mode]11: REG=0x311C, 0x03DD	
+    regAddr[i] = 0x311C; regValue[i] = 0x03DD; i++;     // AE_MAX_EXPOSURE_REG
+    // [Enable AE and Load Optimized Settings For Linear Mode]12: REG=0x311E, 0x0002	
+    regAddr[i] = 0x311E; regValue[i] = 0x0002; i++;     // AE_MIN_EXPOSURE_REG
+
+    status = DRV_i2c16Write16(&gDRV_imgsObj.i2cHndl, regAddr, regValue, i);
+    if (status != OSA_SOK)
+    {
+        OSA_ERROR("DRV_i2c16Write16()\n");
+        return status;
+    }
+    return status;
 
 }
 
 int mt9m034_enable_hdr_mode(int enable, int compand_mode)
 {
-	Uint16 regAddr[2];
-	Uint16 regValue[2];
-	int status = 0;
+    Uint16 regAddr[2];
+    Uint16 regValue[2];
+    int status = 0;
 
-	regAddr[0] = 0x3082;
-	if(enable){
-		regValue[0] = 0x28;
-	}else {
-		regValue[0] = 0x29;
-	}
-	regAddr[1] = 0x31D0;
-	regValue[1] = compand_mode;/* 14bit, 12bit or disable */
+    regAddr[0] = 0x3082;
+    if (enable)
+    {
+        regValue[0] = 0x28;
+    }
+    else
+    {
+        regValue[0] = 0x29;
+    }
+    regAddr[1]  = 0x31D0;
+    regValue[1] = compand_mode;/* 14bit, 12bit or disable */
 
-	status = DRV_i2c16Write16(&gDRV_imgsObj.i2cHndl, regAddr, regValue, 2);
-	if(status!=OSA_SOK) {
-		OSA_ERROR("DRV_i2c16Write16()\n");
-		return status;
-	}
-	return status;
+    status = DRV_i2c16Write16(&gDRV_imgsObj.i2cHndl, regAddr, regValue, 2);
+    if (status != OSA_SOK)
+    {
+        OSA_ERROR("DRV_i2c16Write16()\n");
+        return status;
+    }
+    return status;
 
 }
+
 static int mt9m034_linear_init_regs(void)
 {
     Uint16 regAddr[1000];
@@ -167,7 +184,7 @@ static int mt9m034_linear_init_regs(void)
 
     regAddr[i] = 0x301A; regValue[i] = 0x0001; i++;     // RESET_REGISTER
     status = DRV_i2c16Write16(&gDRV_imgsObj.i2cHndl, regAddr, regValue, i);
-    if(status != OSA_SOK)
+    if (status != OSA_SOK)
     {
         OSA_ERROR("DRV_i2c16Write16()\n");
         return status;
@@ -175,10 +192,10 @@ static int mt9m034_linear_init_regs(void)
 
     i = 0;
     OSA_waitMsecs(200);
-    
+
     regAddr[i] = 0x301A; regValue[i] = 0x10D8; i++;     // RESET_REGISTER
     status = DRV_i2c16Write16(&gDRV_imgsObj.i2cHndl, regAddr, regValue, i);
-    if(status != OSA_SOK)
+    if (status != OSA_SOK)
     {
         OSA_ERROR("DRV_i2c16Write16()\n");
         return status;
@@ -186,7 +203,7 @@ static int mt9m034_linear_init_regs(void)
 
     i = 0;
     OSA_waitMsecs(200);
-    
+
     // [A-1000ERS Rev 4 Combined Sequencer April 1 2011]1: REG=0x3088,    0x8000  
     regAddr[i] = 0x3088; regValue[i] = 0x8000; i++;     // SEQ_CTRL_PORT
     // [A-1000ERS Rev 4 Combined Sequencer April 1 2011]2: REG=0x3086,    0x0025    
@@ -403,7 +420,7 @@ static int mt9m034_linear_init_regs(void)
     regAddr[i] = 0x3086; regValue[i] = 0x0017; i++;     // SEQ_DATA_PORT
 
     status = DRV_i2c16Write16(&gDRV_imgsObj.i2cHndl, regAddr, regValue, i);
-    if(status != OSA_SOK)
+    if (status != OSA_SOK)
     {
         OSA_ERROR("DRV_i2c16Write16()\n");
         return status;
@@ -427,7 +444,7 @@ static int mt9m034_linear_init_regs(void)
     regAddr[i] = 0x3086; regValue[i] = 0x2828; i++;     // SEQ_DATA_PORT
     // [A-1000ERS Rev 4 Combined Sequencer April 1 2011]110: REG=0x3086,  0x0517  
     regAddr[i] = 0x3086; regValue[i] = 0x0517; i++;     // SEQ_DATA_PORT
-    
+
     // [A-1000ERS Rev 4 Combined Sequencer April 1 2011]111: REG=0x3086,  0x1A26
     regAddr[i] = 0x3086; regValue[i] = 0x1A26; i++;     // SEQ_DATA_PORT
     // [A-1000ERS Rev 4 Combined Sequencer April 1 2011]112: REG=0x3086,  0x6017  
@@ -616,7 +633,7 @@ static int mt9m034_linear_init_regs(void)
     regAddr[i] = 0x3086; regValue[i] = 0x0225; i++;     // SEQ_DATA_PORT
 
     status = DRV_i2c16Write16(&gDRV_imgsObj.i2cHndl, regAddr, regValue, i);
-    if(status != OSA_SOK)
+    if (status != OSA_SOK)
     {
         OSA_ERROR("DRV_i2c16Write16()\n");
         return status;
@@ -791,7 +808,7 @@ static int mt9m034_linear_init_regs(void)
     regAddr[i] = 0x309E; regValue[i] = 0x018A; i++;     // RESERVED_MFR_309E
 
     status = DRV_i2c16Write16(&gDRV_imgsObj.i2cHndl, regAddr, regValue, i);
-    if(status != OSA_SOK)
+    if (status != OSA_SOK)
     {
         OSA_ERROR("DRV_i2c16Write16()\n");
         return status;
@@ -805,7 +822,6 @@ static int mt9m034_linear_init_regs(void)
     regAddr[i] = 0x301A; regValue[i] = 0x10D8; i++;     // RESET_REGISTER
     // [Linear Mode Setup]2: FIELD_WR=OPERATION_MODE_CTRL, 0x0029 
     regAddr[i] = 0x3082; regValue[i] = 0x0029; i++;     // OPERATION_MODE_CTRL
-
 
     // [A-1000ERS Rev3 Optimized settings May 9 2011]
     // [A-1000ERS Rev3 Optimized settings]1: REG= 0x301E, 0x00C8 
@@ -844,15 +860,15 @@ static int mt9m034_linear_init_regs(void)
     // [A-1000ERS Rev3 Optimized settings]17: REG=0x30E8,   0x8050
     regAddr[i] = 0x30E8; regValue[i] = 0x8050; i++;     // RESERVED_MFR_30E8
 
-    
+
     // [Column Retriggering at start up]
     regAddr[i] = 0x30B0; regValue[i] = 0x1300; i++;     // DIGITAL_TEST 
     regAddr[i] = 0x30D4; regValue[i] = 0xE007; i++;     // COLUMN_CORRECTION 
     regAddr[i] = 0x30BA; regValue[i] = 0x0008; i++;     // DIGITAL_CTRL  
     regAddr[i] = 0x301A; regValue[i] = 0x10DC; i++;     // RESET_REGISTER
-    
+
     status = DRV_i2c16Write16(&gDRV_imgsObj.i2cHndl, regAddr, regValue, i);
-    if(status != OSA_SOK)
+    if (status != OSA_SOK)
     {
         OSA_ERROR("DRV_i2c16Write16()\n");
         return status;
@@ -863,7 +879,7 @@ static int mt9m034_linear_init_regs(void)
 
     regAddr[i] = 0x301A; regValue[i] = 0x10D8; i++;  // RESET_REGISTER
     status = DRV_i2c16Write16(&gDRV_imgsObj.i2cHndl, regAddr, regValue, i);
-    if(status != OSA_SOK)
+    if (status != OSA_SOK)
     {
         OSA_ERROR("DRV_i2c16Write16()\n");
         return status;
@@ -894,7 +910,7 @@ static int mt9m034_linear_init_regs(void)
     regAddr[i] = 0x300A; regValue[i] = FRAME_LENGTH; i++;   // FRAME_LENGTH_LINES
     // [Register Wizard Defaults]7: REG= 0x300C, 0x0672E  
     regAddr[i] = 0x300C; regValue[i] = LINE_LENGTH; i++;    // LINE_LENGTH_PCK
- 
+
     // [Linear Mode Full Resolution]3: IF_SERIAL=0xCC, 0x13, 0xF0, 8:16, ==0x0C, LOAD= Enable Serial HiSpi Mode ,ELSELOAD = Enable Parallel Mode 
     // [Enable Parallel Mode]1: REG=0x301A, 0x10D8 
     regAddr[i] = 0x301A; regValue[i] = 0x10D8; i++;     // RESET_REGISTER
@@ -903,12 +919,12 @@ static int mt9m034_linear_init_regs(void)
     // [Enable Parallel Mode]3: Load=PLL Enabled 27Mhz to 74.25Mhz
     regAddr[i] = 0x302C; regValue[i] = PLL_P1; i++;     // VT_SYS_CLK_DIV    P1 divider in PLL
     regAddr[i] = 0x302A; regValue[i] = PLL_P2; i++;     // VT_PIX_CLK_DIV     P2 clock divider in PLL
-    regAddr[i] = 0x302E; regValue[i] = PLL_N + 1; i++;  // PRE_PLL_CLK_DIV    shows the n+1 value
-    regAddr[i] = 0x3030; regValue[i] = PLL_M * 2; i++;  // PLL_MULTIPLIER      shows 2m value
+    regAddr[i] = 0x302E; regValue[i] = PLL_N; i++;  // PRE_PLL_CLK_DIV    shows the n+1 value
+    regAddr[i] = 0x3030; regValue[i] = PLL_M; i++;  // PLL_MULTIPLIER      shows 2m value
     regAddr[i] = 0x30B0; regValue[i] = 0x1300; i++;     // DIGITAL_TEST
 
     status = DRV_i2c16Write16(&gDRV_imgsObj.i2cHndl, regAddr, regValue, i);
-    if(status != OSA_SOK)
+    if (status != OSA_SOK)
     {
         OSA_ERROR("DRV_i2c16Write16()\n");
         return status;
@@ -919,96 +935,172 @@ static int mt9m034_linear_init_regs(void)
 
     // [Enable Embedded Data and Stats]
     regAddr[i] = 0x3064; regValue[i] = 0x1982; i++;     // EMBEDDED_DATA_CTRL
-    regAddr[i] = 0x3064; regValue[i] = 0x1982; i++;     // EMBEDDED_DATA_CTRL
+    regAddr[i] = 0x3064; regValue[i] = 0x1982; i++;     // EMBEDDED_DATA_CTRL    
     // [Linear Mode Devware Color Setup]
-    regAddr[i] = 0x3058; regValue[i] = 0x003F; i++;     // BLUE_GAIN
+    regAddr[i] = 0x3056; regValue[i] = 0x0020; i++;     // BLUE_GAIN
+    regAddr[i] = 0x3058; regValue[i] = 0x0020; i++;     // BLUE_GAIN  
+    regAddr[i] = 0x305A; regValue[i] = 0x0020; i++;     // BLUE_GAIN
+    regAddr[i] = 0x305C; regValue[i] = 0x0020; i++;     // BLUE_GAIN
     //Enable BLC
-    //regAddr[i] = 0x30EA; regValue[i] = 0x8C00; i++;   // Enable BLC  tYs comment
+    regAddr[i] = 0x30EA; regValue[i] = 0x8C00; i++;   // Enable BLC  tYs comment
 
     // [Linear Mode Full Resolution]8: REG= 0x301A, 0x10D
     regAddr[i] = 0x301A; regValue[i] = 0x10DC; i++;     // RESET_REGISTER
 
     status = DRV_i2c16Write16(&gDRV_imgsObj.i2cHndl, regAddr, regValue, i);
-    if(status != OSA_SOK)
+    if (status != OSA_SOK)
     {
         OSA_ERROR("DRV_i2c16Write16()\n");
         return status;
     }
 
     return status;
-}	
+}   
 
-
-
-int DRV_imgsSpecificSetting(void)
+int DRV_imgsSetMirror_MT9M034(Bool flipH, Bool flipV)
 {
-	Uint16 regAddr[50];
-	Uint16 regValue[50];
-   int i      = 0;
-   int status = 0;
+    int status = OSA_SOK;
+    Uint16 regAddr  = 0;
+    Uint16 regValue = 0;
+
+    regAddr = MT9M034_READ_MODE;
+    if (flipH) 
+    {
+        regValue &= ~(1 << 14);
+    }
+    else
+    {
+        regValue |= 1 << 14;
+    }
+
+    if (flipV) 
+    {
+        regValue &= ~(1 << 15);
+    }
+    else
+    {
+        regValue |= 1 << 15;
+    }
+    status += DRV_i2c16Write16(&gDRV_imgsObj.i2cHndl, &regAddr, &regValue, 1);
+    
+    //Disable streaming (R0x301A[2]=0)
+    regAddr  = MT9M034_ENABLE_STREAMING;
+    regValue = 0x19d4 & ~(1 << 2);
+    status += DRV_i2c16Write16(&gDRV_imgsObj.i2cHndl, &regAddr, &regValue, 1);
+   
+    //Disable column correction (R0x30D4[15]=0)
+    regAddr  = 0x30D4;
+    regValue = 0xE007 & ~(1 << 15);
+    status += DRV_i2c16Write16(&gDRV_imgsObj.i2cHndl, &regAddr, &regValue, 1);
+
+    //Enable streaming (R0x301A[2]=1)
+    regAddr  = MT9M034_ENABLE_STREAMING;
+    regValue = 0x19d4;
+    status += DRV_i2c16Write16(&gDRV_imgsObj.i2cHndl, &regAddr, &regValue, 1);
+
+    //Wait one frame time, or more
+    OSA_waitMsecs(50);
+
+    //Disable streaming (R0x301A[2]=0)
+    regAddr  = MT9M034_ENABLE_STREAMING;
+    regValue = 0x19d4 & ~(1 << 2);
+    status += DRV_i2c16Write16(&gDRV_imgsObj.i2cHndl, &regAddr, &regValue, 1);
+
+    //Enable column correction (R30D4[15]=1)
+    regAddr  = 0x30D4;
+    regValue = 0xE007;
+    status += DRV_i2c16Write16(&gDRV_imgsObj.i2cHndl, &regAddr, &regValue, 1);
+
+    //Enable streaming (R0x301A[2]=1)
+    regAddr  = MT9M034_ENABLE_STREAMING;
+    regValue = 0x19d4;
+    status += DRV_i2c16Write16(&gDRV_imgsObj.i2cHndl, &regAddr, &regValue, 1);
+    
+    //Bayer resampling must be enabled, by setting bit 4 of register 0 x 306E[4] = 1.
+    regAddr  = 0x306E;
+    regValue = 0x9011;
+    status += DRV_i2c16Write16(&gDRV_imgsObj.i2cHndl, &regAddr, &regValue, 1);
+
+    if (status != OSA_SOK)
+    {
+        OSA_ERROR("DRV_imgsSetMirror Error!!!\n");
+        return status;
+    }
+    
+    return OSA_SOK;
+}
+
+int DRV_imgsSpecificSetting_MT9M034(void)
+{
+    Uint16 regAddr[50];
+    Uint16 regValue[50];
+    int i      = 0;
+    int status = 0;
 
 #if 0 //HDR mode
-	regAddr[i] = 0x301a; regValue[i] = 0x58; i++;   // Disable Streaming
+    regAddr[i] = 0x301a; regValue[i] = 0x58; i++;   // Disable Streaming
 
-	regAddr[i] = 0x3002; regValue[i] = 0x002; i++;	//Row Start (A) = 2
-	regAddr[i] = 0x3004; regValue[i] = 0x000; i++;	//Column Start (A) = 0
-	regAddr[i] = 0x3006; regValue[i] = 0x2d1; i++;	//Row End (A) = 969
-	regAddr[i] = 0x3008; regValue[i] = 0x4ff; i++;	//Column End (A) = 1283
-	regAddr[i] = 0x300A; regValue[i] = 0x02ee; i++;	//Frame Lines (A) = 995
-	regAddr[i] = 0x300C; regValue[i] = LINE_LENGTH; i++;	//Line Length = 1650
-	regAddr[i] = 0x3012; regValue[i] = 0x0174; i++;	//Coarse_IT_Time (A) = 745
-	regAddr[i] = 0x3014; regValue[i] = 0x0000; i++;	//Fine_IT_Time (A) = 701
-	regAddr[i] = 0x3016; regValue[i] = 0x0174; i++;	//Coarse_IT_Time (B) = 745
-	regAddr[i] = 0x3018; regValue[i] = 0x0000; i++;	//Fine_IT_Time (B) = 701
-	regAddr[i] = 0x3028; regValue[i] = 0x10; i++;	//ROW_SPEED = 16
-	regAddr[i] = 0x302A; regValue[i] = PLL_P2;    i++;	//VT_PIX_CLK_DIV = 16
-	regAddr[i] = 0x302C; regValue[i] = PLL_P1;    i++;	//VT_SYS_CLK_DIV = 1
-	regAddr[i] = 0x302E; regValue[i] = PLL_N + 1; i++;	//PRE_PLL_CLK_DIV = 2
-	regAddr[i] = 0x3030; regValue[i] = PLL_M * 2; i++;	//PLL_MULTIPLIER = 44
-	regAddr[i] = 0x3032; regValue[i] = 0x0000; i++;	//SCALING_MODE = 2
-	regAddr[i] = 0x3040; regValue[i] = 0x0000; i++;	//READ_MODE = 0
-	regAddr[i] = 0x3044; regValue[i] = 0x0404; i++;	//Dark Control = 1028
+    regAddr[i] = 0x3002; regValue[i] = 0x002; i++;  //Row Start (A) = 2
+    regAddr[i] = 0x3004; regValue[i] = 0x000; i++;  //Column Start (A) = 0
+    regAddr[i] = 0x3006; regValue[i] = 0x2d1; i++;  //Row End (A) = 969
+    regAddr[i] = 0x3008; regValue[i] = 0x4ff; i++;  //Column End (A) = 1283
+    regAddr[i] = 0x300A; regValue[i] = 0x02ee; i++; //Frame Lines (A) = 995
+    regAddr[i] = 0x300C; regValue[i] = LINE_LENGTH; i++;    //Line Length = 1650
+    regAddr[i] = 0x3012; regValue[i] = 0x0174; i++; //Coarse_IT_Time (A) = 745
+    regAddr[i] = 0x3014; regValue[i] = 0x0000; i++; //Fine_IT_Time (A) = 701
+    regAddr[i] = 0x3016; regValue[i] = 0x0174; i++; //Coarse_IT_Time (B) = 745
+    regAddr[i] = 0x3018; regValue[i] = 0x0000; i++; //Fine_IT_Time (B) = 701
+    regAddr[i] = 0x3028; regValue[i] = 0x10; i++;   //ROW_SPEED = 16
+    regAddr[i] = 0x302A; regValue[i] = PLL_P2;    i++;  //VT_PIX_CLK_DIV = 16
+    regAddr[i] = 0x302C; regValue[i] = PLL_P1;    i++;  //VT_SYS_CLK_DIV = 1
+    regAddr[i] = 0x302E; regValue[i] = PLL_N + 1; i++;  //PRE_PLL_CLK_DIV = 2
+    regAddr[i] = 0x3030; regValue[i] = PLL_M * 2; i++;  //PLL_MULTIPLIER = 44
+    regAddr[i] = 0x3032; regValue[i] = 0x0000; i++; //SCALING_MODE = 2
+    regAddr[i] = 0x3040; regValue[i] = 0x0000; i++; //READ_MODE = 0
+    regAddr[i] = 0x3044; regValue[i] = 0x0404; i++; //Dark Control = 1028
 
-	regAddr[i] = 0x305E; regValue[i] = 0x0020; i++;	//Global gain = 1028
+    regAddr[i] = 0x305E; regValue[i] = 0x0020; i++; //Global gain = 1028
 
-	regAddr[i] = 0x3064; regValue[i] = 0x1982; i++;	//Dark Control = 1028
+    regAddr[i] = 0x3064; regValue[i] = 0x1982; i++; //Dark Control = 1028
 
-	regAddr[i] = 0x306e; regValue[i] = 0x9011; i++;	//Dark Control = 1028
+    regAddr[i] = 0x306e; regValue[i] = 0x9011; i++; //Dark Control = 1028
 
-	regAddr[i] = 0x3082; regValue[i] = 0x28; i++;	//Column Start (B) = 0 //
-	regAddr[i] = 0x3084; regValue[i] = 0x28; i++;	//Column Start (B) = 0
-	regAddr[i] = 0x308A; regValue[i] = 0x00; i++;	//Column Start (B) = 0
-	regAddr[i] = 0x308C; regValue[i] = 0x0002; i++;	//Row Start (B) = 2
-	regAddr[i] = 0x308E; regValue[i] = 0x4ff; i++;	//Column End (B) = 1283
-	regAddr[i] = 0x3090; regValue[i] = 0x2d1; i++;	//Row End (B) = 969
-	regAddr[i] = 0x30A6; regValue[i] = 0x01; i++;	//Y Odd Inc. (A) = 1
-	regAddr[i] = 0x30A8; regValue[i] = 0x01; i++;	//Y Odd Inc. (B) = 1
-	regAddr[i] = 0x30AA; regValue[i] = 0x02ee; i++;	//Frame Lines (B) = 995
-	regAddr[i] = 0x30B0; regValue[i] = 0x1000; i++;	//DIGITAL_TEST = 4096
+    regAddr[i] = 0x3082; regValue[i] = 0x28; i++;   //Column Start (B) = 0 //
+    regAddr[i] = 0x3084; regValue[i] = 0x28; i++;   //Column Start (B) = 0
+    regAddr[i] = 0x308A; regValue[i] = 0x00; i++;   //Column Start (B) = 0
+    regAddr[i] = 0x308C; regValue[i] = 0x0002; i++; //Row Start (B) = 2
+    regAddr[i] = 0x308E; regValue[i] = 0x4ff; i++;  //Column End (B) = 1283
+    regAddr[i] = 0x3090; regValue[i] = 0x2d1; i++;  //Row End (B) = 969
+    regAddr[i] = 0x30A6; regValue[i] = 0x01; i++;   //Y Odd Inc. (A) = 1
+    regAddr[i] = 0x30A8; regValue[i] = 0x01; i++;   //Y Odd Inc. (B) = 1
+    regAddr[i] = 0x30AA; regValue[i] = 0x02ee; i++; //Frame Lines (B) = 995
+    regAddr[i] = 0x30B0; regValue[i] = 0x1000; i++; //DIGITAL_TEST = 4096
 
-	regAddr[i] = 0x3100; regValue[i] = 0x0000; i++;	//DIGITAL_TEST = 4096
+    regAddr[i] = 0x3100; regValue[i] = 0x0000; i++; //DIGITAL_TEST = 4096
 
-	regAddr[i] = 0x301a; regValue[i] = 0x19d4; i++;   // Enable Streaming
+    regAddr[i] = 0x301a; regValue[i] = 0x19d4; i++;   // Enable Streaming
 
-	status = DRV_i2c16Write16(&gDRV_imgsObj.i2cHndl, regAddr, regValue, i);
-	if(status!=OSA_SOK) {
-		OSA_ERROR("DRV_i2c16Write16()\n");
-		return status;
-	}
+    status = DRV_i2c16Write16(&gDRV_imgsObj.i2cHndl, regAddr, regValue, i);
+    if (status!=OSA_SOK)
+    {
+        OSA_ERROR("DRV_i2c16Write16()\n");
+        return status;
+    }
+
 #else
     /* LINEAR MODE */
     /* Disable Streaming */
     regAddr[i]  = MT9M034_ENABLE_STREAMING;
     regValue[i] = 0x58;
     status = DRV_i2c16Write16(&gDRV_imgsObj.i2cHndl, regAddr, regValue, 1);
-    if(status != OSA_SOK)
+    if (status != OSA_SOK)
     {
         OSA_ERROR("DRV_i2c16Write16()\n");
         return status;
     }
-
+    
     status = mt9m034_linear_init_regs();
-    if(status != OSA_SOK)
+    if (status != OSA_SOK)
     {
         OSA_ERROR("mt9m034_linear_init_regs()\n");
         return status;
@@ -1019,7 +1111,7 @@ int DRV_imgsSpecificSetting(void)
     regAddr[i]  = MT9M034_ENABLE_STREAMING;
     regValue[i] = 0x19d4;
     status = DRV_i2c16Write16(&gDRV_imgsObj.i2cHndl, regAddr, regValue, 1);
-    if(status != OSA_SOK)
+    if (status != OSA_SOK)
     {
         OSA_ERROR("DRV_i2c16Write16()\n");
         return status;
@@ -1029,605 +1121,523 @@ int DRV_imgsSpecificSetting(void)
     return status;
 }
 
-
-
-int DRV_imgsSet50_60Hz(Bool is50Hz)
+int DRV_imgsSet50_60Hz_MT9M034(Bool is50Hz)
 {
-  int fps;
-
-  if( gDRV_imgsObj.curFrameTime.fps==30
-    ||gDRV_imgsObj.curFrameTime.fps==25
-    ) {
-
-    if(is50Hz)
-      fps = 25;
-    else
-      fps = 30;
-
-    DRV_imgsSetFramerate(25);//(fps);
-  }
-  return 0;
+    int fps = 0;
+    if ( gDRV_imgsObj.curFrameTime.fps == 30 || gDRV_imgsObj.curFrameTime.fps == 25)
+    {
+        if (is50Hz)
+        {
+            fps = 25;
+        }
+        else
+        {
+            fps = 30;
+        }
+        DRV_imgsSetFramerate_MT9M034(fps);
+    }
+    return 0;
 }
 
-int DRV_imgsSetFramerate(int fps)
+int DRV_imgsSetFramerate_MT9M034(int fps)
 {
-
-	Uint16 regAddr[2];
-	Uint16 regValue[2];
-	int i = 0;
-	int status = 0;
-	fps = 25 ;
-     
-  switch(fps){
+      Uint16 regAddr[2];
+      Uint16 regValue[2];
+      int i = 0;
+      int status = 0;
+       
+      switch(fps)
+      {
       case 30:
          i = 0;
-			regAddr[i] = 0x300A; regValue[i] = 0x03DE; i++; 	// FRAME_LENGTH_LINES
-			regAddr[i] = 0x300C; regValue[i] = 0x09C4; i++; 	// LINE_LENGTH_PCK
-        break;
+		 regAddr[i] = 0x300A; regValue[i] = 0x06EE; i++; 	// FRAME_LENGTH_LINES
+		 regAddr[i] = 0x300C; regValue[i] = 0x056E; i++; 	// LINE_LENGTH_PCK
+         break;
       case 25:
          i = 0;
-			regAddr[i] = 0x300A; regValue[i] = 0x095D; i++; 	// FRAME_LENGTH_LINES
-			regAddr[i] = 0x300C; regValue[i] = 0x056E; i++; 	// LINE_LENGTH_PCK
-        break;
-      case 15:
-         i = 0;
-			regAddr[i] = 0x300A; regValue[i] = 0x0562; i++; 	// FRAME_LENGTH_LINES
-			regAddr[i] = 0x300C; regValue[i] = 0x0DC4; i++; 	// LINE_LENGTH_PCK
-        break;
-      case 8:
-         i = 0;
-			regAddr[i] = 0x300A; regValue[i] = 0x0900; i++; 	// FRAME_LENGTH_LINES
-			regAddr[i] = 0x300C; regValue[i] = 0x0FB0; i++; 	// LINE_LENGTH_PCK
-        break;
+		 regAddr[i] = 0x300A; regValue[i] = 0x0851; i++; 	// FRAME_LENGTH_LINES
+		 regAddr[i] = 0x300C; regValue[i] = 0x056E; i++; 	// LINE_LENGTH_PCK
+         break;
       default: 
          break;
-       }
-
-	status = DRV_i2c16Write16(&gDRV_imgsObj.i2cHndl, regAddr, regValue, i);
-	if(status!=OSA_SOK) {
-		OSA_ERROR("DRV_i2c16Write16()\n");
-		return status;
-	}
-
-	return status;
-
-return 0;
+      }
+    
+      status = DRV_i2c16Write16(&gDRV_imgsObj.i2cHndl, regAddr, regValue, i);
+      if(status!=OSA_SOK) {
+          OSA_ERROR("DRV_i2c16Write16()\n");
+          return status;
+      }
+    
+      return status;
 }
 
-int DRV_imgsBinEnable(Bool enable)
+int DRV_imgsBinEnable_MT9M034(Bool enable)
 {
-  Uint8 regAddr[4];
-  Uint16 regValue[4];
-  int i, col_bin, row_bin, status=0;
-#if 0
-  if(!enable) {
-    col_bin = 0;
-    row_bin = 0;
-  } else {
-    col_bin = gDRV_imgsObj.curFrameTime.col_bin;
-    row_bin = gDRV_imgsObj.curFrameTime.row_bin;
-  }
+    return OSA_SOK;
+}
 
-  i=0;
-  regAddr[i]  = ROW_ADDR_MODE;
-  regValue[i] = (gDRV_imgsObj.curFrameTime.row_skip & 0x7 ) | ((row_bin & 0x3) << 4);
-  i++;
+int DRV_imgsBinMode_MT9M034(int binMode)
+{
+    return OSA_SOK;
+}
 
-  regAddr[i]  = COL_ADDR_MODE;
-  regValue[i] = (gDRV_imgsObj.curFrameTime.col_skip & 0x7 ) | ((col_bin & 0x3) << 4);
-  i++;
+int DRV_imgsSetAgain_MT9M034(int again, int setRegDirect)
+{
+    Uint16 regAddr[4];
+    Uint16 regValue[4];
+    int status=0;
+    regAddr[0] = MT9M034_DIGITAL_TEST;
+    regAddr[1] = MT9M034_DAC_LD_24_25;
+    regAddr[2] = MT9M034_AE_CTRL_REG;
+    regAddr[3] = MT9M034_GLOABL_GAIN;
 
-  status = DRV_i2c16Write16(&gDRV_imgsObj.i2cHndl, regAddr, regValue, i);
-  if(status!=OSA_SOK) {
-    OSA_ERROR("DRV_i2c16Write16()\n");
+    if (again >= 100000)
+    {
+        regValue[0] = 0x30;
+        regValue[1] = 0xD308;
+        regValue[2] = 4;
+        regValue[3] = (int)(100000/(28800.0/32));
+    }
+    else if (again >= 28800)
+    {
+        regValue[0] = 0x30;
+        regValue[1] = 0xD308;
+        regValue[2] = 4;
+        regValue[3] = (int)(again/(28800.0/32));
+    }
+    else if (again >= 23040)
+    {
+        regValue[0] = 0x30;
+        regValue[1] = 0xD208;
+        regValue[2] = 4;
+        regValue[3] = (int)(again/(23040.0/32));
+    }
+    else if (again >= 11520)
+    {
+        regValue[0] = 0x20;
+        regValue[1] = 0xD208;
+        regValue[2] = 4;
+        regValue[3] = (int)(again/(11520.0/32));
+    }
+    else if (again >= 5760)
+    {
+        regValue[0] = 0x10;
+        regValue[1] = 0xD208;
+        regValue[2] = 4;
+        regValue[3] = (int)(again/(5760.0/32));
+    }
+    else if (again >= 2880)
+    {
+        regValue[0] = 0x00;
+        regValue[1] = 0xD208;
+        regValue[2] = 4;
+        regValue[3] = (int)(again/(2880.0/32));
+    }
+    else if (again >= 2000)
+    {
+        regValue[0] = 0x10;
+        regValue[1] = 0xD208;
+        regValue[2] = 0;
+        regValue[3] = (int)(again/(2000.0/32));
+    }
+    else
+    {
+        regValue[0] = 0x00;
+        regValue[1] = 0xD208;
+        regValue[2] = 0;
+        regValue[3] = (int)(again/(1000.0/32));
+    }
+    if (regValue[3] > 255)  regValue[3] = 255;
+    //OSA_printf("------set a gain = %d, reg=%d, %d\n", again, regValue[0], (regValue[1]&0x0f00)>>8);
+
+    status = DRV_i2c16Write16(&gDRV_imgsObj.i2cHndl, regAddr, regValue, 4);
+    if(status!=OSA_SOK) {
+        OSA_ERROR("DRV_i2c16Write16()\n");
+        return status;
+    }
+
     return status;
-  }
-#endif
-  return status;
 }
 
-int DRV_imgsBinMode(int binMode)
+int DRV_imgsSetDgain_MT9M034(int dgain)
 {
-  Uint8 regAddr[4];
-  Uint16 regValue[4];
-  int i, status=0;
-#if 0
-  i=0;
-  regAddr[i]  = READ_MODE_2;
-  regValue[i] = binMode;
-  i++;
+    Uint16 regAddr[1];
+    Uint16 regValue[1];
+    int status=0;
+    regAddr[0] = MT9M034_GLOABL_GAIN;
+    regValue[0] = dgain >> 5;
+    if (regValue[0] > 255)  regValue[0] = 255;
 
+    //OSA_printf("------set d gain = %d, reg=%d\n", dgain, regValue[0]);
+    status = DRV_i2c16Write16(&gDRV_imgsObj.i2cHndl, regAddr, regValue, 1);
+    if (status != OSA_SOK)
+    {
+        OSA_ERROR("DRV_i2c16Write16()\n");
+        return status;
+    }
 
-  status = DRV_i2c16Write16(&gDRV_imgsObj.i2cHndl, regAddr, regValue, i);
-  if(status!=OSA_SOK) {
-    OSA_ERROR("DRV_i2c16Write16()\n");
     return status;
-  }
-#endif
-  return status;
 }
 
-
-int DRV_imgsSetAgain(int again, int setRegDirect)
+int DRV_imgsSetEshutter_MT9M034(Uint32 eshutterInUsec, int setRegDirect)
 {
-  Uint16 regAddr[2];
-  Uint16 regValue[2];
-  int status=0;
-  regAddr[0] = MT9M034_DIGITAL_TEST;
-  regAddr[1] = MT9M034_DAC_LD_24_25;
-
-  if (again >= 10000)
-  {
-    regValue[0] = 0x30;
-    regValue[1] = 0xD308;
-  }
-  else if (again >= 8000)
-  {
-    regValue[0] = 0x30;
-    regValue[1] = 0xD208;
-  }
-  else if (again >= 5000)
-  {
-      regValue[0] = 0x20;
-      regValue[1] = 0xD308;
-  }
-  else if (again >= 4000)
-  {
-      regValue[0] = 0x20;
-      regValue[1] = 0xD208;
-  }
-  else if (again >= 2500)
-  {
-      regValue[0] = 0x10;
-      regValue[1] = 0xD308;
-  }
-  else if (again >= 2000)
-  {
-      regValue[0] = 0x10;
-      regValue[1] = 0xD208;
-  }
-  else if (again >= 1250)
-  {
-      regValue[0] = 0x00;
-      regValue[1] = 0xD308;
-  }
-  else
-  {
-      regValue[0] = 0x00;
-      regValue[1] = 0xD208;
-  }
-//OSA_printf("------set a gain = %d, reg=%d, %d\n", again, regValue[0], (regValue[1]&0x0f00)>>8);
-#if 0
-  if(setRegDirect) {
-    regValue = again;
-  } else {
-    regValue = DRV_imgsCalcAgain(again);
-  }
-#endif
+    int status = 0;
+    Uint16 regAddr = MT9M034_COARSE_IT_TIME_A;
+    Uint16 regValue = eshutterInUsec / ROW_TIME;
+    //OSA_printf("------set shutter = %d, reg=%d\n",eshutterInUsec, regValue);
 #if 1
-  status = DRV_i2c16Write16(&gDRV_imgsObj.i2cHndl, regAddr, regValue, 2);
-
-  if(status!=OSA_SOK) {
-    OSA_ERROR("DRV_i2c16Write16()\n");
-    return status;
-  }
+    status = DRV_i2c16Write16(&gDRV_imgsObj.i2cHndl, &regAddr, &regValue, 1);
+    if (status != OSA_SOK)
+    {
+        OSA_ERROR("DRV_i2c16Write16()\n");
+        return status;
+    }
 #endif
-
-  return status;
-}
-
-int DRV_imgsSetDgain(int dgain)
-{
-  Uint16 regAddr[1];
-  Uint16 regValue[1];
-  int status=0;
-  regAddr[0] = MT9M034_GLOABL_GAIN;
-  regValue[0] = dgain >> 5;
-  if (regValue[0] > 255)  regValue[0] = 255;
-
-  //OSA_printf("------set d gain = %d, reg=%d\n", dgain, regValue[0]);
-  status = DRV_i2c16Write16(&gDRV_imgsObj.i2cHndl, regAddr, regValue, 1);
-
-  if(status!=OSA_SOK) {
-    OSA_ERROR("DRV_i2c16Write16()\n");
     return status;
-  }
-
-  return status;
-}
-
-int DRV_imgsSetEshutter(Uint32 eshutterInUsec, int setRegDirect)
-{
-  int status=0;
-  Uint16 regAddr;
-  Uint16 regValue;
-
-  regAddr = MT9M034_COARSE_IT_TIME_A;
-  regValue = eshutterInUsec/ROW_TIME;
-  //OSA_printf("------set shutter = %d, reg=%d\n",eshutterInUsec, regValue);
-#if 0
-  if(setRegDirect) {
-    regValue = eshutterInUsec;
-  } else  {
-    DRV_imgsCalcSW(eshutterInUsec);
-    regValue = gDRV_imgsObj.curFrameTime.SW;
-  }
-#endif
-#if 1
-  status = DRV_i2c16Write16(&gDRV_imgsObj.i2cHndl, &regAddr, &regValue, 1);
-  if(status!=OSA_SOK) {
-    OSA_ERROR("DRV_i2c16Write16()\n");
-    return status;
-  }
-#endif
-  return status;
 }
 
 //Read AGain & exposure
-int DRV_imgsGetAgain(int *again)
+int DRV_imgsGetAgain_MT9M034(int *again)
 {
-  Uint16 regAddr;
-  Uint16 regValue;
-  int status;
-
-  regAddr = MT9M034_GLOABL_GAIN;
-
-  status = DRV_i2c16Read16(&gDRV_imgsObj.i2cHndl, &regAddr, &regValue, 1);
-
-  if(status!=OSA_SOK) {
-    OSA_ERROR("DRV_i2c16Read16()\n");
-    return status;
-  }
-
-  *again = regValue;
-
-  return status;
-}
-
-int DRV_imgsGetEshutter(Uint32 *eshutterInUsec)
-{
-  int status;
-  Uint16 regAddr;
-  Uint16 regValue;
-
-  regAddr = MT9M034_COARSE_IT_TIME_A;
-
-  status = DRV_i2c16Read16(&gDRV_imgsObj.i2cHndl, &regAddr, &regValue, 1);
-  if(status!=OSA_SOK) {
-    OSA_ERROR("DRV_i2c16Write16()\n");
-    return status;
-  }
-
- *eshutterInUsec = regValue*ROW_TIME;
-
-  return status;
-}
-
-int DRV_imgsSetDcSub(Uint32 dcSub, int setRegDirect)
-{
-
-  return 0;
-}
-
-int DRV_imgsEnable(Bool enable)
-{
-    Uint16 regAddr;
     Uint16 regValue;
-    int status;
+    Uint16 regAddr = MT9M034_GLOABL_GAIN;
 
-    printf("entry %s %s \n", __FILE__, __FUNCTION__);
-    if(enable)
+    int status = DRV_i2c16Read16(&gDRV_imgsObj.i2cHndl, &regAddr, &regValue, 1);
+    if (status != OSA_SOK)
     {
-        if(DRV_imgsSpecificSetting())
+        OSA_ERROR("DRV_i2c16Read16()\n");
+        return status;
+    }
+
+    *again = regValue;
+    return status;
+}
+
+int DRV_imgsGetEshutter_MT9M034(Uint32 *eshutterInUsec)
+{
+    Uint16 regValue;
+    Uint16 regAddr = MT9M034_COARSE_IT_TIME_A;
+
+    int status = DRV_i2c16Read16(&gDRV_imgsObj.i2cHndl, &regAddr, &regValue, 1);
+    if (status != OSA_SOK)
+    {
+        OSA_ERROR("DRV_i2c16Write16()\n");
+        return status;
+    }
+    *eshutterInUsec = regValue * ROW_TIME;
+    return status;
+}
+
+int DRV_imgsSetDcSub_MT9M034(Uint32 dcSub, int setRegDirect)
+{
+    return OSA_SOK;
+}
+
+int DRV_imgsEnable_MT9M034(Bool enable)
+{    
+    Uint16 regAddr[5];
+    Uint16 regValue[5];
+    int status = OSA_EFAIL;
+
+    if (enable)
+    {
+        status = DRV_imgsSpecificSetting_MT9M034();
+        if (status != OSA_SOK)
         {
             OSA_ERROR("DRV_imgsSpecificSetting()\n");
             return status;
         }
+
+        #if 0
+        DRV_ImgsModeConfig *pModeCfg = &gDRV_imgsObj.curModeConfig;
+        if (pModeCfg->validWidth < 1280)
+        {
+            int i = 0;
+            regAddr[i] = 0x3004; regValue[i] = 160; i++;     // X_ADDR_START  
+            regAddr[i] = 0x3008; regValue[i] = 1120; i++;    // X_ADDR_END
+            status = DRV_i2c16Write16(&gDRV_imgsObj.i2cHndl, regAddr, regValue, i);
+            if (status != OSA_SOK)
+            {
+                OSA_ERROR("DRV_i2c16Write16()\n");
+                return status;
+            }
+        }
+        #endif
     }
     else
     {
-        regAddr  = MT9M034_ENABLE_STREAMING; 
-        regValue = 0x58;   // Disable Streaming
-
+        regAddr[0]  = MT9M034_ENABLE_STREAMING; 
+        regValue[0] = 0x58;   // Disable Streaming
         status = DRV_i2c16Write16(&gDRV_imgsObj.i2cHndl, regAddr, regValue, 1);
-        if(status != OSA_SOK)
+        if (status != OSA_SOK)
         {
             OSA_ERROR("DRV_i2c16Write16()\n");
             return status;
         }
     }
-
-    printf("exit %s %s \n", __FILE__, __FUNCTION__);
-    return status;
+    
+    return OSA_SOK;
 }
 
-DRV_ImgsModeConfig      *DRV_imgsGetModeConfig(int sensorMode)
+DRV_ImgsModeConfig *DRV_imgsGetModeConfig_MT9M034(int sensorMode)
 {
-  return &gDRV_imgsObj.curModeConfig;
+    return &gDRV_imgsObj.curModeConfig;
 }
 
-DRV_ImgsIsifConfig      *DRV_imgsGetIsifConfig(int sensorMode)
+DRV_ImgsIsifConfig *DRV_imgsGetIsifConfig_MT9M034(int sensorMode)
 {
-  return &gDRV_imgsIsifConfig_Common;
+    return &gDRV_imgsIsifConfig_Common_MT9M034;
 }
 
-DRV_ImgsIpipeConfig     *DRV_imgsGetIpipeConfig(int sensorMode, int vnfDemoCfg)
+DRV_ImgsIpipeConfig *DRV_imgsGetIpipeConfig_MT9M034(int sensorMode, int vnfDemoCfg)
 {
-  if(vnfDemoCfg)
-  	return &gDRV_imgsIpipeConfig_Vnfdemo;
-  else
-  	return &gDRV_imgsIpipeConfig_Common;
+    if (vnfDemoCfg)
+    {
+        return &gDRV_imgsIpipeConfig_Vnfdemo_MT9M034;
+    }
+    else
+    {
+        return &gDRV_imgsIpipeConfig_Common_MT9M034;
+    }
 }
 
-DRV_ImgsH3aConfig       *DRV_imgsGetH3aConfig(int sensorMode, int aewbVendor)
+DRV_ImgsH3aConfig *DRV_imgsGetH3aConfig_MT9M034(int sensorMode, int aewbVendor)
 {
-  if(aewbVendor==1) {
-  	return &gDRV_imgsH3aConfig_Appro;
-  }
-  else if(aewbVendor==2) {
-  	return &gDRV_imgsH3aConfig_TI;
-  }
-  else {
-  	return &gDRV_imgsH3aConfig_Common;
-  }
+    if (aewbVendor == 1)
+    {
+        return &gDRV_imgsH3aConfig_Appro_MT9M034;
+    }
+    else if (aewbVendor == 2)
+    {
+        return &gDRV_imgsH3aConfig_TI_MT9M034;
+    }
+    else
+    {
+        return &gDRV_imgsH3aConfig_Common_MT9M034;
+    }
 }
 
-DRV_ImgsLdcConfig       *DRV_imgsGetLdcConfig(int sensorMode, Uint16 ldcInFrameWidth, Uint16 ldcInFrameHeight)
+DRV_ImgsLdcConfig *DRV_imgsGetLdcConfig_MT9M034(int sensorMode, Uint16 ldcInFrameWidth, Uint16 ldcInFrameHeight)
 {
-  sensorMode &= 0xFF;
+    sensorMode &= 0xFF;
 
-  switch(sensorMode) {
-
+    switch (sensorMode)
+    {
     case DRV_IMGS_SENSOR_MODE_720x480:
-
-      if(ldcInFrameWidth==864)
-        return &gDRV_imgsLdcConfig_736x480_0_VS;
-
-      if(ldcInFrameWidth==352)
-        return &gDRV_imgsLdcConfig_736x480_1_VS;
-
-      if(ldcInFrameWidth==736)
-        return &gDRV_imgsLdcConfig_736x480_0;
-
-      if(ldcInFrameWidth==288)
-        return &gDRV_imgsLdcConfig_736x480_1;
-
-      if(ldcInFrameWidth==768)
-        return &gDRV_imgsLdcConfig_768x512_0;
-
-      if(ldcInFrameWidth==320)
-        return &gDRV_imgsLdcConfig_768x512_1;
-
-      if(ldcInFrameWidth==928)
-        return &gDRV_imgsLdcConfig_768x512_0_VS;
-
-      if(ldcInFrameWidth==384)
-        return &gDRV_imgsLdcConfig_768x512_1_VS;
-
-      break;
-
+        if (ldcInFrameWidth == 864)
+            return &gDRV_imgsLdcConfig_736x480_0_VS;
+        if (ldcInFrameWidth == 352)
+            return &gDRV_imgsLdcConfig_736x480_1_VS;
+        if (ldcInFrameWidth == 736)
+            return &gDRV_imgsLdcConfig_736x480_0;
+        if (ldcInFrameWidth == 288)
+            return &gDRV_imgsLdcConfig_736x480_1;
+        if (ldcInFrameWidth == 768)
+            return &gDRV_imgsLdcConfig_768x512_0;
+        if (ldcInFrameWidth == 320)
+            return &gDRV_imgsLdcConfig_768x512_1;
+        if (ldcInFrameWidth == 928)
+            return &gDRV_imgsLdcConfig_768x512_0_VS;
+        if (ldcInFrameWidth == 384)
+            return &gDRV_imgsLdcConfig_768x512_1_VS;
+        break;
     case DRV_IMGS_SENSOR_MODE_1280x720:
-
-      if(ldcInFrameWidth==1280)
-        return &gDRV_imgsLdcConfig_1280x736_0;
-
-      if(ldcInFrameWidth==320)
-        return &gDRV_imgsLdcConfig_1280x736_1;
-
-      if(ldcInFrameWidth==640)
-        return &gDRV_imgsLdcConfig_1280x736_2;
-
-      if(ldcInFrameWidth==1536)
-        return &gDRV_imgsLdcConfig_1280x736_0_VS;
-
-      if(ldcInFrameWidth==384)
-        return &gDRV_imgsLdcConfig_1280x736_1_VS;
-
-      if(ldcInFrameWidth==768)
-        return &gDRV_imgsLdcConfig_1280x736_2_VS;
-
-      if(ldcInFrameWidth==1312)
-        return &gDRV_imgsLdcConfig_1312x768_0;
-
-      if(ldcInFrameWidth==352)
-        return &gDRV_imgsLdcConfig_1312x768_1;
-
-      if(ldcInFrameWidth==672)
-        return &gDRV_imgsLdcConfig_1312x768_2;
-
-      if(ldcInFrameWidth==1600)
-        return &gDRV_imgsLdcConfig_1312x768_0_VS;
-
-      if(ldcInFrameWidth==448)
-        return &gDRV_imgsLdcConfig_1312x768_1_VS;
-
-      if(ldcInFrameWidth==832)
-        return &gDRV_imgsLdcConfig_1312x768_2_VS;
-
-      break;
-
-  }
-
-  return NULL;
+        if (ldcInFrameWidth==1280)
+            return &gDRV_imgsLdcConfig_1280x736_0;
+        if (ldcInFrameWidth==320)
+            return &gDRV_imgsLdcConfig_1280x736_1;
+        if (ldcInFrameWidth==640)
+            return &gDRV_imgsLdcConfig_1280x736_2;
+        if (ldcInFrameWidth==1536)
+            return &gDRV_imgsLdcConfig_1280x736_0_VS;
+        if (ldcInFrameWidth==384)
+            return &gDRV_imgsLdcConfig_1280x736_1_VS;
+        if (ldcInFrameWidth==768)
+            return &gDRV_imgsLdcConfig_1280x736_2_VS;
+        if (ldcInFrameWidth==1312)
+            return &gDRV_imgsLdcConfig_1312x768_0;
+        if (ldcInFrameWidth==352)
+            return &gDRV_imgsLdcConfig_1312x768_1;
+        if (ldcInFrameWidth==672)
+            return &gDRV_imgsLdcConfig_1312x768_2;
+        if (ldcInFrameWidth==1600)
+            return &gDRV_imgsLdcConfig_1312x768_0_VS;
+        if (ldcInFrameWidth==448)
+            return &gDRV_imgsLdcConfig_1312x768_1_VS;
+        if (ldcInFrameWidth==832)
+            return &gDRV_imgsLdcConfig_1312x768_2_VS;
+        break;
+    }
+    return NULL;
 }
 
-int DRV_imgsReset()
+int DRV_imgsReset_MT9M034()
 {
-  Uint8 regAddr[8];
-  Uint16 regValue[8];
-  int status, i;
+    return OSA_SOK;
+}
 
-  i=0;
+int DRV_imgsCheckId_MT9M034()
+{
+    int status;
+    Uint16 regAddr;
+    Uint16 regValue;
+
+    regAddr = MT9M034_CHIP_VERSION;
+    regValue = 0;
+
+    status = DRV_i2c16Read16(&gDRV_imgsObj.i2cHndl, &regAddr, &regValue, 1);
+    if (status!=OSA_SOK)
+    {
+        OSA_ERROR("DRV_i2c16Read16()\n");
+        return status;
+    }
+    //OSA_printf("-----chipId = 0x%x",regValue);
+    if (regValue!=IMGS_CHIP_ID)
+        return OSA_EFAIL;
+
+    return OSA_SOK;
+}
+
+int DRV_imgsSetRegs_MT9M034()
+{
+    int i, status=0;
+    static Uint8 regAddr[32];
+    static Uint16 regValue[32];
+
+    DRV_ImgsFrameTime *pFrame = &gDRV_imgsObj.curFrameTime;
 #if 0
-  regAddr[i]  = OUTPUT_CTRL;
-  regValue[i] = 0x1f80;
+    status = DRV_imgsReset_MT9M034();
+    if (status!=OSA_SOK)
+        return status;
 
-  regAddr[i]  = RESET;
-  regValue[i] = 0x1;
-  i++;
-
-  status = DRV_i2c16Write16(&gDRV_imgsObj.i2cHndl, regAddr, regValue, i);
-  if(status!=OSA_SOK) {
-    OSA_ERROR("DRV_i2c16Write16()\n");
-    return status;
-  }
-
-  if(status==OSA_SOK) {
+    OSA_waitMsecs(10);
 
     i=0;
 
-    regAddr[i]  = RESET;
-    regValue[i] = 0x0;
+    regAddr[i]  = OUTPUT_CTRL;
+    regValue[i] = 0x1F83;
+    i++;
+
+    regAddr[i]  = PLL_CTRL;
+    regValue[i] = 0x51;
+    i++;
+
+    regAddr[i]  = PLL_CFG1;
+    regValue[i] = ( (Uint16)(pFrame->pll_M & 0xFF) << 8 )| ((pFrame->pll_N) & 0x3F);
+    i++;
+
+    regAddr[i]  = PLL_CFG2;
+    regValue[i] = (pFrame->pll_DIV) & 0x1F;
     i++;
 
     status = DRV_i2c16Write16(&gDRV_imgsObj.i2cHndl, regAddr, regValue, i);
-  }
+    if (status!=OSA_SOK)
+    {
+        OSA_ERROR("DRV_i2c16Write16()\n");
+        return status;
+    }
 
-  if(status!=OSA_SOK) {
-    OSA_ERROR("DRV_i2c16Write16()\n");
-    return status;
-  }
+    OSA_waitMsecs(10);
+
+    i=0;
+
+    regAddr[i]  = PLL_CTRL;
+    regValue[i] = 0x53;  // enable PLL
+    i++;
+
+    status = DRV_i2c16Write16(&gDRV_imgsObj.i2cHndl, regAddr, regValue, i);
+    if (status!=OSA_SOK)
+    {
+        OSA_ERROR("DRV_i2c16Write16()\n");
+        return status;
+    }
+    OSA_waitMsecs(10);
+    i=0;
+
+    regAddr[i]  = ROW_START;
+    regValue[i] = pFrame->row_start;
+    i++;
+
+    regAddr[i]  = COL_START;
+    regValue[i] = pFrame->col_start;
+    i++;
+
+    regAddr[i]  = ROW_SIZE;
+    regValue[i] = pFrame->row_size;
+    i++;
+
+    regAddr[i]  = COL_SIZE;
+    regValue[i] = pFrame->col_size;
+    i++;
+
+    regAddr[i]  = HORZ_BLANK;
+    regValue[i] = pFrame->HB;
+    i++;
+
+    regAddr[i]  = VERT_BLANK;
+    regValue[i] = pFrame->VB;
+    i++;
+
+    regAddr[i]  = SHUTTER_WIDTH_H;
+    regValue[i] = 0;
+    i++;
+
+    regAddr[i]  = SHUTTER_WIDTH_L;
+    regValue[i] = pFrame->SW;
+    i++;
+
+    regAddr[i]  = SHUTTER_DELAY;
+    regValue[i] = pFrame->SD;
+    i++;
+
+    regAddr[i]  = ROW_ADDR_MODE;
+    regValue[i] = (pFrame->row_skip & 0x7 ) | ((pFrame->row_bin & 0x3) << 4);
+    i++;
+
+    regAddr[i]  = COL_ADDR_MODE;
+    regValue[i] = (pFrame->col_skip & 0x7 ) | ((pFrame->col_bin & 0x3) << 4);
+    i++;
+
+    regAddr[i]  = PIXEL_CLK_CTRL;
+    regValue[i] = 0x8000;
+    i++;
+
+    regAddr[i]  = ROW_BLK_DEF_OFFSET  ;
+    regValue[i] = 64;
+    i++;
+
+    status = DRV_i2c16Write16(&gDRV_imgsObj.i2cHndl, regAddr, regValue, i);
+    if (status!=OSA_SOK)
+    {
+        OSA_ERROR("DRV_i2c16Write16()\n");
+        return status;
+    }
+
+    DRV_imgsSetAgain(1000, 0); // default aGain
+    DRV_imgsSetEshutter(8333, 0);
 #endif
-  return status;
+    return status;
 }
 
-int DRV_imgsCheckId()
+DRV_ImgsFuncs MT9M034ImgsFuncs = 
 {
-  int status;
-  Uint16 regAddr;
-  Uint16 regValue;
-
-  regAddr = MT9M034_CHIP_VERSION;
-  regValue = 0;
-
-  status = DRV_i2c16Read16(&gDRV_imgsObj.i2cHndl, &regAddr, &regValue, 1);
-  if(status!=OSA_SOK) {
-    OSA_ERROR("DRV_i2c16Read16()\n");
-    return status;
-  }
-//OSA_printf("-----chipId = 0x%x",regValue);
-  if(regValue!=IMGS_CHIP_ID)
-    return OSA_EFAIL;
-
-  return OSA_SOK;
-}
-
-int DRV_imgsSetRegs()
-{
-  int i, status=0;
-  static Uint8 regAddr[32];
-  static Uint16 regValue[32];
-
-  DRV_ImgsFrameTime *pFrame = &gDRV_imgsObj.curFrameTime;
-#if 0
-  status = DRV_imgsReset();
-  if(status!=OSA_SOK)
-    return status;
-
-  OSA_waitMsecs(10);
-
-  i=0;
-
-  regAddr[i]  = OUTPUT_CTRL;
-  regValue[i] = 0x1F83;
-  i++;
-
-  regAddr[i]  = PLL_CTRL;
-  regValue[i] = 0x51;
-  i++;
-
-  regAddr[i]  = PLL_CFG1;
-  regValue[i] = ( (Uint16)(pFrame->pll_M & 0xFF) << 8 )| ((pFrame->pll_N) & 0x3F);
-  i++;
-
-  regAddr[i]  = PLL_CFG2;
-  regValue[i] = (pFrame->pll_DIV) & 0x1F;
-  i++;
-
-  status = DRV_i2c16Write16(&gDRV_imgsObj.i2cHndl, regAddr, regValue, i);
-  if(status!=OSA_SOK) {
-    OSA_ERROR("DRV_i2c16Write16()\n");
-    return status;
-  }
-
-  OSA_waitMsecs(10);
-
-  i=0;
-
-  regAddr[i]  = PLL_CTRL;
-  regValue[i] = 0x53;  // enable PLL
-  i++;
-
-  status = DRV_i2c16Write16(&gDRV_imgsObj.i2cHndl, regAddr, regValue, i);
-  if(status!=OSA_SOK) {
-    OSA_ERROR("DRV_i2c16Write16()\n");
-    return status;
-  }
-  OSA_waitMsecs(10);
-  i=0;
-
-  regAddr[i]  = ROW_START;
-  regValue[i] = pFrame->row_start;
-  i++;
-
-  regAddr[i]  = COL_START;
-  regValue[i] = pFrame->col_start;
-  i++;
-
-  regAddr[i]  = ROW_SIZE;
-  regValue[i] = pFrame->row_size;
-  i++;
-
-  regAddr[i]  = COL_SIZE;
-  regValue[i] = pFrame->col_size;
-  i++;
-
-  regAddr[i]  = HORZ_BLANK;
-  regValue[i] = pFrame->HB;
-  i++;
-
-  regAddr[i]  = VERT_BLANK;
-  regValue[i] = pFrame->VB;
-  i++;
-
-  regAddr[i]  = SHUTTER_WIDTH_H;
-  regValue[i] = 0;
-  i++;
-
-  regAddr[i]  = SHUTTER_WIDTH_L;
-  regValue[i] = pFrame->SW;
-  i++;
-
-  regAddr[i]  = SHUTTER_DELAY;
-  regValue[i] = pFrame->SD;
-  i++;
-
-  regAddr[i]  = ROW_ADDR_MODE;
-  regValue[i] = (pFrame->row_skip & 0x7 ) | ((pFrame->row_bin & 0x3) << 4);
-  i++;
-
-  regAddr[i]  = COL_ADDR_MODE;
-  regValue[i] = (pFrame->col_skip & 0x7 ) | ((pFrame->col_bin & 0x3) << 4);
-  i++;
-
-  regAddr[i]  = PIXEL_CLK_CTRL;
-  regValue[i] = 0x8000;
-  i++;
-
-  regAddr[i]  = ROW_BLK_DEF_OFFSET  ;
-  regValue[i] = 64;
-  i++;
-
-  status = DRV_i2c16Write16(&gDRV_imgsObj.i2cHndl, regAddr, regValue, i);
-  if(status!=OSA_SOK) {
-    OSA_ERROR("DRV_i2c16Write16()\n");
-    return status;
-  }
-
-  DRV_imgsSetAgain(1000, 0); // default aGain
-  DRV_imgsSetEshutter(8333, 0);
-#endif
-  return status;
-}
-
+    .imgsOpen            = DRV_imgsOpen_MT9M034,
+    .imgsClose           = DRV_imgsClose_MT9M034,
+    .imgsSetMirror       = DRV_imgsSetMirror_MT9M034,
+    .imgsGetImagerName   = DRV_imgsGetImagerName_MT9M034,
+    .imgsSetAgain        = DRV_imgsSetAgain_MT9M034,
+    .imgsSetDgain        = DRV_imgsSetDgain_MT9M034,
+    .imgsSetEshutter     = DRV_imgsSetEshutter_MT9M034,
+    .imgsSetDcSub        = DRV_imgsSetDcSub_MT9M034,
+    .imgsBinEnable       = DRV_imgsBinEnable_MT9M034,
+    .imgsBinMode         = DRV_imgsBinMode_MT9M034,
+    .imgsSetFramerate    = DRV_imgsSetFramerate_MT9M034,
+    .imgsSet50_60Hz      = DRV_imgsSet50_60Hz_MT9M034, 
+    .imgsEnable          = DRV_imgsEnable_MT9M034,
+    .imgsGetModeConfig   = DRV_imgsGetModeConfig_MT9M034,
+    .imgsGetIsifConfig   = DRV_imgsGetIsifConfig_MT9M034,
+    .imgsGetH3aConfig    = DRV_imgsGetH3aConfig_MT9M034,
+    .imgsGetIpipeConfig  = DRV_imgsGetIpipeConfig_MT9M034,
+    .imgsGetLdcConfig    = DRV_imgsGetLdcConfig_MT9M034
+};
 

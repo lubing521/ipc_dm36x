@@ -83,7 +83,7 @@ int DRV_ipipeOpen(DRV_IpipeConfig *config)
     return status;
   }
 
-  gDRV_ipipeObj.pImgsIpipeConfig = DRV_imgsGetIpipeConfig(config->sensorMode, config->vnfDemoCfg);
+  gDRV_ipipeObj.pImgsIpipeConfig = drvImgsFunc->imgsGetIpipeConfig(config->sensorMode, config->vnfDemoCfg);
   if(gDRV_ipipeObj.pImgsIpipeConfig==NULL)
   {
     OSA_ERROR("DRV_imgsGetIpipeConfig(%d %d)\n", config->sensorMode, config->vnfDemoCfg);
@@ -110,13 +110,13 @@ int DRV_ipipeOpen(DRV_IpipeConfig *config)
     return OSA_EFAIL;
   }
 
-  if(DRV_imgsGetModeConfig(config->sensorMode)==NULL)
+  if(drvImgsFunc->imgsGetModeConfig(config->sensorMode)==NULL)
   {
     OSA_ERROR("DRV_imgsGetModeConfig()\n");
     return OSA_EFAIL;
   }
 
-  memcpy(&gDRV_ipipeObj.imgsModeInfo, DRV_imgsGetModeConfig(config->sensorMode), sizeof(gDRV_ipipeObj.imgsModeInfo) );
+  memcpy(&gDRV_ipipeObj.imgsModeInfo, drvImgsFunc->imgsGetModeConfig(config->sensorMode), sizeof(gDRV_ipipeObj.imgsModeInfo) );
   memcpy(&gDRV_ipipeObj.config, config, sizeof(gDRV_ipipeObj.config));
 
   if(config->bscNumVectorsRow > 0 && config->bscNumVectorsCol > 0) {

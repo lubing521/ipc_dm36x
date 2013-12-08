@@ -74,7 +74,7 @@ int VIDEO_captureTskCreate()
   }
 
   #ifdef AVSERVER_DEBUG_VIDEO_CAPTURE_THR
-  OSA_printf(" CAPTURE: Opening capture on imager %s.\n", DRV_imgsGetImagerName());
+  OSA_printf(" CAPTURE: Opening capture on imager %s.\n", drvImgsFunc->imgsGetImagerName());
   #endif
 
   status = DRV_captureOpen(&captureConfig, &gVIDEO_ctrl.captureInfo);

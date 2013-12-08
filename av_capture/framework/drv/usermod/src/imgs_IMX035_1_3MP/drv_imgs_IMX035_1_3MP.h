@@ -54,13 +54,13 @@
 
 #define IMGS_RESET_GPIO	(36)	//for H/W v2.0 (30)
 #if (1)
-#define IMGS_LIGHT_SENSOR			(45)
-#define IMGS_LIGHT_SENSOR_LINK	(48)
-#define IMGS_ND_CTRL1		(46)
-#define IMGS_ND_CTRL2		(49)
+    #define IMGS_LIGHT_SENSOR			(45)
+    #define IMGS_LIGHT_SENSOR_LINK	(48)
+    #define IMGS_ND_CTRL1		(46)
+    #define IMGS_ND_CTRL2		(49)
 #else
-#define IMGS_ND_CTRL1		(35)
-#define IMGS_ND_CTRL2		(82)
+    #define IMGS_ND_CTRL1		(35)
+    #define IMGS_ND_CTRL2		(82)
 #endif
 
 #define IMGS_SENSOR_LINEWIDTH		(1082)
@@ -111,48 +111,47 @@
 #define AP_AutoIris_DC_MASK				(((unsigned int)0x3)<<2)
 #define AP_AutoIris_DC_VAL 				(((unsigned int)0x2)<<2)
 
-typedef struct {
+typedef struct
+{
 
-  int fps;        // Hz
-  int Is50Hz;
-  float t_frame;  // ns
-  float t_row;    // ns
-  float t_pclk;   // ns
-  int W;
-  int H;
-  int SW;
-  int SD;
-  int HB;
-  int VB;
-  int HBmin;
-  int VBmin;
-  int f_pclk;     // Hz
+    int fps;        // Hz
+    int Is50Hz;
+    float t_frame;  // ns
+    float t_row;    // ns
+    float t_pclk;   // ns
+    int W;
+    int H;
+    int SW;
+    int SD;
+    int HB;
+    int VB;
+    int HBmin;
+    int VBmin;
+    int f_pclk;     // Hz
 
-  float shutterOverhead;
+    float shutterOverhead;
 
-  int col_size;
-  int row_size;
-  int col_skip;
-  int row_skip;
-  int col_bin;
-  int row_bin;
-  int col_start;
-  int row_start;
+    int col_size;
+    int row_size;
+    int col_skip;
+    int row_skip;
+    int col_bin;
+    int row_bin;
+    int col_start;
+    int row_start;
 
-  int pll_M;
-  int pll_N;
-  int pll_DIV;
-  int pll_PREDIV;
+    int pll_M;
+    int pll_N;
+    int pll_DIV;
+    int pll_PREDIV;
 
 } DRV_ImgsFrameTime;
 
-typedef struct {
-
-  DRV_SPIHndl spiHndl;	//DRV_I2cHndl i2cHndl;
-
-  DRV_ImgsFrameTime curFrameTime;
-  DRV_ImgsModeConfig curModeConfig;
-
+typedef struct
+{
+    DRV_SPIHndl        spiHndl;  //DRV_I2cHndl i2cHndl;
+    DRV_ImgsFrameTime  curFrameTime;
+    DRV_ImgsModeConfig curModeConfig;
 } DRV_ImgsObj;
 
 

@@ -2,7 +2,7 @@
 #include <drv_imgs.h>
 
 
-DRV_ImgsIpipeConfig gDRV_imgsIpipeConfig_Vnfdemo = {
+DRV_ImgsIpipeConfig gDRV_imgsIpipeConfig_Vnfdemo_IMX122 = {
 
   .ipipeifParams = {
 
@@ -209,7 +209,7 @@ DRV_ImgsIpipeConfig gDRV_imgsIpipeConfig_Vnfdemo = {
   },
 };
 
-DRV_ImgsIpipeConfig gDRV_imgsIpipeConfig_Common = {
+DRV_ImgsIpipeConfig gDRV_imgsIpipeConfig_Common_IMX122 = {
 
   .ipipeifParams = {
 

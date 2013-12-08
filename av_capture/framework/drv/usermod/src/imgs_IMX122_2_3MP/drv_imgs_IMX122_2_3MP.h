@@ -12,33 +12,29 @@
 #define IMGS_H_PAD          (200)  //(104)
 #define IMGS_V_PAD          (36)  //(2)
 
-#define IMGS_H_3M_PAD	(104)
-#define IMGS_V_3M_PAD	(52)		//56
+#define IMGS_H_3M_PAD	    (104)
+#define IMGS_V_3M_PAD	    (52)		//56
 
-#define IMGS_W_MAX    (2200)
-#define IMGS_H_MAX     (1608)
+#define IMGS_W_MAX          (2200)
+#define IMGS_H_MAX          (1608)
 
+  
+#define IMGS_MHZ            (1000000L)
 
-#define IMGS_MHZ        (1000000L)
+//#define IMGS_PLL_REF_CLK     (24*IMGS_MHZ)
 
-#define IMGS_PLL_REF_CLK     (24*IMGS_MHZ)
+#define IMGS_CHIP_PID       (0x9711)
+#define IMGS_CHIP_MID       (0x7FA2)
 
-#define IMGS_CHIP_PID        (0x9711)
-#define IMGS_CHIP_MID        (0x7FA2)
-
-/*i2c for lvds324,sensor itself use spi*/
-#ifdef BOARD_AP_IPNC
 #define IMGS_I2C_ADDR       (0x5A)
-#endif
+#define IMGS_RESET_GPIO	    (57)	
 
-#define IMGS_RESET_GPIO	(80)	
-
-#define IMGS_SPI_ADDR		(0x02)
-#define IMGS_SPI_ADDR01	(0x03)
-#define IMGS_LIGHT_SENSOR			(45)
-#define IMGS_LIGHT_SENSOR_LINK	(45)
-#define IMGS_ND_CTRL1		(46)
-#define IMGS_ND_CTRL2		(49)
+#define IMGS_SPI_ADDR		   (0x02)
+#define IMGS_SPI_ADDR01	       (0x03)
+#define IMGS_LIGHT_SENSOR	   (45)
+#define IMGS_LIGHT_SENSOR_LINK (45)
+#define IMGS_ND_CTRL1		   (46)
+#define IMGS_ND_CTRL2		   (49)
 
 #define IMGS_SENSOR_LINEWIDTH		(1125)
 
@@ -54,6 +50,7 @@
 #define PINMUX3_OFSET	(0x000C)
 #define PINMUX4_OFSET	(0x0010)
 
+/*
 #define IMGS_APCHIP_C1_GIO	(93)
 #define AP_CHIP_C1_PINMUX	(PINMUX_BASE+PINMUX0_OFSET)
 #define AP_CHIP_C1_MASK	(((unsigned int)0x3)<<14)
@@ -76,20 +73,23 @@
 #define _PWM_CFG_			(0x08)
 #define _PWM_PER_			(0x14)
 #define _PWM_PH1D_			(0x18)
-
+*/
 /* PINMUX1 GIO92 -> PWM0 for Video */
+/*
 #define IMGS_AutoIris_VIDEO_PWM_REG 	(_PWM0_BASE_)
 #define IMGS_AutoIris_VIDEO_GIO			(92)
 #define AP_AutoIris_VIDEO_PINMUX		(PINMUX_BASE+PINMUX1_OFSET)
 #define AP_AutoIris_VIDEO_MASK			(((unsigned int)0x3)<<0)
 #define AP_AutoIris_VIDEO_VAL 			(((unsigned int)0x2)<<0)
+*/
 /* PINMUX1 GIO91 -> PWM1 for DC */
+/*
 #define IMGS_AutoIris_DC_PWM_REG 		(_PWM1_BASE_)
 #define IMGS_AutoIris_DC_GIO			(91)
 #define AP_AutoIris_DC_PINMUX			(PINMUX_BASE+PINMUX1_OFSET)
 #define AP_AutoIris_DC_MASK				(((unsigned int)0x3)<<2)
 #define AP_AutoIris_DC_VAL 				(((unsigned int)0x2)<<2)
-
+*/
 
 typedef struct {
 
@@ -138,51 +138,51 @@ typedef struct {
 
 extern DRV_ImgsObj gDRV_imgsObj;
 
-extern DRV_ImgsLdcConfig    gDRV_imgsLdcConfig_736x480_0;
-extern DRV_ImgsLdcConfig    gDRV_imgsLdcConfig_736x480_1;
-extern DRV_ImgsLdcConfig    gDRV_imgsLdcConfig_736x480_0_VS;
-extern DRV_ImgsLdcConfig    gDRV_imgsLdcConfig_736x480_1_VS;
-extern DRV_ImgsLdcConfig    gDRV_imgsLdcConfig_1280x736_0;
-extern DRV_ImgsLdcConfig    gDRV_imgsLdcConfig_1280x736_1;
-extern DRV_ImgsLdcConfig    gDRV_imgsLdcConfig_1280x736_2;
-extern DRV_ImgsLdcConfig    gDRV_imgsLdcConfig_1280x736_0_VS;
-extern DRV_ImgsLdcConfig    gDRV_imgsLdcConfig_1280x736_1_VS;
-extern DRV_ImgsLdcConfig    gDRV_imgsLdcConfig_1280x736_2_VS;
+extern DRV_ImgsLdcConfig    gDRV_imgsLdcConfig_736x480_0_IMX122;
+extern DRV_ImgsLdcConfig    gDRV_imgsLdcConfig_736x480_1_IMX122;
+extern DRV_ImgsLdcConfig    gDRV_imgsLdcConfig_736x480_0_VS_IMX122;
+extern DRV_ImgsLdcConfig    gDRV_imgsLdcConfig_736x480_1_VS_IMX122;
+extern DRV_ImgsLdcConfig    gDRV_imgsLdcConfig_1280x736_0_IMX122;
+extern DRV_ImgsLdcConfig    gDRV_imgsLdcConfig_1280x736_1_IMX122;
+extern DRV_ImgsLdcConfig    gDRV_imgsLdcConfig_1280x736_2_IMX122;
+extern DRV_ImgsLdcConfig    gDRV_imgsLdcConfig_1280x736_0_VS_IMX122;
+extern DRV_ImgsLdcConfig    gDRV_imgsLdcConfig_1280x736_1_VS_IMX122;
+extern DRV_ImgsLdcConfig    gDRV_imgsLdcConfig_1280x736_2_VS_IMX122;
 
 // for TNF+SNF cases
-extern DRV_ImgsLdcConfig    gDRV_imgsLdcConfig_768x512_0;
-extern DRV_ImgsLdcConfig    gDRV_imgsLdcConfig_768x512_1;
-extern DRV_ImgsLdcConfig    gDRV_imgsLdcConfig_768x512_0_VS;
-extern DRV_ImgsLdcConfig    gDRV_imgsLdcConfig_768x512_1_VS;
-extern DRV_ImgsLdcConfig    gDRV_imgsLdcConfig_1312x768_0;
-extern DRV_ImgsLdcConfig    gDRV_imgsLdcConfig_1312x768_1;
-extern DRV_ImgsLdcConfig    gDRV_imgsLdcConfig_1312x768_2;
-extern DRV_ImgsLdcConfig    gDRV_imgsLdcConfig_1312x768_0_VS;
-extern DRV_ImgsLdcConfig    gDRV_imgsLdcConfig_1312x768_1_VS;
-extern DRV_ImgsLdcConfig    gDRV_imgsLdcConfig_1312x768_2_VS;
+extern DRV_ImgsLdcConfig    gDRV_imgsLdcConfig_768x512_0_IMX122;
+extern DRV_ImgsLdcConfig    gDRV_imgsLdcConfig_768x512_1_IMX122;
+extern DRV_ImgsLdcConfig    gDRV_imgsLdcConfig_768x512_0_VS_IMX122;
+extern DRV_ImgsLdcConfig    gDRV_imgsLdcConfig_768x512_1_VS_IMX122;
+extern DRV_ImgsLdcConfig    gDRV_imgsLdcConfig_1312x768_0_IMX122;
+extern DRV_ImgsLdcConfig    gDRV_imgsLdcConfig_1312x768_1_IMX122;
+extern DRV_ImgsLdcConfig    gDRV_imgsLdcConfig_1312x768_2_IMX122;
+extern DRV_ImgsLdcConfig    gDRV_imgsLdcConfig_1312x768_0_VS_IMX122;
+extern DRV_ImgsLdcConfig    gDRV_imgsLdcConfig_1312x768_1_VS_IMX122;
+extern DRV_ImgsLdcConfig    gDRV_imgsLdcConfig_1312x768_2_VS_IMX122;
 
-extern DRV_ImgsIsifConfig   gDRV_imgsIsifConfig_Common;
+extern DRV_ImgsIsifConfig   gDRV_imgsIsifConfig_Common_IMX122;
 
-extern DRV_ImgsIpipeConfig  gDRV_imgsIpipeConfig_Vnfdemo;
-extern DRV_ImgsIpipeConfig  gDRV_imgsIpipeConfig_Common;
+extern DRV_ImgsIpipeConfig  gDRV_imgsIpipeConfig_Vnfdemo_IMX122;
+extern DRV_ImgsIpipeConfig  gDRV_imgsIpipeConfig_Common_IMX122;
 
-extern DRV_ImgsH3aConfig    gDRV_imgsH3aConfig_Appro;
-extern DRV_ImgsH3aConfig    gDRV_imgsH3aConfig_TI;
-extern DRV_ImgsH3aConfig    gDRV_imgsH3aConfig_Common;
+extern DRV_ImgsH3aConfig    gDRV_imgsH3aConfig_Appro_IMX122;
+extern DRV_ImgsH3aConfig    gDRV_imgsH3aConfig_TI_IMX122;
+extern DRV_ImgsH3aConfig    gDRV_imgsH3aConfig_Common_IMX122;
 
-int DRV_imgsReset();
+int DRV_imgsReset_IMX122();
 
-int DRV_imgsCalcFrameTime(Uint32 fps, Uint32 dataW, Uint32 dataH, Bool binEnable);
-int DRV_imgsCalcSW(int exposureTimeInUsecs);
-int DRV_imgsCalcAgain(int aGain);
-int DRV_imgsCalcFrameRate(int fps);
-int DRV_imgsGetEshutter(Uint32 *eshutterInUsec);
-int DRV_imgsGetAgain(int *again);
-int DRV_imgsSetDgain(int dgain);
+int DRV_imgsCalcFrameTime_IMX122(Uint32 fps, Uint32 dataW, Uint32 dataH, Bool binEnable);
+int DRV_imgsCalcSW_IMX122(int exposureTimeInUsecs);
+int DRV_imgsCalcAgain_IMX122(int aGain);
+int DRV_imgsCalcFrameRate_IMX122(int fps);
+int DRV_imgsGetEshutter_IMX122(Uint32 *eshutterInUsec);
+int DRV_imgsGetAgain_IMX122(int *again);
+int DRV_imgsSetDgain_IMX122(int dgain);
 
-int DRV_imgsCheckId();
-int DRV_imgsSetRegs(Uint16 width, Uint16 height, int fps);
-int DRV_imgs_APChipInit(int *pGioC1, int *pGioD1);
+int DRV_imgsCheckId_IMX122(DRV_SPIHndl *hndl);
+
+//int DRV_imgs_APChipInit_IMX122(int *pGioC1, int *pGioD1);
 
 #endif
 

@@ -1,7 +1,7 @@
 
 #include <drv_imgs.h>
 
-DRV_ImgsLdcConfig gDRV_imgsLdcConfig_736x480_0 = {
+DRV_ImgsLdcConfig gDRV_imgsLdcConfig_736x480_0_IMX122 = {
 
   .ldcParams = {
   
@@ -38,7 +38,7 @@ DRV_ImgsLdcConfig gDRV_imgsLdcConfig_736x480_0 = {
   },
 };
 
-DRV_ImgsLdcConfig gDRV_imgsLdcConfig_736x480_1 = {
+DRV_ImgsLdcConfig gDRV_imgsLdcConfig_736x480_1_IMX122 = {
 
   .ldcParams = {
   
@@ -75,7 +75,7 @@ DRV_ImgsLdcConfig gDRV_imgsLdcConfig_736x480_1 = {
   },
 };
 
-DRV_ImgsLdcConfig gDRV_imgsLdcConfig_736x480_0_VS = {
+DRV_ImgsLdcConfig gDRV_imgsLdcConfig_736x480_0_VS_IMX122 = {
 
   .ldcParams = {
   
@@ -112,7 +112,7 @@ DRV_ImgsLdcConfig gDRV_imgsLdcConfig_736x480_0_VS = {
   },
 };
 
-DRV_ImgsLdcConfig gDRV_imgsLdcConfig_736x480_1_VS = {
+DRV_ImgsLdcConfig gDRV_imgsLdcConfig_736x480_1_VS_IMX122 = {
 
   .ldcParams = {
   
@@ -149,7 +149,7 @@ DRV_ImgsLdcConfig gDRV_imgsLdcConfig_736x480_1_VS = {
   },
 };
 
-DRV_ImgsLdcConfig gDRV_imgsLdcConfig_1280x736_0 = {
+DRV_ImgsLdcConfig gDRV_imgsLdcConfig_1280x736_0_IMX122 = {
 
   .ldcParams = {
   
@@ -186,7 +186,7 @@ DRV_ImgsLdcConfig gDRV_imgsLdcConfig_1280x736_0 = {
   },
 };
 
-DRV_ImgsLdcConfig gDRV_imgsLdcConfig_1280x736_1 = {
+DRV_ImgsLdcConfig gDRV_imgsLdcConfig_1280x736_1_IMX122 = {
 
   .ldcParams = {
   
@@ -223,7 +223,7 @@ DRV_ImgsLdcConfig gDRV_imgsLdcConfig_1280x736_1 = {
   },
 };
 
-DRV_ImgsLdcConfig gDRV_imgsLdcConfig_1280x736_2 = {
+DRV_ImgsLdcConfig gDRV_imgsLdcConfig_1280x736_2_IMX122 = {
 
   .ldcParams = {
   
@@ -260,7 +260,7 @@ DRV_ImgsLdcConfig gDRV_imgsLdcConfig_1280x736_2 = {
   },
 };
 
-DRV_ImgsLdcConfig gDRV_imgsLdcConfig_1280x736_0_VS = {
+DRV_ImgsLdcConfig gDRV_imgsLdcConfig_1280x736_0_VS_IMX122 = {
 
   .ldcParams = {
   
@@ -297,7 +297,7 @@ DRV_ImgsLdcConfig gDRV_imgsLdcConfig_1280x736_0_VS = {
   },
 };
 
-DRV_ImgsLdcConfig gDRV_imgsLdcConfig_1280x736_1_VS = {
+DRV_ImgsLdcConfig gDRV_imgsLdcConfig_1280x736_1_VS_IMX122 = {
 
   .ldcParams = {
   
@@ -334,7 +334,7 @@ DRV_ImgsLdcConfig gDRV_imgsLdcConfig_1280x736_1_VS = {
   },
 };
 
-DRV_ImgsLdcConfig gDRV_imgsLdcConfig_1280x736_2_VS = {
+DRV_ImgsLdcConfig gDRV_imgsLdcConfig_1280x736_2_VS_IMX122 = {
 
   .ldcParams = {
   
@@ -371,7 +371,7 @@ DRV_ImgsLdcConfig gDRV_imgsLdcConfig_1280x736_2_VS = {
   },
 };
 
-DRV_ImgsLdcConfig gDRV_imgsLdcConfig_768x512_0 = {
+DRV_ImgsLdcConfig gDRV_imgsLdcConfig_768x512_0_IMX122 = {
 
   .ldcParams = {
   
@@ -408,7 +408,7 @@ DRV_ImgsLdcConfig gDRV_imgsLdcConfig_768x512_0 = {
   },
 };
 
-DRV_ImgsLdcConfig gDRV_imgsLdcConfig_768x512_1 = {
+DRV_ImgsLdcConfig gDRV_imgsLdcConfig_768x512_1_IMX122 = {
 
   .ldcParams = {
   
@@ -445,7 +445,7 @@ DRV_ImgsLdcConfig gDRV_imgsLdcConfig_768x512_1 = {
   },
 };
 
-DRV_ImgsLdcConfig gDRV_imgsLdcConfig_768x512_0_VS = {
+DRV_ImgsLdcConfig gDRV_imgsLdcConfig_768x512_0_VS_IMX122 = {
 
   .ldcParams = {
   
@@ -482,7 +482,7 @@ DRV_ImgsLdcConfig gDRV_imgsLdcConfig_768x512_0_VS = {
   },
 };
 
-DRV_ImgsLdcConfig gDRV_imgsLdcConfig_768x512_1_VS = {
+DRV_ImgsLdcConfig gDRV_imgsLdcConfig_768x512_1_VS_IMX122 = {
 
   .ldcParams = {
   
@@ -520,7 +520,7 @@ DRV_ImgsLdcConfig gDRV_imgsLdcConfig_768x512_1_VS = {
 };
 
 
-DRV_ImgsLdcConfig gDRV_imgsLdcConfig_1312x768_0 = {
+DRV_ImgsLdcConfig gDRV_imgsLdcConfig_1312x768_0_IMX122 = {
 
   .ldcParams = {
   
@@ -557,7 +557,7 @@ DRV_ImgsLdcConfig gDRV_imgsLdcConfig_1312x768_0 = {
   },
 };
 
-DRV_ImgsLdcConfig gDRV_imgsLdcConfig_1312x768_1 = {
+DRV_ImgsLdcConfig gDRV_imgsLdcConfig_1312x768_1_IMX122 = {
 
   .ldcParams = {
   
@@ -594,7 +594,7 @@ DRV_ImgsLdcConfig gDRV_imgsLdcConfig_1312x768_1 = {
   },
 };
 
-DRV_ImgsLdcConfig gDRV_imgsLdcConfig_1312x768_2 = {
+DRV_ImgsLdcConfig gDRV_imgsLdcConfig_1312x768_2_IMX122 = {
 
   .ldcParams = {
   
@@ -631,7 +631,7 @@ DRV_ImgsLdcConfig gDRV_imgsLdcConfig_1312x768_2 = {
   },
 };
 
-DRV_ImgsLdcConfig gDRV_imgsLdcConfig_1312x768_0_VS = {
+DRV_ImgsLdcConfig gDRV_imgsLdcConfig_1312x768_0_VS_IMX122 = {
 
   .ldcParams = {
   
@@ -668,7 +668,7 @@ DRV_ImgsLdcConfig gDRV_imgsLdcConfig_1312x768_0_VS = {
   },
 };
 
-DRV_ImgsLdcConfig gDRV_imgsLdcConfig_1312x768_1_VS = {
+DRV_ImgsLdcConfig gDRV_imgsLdcConfig_1312x768_1_VS_IMX122 = {
 
   .ldcParams = {
   
@@ -705,7 +705,7 @@ DRV_ImgsLdcConfig gDRV_imgsLdcConfig_1312x768_1_VS = {
   },
 };
 
-DRV_ImgsLdcConfig gDRV_imgsLdcConfig_1312x768_2_VS = {
+DRV_ImgsLdcConfig gDRV_imgsLdcConfig_1312x768_2_VS_IMX122 = {
 
   .ldcParams = {
   

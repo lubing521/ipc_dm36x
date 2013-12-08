@@ -761,14 +761,6 @@
 
 #define IMGS_I2C_ADDR       (0x6e)
 
-#ifdef BOARD_AP_IPNC
-//#define IMGS_I2C_ADDR       (0x6C)
-#endif
-
-#ifdef BOARD_TI_EVM
-//#define IMGS_I2C_ADDR       (0x6C)
-#endif
-
 #define IMGS_RESET_GPIO     (31)
 
 //Added by Richard: adding registers to update awb & color matrix
@@ -794,48 +786,47 @@
 #define OV10630_REG_55ae	0x55ae
 
 
-typedef struct {
+typedef struct
+{
 
-  int fps;        // Hz
-  float t_frame;  // ns
-  float t_row;    // ns
-  float t_pclk;   // ns
-  int W;
-  int H;
-  int SW;
-  int SD;
-  int HB;
-  int VB;
-  int HBmin;
-  int VBmin;
-  int f_pclk;     // Hz
+    int fps;        // Hz
+    float t_frame;  // ns
+    float t_row;    // ns
+    float t_pclk;   // ns
+    int W;
+    int H;
+    int SW;
+    int SD;
+    int HB;
+    int VB;
+    int HBmin;
+    int VBmin;
+    int f_pclk;     // Hz
 
-  float shutterOverhead;
+    float shutterOverhead;
 
-  int col_size;
-  int row_size;
-  int col_skip;
-  int row_skip;
-  int col_bin;
-  int row_bin;
-  int col_start;
-  int row_start;
+    int col_size;
+    int row_size;
+    int col_skip;
+    int row_skip;
+    int col_bin;
+    int row_bin;
+    int col_start;
+    int row_start;
 
-  int pll_M;
-  int pll_N;
-  int pll_DIV;
+    int pll_M;
+    int pll_N;
+    int pll_DIV;
 
-  int div_base;
+    int div_base;
 
 } DRV_ImgsFrameTime;
 
-typedef struct {
-
-  DRV_I2cHndl i2cHndl;
-
-  DRV_ImgsFrameTime curFrameTime;
-  DRV_ImgsModeConfig curModeConfig;
-
+typedef struct
+{
+    DRV_I2cHndl        i2cHndl;
+    DRV_ImgsFrameTime  curFrameTime;
+    DRV_ImgsModeConfig curModeConfig;
 } DRV_ImgsObj;
 
 

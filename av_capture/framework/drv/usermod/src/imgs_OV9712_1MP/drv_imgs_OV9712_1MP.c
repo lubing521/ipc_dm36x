@@ -4,11 +4,11 @@
 
 DRV_ImgsObj gDRV_imgsObj;
 
-int DRV_imgsCheckId();
-int DRV_imgsSetFramerate(int fps);
-int DRV_imgsEnable(Bool enable);
+int DRV_imgsCheckId_OV9712();
+int DRV_imgsSetFramerate_OV9712(int fps);
+int DRV_imgsEnable_OV9712(Bool enable);
 
-int DRV_imgsOpen(DRV_ImgsConfig *config)
+int DRV_imgsOpen_OV9712(DRV_ImgsConfig *config)
 {
     int status, retry = 10;
     Uint16 width, height;
@@ -39,7 +39,7 @@ int DRV_imgsOpen(DRV_ImgsConfig *config)
 
     do
     {
-        status = DRV_imgsCheckId();
+        status = DRV_imgsCheckId_OV9712();
         if (status == OSA_SOK)
         {
             break;
@@ -57,19 +57,19 @@ int DRV_imgsOpen(DRV_ImgsConfig *config)
     return 0;
 }
 
-int DRV_imgsClose()
+int DRV_imgsClose_OV9712()
 {
-    int status = DRV_imgsEnable(FALSE);
+    int status = DRV_imgsEnable_OV9712(FALSE);
     status |= DRV_i2cClose(&gDRV_imgsObj.i2cHndl);
     return status;
 }
 
-char* DRV_imgsGetImagerName()
+char* DRV_imgsGetImagerName_OV9712()
 {
     return "OV9712";
 }
 
-int DRV_imgsSpecificSetting(void)
+int DRV_imgsSpecificSetting_OV9712(void)
 {
     DRV_ImgsFrameTime *pFrame = &gDRV_imgsObj.curFrameTime;
     Uint8 regAddr[128];
@@ -165,7 +165,7 @@ int DRV_imgsSpecificSetting(void)
     return status;
 }
 
-int DRV_imgsSet50_60Hz(Bool is50Hz)
+int DRV_imgsSet50_60Hz_OV9712(Bool is50Hz)
 {
     int fps;
     if (gDRV_imgsObj.curFrameTime.fps == 30 || gDRV_imgsObj.curFrameTime.fps == 25)
@@ -178,12 +178,12 @@ int DRV_imgsSet50_60Hz(Bool is50Hz)
         {
             fps = 30;
         }
-        DRV_imgsSetFramerate(fps);
+        DRV_imgsSetFramerate_OV9712(fps);
     }
     return 0;
 }
 
-int DRV_imgsSetFramerate(int fps)
+int DRV_imgsSetFramerate_OV9712(int fps)
 {
     DRV_ImgsFrameTime *pFrame = &gDRV_imgsObj.curFrameTime;
     Uint8 regAddr[3];
@@ -201,22 +201,22 @@ int DRV_imgsSetFramerate(int fps)
     return status;
 }
 
-int DRV_imgsBinEnable(Bool enable)
+int DRV_imgsBinEnable_OV9712(Bool enable)
 {
     return 0;
 }
 
-int DRV_imgsBinMode(int binMode)
+int DRV_imgsBinMode_OV9712(int binMode)
 {
     return 0;
 }
 
-int DRV_imgsReverseMode()
+int DRV_imgsReverseMode_OV9712()
 {
     return 0;
 }
 
-int DRV_imgsFlipMode(int enable)
+int DRV_imgsFlipMode_OV9712(int enable)
 {
     Uint8 regAddr[4];
     Uint8 regValue[4],regVal_old;
@@ -248,7 +248,7 @@ int DRV_imgsFlipMode(int enable)
     return status;
 }
 
-int DRV_imgsMirrorMode(int enable)
+int DRV_imgsMirrorMode_OV9712(int enable)
 {
     Uint8 regAddr[4];
     Uint8 regValue[4],regVal_old;
@@ -283,32 +283,32 @@ int DRV_imgsMirrorMode(int enable)
     return status;
 }
 
-int DRV_imgsSetMirror(Bool flipH, Bool flipV)
+int DRV_imgsSetMirror_OV9712(Bool flipH, Bool flipV)
 {
     int status = OSA_SOK;
 
     if (flipH) 
     {
-        status = DRV_imgsMirrorMode(1);   
+        status = DRV_imgsMirrorMode_OV9712(1);   
     }
     else
     {
-        status = DRV_imgsMirrorMode(0);     
+        status = DRV_imgsMirrorMode_OV9712(0);     
     }
 
     if (flipV) 
     {
-        status = DRV_imgsFlipMode(1);    
+        status = DRV_imgsFlipMode_OV9712(1);    
     }
     else
     {
-        status = DRV_imgsFlipMode(0);   
+        status = DRV_imgsFlipMode_OV9712(0);   
     }
     
     return status;
 }
 
-int DRV_imgsSetBlc(int value)
+int DRV_imgsSetBlc_OV9712(int value)
 {
     Uint8 regVal, hvalue;
     Uint8 regAddr = 0x37;
@@ -347,7 +347,7 @@ int DRV_imgsSetBlc(int value)
     return status;
 }
 
-int DRV_imgsSetAgainExposureGroupLatch(int again, Uint32 eshutter, int setRegDirect)
+int DRV_imgsSetAgainExposureGroupLatch_OV9712(int again, Uint32 eshutter, int setRegDirect)
 {
     Uint8 regAddr;
     Uint8 regValue;
@@ -356,8 +356,8 @@ int DRV_imgsSetAgainExposureGroupLatch(int again, Uint32 eshutter, int setRegDir
     regAddr = 0x04;
     regValue = 0x09;
     status = DRV_i2cWrite8(&gDRV_imgsObj.i2cHndl, &regAddr, &regValue, 1);
-    status |= DRV_imgsSetEshutter(eshutter, setRegDirect);
-    status |= DRV_imgsSetAgain(again, setRegDirect);
+    status |= DRV_imgsSetEshutter_OV9712(eshutter, setRegDirect);
+    status |= DRV_imgsSetAgain_OV9712(again, setRegDirect);
     regAddr = 0x04;
     regValue = 0x00;
     status |= DRV_i2cWrite8(&gDRV_imgsObj.i2cHndl, &regAddr, &regValue, 1);
@@ -368,12 +368,12 @@ int DRV_imgsSetAgainExposureGroupLatch(int again, Uint32 eshutter, int setRegDir
 
 }
 
-int DRV_imgsSetDgain(int dgain)
+int DRV_imgsSetDgain_OV9712(int dgain)
 {
     return OSA_SOK;
 }
 
-int DRV_imgsSetAgain(int again, int setRegDirect)
+int DRV_imgsSetAgain_OV9712(int again, int setRegDirect)
 {
     Uint8 regAddr;
     Uint16 regValue;
@@ -401,7 +401,7 @@ int DRV_imgsSetAgain(int again, int setRegDirect)
     return status;
 }
 
-int DRV_imgsSetEshutter(Uint32 eshutterInUsec, int setRegDirect)
+int DRV_imgsSetEshutter_OV9712(Uint32 eshutterInUsec, int setRegDirect)
 {
     int status;
     int SW;
@@ -438,7 +438,7 @@ int DRV_imgsSetEshutter(Uint32 eshutterInUsec, int setRegDirect)
 
 //Gang: read AGain & exposure
 //return value is 8 times the true analog gain
-int DRV_imgsGetAgain(int *again)
+int DRV_imgsGetAgain_OV9712(int *again)
 {
     Uint8 regAddr;
     Uint16 regValue;
@@ -461,7 +461,7 @@ int DRV_imgsGetAgain(int *again)
     return status;
 }
 
-int DRV_imgsGetEshutter(Uint32 *eshutterInUsec)
+int DRV_imgsGetEshutter_OV9712(Uint32 *eshutterInUsec)
 {
     int status;
     Uint8 regAddr[2];
@@ -484,12 +484,12 @@ int DRV_imgsGetEshutter(Uint32 *eshutterInUsec)
     return status;
 }
 
-int DRV_imgsSetDcSub(Uint32 dcSub, int setRegDirect)
+int DRV_imgsSetDcSub_OV9712(Uint32 dcSub, int setRegDirect)
 {
     return 0;
 }
 
-int DRV_imgsEnable(Bool enable)
+int DRV_imgsEnable_OV9712(Bool enable)
 {
     Uint8 regAddr;
     Uint16 regValue;
@@ -499,7 +499,7 @@ int DRV_imgsEnable(Bool enable)
 
     if (enable)
     {
-        status = DRV_imgsSetRegs();
+        status = DRV_imgsSetRegs_OV9712();
         if (status != OSA_SOK)
         {
             OSA_ERROR("DRV_imgsSetRegs()\n");
@@ -529,20 +529,20 @@ int DRV_imgsEnable(Bool enable)
     }
     OSA_waitMsecs(10);
 #endif
-    return status;
+    return OSA_SOK;
 }
 
-DRV_ImgsModeConfig *DRV_imgsGetModeConfig(int sensorMode)
+DRV_ImgsModeConfig *DRV_imgsGetModeConfig_OV9712(int sensorMode)
 {
     return &gDRV_imgsObj.curModeConfig;
 }
 
-DRV_ImgsIsifConfig *DRV_imgsGetIsifConfig(int sensorMode)
+DRV_ImgsIsifConfig *DRV_imgsGetIsifConfig_OV9712(int sensorMode)
 {
     return &gDRV_imgsIsifConfig_Common_OV9712;
 }
 
-DRV_ImgsIpipeConfig *DRV_imgsGetIpipeConfig(int sensorMode, int vnfDemoCfg)
+DRV_ImgsIpipeConfig *DRV_imgsGetIpipeConfig_OV9712(int sensorMode, int vnfDemoCfg)
 {
     if (vnfDemoCfg)
         return &gDRV_imgsIpipeConfig_Vnfdemo_OV9712;
@@ -550,7 +550,7 @@ DRV_ImgsIpipeConfig *DRV_imgsGetIpipeConfig(int sensorMode, int vnfDemoCfg)
         return &gDRV_imgsIpipeConfig_Common_OV9712;
 }
 
-DRV_ImgsH3aConfig *DRV_imgsGetH3aConfig(int sensorMode, int aewbVendor)
+DRV_ImgsH3aConfig *DRV_imgsGetH3aConfig_OV9712(int sensorMode, int aewbVendor)
 {
     if (aewbVendor == 1)
     {
@@ -569,7 +569,7 @@ DRV_ImgsH3aConfig *DRV_imgsGetH3aConfig(int sensorMode, int aewbVendor)
     }
 }
 
-DRV_ImgsLdcConfig *DRV_imgsGetLdcConfig(int sensorMode, Uint16 ldcInFrameWidth, Uint16 ldcInFrameHeight)
+DRV_ImgsLdcConfig *DRV_imgsGetLdcConfig_OV9712(int sensorMode, Uint16 ldcInFrameWidth, Uint16 ldcInFrameHeight)
 {
     sensorMode &= 0xFF;
 
@@ -605,7 +605,7 @@ DRV_ImgsLdcConfig *DRV_imgsGetLdcConfig(int sensorMode, Uint16 ldcInFrameWidth, 
     return NULL;
 }
 
-int DRV_imgsReset()
+int DRV_imgsReset_OV9712()
 {
     Uint8 regAddr[8];
     Uint16 regValue[8];
@@ -649,7 +649,7 @@ int DRV_imgsReset()
     return status;
 }
 
-int DRV_imgsCheckId()
+int DRV_imgsCheckId_OV9712()
 {
     int status;
     Uint8  regAddr;
@@ -685,7 +685,7 @@ int DRV_imgsCheckId()
     return OSA_SOK;
 }
 
-int DRV_imgsSetRegs()
+int DRV_imgsSetRegs_OV9712()
 {
     int i, status = 0;
     static Uint8 regAddr[32];
@@ -694,7 +694,29 @@ int DRV_imgsSetRegs()
     DRV_ImgsFrameTime *pFrame = &gDRV_imgsObj.curFrameTime;
 
     OSA_waitMsecs(10);
-    status = DRV_imgsSpecificSetting();
+    status = DRV_imgsSpecificSetting_OV9712();
     return status;
 }
+
+DRV_ImgsFuncs OV9712ImgsFuncs = 
+{
+    .imgsOpen            = DRV_imgsOpen_OV9712,
+    .imgsClose           = DRV_imgsClose_OV9712,
+    .imgsSetMirror       = DRV_imgsSetMirror_OV9712,
+    .imgsGetImagerName   = DRV_imgsGetImagerName_OV9712,
+    .imgsSetAgain        = DRV_imgsSetAgain_OV9712,
+    .imgsSetDgain        = DRV_imgsSetDgain_OV9712,
+    .imgsSetEshutter     = DRV_imgsSetEshutter_OV9712,
+    .imgsSetDcSub        = DRV_imgsSetDcSub_OV9712,
+    .imgsBinEnable       = DRV_imgsBinEnable_OV9712,
+    .imgsBinMode         = DRV_imgsBinMode_OV9712,
+    .imgsSetFramerate    = DRV_imgsSetFramerate_OV9712,
+    .imgsSet50_60Hz      = DRV_imgsSet50_60Hz_OV9712, 
+    .imgsEnable          = DRV_imgsEnable_OV9712,
+    .imgsGetModeConfig   = DRV_imgsGetModeConfig_OV9712,
+    .imgsGetIsifConfig   = DRV_imgsGetIsifConfig_OV9712,
+    .imgsGetH3aConfig    = DRV_imgsGetH3aConfig_OV9712,
+    .imgsGetIpipeConfig  = DRV_imgsGetIpipeConfig_OV9712,
+    .imgsGetLdcConfig    = DRV_imgsGetLdcConfig_OV9712
+};
 

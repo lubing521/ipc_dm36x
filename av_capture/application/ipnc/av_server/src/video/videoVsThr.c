@@ -141,7 +141,7 @@ int VIDEO_vsTskCreate()
 {
   DRV_IpipeBscConfig bscConfig;
 
-  DRV_ImgsModeConfig *pImgsConfig = DRV_imgsGetModeConfig(gAVSERVER_config.sensorMode);
+  DRV_ImgsModeConfig *pImgsConfig = drvImgsFunc->imgsGetModeConfig(gAVSERVER_config.sensorMode);
 
   if(pImgsConfig==NULL) {
     OSA_ERROR("DRV_imgsGetModeConfig(0x%04x)\n", gAVSERVER_config.sensorMode);

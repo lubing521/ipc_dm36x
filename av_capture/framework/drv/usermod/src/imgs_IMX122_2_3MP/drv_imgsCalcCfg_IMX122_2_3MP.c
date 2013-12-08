@@ -5,7 +5,8 @@
 #define DRV_SHOW_INFO
 
 extern int gCurrsensorMode;
-int DRV_imgsCalcFrameRate(int fps)
+
+int DRV_imgsCalcFrameRate_IMX122(int fps)
 {
   if(fps<5)
     fps=30;
@@ -24,7 +25,66 @@ int DRV_imgsCalcFrameRate(int fps)
   return 0;
 }
 
-int DRV_imgsCalcFrameTime(Uint32 fps, Uint32 dataW, Uint32 dataH, Bool binEnable)
+int DRV_imgsCalcSW_IMX122(int exposureTimeInUsecs)
+{
+
+	int Lw;
+	DRV_ImgsFrameTime *pFrame = &gDRV_imgsObj.curFrameTime;
+	if(gCurrsensorMode==DRV_IMGS_SENSOR_MODE_2048x1536){
+	if(pFrame->Is50Hz==0){
+		Lw = IMGS_SENSOR_LINEWIDTH;
+	}else{
+		Lw = IMGS_SENSOR_LINEWIDTH;	//PAL, TBD	
+		}
+	}else{
+		if(pFrame->Is50Hz==0){
+			Lw = IMGS_SENSOR_LINEWIDTH;
+		}else{
+			Lw = IMGS_SENSOR_LINEWIDTH;	//PAL, TBD	
+		}
+	}
+	pFrame->SW = (int)(((double)exposureTimeInUsecs*(double)Lw)/((double)33333) );	
+	if(pFrame->SW<1){
+		pFrame->SW = 1;	
+	}
+	
+	return OSA_SOK;
+}
+
+int DRV_imgsCalcAgain_IMX122(int aGain)
+{
+  Uint16 gainRegVal=0;
+  int temp1, temp2;
+  /* Bit[7]: digital gain */
+  /* Bit[6:0]: analog gain */
+  /* 1000 = 1x gain */
+  if(aGain < 10000)
+    aGain = 10000;
+
+  if(aGain > 310000)
+    aGain = 310000;
+
+	/*bit[7:4]*/
+	temp1 = (Uint16)(log(aGain/10000)/log(2));
+	gainRegVal = ((1<<temp1)-1)<<4; 
+
+	/*
+	((aGain/1000)/(2^temp1)-1)*16
+	= ((aGain/1000)*16/(2^temp1)-16)
+	= ((aGain/1000)<<4>>temp1-16)
+	= ((aGain/1000)<<(4-temp1)-16)
+	= ((aGain<<(4-temp1)/1000)-16)
+	*/
+	/*bit[3:0]*/
+	temp2 = (((aGain<<(4-temp1))/10000)-16);
+	gainRegVal |= temp2;
+
+	//printf(" aGain = %d temp1 = %d temp2 = %d gainRegVal = %d \n",aGain,temp1,temp2,gainRegVal);
+
+  return gainRegVal;
+}
+
+int DRV_imgsCalcFrameTime_IMX122(Uint32 fps, Uint32 dataW, Uint32 dataH, Bool binEnable)
 {
   DRV_ImgsFrameTime *pFrame = &gDRV_imgsObj.curFrameTime;
   DRV_ImgsModeConfig *pModeCfg = &gDRV_imgsObj.curModeConfig;
@@ -71,8 +131,8 @@ int DRV_imgsCalcFrameTime(Uint32 fps, Uint32 dataW, Uint32 dataH, Bool binEnable
   pFrame->SD     = 0;
 
   if(dataW*dataH >= 1920*1080) {
-    if(fps>24)
-      fps = 24;
+    if(fps>30)
+      fps = 30;
   }
   if(dataW*dataH >= 2048*1536) {
     if(fps>15)
@@ -117,9 +177,8 @@ int DRV_imgsCalcFrameTime(Uint32 fps, Uint32 dataW, Uint32 dataH, Bool binEnable
   pFrame->shutterOverhead = 208 * (pFrame->row_bin+1) + 98 + (pFrame->SD+1) - 94;
   pFrame->shutterOverhead = 2 * pFrame->t_pclk * pFrame->shutterOverhead;
 
-  DRV_imgsCalcFrameRate(fps);
-
-  DRV_imgsCalcSW(pFrame->t_frame/1000);
+  DRV_imgsCalcFrameRate_IMX122(fps);
+  DRV_imgsCalcSW_IMX122(pFrame->t_frame/1000);
 
   pModeCfg->sensorDataWidth   = pFrame->W;
   pModeCfg->sensorDataHeight  = pFrame->H;
@@ -146,14 +205,19 @@ int DRV_imgsCalcFrameTime(Uint32 fps, Uint32 dataW, Uint32 dataH, Bool binEnable
   pModeCfg->vdint2		= IMGS_H_MAX-1;
   #endif
 */
-  #ifdef DRV_SHOW_INFO
-  OSA_printf(" Sensor Mode Info,\n");
-  OSA_printf(" Width      = %4d \n", pModeCfg->sensorDataWidth);
-  OSA_printf(" Height     = %4d \n", pModeCfg->sensorDataHeight);
-  OSA_printf(" fps        = %4d \n", fps);
-  OSA_printf(" Bin Enable = %4d \n", pModeCfg->binEnable );
-  OSA_printf(" \n");
-  OSA_printf(" Sensor Frame Timing Info,\n");
+
+#if 1
+  OSA_printf("\n");
+  OSA_printf("[Sensor Mode Info]\n");
+  OSA_printf(" sensorDataWidth      = %d\n", pModeCfg->sensorDataWidth);
+  OSA_printf(" sensorDataHeight     = %d\n", pModeCfg->sensorDataHeight);
+  OSA_printf(" validStartX          = %d\n", pModeCfg->validStartX);
+  OSA_printf(" validStartY          = %d\n", pModeCfg->validStartY);
+  OSA_printf(" validWidth           = %d\n", pModeCfg->validWidth);
+  OSA_printf(" validHeight          = %d\n", pModeCfg->validHeight);
+  OSA_printf(" binEnable            = %d\n", pModeCfg->binEnable );
+  OSA_printf("\n");
+  OSA_printf("[Sensor Frame Timing Info]\n");
   OSA_printf(" fps                  = %d\n", pFrame->fps              );
   OSA_printf(" t_frame (ns)         = %f\n", pFrame->t_frame          );
   OSA_printf(" t_row   (ns)         = %f\n", pFrame->t_row            );
@@ -183,61 +247,4 @@ int DRV_imgsCalcFrameTime(Uint32 fps, Uint32 dataW, Uint32 dataH, Bool binEnable
   return OSA_SOK;
 }
 
-int DRV_imgsCalcSW(int exposureTimeInUsecs)
-{
 
-	int Lw;
-	DRV_ImgsFrameTime *pFrame = &gDRV_imgsObj.curFrameTime;
-	if(gCurrsensorMode==DRV_IMGS_SENSOR_MODE_2048x1536){
-	if(pFrame->Is50Hz==0){
-		Lw = IMGS_SENSOR_LINEWIDTH;
-	}else{
-		Lw = IMGS_SENSOR_LINEWIDTH;	//PAL, TBD	
-		}
-	}else{
-		if(pFrame->Is50Hz==0){
-			Lw = IMGS_SENSOR_LINEWIDTH;
-		}else{
-			Lw = IMGS_SENSOR_LINEWIDTH;	//PAL, TBD	
-		}
-	}
-	pFrame->SW = (int)(((double)exposureTimeInUsecs*(double)Lw)/((double)33333) );	
-	if(pFrame->SW<1){
-		pFrame->SW = 1;	
-	}
-	
-	return OSA_SOK;
-}
-
-int DRV_imgsCalcAgain(int aGain)
-{
-  Uint16 gainRegVal=0;
-  int temp1, temp2;
-  /* Bit[7]: digital gain */
-  /* Bit[6:0]: analog gain */
-  /* 1000 = 1x gain */
-  if(aGain < 10000)
-    aGain = 10000;
-
-  if(aGain > 310000)
-    aGain = 310000;
-
-	/*bit[7:4]*/
-	temp1 = (Uint16)(log(aGain/10000)/log(2));
-	gainRegVal = ((1<<temp1)-1)<<4; 
-
-	/*
-	((aGain/1000)/(2^temp1)-1)*16
-	= ((aGain/1000)*16/(2^temp1)-16)
-	= ((aGain/1000)<<4>>temp1-16)
-	= ((aGain/1000)<<(4-temp1)-16)
-	= ((aGain<<(4-temp1)/1000)-16)
-	*/
-	/*bit[3:0]*/
-	temp2 = (((aGain<<(4-temp1))/10000)-16);
-	gainRegVal |= temp2;
-
-	//printf(" aGain = %d temp1 = %d temp2 = %d gainRegVal = %d \n",aGain,temp1,temp2,gainRegVal);
-
-  return gainRegVal;
-}

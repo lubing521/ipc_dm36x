@@ -17,7 +17,30 @@ DRV_ImgsObj gDRV_imgsObj;
 
 #define rev2_linear
 
-int DRV_imgsOpen(DRV_ImgsConfig *config)
+int DRV_imgsEnable_AR0331(Bool enable);
+
+int DRV_imgsCheckId_AR0331()
+{
+  int status;
+  Uint16  regAddr;
+  Uint16 regValue;
+
+  regAddr = CHIP_VERSION_ADDR;
+  regValue = 0;
+
+  status = DRV_i2c16Read16(&gDRV_imgsObj.i2cHndl, &regAddr, &regValue, 1);
+
+  if(status!=OSA_SOK) {
+    OSA_ERROR("DRV_i2cRead16()\n");
+    return status;
+  }
+  if(regValue!=IMGS_CHIP_ID)
+    return OSA_EFAIL;
+
+  return OSA_SOK;
+}
+
+int DRV_imgsOpen_AR0331(DRV_ImgsConfig *config)
 {
   int status, retry=10;
   Uint16 width, height;
@@ -29,7 +52,7 @@ int DRV_imgsOpen(DRV_ImgsConfig *config)
   width+=IMGS_H_PAD;
   height+=IMGS_V_PAD;
 
-  DRV_imgsCalcFrameTime(config->fps, width, height, config->binEnable);
+  DRV_imgsCalcFrameTime_AR0331(config->fps, width, height, config->binEnable);
 
   status = DRV_i2cOpen(&gDRV_imgsObj.i2cHndl, IMGS_I2C_ADDR);
   if(status!=OSA_SOK) {
@@ -46,7 +69,7 @@ int DRV_imgsOpen(DRV_ImgsConfig *config)
   OSA_waitMsecs(50);
   #endif
   do {
-    status = DRV_imgsCheckId();
+    status = DRV_imgsCheckId_AR0331();
     if(status==OSA_SOK)
       break;
     OSA_waitMsecs(10);
@@ -60,27 +83,27 @@ int DRV_imgsOpen(DRV_ImgsConfig *config)
 return 0;
 }
 
-int DRV_imgsClose()
+int DRV_imgsClose_AR0331()
 {
   int status;
 
-  status = DRV_imgsEnable(FALSE);
+  status = DRV_imgsEnable_AR0331(FALSE);
   status |= DRV_i2cClose(&gDRV_imgsObj.i2cHndl);
 
   return status;
 }
 
-char* DRV_imgsGetImagerName()
+char* DRV_imgsGetImagerName_AR0331()
 {
   return "Aptina_AR0331_3.1MP";
 }
 
-int DRV_imgsSpecificSetting(void)
+int DRV_imgsSpecificSetting_AR0331(void)
 {
 	return 0;
 }
 
-int DRV_imgsSet50_60Hz(Bool is50Hz)
+int DRV_imgsSet50_60Hz_AR0331(Bool is50Hz)
 {
  /*
  int fps;
@@ -101,7 +124,7 @@ int DRV_imgsSet50_60Hz(Bool is50Hz)
 return 0;
 }
 
-int DRV_imgsSetFramerate(int fps)
+int DRV_imgsSetFramerate_AR0331(int fps)
 {
 /*
 	Uint16 regAddr[4];
@@ -157,7 +180,7 @@ for(j = 0; j < i ; j++)
     return 0;
 }
 
-int DRV_imgsBinEnable(Bool enable)
+int DRV_imgsBinEnable_AR0331(Bool enable)
 {
 /*
   Uint8 regAddr[4];
@@ -192,7 +215,7 @@ int DRV_imgsBinEnable(Bool enable)
 return 0;
 }
 
-int DRV_imgsBinMode(int binMode)
+int DRV_imgsBinMode_AR0331(int binMode)
 {
 /*
   Uint8 regAddr[4];
@@ -216,12 +239,12 @@ int DRV_imgsBinMode(int binMode)
 return 0;
 }
 
-int DRV_imgsSetDgain(int dgain)
+int DRV_imgsSetDgain_AR0331(int dgain)
 {
     return OSA_SOK;
 }
 
-int DRV_imgsSetAgain(int again, int setRegDirect)
+int DRV_imgsSetAgain_AR0331(int again, int setRegDirect)
 {
 
   Uint16 regAddr;
@@ -258,17 +281,19 @@ int DRV_imgsSetAgain(int again, int setRegDirect)
   {
       regValue = 0x00;
   }
-//printf("analog:%d\n",regValue);
-status = DRV_i2c16Write16(&gDRV_imgsObj.i2cHndl, &regAddr, &regValue, 1);  
-	if(status!=OSA_SOK) {
-		OSA_ERROR("I2C write error\n");
-		return status;
-}
-	OSA_waitMsecs(10);
-return 0;
+
+  //printf("analog:%d\n",regValue);
+  status = DRV_i2c16Write16(&gDRV_imgsObj.i2cHndl, &regAddr, &regValue, 1);  
+  if(status!=OSA_SOK) {
+	OSA_ERROR("I2C write error\n");
+	return status;
+  }
+  OSA_waitMsecs(10);
+
+  return 0;
 }
 
-int DRV_imgsSetEshutter(Uint32 eshutterInUsec, int setRegDirect)
+int DRV_imgsSetEshutter_AR0331(Uint32 eshutterInUsec, int setRegDirect)
 {
   int status;
   Uint16 regAddr;
@@ -285,12 +310,13 @@ int DRV_imgsSetEshutter(Uint32 eshutterInUsec, int setRegDirect)
   return status;
  
 }
-int AR0331_HDR_Enable(int enable)
+int AR0331_HDR_Enable_AR0331(int enable)
 {
    return 0;
 }
+
 //Read AGain & exposure
-int DRV_imgsGetAgain(int *again)
+int DRV_imgsGetAgain_AR0331(int *again)
 {
 /*
   Uint16 regAddr;
@@ -312,7 +338,7 @@ int DRV_imgsGetAgain(int *again)
  return 0;
 }
 
-int DRV_imgsGetEshutter(Uint32 *eshutterInUsec)
+int DRV_imgsGetEshutter_AR0331(Uint32 *eshutterInUsec)
 {
 /*
   int status;
@@ -334,18 +360,18 @@ int DRV_imgsGetEshutter(Uint32 *eshutterInUsec)
   return 0;
 }
 
-int DRV_imgsSetDcSub(Uint32 dcSub, int setRegDirect)
+int DRV_imgsSetDcSub_AR0331(Uint32 dcSub, int setRegDirect)
 {
 
   return 0;
 }
 
-int DRV_imgsEnable(Bool enable)
+int DRV_imgsEnable_AR0331(Bool enable)
 {
   int status=OSA_SOK;
 
   if(enable) {
-    status = DRV_imgsSetRegs();
+    status = DRV_imgsSetRegs_AR0331();
     if(status!=OSA_SOK) {
       OSA_ERROR("DRV_imgsSetRegs()\n");
       return status;
@@ -354,17 +380,17 @@ int DRV_imgsEnable(Bool enable)
   return status;
 }
 
-DRV_ImgsModeConfig      *DRV_imgsGetModeConfig(int sensorMode)
+DRV_ImgsModeConfig      *DRV_imgsGetModeConfig_AR0331(int sensorMode)
 {
   return &gDRV_imgsObj.curModeConfig;
 }
 
-DRV_ImgsIsifConfig      *DRV_imgsGetIsifConfig(int sensorMode)
+DRV_ImgsIsifConfig      *DRV_imgsGetIsifConfig_AR0331(int sensorMode)
 {
   return &gDRV_imgsIsifConfig_Common;
 }
 
-DRV_ImgsIpipeConfig     *DRV_imgsGetIpipeConfig(int sensorMode, int vnfDemoCfg)
+DRV_ImgsIpipeConfig     *DRV_imgsGetIpipeConfig_AR0331(int sensorMode, int vnfDemoCfg)
 {
   if(vnfDemoCfg)
   	return &gDRV_imgsIpipeConfig_Vnfdemo;
@@ -372,7 +398,7 @@ DRV_ImgsIpipeConfig     *DRV_imgsGetIpipeConfig(int sensorMode, int vnfDemoCfg)
   	return &gDRV_imgsIpipeConfig_Common;
 }
 
-DRV_ImgsH3aConfig       *DRV_imgsGetH3aConfig(int sensorMode, int aewbVendor)
+DRV_ImgsH3aConfig       *DRV_imgsGetH3aConfig_AR0331(int sensorMode, int aewbVendor)
 {
   if(aewbVendor==1) {
   	return &gDRV_imgsH3aConfig_Appro;
@@ -385,7 +411,7 @@ DRV_ImgsH3aConfig       *DRV_imgsGetH3aConfig(int sensorMode, int aewbVendor)
   }
 }
 
-DRV_ImgsLdcConfig       *DRV_imgsGetLdcConfig(int sensorMode, Uint16 ldcInFrameWidth, Uint16 ldcInFrameHeight)
+DRV_ImgsLdcConfig       *DRV_imgsGetLdcConfig_AR0331(int sensorMode, Uint16 ldcInFrameWidth, Uint16 ldcInFrameHeight)
 {
   sensorMode &= 0xFF;
 
@@ -464,34 +490,16 @@ DRV_ImgsLdcConfig       *DRV_imgsGetLdcConfig(int sensorMode, Uint16 ldcInFrameW
   return NULL;
 }
 
-int DRV_imgsReset()
+int DRV_imgsReset_AR0331()
 {
   return 0;
 }
 
-int DRV_imgsCheckId()
-{
-  int status;
-  Uint16  regAddr;
-  Uint16 regValue;
 
-  regAddr = CHIP_VERSION_ADDR;
-  regValue = 0;
 
-  status = DRV_i2c16Read16(&gDRV_imgsObj.i2cHndl, &regAddr, &regValue, 1);
-  printf("Read Sensor ID:0x%4x\n",regValue);
-  if(status!=OSA_SOK) {
-    OSA_ERROR("DRV_i2cRead16()\n");
-    return status;
-  }
-  if(regValue!=IMGS_CHIP_ID)
-    return OSA_EFAIL;
-
-  return OSA_SOK;
-}
-
-int DRV_imgsSetRegs()
+int DRV_imgsSetRegs_AR0331()
  {
+ 
   Uint16  regAddr[500];
   Uint16 regValue[500];
   int status,i=0;
@@ -851,6 +859,7 @@ int DRV_imgsSetRegs()
 ; i++ ; regAddr[i] = 0x3058; regValue[i] = 0x00C7 	// BLUE_GAIN
 ; i++;
 #endif
+
 for(j=0; j < i; j++)
 {
    status = DRV_i2c16Write16(&gDRV_imgsObj.i2cHndl, &regAddr[j], &regValue[j], 1);  
@@ -859,13 +868,38 @@ for(j=0; j < i; j++)
 	   printf("I2C write Error,index:%d\n",j);
 	   return status;
 	}
-if(regAddr[j] == 0x301A )	
-   OSA_waitMsecs(100);
+    if(regAddr[j] == 0x301A )	
+       OSA_waitMsecs(100);
 
-   OSA_waitMsecs(1);	
+    OSA_waitMsecs(1);	
 }
 printf("Finished Linear Mode Init with AR0331 rev2.\n");
+
 return 0;
+
 }
 
 #endif //#ifndef AR0331_WDR
+
+DRV_ImgsFuncs  AR0331ImgsFuncs = 
+{
+    .imgsOpen            = DRV_imgsOpen_AR0331,
+    .imgsClose           = DRV_imgsClose_AR0331,
+    .imgsSetMirror       = NULL,
+    .imgsGetImagerName   = DRV_imgsGetImagerName_AR0331,
+    .imgsSetAgain        = DRV_imgsSetAgain_AR0331,
+    .imgsSetDgain        = DRV_imgsSetDgain_AR0331,
+    .imgsSetEshutter     = DRV_imgsSetEshutter_AR0331,
+    .imgsSetDcSub        = DRV_imgsSetDcSub_AR0331,
+    .imgsBinEnable       = DRV_imgsBinEnable_AR0331,
+    .imgsBinMode         = DRV_imgsBinMode_AR0331,
+    .imgsSetFramerate    = DRV_imgsSetFramerate_AR0331,
+    .imgsSet50_60Hz      = DRV_imgsSet50_60Hz_AR0331, 
+    .imgsEnable          = DRV_imgsEnable_AR0331,
+    .imgsGetModeConfig   = DRV_imgsGetModeConfig_AR0331,
+    .imgsGetIsifConfig   = DRV_imgsGetIsifConfig_AR0331,
+    .imgsGetH3aConfig    = DRV_imgsGetH3aConfig_AR0331,
+    .imgsGetIpipeConfig  = DRV_imgsGetIpipeConfig_AR0331,
+    .imgsGetLdcConfig    = DRV_imgsGetLdcConfig_AR0331
+};
+

@@ -21,9 +21,9 @@ DRV_ImgsObj gDRV_imgsObj;
 #define DGAIN_STEP 3125
 #define DGAIN_MUTI 0x40 // 0b00100000: *1, 0b00110000: *1.5
 
-int DRV_imgsEnable(Bool enable);
+int DRV_imgsEnable_AR0130(Bool enable);
 
-int DRV_imgsCheckId()
+int DRV_imgsCheckId_AR0130()
 {
     Uint16 regAddr  = AR0130_CHIP_VERSION;
     Uint16 regValue = 0;
@@ -42,9 +42,7 @@ int DRV_imgsCheckId()
     return OSA_SOK;
 }
 
-int gImgsVPad = 0;
-
-int DRV_imgsOpen(DRV_ImgsConfig *config)
+int DRV_imgsOpen_AR0130(DRV_ImgsConfig *config)
 {
     int status, retry = 10;
     Uint16 width, height;
@@ -61,7 +59,7 @@ int DRV_imgsOpen(DRV_ImgsConfig *config)
     {
         gImgsVPad = 4;
     }
-    printf("\n-------gImgs_v_Pad = %d\n", gImgsVPad);
+    //printf("\n-------gImgs_v_Pad = %d\n", gImgsVPad);
     
     width  += IMGS_H_PAD;
     height += IMGS_V_PAD;
@@ -85,7 +83,7 @@ int DRV_imgsOpen(DRV_ImgsConfig *config)
 
     do
     {
-        status = DRV_imgsCheckId();
+        status = DRV_imgsCheckId_AR0130();
         if (status == OSA_SOK)
         {
             break;
@@ -103,14 +101,14 @@ int DRV_imgsOpen(DRV_ImgsConfig *config)
     return 0;
 }
 
-int DRV_imgsClose()
+int DRV_imgsClose_AR0130()
 {
-    int status = DRV_imgsEnable(FALSE);
+    int status = DRV_imgsEnable_AR0130(FALSE);
     status |= DRV_i2cClose(&gDRV_imgsObj.i2cHndl);
     return status;
 }
 
-char *DRV_imgsGetImagerName()
+char *DRV_imgsGetImagerName_AR0130()
 {
     return "APTINA_AR0130_1.2MP";
 }
@@ -513,7 +511,7 @@ static int AR0130_linear_init_regs(void)
   #endif
 }   
 
-int DRV_imgsSetMirror(Bool flipH, Bool flipV)
+int DRV_imgsSetMirror_AR0130(Bool flipH, Bool flipV)
 {
     int status = OSA_SOK;
     Uint16 regAddr  = 0;
@@ -590,7 +588,7 @@ int DRV_imgsSetMirror(Bool flipH, Bool flipV)
     return OSA_SOK;
 }
 
-int DRV_imgsSpecificSetting(void)
+int DRV_imgsSpecificSetting_AR0130(void)
 {
     Uint16 regAddr[50];
     Uint16 regValue[50];
@@ -678,7 +676,7 @@ int DRV_imgsSpecificSetting(void)
     return status;
 }
 
-int DRV_imgsSet50_60Hz(Bool is50Hz)
+int DRV_imgsSet50_60Hz_AR0130(Bool is50Hz)
 {
     int fps = 0;
     if (gDRV_imgsObj.curFrameTime.fps == 30 || gDRV_imgsObj.curFrameTime.fps == 25)
@@ -691,12 +689,12 @@ int DRV_imgsSet50_60Hz(Bool is50Hz)
         {
             fps = 30;
         }
-        DRV_imgsSetFramerate(fps);
+        DRV_imgsSetFramerate_AR0130(fps);
     }
     return 0;
 }
 
-int DRV_imgsSetFramerate(int fps)
+int DRV_imgsSetFramerate_AR0130(int fps)
 {
     Uint16 regAddr[2];
     Uint16 regValue[2];
@@ -729,17 +727,17 @@ int DRV_imgsSetFramerate(int fps)
     return status;
 }
 
-int DRV_imgsBinEnable(Bool enable)
+int DRV_imgsBinEnable_AR0130(Bool enable)
 {
     return OSA_SOK;
 }
 
-int DRV_imgsBinMode(int binMode)
+int DRV_imgsBinMode_AR0130(int binMode)
 {
     return OSA_SOK;
 }
 
-int DRV_imgsSetAgain(int again, int setRegDirect)
+int DRV_imgsSetAgain_AR0130(int again, int setRegDirect)
 {
     Uint16 regAddr[4];
     Uint16 regValue[4];
@@ -816,7 +814,7 @@ int DRV_imgsSetAgain(int again, int setRegDirect)
     return status;
 }
 
-int DRV_imgsSetDgain(int dgain)
+int DRV_imgsSetDgain_AR0130(int dgain)
 {
     Uint16 regAddr[1];
     Uint16 regValue[1];
@@ -836,7 +834,7 @@ int DRV_imgsSetDgain(int dgain)
     return status;
 }
 
-int DRV_imgsSetEshutter(Uint32 eshutterInUsec, int setRegDirect)
+int DRV_imgsSetEshutter_AR0130(Uint32 eshutterInUsec, int setRegDirect)
 {
     int status=0;
     Uint16 regAddr;
@@ -894,12 +892,12 @@ int DRV_imgsGetEshutter_AR0130(Uint32 *eshutterInUsec)
     return status;
 }
 
-int DRV_imgsSetDcSub(Uint32 dcSub, int setRegDirect)
+int DRV_imgsSetDcSub_AR0130(Uint32 dcSub, int setRegDirect)
 {
     return 0;
 }
 
-int DRV_imgsEnable(Bool enable)
+int DRV_imgsEnable_AR0130(Bool enable)
 {    
     Uint16 regAddr[5];
     Uint16 regValue[5];
@@ -907,7 +905,8 @@ int DRV_imgsEnable(Bool enable)
 
     if (enable)
     {
-        if (DRV_imgsSpecificSetting())
+        status = DRV_imgsSpecificSetting_AR0130();
+        if (status != OSA_SOK)
         {
             OSA_ERROR("DRV_imgsSpecificSetting_AR0130()\n");
             return status;
@@ -925,20 +924,20 @@ int DRV_imgsEnable(Bool enable)
         }
     }
 
-    return status;
+    return OSA_SOK;
 }
 
-DRV_ImgsModeConfig *DRV_imgsGetModeConfig(int sensorMode)
+DRV_ImgsModeConfig *DRV_imgsGetModeConfig_AR0130(int sensorMode)
 {
     return &gDRV_imgsObj.curModeConfig;
 }
 
-DRV_ImgsIsifConfig *DRV_imgsGetIsifConfig(int sensorMode)
+DRV_ImgsIsifConfig *DRV_imgsGetIsifConfig_AR0130(int sensorMode)
 {
     return &gDRV_imgsIsifConfig_Common_AR0130;
 }
 
-DRV_ImgsIpipeConfig *DRV_imgsGetIpipeConfig(int sensorMode, int vnfDemoCfg)
+DRV_ImgsIpipeConfig *DRV_imgsGetIpipeConfig_AR0130(int sensorMode, int vnfDemoCfg)
 {
     if (vnfDemoCfg)
     {
@@ -950,7 +949,7 @@ DRV_ImgsIpipeConfig *DRV_imgsGetIpipeConfig(int sensorMode, int vnfDemoCfg)
     }
 }
 
-DRV_ImgsH3aConfig *DRV_imgsGetH3aConfig(int sensorMode, int aewbVendor)
+DRV_ImgsH3aConfig *DRV_imgsGetH3aConfig_AR0130(int sensorMode, int aewbVendor)
 {
     if (aewbVendor==1)
     {
@@ -966,7 +965,7 @@ DRV_ImgsH3aConfig *DRV_imgsGetH3aConfig(int sensorMode, int aewbVendor)
     }
 }
 
-DRV_ImgsLdcConfig *DRV_imgsGetLdcConfig(int sensorMode, Uint16 ldcInFrameWidth, Uint16 ldcInFrameHeight)
+DRV_ImgsLdcConfig *DRV_imgsGetLdcConfig_AR0130(int sensorMode, Uint16 ldcInFrameWidth, Uint16 ldcInFrameHeight)
 {
     sensorMode &= 0xFF;
 
@@ -1021,12 +1020,12 @@ DRV_ImgsLdcConfig *DRV_imgsGetLdcConfig(int sensorMode, Uint16 ldcInFrameWidth, 
     return NULL;
 }
 
-int DRV_imgsReset()
+int DRV_imgsReset_AR0130()
 {
     return OSA_SOK;
 }
 
-int DRV_imgsSetRegs()
+int DRV_imgsSetRegs_AR0130()
 {
     int i, status=0;
     static Uint8 regAddr[32];
@@ -1153,4 +1152,26 @@ int DRV_imgsSetRegs()
 #endif
     return status;
 }
+
+DRV_ImgsFuncs AR0130ImgsFuncs = 
+{
+    .imgsOpen            = DRV_imgsOpen_AR0130,
+    .imgsClose           = DRV_imgsClose_AR0130,
+    .imgsSetMirror       = DRV_imgsSetMirror_AR0130,
+    .imgsGetImagerName   = DRV_imgsGetImagerName_AR0130,
+    .imgsSetAgain        = DRV_imgsSetAgain_AR0130,
+    .imgsSetDgain        = DRV_imgsSetDgain_AR0130,
+    .imgsSetEshutter     = DRV_imgsSetEshutter_AR0130,
+    .imgsSetDcSub        = DRV_imgsSetDcSub_AR0130,
+    .imgsBinEnable       = DRV_imgsBinEnable_AR0130,
+    .imgsBinMode         = DRV_imgsBinMode_AR0130,
+    .imgsSetFramerate    = DRV_imgsSetFramerate_AR0130,
+    .imgsSet50_60Hz      = DRV_imgsSet50_60Hz_AR0130, 
+    .imgsEnable          = DRV_imgsEnable_AR0130,
+    .imgsGetModeConfig   = DRV_imgsGetModeConfig_AR0130,
+    .imgsGetIsifConfig   = DRV_imgsGetIsifConfig_AR0130,
+    .imgsGetH3aConfig    = DRV_imgsGetH3aConfig_AR0130,
+    .imgsGetIpipeConfig  = DRV_imgsGetIpipeConfig_AR0130,
+    .imgsGetLdcConfig    = DRV_imgsGetLdcConfig_AR0130
+};
 
