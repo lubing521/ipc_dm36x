@@ -23,54 +23,51 @@
 */
 
 #ifdef _OS_LINUX_
-#include <linux/interrupt.h>
-#include <linux/kernel.h>       /* printk() */
-#include <linux/slab.h>         /* kmalloc() */
+    #include <linux/interrupt.h>
+    #include <linux/kernel.h>       /* printk() */
+    #include <linux/slab.h>         /* kmalloc() */
 
-#include <asm/uaccess.h>        /* copy_*_user */
-#include <linux/io.h>
+    #include <asm/uaccess.h>        /* copy_*_user */
+    #include <linux/io.h>
 
-#define CSL_PHYS_TO_VIRT(x)       IO_ADDRESS(x)
-#define CSL_SYS_INT_BASE_ID       (0)
-
-#define CSL_INT_RET_SOK           (IRQ_HANDLED)
+    #define CSL_PHYS_TO_VIRT(x)       IO_ADDRESS(x)
+    #define CSL_SYS_INT_BASE_ID       (0)
+    #define CSL_INT_RET_SOK           (IRQ_HANDLED)
 
 typedef irqreturn_t CSL_IntRet_t;
 
-#define CSL_copyToUser(touserptr, fromkernelptr, size)      copy_to_user((touserptr), (fromkernelptr), (size) )
-#define CSL_copyFromUser(tokernelptr, fromuserptr, size)    copy_from_user((tokernelptr), (fromuserptr), (size) )
+    #define CSL_copyToUser(touserptr, fromkernelptr, size)      copy_to_user((touserptr), (fromkernelptr), (size) )
+    #define CSL_copyFromUser(tokernelptr, fromuserptr, size)    copy_from_user((tokernelptr), (fromuserptr), (size) )
 
-#define CSL_getUser(kernelvariable, userptr)   get_user((kernelvariable), (userptr))
-#define CSL_putUser(kernelvariable, userptr)   put_user((kernelvariable), (userptr))
+    #define CSL_getUser(kernelvariable, userptr)   get_user((kernelvariable), (userptr))
+    #define CSL_putUser(kernelvariable, userptr)   put_user((kernelvariable), (userptr))
 
-#define CSL_sysMemAlloc(size)   (void*)kmalloc((size), GFP_KERNEL)
-#define CSL_sysMemFree(ptr)     kfree((ptr))
+    #define CSL_sysMemAlloc(size)   (void*)kmalloc((size), GFP_KERNEL)
+    #define CSL_sysMemFree(ptr)     kfree((ptr))
 
-#define CSL_intGlobalDisable(oldIntState)    local_irq_save(oldIntState)
-#define CSL_intGlobalRestore(intState)       local_irq_restore(intState)
+    #define CSL_intGlobalDisable(oldIntState)    local_irq_save(oldIntState)
+    #define CSL_intGlobalRestore(intState)       local_irq_restore(intState)
 
 
 #else
 
-#define CSL_PHYS_TO_VIRT(x)       (x)
-
-#define CSL_SYS_INT_BASE_ID       (0)
-
-#define CSL_INT_RET_SOK           (CSL_SOK)
+    #define CSL_PHYS_TO_VIRT(x)       (x)
+    #define CSL_SYS_INT_BASE_ID       (0)
+    #define CSL_INT_RET_SOK           (CSL_SOK)
 
 typedef CSL_Status CSL_IntRet_t;
 
-#define CSL_copyToUser(touserptr, fromkernelptr, size)      (int)memcpy((touserptr), (fromkernelptr), (size) )
-#define CSL_copyFromUser(tokernelptr, fromuserptr, size)    (int)memcpy((tokernelptr), (fromuserptr), (size) )
+    #define CSL_copyToUser(touserptr, fromkernelptr, size)      (int)memcpy((touserptr), (fromkernelptr), (size) )
+    #define CSL_copyFromUser(tokernelptr, fromuserptr, size)    (int)memcpy((tokernelptr), (fromuserptr), (size) )
 
-#define CSL_getUser(kernelvariable, userptr)   (kernelvariable) = *(userptr)
-#define CSL_putUser(kernelvariable, userptr)   *(userptr) = (kernelvariable)
+    #define CSL_getUser(kernelvariable, userptr)   (kernelvariable) = *(userptr)
+    #define CSL_putUser(kernelvariable, userptr)   *(userptr) = (kernelvariable)
 
-#define CSL_sysMemAlloc(size)   (void*)malloc((size))
-#define CSL_sysMemFree(ptr)     free((ptr))
+    #define CSL_sysMemAlloc(size)   (void*)malloc((size))
+    #define CSL_sysMemFree(ptr)     free((ptr))
 
-#define CSL_intGlobalDisable(intState)
-#define CSL_intGlobalRestore(intState)
+    #define CSL_intGlobalDisable(intState)
+    #define CSL_intGlobalRestore(intState)
 
 
 #endif
@@ -126,16 +123,14 @@ typedef CSL_Status CSL_IntRet_t;
 #define CSL_LDC_LUT_TBL_ADDR         CSL_PHYS_TO_VIRT(CSL_LDC_LUT_TBL_PHYS_ADDR)
 
 
-typedef struct {
-
-  void   *flag;
-
+typedef struct
+{
+    void   *flag;
 } CSL_SysFlag;
 
-typedef struct {
-
-  void   *mutex;
-
+typedef struct
+{
+    void   *mutex;
 } CSL_SysMutex;
 
 typedef CSL_IntRet_t(*CSL_SysIntIsr) (int intId, void *prm, void *reserved);

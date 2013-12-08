@@ -9,21 +9,19 @@
 #include <drv_ipipe.h>
 #include <drv_h3a.h>
 
-typedef struct {
-
-  DRV_ImgsConfig  imgsConfig;
-  DRV_IsifConfig  isifConfig;
-  DRV_H3aConfig   h3aConfig;
-  DRV_IpipeConfig ipipeConfig;
-  
+typedef struct
+{
+    DRV_ImgsConfig  imgsConfig;
+    DRV_IsifConfig  isifConfig;
+    DRV_H3aConfig   h3aConfig;
+    DRV_IpipeConfig ipipeConfig;
 } DRV_CaptureConfig;
 
-typedef struct {
-
-  DRV_IpipeInfo   ipipeInfo;  
-  DRV_IsifInfo    isifInfo;
-  DRV_H3aInfo     h3aInfo;
-  
+typedef struct
+{
+    DRV_IpipeInfo   ipipeInfo;  
+    DRV_IsifInfo    isifInfo;
+    DRV_H3aInfo     h3aInfo;
 } DRV_CaptureInfo;
 
 int DRV_captureOpen(DRV_CaptureConfig *config, DRV_CaptureInfo *info);

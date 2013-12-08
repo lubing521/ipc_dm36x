@@ -79,7 +79,7 @@ OSA_BufInfo *DRV_isifLscGetBufInfo(int bufId);
 
 int DRV_isifGetBayerPhase(int sensorMode);
 
-//int DRV_isifLock();
-//int DRV_isifUnlock();
+int DRV_isifLock();
+int DRV_isifUnlock();
 
 #endif

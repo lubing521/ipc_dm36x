@@ -1,16 +1,11 @@
-
-
 #ifndef _DEV_I2C_H_
 #define _DEV_I2C_H_
 
 #include <linux/ioctl.h>
-
-
 #define I2C_DRV_NAME  "dev_i2c"
 //#define I2C_DEBUG
 
-#define I2C_DEV_MAX_ADDR  (0xFF)
-
+#define I2C_DEV_MAX_ADDR      (0xFF)
 #define I2C_DRV_MAGICNUM      (0x2C)
 
 #define I2C_CMD_SET_DEV_ADDR        (0x01)
@@ -23,13 +18,14 @@
 
 #define I2C_TRANSFER_BUF_SIZE_MAX   (256)
 
-typedef struct {
-  unsigned char dataSize;
-  unsigned char count;
-  unsigned char regSize;  
-  unsigned char *reg;  
-  unsigned short *reg16;  
-  void          *value;
+typedef struct
+{
+    unsigned char  dataSize;
+    unsigned char  count;
+    unsigned char  regSize;
+    unsigned char  *reg;
+    unsigned short *reg16;
+    void           *value;
 } I2C_TransferPrm;
 
 

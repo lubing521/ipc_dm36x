@@ -23,125 +23,123 @@
 #define DRV_IPIPE_BOXCAR_BLOCK_SIZE_16x16          (CSL_IPIPE_BOXCAR_BLOCK_SIZE_16_16)
 #define DRV_IPIPE_BOXCAR_BLOCK_SIZE_NONE           (0xFFFF)  // boxcar not needed
 
-typedef struct {
-
-  Uint16 gainR;
-  Uint16 gainGr;
-  Uint16 gainGb;
-  Uint16 gainB;
-
+typedef struct
+{
+    Uint16 gainR;
+    Uint16 gainGr;
+    Uint16 gainGb;
+    Uint16 gainB;
 } DRV_IpipeWb;
 
-typedef struct {
-
-  Bool   enable;
-  Uint16 outFormat;
-  Uint16 width;
-  Uint16 height;
-  Uint16 offsetH;
-  Uint16 offsetV;
-
+typedef struct
+{
+    Bool   enable;
+    Uint16 outFormat;
+    Uint16 width;
+    Uint16 height;
+    Uint16 offsetH;
+    Uint16 offsetV;
+    Uint16 dmaInterval;
 } DRV_IpipeRszInfo;
 
-typedef struct {
-
-  Uint16 width; // width in units of blocks, 1block = 4*2bytes
-  Uint16 height;
-  Uint16 offsetH; // width*4
-
+typedef struct
+{
+    Uint16 width; // width in units of blocks, 1block = 4*2bytes
+    Uint16 height;
+    Uint16 offsetH; // width*4
 } DRV_IpipeBoxcarInfo;
 
-typedef struct {
+typedef struct
+{
 
-  DRV_IpipeRszInfo         rszInfo[CSL_RSZ_CH_MAX];
-  CSL_IpipeBscConfig       bscInfo;
-  CSL_IpipeHistogramConfig histoInfo;
-  DRV_IpipeBoxcarInfo      boxcarInfo;
+    DRV_IpipeRszInfo         rszInfo[CSL_RSZ_CH_MAX];
+    CSL_IpipeBscConfig       bscInfo;
+    CSL_IpipeHistogramConfig histoInfo;
+    DRV_IpipeBoxcarInfo      boxcarInfo;
 
 } DRV_IpipeInfo;
 
-typedef struct {
-
-  Bool   enable;
-  Uint16 outFormat;
-  Uint16 width;
-  Uint16 height;
-  Uint16 flipH;
-  Uint16 flipV;
-  Uint16 numBuf;
-
+typedef struct
+{
+    Bool   enable;
+    Uint16 outFormat;
+    Uint16 width;
+    Uint16 height;
+    Uint16 flipH;
+    Uint16 flipV;
+    Uint16 dmaInterval;
+    Uint16 numBuf;
 } DRV_IpipeRszConfig;
 
-typedef struct {
+typedef struct
+{
+    int sensorMode;
+    int vnfDemoCfg;
+    int inputSrc;
+    DRV_IpipeRszConfig rszOutConfig[CSL_RSZ_CH_MAX];
 
-  int sensorMode;
-  int vnfDemoCfg;
-  int inputSrc;
-  DRV_IpipeRszConfig rszOutConfig[CSL_RSZ_CH_MAX];
-
-  Uint16 boxcarBlockSize;   // DRV_IPIPE_BOXCAR_BLOCK_SIZE_xxx
-  Uint16 boxcarInShift;     // input shift for boxcar 0..4
-  Uint16 histogramMode;     // DRV_IPIPE_HISTO_MODE_xxx,
-  Uint16 bscNumVectorsRow;
-  Uint16 bscNumVectorsCol;
-  Uint16 rszValidDataStartOffset;
-
+    Uint16 boxcarBlockSize;   // DRV_IPIPE_BOXCAR_BLOCK_SIZE_xxx
+    Uint16 boxcarInShift;     // input shift for boxcar 0..4
+    Uint16 histogramMode;     // DRV_IPIPE_HISTO_MODE_xxx,
+    Uint16 bscNumVectorsRow;
+    Uint16 bscNumVectorsCol;
+    Uint16 rszValidDataStartOffset;
 } DRV_IpipeConfig;
 
-typedef struct {
+typedef struct
+{
+    Bool isLeftPanDone;
+    Bool isRightPanDone;
+    Bool isUpTiltDone;
+    Bool isDownTiltDone;
 
-  Bool isLeftPanDone;
-  Bool isRightPanDone;
-  Bool isUpTiltDone;
-  Bool isDownTiltDone;
-
-  Uint16 totalInWidth;
-  Uint16 totalInHeight;
-  Uint16 curInStartX;
-  Uint16 curInStartY;
-  Uint16 curInWidth;
-  Uint16 curInHeight;
+    Uint16 totalInWidth;
+    Uint16 totalInHeight;
+    Uint16 curInStartX;
+    Uint16 curInStartY;
+    Uint16 curInWidth;
+    Uint16 curInHeight;
 
 } DRV_IpipeDigitalPtzStatus;
 
-typedef struct {
-
-  Uint16 enableRtChange; //set to TRUE if the Runtime parameters change required for this resizer, else FALSE
-  Uint16 outWidth;
-  Uint16 outHeight;
-  
+typedef struct
+{
+    Uint16 enableRtChange; //set to TRUE if the Runtime parameters change required for this resizer, else FALSE
+    Uint16 outWidth;
+    Uint16 outHeight;
 } DRV_ipipeReszOutRtPrm;
 
-typedef struct {
+typedef struct
+{
+    Uint16 inStartX;
+    Uint16 inStartY;
+    Uint16 inWidth;
+    Uint16 inHeight;
 
-  Uint16 inStartX;
-  Uint16 inStartY;
-  Uint16 inWidth;
-  Uint16 inHeight;
+    DRV_ipipeReszOutRtPrm pOut[CSL_RSZ_CH_MAX];
 
-  DRV_ipipeReszOutRtPrm pOut[CSL_RSZ_CH_MAX];
- 
 } DRV_IpipeReszRtPrm;
 
-typedef struct {
+typedef struct
+{
 
-  Uint32 bsc_row_vct;
-  Uint32 bsc_row_vpos;
-  Uint32 bsc_row_vnum;
-  Uint32 bsc_row_vskip;
-  Uint32 bsc_row_hpos;
-  Uint32 bsc_row_hnum;
-  Uint32 bsc_row_hskip;
-  Uint32 bsc_row_shf;
+    Uint32 bsc_row_vct;
+    Uint32 bsc_row_vpos;
+    Uint32 bsc_row_vnum;
+    Uint32 bsc_row_vskip;
+    Uint32 bsc_row_hpos;
+    Uint32 bsc_row_hnum;
+    Uint32 bsc_row_hskip;
+    Uint32 bsc_row_shf;
 
-  Uint32 bsc_col_vct;
-  Uint32 bsc_col_vpos;
-  Uint32 bsc_col_vnum;
-  Uint32 bsc_col_vskip;
-  Uint32 bsc_col_hpos;
-  Uint32 bsc_col_hnum;
-  Uint32 bsc_col_hskip;
-  Uint32 bsc_col_shf;
+    Uint32 bsc_col_vct;
+    Uint32 bsc_col_vpos;
+    Uint32 bsc_col_vnum;
+    Uint32 bsc_col_vskip;
+    Uint32 bsc_col_hpos;
+    Uint32 bsc_col_hnum;
+    Uint32 bsc_col_hskip;
+    Uint32 bsc_col_shf;
 
 } DRV_IpipeBscConfig;
 

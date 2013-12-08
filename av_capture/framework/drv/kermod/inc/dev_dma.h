@@ -1,4 +1,3 @@
-
 #ifndef _DEV_DMA_H_
 #define _DEV_DMA_H_
 
@@ -25,37 +24,31 @@
 #define DMA_IOCTL_CMD_GET(cmd)      ( _IOC_NR(cmd) )
 #define DMA_IOCTL_CMD_IS_VALID(cmd) ( (_IOC_TYPE(cmd) == DMA_DRV_MAGICNUM ) ? 1 : 0)
 
-typedef struct {
-
-  int chId;         // [ O]
-  int mode;
-  int maxTransfers;
-
+typedef struct
+{
+    int chId;         // [ O]
+    int mode;
+    int maxTransfers;
 } DMA_OpenClosePrm;
 
-typedef struct {
-
-  unsigned long virtAddr;
-  unsigned long physAddr;  // [ O]
-
+typedef struct
+{
+    unsigned long virtAddr;
+    unsigned long physAddr;  // [ O]
 } DMA_GetPhysAddrPrm;
 
-typedef struct {
-
-  int chId;
-  int count;
-  int copyFillType;
-  
-  void *prm;
-  
+typedef struct
+{
+    int chId;
+    int count;
+    int copyFillType;
+    void *prm;
 } DMA_CopyFillPrm;
 
-typedef struct {
-
-  int chId;
-
-  DRV_DmaDemux prm;
-  
+typedef struct
+{
+    int chId;
+    DRV_DmaDemux prm;
 } DMA_DemuxPrm;
 
 int  DMA_devInit(void);
