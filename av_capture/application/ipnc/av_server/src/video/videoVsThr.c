@@ -263,13 +263,13 @@ int VIDEO_vsTskRun()
   return status;
 }
 
-int VIDEO_vsTskMain(struct OSA_TskHndl *pTsk, OSA_MsgHndl *pMsg, Uint32 curState )
+int VIDEO_vsTskMain(struct OSA_TskHndl *pTsk, OSA_MsgHndl *pMsg, Uint32 curState)
 {
   int status;
   Bool done=FALSE, ackMsg = FALSE;
   Uint16 cmd = OSA_msgGetCmd(pMsg);
 
-  OSA_setTskName("lhy_vs");
+  OSA_setTskName("vs");
   
   #ifdef AVSERVER_DEBUG_VIDEO_VS_THR
   OSA_printf(" VS: Recevied CMD = 0x%04x\n", cmd);

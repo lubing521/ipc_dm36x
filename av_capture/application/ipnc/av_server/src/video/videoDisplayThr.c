@@ -233,7 +233,7 @@ int VIDEO_displayTskMain(struct OSA_TskHndl *pTsk, OSA_MsgHndl *pMsg, Uint32 cur
   Bool done=FALSE, ackMsg = FALSE;
   Uint16 cmd = OSA_msgGetCmd(pMsg);
 
-  OSA_setTskName("lhy_display");
+  OSA_setTskName("display");
   
   #ifdef AVSERVER_DEBUG_VIDEO_DISPLAY_THR
   OSA_printf(" DISPLAY: Recevied CMD = 0x%04x\n", cmd);

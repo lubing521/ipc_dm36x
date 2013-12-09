@@ -1,8 +1,3 @@
-/*
-    DM360 Evaluation Software
-
-    (c)Texas Instruments 2007
-*/
 
 #ifndef _CSL_RSZ_H_
 #define _CSL_RSZ_H_
@@ -13,21 +8,6 @@ extern  "C" {
 
 #include <csl_soc.h>
 #include <csl_buf.h>
-
-/**
-  \file csl_rsz.h
-  \brief Resizer APIs
-*/
-
-/**
- \ingroup  CSL_VPFE
- \defgroup CSL_RSZ Resizer
- \brief Resizer (RSZ)
-
- @{
-*/
-
-// define's
 
 #define CSL_RSZ_A          0    ///< Resize Channel : Channel A
 #define CSL_RSZ_B          1    ///< Resize Channel : Channel B

@@ -202,7 +202,7 @@ static void ISP_ipipeSetNf2(int aGain, int dGain)
         value = 20 + (ag - 10000) / 300 + (dg - 1000) / 10;
     }
 
-    //value += gALG_AewbDebug.ipipeNf2.Nf2Value_adjust + ALG_aewbGetNoiseLevel();
+    value += gALG_AewbDebug.ipipeNf2.Nf2Value_adjust + ALG_aewbGetNoiseLevel();
     value = (value > 200) ? 200 : value;
     value = (value <  16) ?  16 : value;
     

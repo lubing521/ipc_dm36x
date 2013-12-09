@@ -764,7 +764,7 @@ int VIDEO_captureTskMain(struct OSA_TskHndl *pTsk, OSA_MsgHndl *pMsg, Uint32 cur
   Bool done=FALSE, ackMsg = FALSE;
   Uint16 cmd = OSA_msgGetCmd(pMsg);
 
-  OSA_setTskName("lhy_capture");
+  OSA_setTskName("capture");
   
   #ifdef AVSERVER_DEBUG_VIDEO_CAPTURE_THR
   OSA_printf(" CAPTURE: Recevied CMD = 0x%04x\n", cmd);
@@ -818,98 +818,92 @@ int VIDEO_captureTskMain(struct OSA_TskHndl *pTsk, OSA_MsgHndl *pMsg, Uint32 cur
     #endif
   }
 
-  while(!done) {
-
-    VIDEO_aewbApplyPrm();
-
-    OSA_prfBegin(&gAVSERVER_ctrl.capturePrf);
-
-    if( gAVSERVER_config.captureRawInMode == AVSERVER_CAPTURE_RAW_IN_MODE_ISIF_IN ) {
-      status = VIDEO_captureTskRunIsifIn();
-    } else
-    if( gAVSERVER_config.captureRawInMode == AVSERVER_CAPTURE_RAW_IN_MODE_DDR_IN ) {
-      status = VIDEO_captureTskRunDdrIn();
-    }
-
-    OSA_prfEnd(&gAVSERVER_ctrl.capturePrf, 1);
-
-    if(status!=OSA_SOK)
-      break;
-
-    if(gVIDEO_ctrl.rawCaptureCount%(gAVSERVER_config.sensorFps*30 + 1)==0)
+    while(!done) 
     {
-#if 0
- 		static int disp_cnt = 10;
-    	if( disp_cnt )
-    	{
-    		disp_cnt--;
-      	    AVSERVER_profileInfoShow();
+        //VIDEO_aewbApplyPrm();
+        OSA_prfBegin(&gAVSERVER_ctrl.capturePrf);
+
+        if( gAVSERVER_config.captureRawInMode == AVSERVER_CAPTURE_RAW_IN_MODE_ISIF_IN ) 
+        {
+            status = VIDEO_captureTskRunIsifIn();
+        } 
+        else if( gAVSERVER_config.captureRawInMode == AVSERVER_CAPTURE_RAW_IN_MODE_DDR_IN ) 
+        {
+            status = VIDEO_captureTskRunDdrIn();
         }
-#else
-       	AVSERVER_profileInfoShow();
-#endif
- 	}
 
-    status = OSA_tskCheckMsg(pTsk, &pMsg);
+        OSA_prfEnd(&gAVSERVER_ctrl.capturePrf, 1);
 
-    if(status!=OSA_SOK)
-      continue;
+        if(status!=OSA_SOK)
+            break;
 
-    cmd = OSA_msgGetCmd(pMsg);
+        if(gVIDEO_ctrl.rawCaptureCount % (gAVSERVER_config.sensorFps*3) == 0)
+        {
+            AVSERVER_profileInfoShow();
+ 	    }
+
+        status = OSA_tskCheckMsg(pTsk, &pMsg);
+
+        if(status!=OSA_SOK)
+            continue;
+
+        cmd = OSA_msgGetCmd(pMsg);
+
+        #ifdef AVSERVER_DEBUG_VIDEO_CAPTURE_THR
+        OSA_printf(" CAPTURE: Recevied CMD = 0x%04x\n", cmd);
+        #endif
+
+        switch(cmd) 
+        {
+        case AVSERVER_CMD_DELETE:
+            done = TRUE;
+            ackMsg = TRUE;
+            break;
+        default:
+            OSA_tskAckOrFreeMsg(pMsg, OSA_SOK);
+        break;
+        }
+    }
 
     #ifdef AVSERVER_DEBUG_VIDEO_CAPTURE_THR
-    OSA_printf(" CAPTURE: Recevied CMD = 0x%04x\n", cmd);
+    OSA_printf(" CAPTURE: Delete...\n");
     #endif
 
-    switch(cmd) {
-      case AVSERVER_CMD_DELETE:
-        done = TRUE;
-        ackMsg = TRUE;
-        break;
+    VIDEO_captureTskDelete();
 
-      default:
+    if(ackMsg)
         OSA_tskAckOrFreeMsg(pMsg, OSA_SOK);
-        break;
-    }
-  }
 
-  #ifdef AVSERVER_DEBUG_VIDEO_CAPTURE_THR
-  OSA_printf(" CAPTURE: Delete...\n");
-  #endif
-
-  VIDEO_captureTskDelete();
-
-  if(ackMsg)
-    OSA_tskAckOrFreeMsg(pMsg, OSA_SOK);
-
-  #ifdef AVSERVER_DEBUG_VIDEO_CAPTURE_THR
-  OSA_printf(" CAPTURE: Delete...DONE\n");
-  #endif
-
-  return OSA_SOK;
+    #ifdef AVSERVER_DEBUG_VIDEO_CAPTURE_THR
+        OSA_printf(" CAPTURE: Delete...DONE\n");
+    #endif
+    return OSA_SOK;
 }
 
 int VIDEO_captureCreate()
 {
-  int status;
+    int status;
 
-  status = OSA_tskCreate( &gVIDEO_ctrl.captureTsk, VIDEO_captureTskMain, VIDEO_CAPTURE_THR_PRI, VIDEO_CAPTURE_STACK_SIZE, 0);
-  if(status!=OSA_SOK) {
-    OSA_ERROR("OSA_tskCreate()\n");
+    status = OSA_tskCreate(&gVIDEO_ctrl.captureTsk, VIDEO_captureTskMain, VIDEO_CAPTURE_THR_PRI, VIDEO_CAPTURE_STACK_SIZE, 0);
+    if(status!=OSA_SOK) 
+    {
+        OSA_ERROR("OSA_tskCreate()\n");
+        return status;
+    }
+
     return status;
-  }
-
-  return status;
 }
 
 int VIDEO_captureDelete()
 {
-  int status;
+    int status;
 
-  status = OSA_tskDelete( &gVIDEO_ctrl.captureTsk );
+    status = OSA_tskDelete(&gVIDEO_ctrl.captureTsk);
 
-  if(status!=OSA_SOK) {
-    OSA_ERROR("OSA_tskDelete()\n");
-  }
-  return status;
+    if(status!=OSA_SOK) 
+    {
+        OSA_ERROR("OSA_tskDelete()\n");
+    }
+    return status;
 }
+

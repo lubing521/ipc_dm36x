@@ -542,7 +542,6 @@ void AVSERVER_profilePrint(char *name, OSA_PrfHndl *hndl)
 
 int AVSERVER_profileInfoShow()
 {
-
   OSA_printf("\n");
   OSA_printf(" Module   | Avg Time/Frame | Frame-rate | Total time | Total Frames |\n")
   AVSERVER_profilePrint("CAPTURE ", &gAVSERVER_ctrl.capturePrf);

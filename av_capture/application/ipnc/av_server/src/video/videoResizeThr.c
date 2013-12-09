@@ -220,7 +220,7 @@ int VIDEO_resizeTskMain(struct OSA_TskHndl *pTsk, OSA_MsgHndl *pMsg, Uint32 curS
   Bool done=FALSE, ackMsg = FALSE;
   Uint16 cmd = OSA_msgGetCmd(pMsg);
 
-  OSA_setTskName("lhy_resize");
+  OSA_setTskName("resize");
   
   #ifdef AVSERVER_DEBUG_VIDEO_RESIZE_THR
   OSA_printf(" RESIZE: Recevied CMD = 0x%04x\n", cmd);

@@ -20,7 +20,7 @@ void *OSA_tskThrMain(void *pPrm)
   return NULL;
 } 
 
-int OSA_setTskName(char * name)
+int OSA_setTskName(char *name)
 {
     return prctl(PR_SET_NAME, name);
 }

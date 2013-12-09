@@ -1,8 +1,3 @@
-/*
-    DM360 Evaluation Software
-
-    (c)Texas Instruments 2007
-*/
 
 #ifndef _CSL_GPIO_H_
 #define _CSL_GPIO_H_
@@ -13,20 +8,6 @@ extern  "C" {
 
 #include <csl_soc.h>
 
-/**
-  \file csl_gpio.h
-  \brief GPIO APIs
-*/
-
-/**
- \ingroup  CSL_VPSS
- \defgroup CSL_GPIO GPIO
- \brief General purpose IO (GPIO)
-
- @{
-*/
-
-// define's
 #define CSL_GPIO_OUTPUT         (0x1)                                             ///< GPIO mode : Output
 #define CSL_GPIO_INPUT          (0x2)                                             ///< GPIO mode : Input
 #define CSL_GPIO_INTR_TRIG_RISE (CSL_GPIO_INPUT|0x4)                              ///< GPIO mode : Interrupt, rising trigger 
@@ -51,18 +32,19 @@ extern  "C" {
 /**
   \brief Module Object Structure
 */
-  typedef struct {
+    typedef struct
+    {
 
 #ifdef CSL_KERNEL_API
-    CSL_GpioRegsOvly regs;       ///< Register overlay
-    CSL_SysRegsOvly  sysRegs;    ///< Register overlay    
+        CSL_GpioRegsOvly regs;       ///< Register overlay
+        CSL_SysRegsOvly  sysRegs;    ///< Register overlay    
 #else
-    int     fd;
+        int     fd;
 #endif
 
-  } CSL_GpioObj;
+    } CSL_GpioObj;
 
-  typedef CSL_GpioObj *CSL_GpioHandle;  ///< Module Handle
+    typedef CSL_GpioObj *CSL_GpioHandle;  ///< Module Handle
 
 // function's
 
@@ -73,7 +55,7 @@ extern  "C" {
 
   \return CSL_SOK on success, else CSL_Exxxx
 */
-  CSL_Status CSL_gpioOpen(CSL_GpioHandle hndl);
+    CSL_Status CSL_gpioOpen(CSL_GpioHandle hndl);
 
 /**
   \brief Close Module Handle
@@ -82,7 +64,7 @@ extern  "C" {
 
   \return CSL_SOK on success, else CSL_Exxxx
 */
-  CSL_Status CSL_gpioClose(CSL_GpioHandle hndl);
+    CSL_Status CSL_gpioClose(CSL_GpioHandle hndl);
 
 /**
   \brief Module lock : Mutex Lock
@@ -92,7 +74,7 @@ extern  "C" {
   
   \return CSL_SOK on success, else CSL_Exxxx  
 */
-  CSL_Status CSL_gpioLock(CSL_GpioHandle hndl, Uint32 timeout);
+    CSL_Status CSL_gpioLock(CSL_GpioHandle hndl, Uint32 timeout);
 
 /**
   \brief Module unlock : Mutex Unlock
@@ -101,7 +83,7 @@ extern  "C" {
   
   \return CSL_SOK on success, else CSL_Exxxx  
 */
-  CSL_Status CSL_gpioUnlock(CSL_GpioHandle hndl);
+    CSL_Status CSL_gpioUnlock(CSL_GpioHandle hndl);
 
 /**
   \brief Set GPIO pin config
@@ -112,7 +94,7 @@ extern  "C" {
   
   \return CSL_SOK on success, else CSL_Exxxx  
 */
-CSL_Status CSL_gpioSetMode(CSL_GpioHandle hndl, Uint32 gpioNum, Uint32 mode );
+    CSL_Status CSL_gpioSetMode(CSL_GpioHandle hndl, Uint32 gpioNum, Uint32 mode );
 
 /**
   \brief Set GPIO pin to HIGH
@@ -122,7 +104,7 @@ CSL_Status CSL_gpioSetMode(CSL_GpioHandle hndl, Uint32 gpioNum, Uint32 mode );
   
   \return CSL_SOK on success, else CSL_Exxxx  
 */
-CSL_Status CSL_gpioSet(CSL_GpioHandle hndl, Uint32 gpioNum );
+    CSL_Status CSL_gpioSet(CSL_GpioHandle hndl, Uint32 gpioNum );
 
 /**
   \brief Set GPIO pin to LOW
@@ -132,7 +114,7 @@ CSL_Status CSL_gpioSet(CSL_GpioHandle hndl, Uint32 gpioNum );
   
   \return CSL_SOK on success, else CSL_Exxxx  
 */
-CSL_Status CSL_gpioClr(CSL_GpioHandle hndl, Uint32 gpioNum );
+    CSL_Status CSL_gpioClr(CSL_GpioHandle hndl, Uint32 gpioNum );
 
 /**
   \brief Get GPIO pin value
@@ -142,7 +124,7 @@ CSL_Status CSL_gpioClr(CSL_GpioHandle hndl, Uint32 gpioNum );
   
   \return 0 pin is LOW, 1 pin is HIGH
 */
-Uint32     CSL_gpioGet(CSL_GpioHandle hndl, Uint32 gpioNum );
+    Uint32     CSL_gpioGet(CSL_GpioHandle hndl, Uint32 gpioNum );
 
 /**
   \brief Enable/Disable GPIO bank interrupt 
@@ -153,7 +135,7 @@ Uint32     CSL_gpioGet(CSL_GpioHandle hndl, Uint32 gpioNum );
   
   \return CSL_SOK on success, else CSL_Exxxx  
 */
-CSL_Status CSL_gpioBankIntEnable(CSL_GpioHandle hndl, Uint32 bankNum, Bool32 enable );
+    CSL_Status CSL_gpioBankIntEnable(CSL_GpioHandle hndl, Uint32 bankNum, Bool32 enable );
 
 /**
   \brief Get GPIO bank interrupt status
@@ -164,7 +146,7 @@ CSL_Status CSL_gpioBankIntEnable(CSL_GpioHandle hndl, Uint32 bankNum, Bool32 ena
   
   \return CSL_SOK on success, else CSL_Exxxx  
 */
-CSL_Status CSL_gpioBankIntGetStatus(CSL_GpioHandle hndl, Uint32 bankNum, Uint16 *intStatus );
+    CSL_Status CSL_gpioBankIntGetStatus(CSL_GpioHandle hndl, Uint32 bankNum, Uint16 *intStatus );
 
 /**
   \brief Clear GPIO bank interrupt status
@@ -175,7 +157,7 @@ CSL_Status CSL_gpioBankIntGetStatus(CSL_GpioHandle hndl, Uint32 bankNum, Uint16 
   
   \return CSL_SOK on success, else CSL_Exxxx  
 */
-CSL_Status CSL_gpioBankIntClrStatus(CSL_GpioHandle hndl, Uint32 bankNum, Uint16 intStatus );
+    CSL_Status CSL_gpioBankIntClrStatus(CSL_GpioHandle hndl, Uint32 bankNum, Uint16 intStatus );
 
 
 /**
@@ -187,7 +169,7 @@ CSL_Status CSL_gpioBankIntClrStatus(CSL_GpioHandle hndl, Uint32 bankNum, Uint16 
   
   \return CSL_SOK on success, else CSL_Exxxx  
 */
-CSL_Status CSL_gpioSetPinmux(CSL_GpioHandle hndl, Uint32 pinMuxNum, Uint32 pinMuxValue);
+    CSL_Status CSL_gpioSetPinmux(CSL_GpioHandle hndl, Uint32 pinMuxNum, Uint32 pinMuxValue);
 
 /**
   \brief Get pin mux register value
@@ -198,7 +180,7 @@ CSL_Status CSL_gpioSetPinmux(CSL_GpioHandle hndl, Uint32 pinMuxNum, Uint32 pinMu
   
   \return CSL_SOK on success, else CSL_Exxxx  
 */
-CSL_Status CSL_gpioGetPinmux(CSL_GpioHandle hndl, Uint32 pinMuxNum, Uint32 *pinMuxValue);
+    CSL_Status CSL_gpioGetPinmux(CSL_GpioHandle hndl, Uint32 pinMuxNum, Uint32 *pinMuxValue);
 
 
 /**
@@ -210,7 +192,7 @@ CSL_Status CSL_gpioGetPinmux(CSL_GpioHandle hndl, Uint32 pinMuxNum, Uint32 *pinM
   
   \return CSL_SOK on success, else CSL_Exxxx  
 */
-CSL_Status CSL_gpioSetPsc(CSL_GpioHandle hndl, Uint32 pscModNum, Uint32 pscModState);
+    CSL_Status CSL_gpioSetPsc(CSL_GpioHandle hndl, Uint32 pscModNum, Uint32 pscModState);
 
 
 #ifdef __cplusplus

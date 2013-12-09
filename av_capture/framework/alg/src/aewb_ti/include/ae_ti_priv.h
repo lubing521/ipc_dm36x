@@ -25,7 +25,8 @@
 #define GY    0x96
 #define BY    0x1d
 
-typedef struct AE_TI_Obj {
+typedef struct AE_TI_Obj 
+{
     IALG_Obj   alg;            /* MUST be first field of all XDAS algs */
     XDAS_Int32 numRanges;
     IAE_Range exposureTimeRange[IAE_MAX_RANGES];

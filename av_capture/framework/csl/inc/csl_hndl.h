@@ -1,9 +1,3 @@
-/*
-    DM360 Evaluation Software
-
-    (c)Texas Instruments 2007
-*/
-
 #ifndef _CSL_HNDL_H_
 #define _CSL_HNDL_H_
 

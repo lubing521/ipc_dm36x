@@ -231,7 +231,7 @@ int VIDEO_vnfTskMain(struct OSA_TskHndl *pTsk, OSA_MsgHndl *pMsg, Uint32 curStat
   Uint16 cmd = OSA_msgGetCmd(pMsg);
   Int32 sysRegBase;
 
-  OSA_setTskName("lhy_vnf");
+  OSA_setTskName("vnf");
   
   #ifdef AVSERVER_DEBUG_VIDEO_VNF_THR
   OSA_printf(" VNF: Recevied CMD = 0x%04x\n", cmd);

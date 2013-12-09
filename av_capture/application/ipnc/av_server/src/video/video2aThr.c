@@ -253,7 +253,7 @@ int VIDEO_aewbTskMain(struct OSA_TskHndl *pTsk, OSA_MsgHndl *pMsg, Uint32 curSta
   Bool done=FALSE, ackMsg = FALSE;
   Uint16 cmd = OSA_msgGetCmd(pMsg);
 
-  OSA_setTskName("lhy_aewb");
+  OSA_setTskName("aewb");
   
   #ifdef AVSERVER_DEBUG_VIDEO_2A_THR
   OSA_printf(" 2A: Recevied CMD = 0x%04x\n", cmd);

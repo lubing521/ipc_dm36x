@@ -1,8 +1,3 @@
-/*
-    DM360 Evaluation Software
-
-    (c)Texas Instruments 2007
-*/
 
 #ifndef _CSL_LDC_H_
 #define _CSL_LDC_H_
@@ -13,20 +8,6 @@ extern  "C" {
 
 #include <csl_soc.h>
 
-/**
-  \file csl_ldc.h
-  \brief LDC APIs
-*/
-
-/**
- \ingroup  CSL_VPFE
- \defgroup CSL_LDC LDC
- \brief Lens Distortion Correction (LDC)
-
- @{
-*/
-
-// define's
 #define CSL_LDC_STATE_IDLE 0    ///< Lens Distortion Correction State : Idle
 #define CSL_LDC_STATE_BUSY 1    ///< Lens Distortion Correction State : Busy
 

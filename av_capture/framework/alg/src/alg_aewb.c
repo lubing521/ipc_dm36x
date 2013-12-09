@@ -161,6 +161,11 @@ int ALG_aewbCheckAutoIris(void)
 #endif
 }
 
+int ALG_aewbGetNoiseLevel(void)
+{
+    return 0;//Aew_ext_parameter.iNoise * 2 - 100;
+}
+
 void* ALG_aewbCreate(ALG_AewbCreate *create)
 {
     IAE_Params aeParams;

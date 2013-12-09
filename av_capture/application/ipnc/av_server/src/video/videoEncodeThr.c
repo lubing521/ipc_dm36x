@@ -350,7 +350,7 @@ int VIDEO_encodeTskMain(struct OSA_TskHndl *pTsk, OSA_MsgHndl *pMsg, Uint32 curS
   Bool done=FALSE, ackMsg = FALSE;
   Uint16 cmd = OSA_msgGetCmd(pMsg);
 
-  OSA_setTskName("lhy_encode");
+  OSA_setTskName("encode");
   
   #ifdef AVSERVER_DEBUG_VIDEO_ENCODE_THR
   OSA_printf(" ENCODE: Recevied CMD = 0x%04x\n", cmd);
