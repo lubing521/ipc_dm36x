@@ -27,7 +27,7 @@
 #define IMGS_CHIP_MID       (0x7FA2)
 
 #define IMGS_I2C_ADDR       (0x5A)
-#define IMGS_RESET_GPIO	    (57)	
+#define IMGS_RESET_GPIO	    (80)	
 
 #define IMGS_SPI_ADDR		   (0x02)
 #define IMGS_SPI_ADDR01	       (0x03)

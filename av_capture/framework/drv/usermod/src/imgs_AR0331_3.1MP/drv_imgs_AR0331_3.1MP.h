@@ -69,7 +69,7 @@
 
 #define IMGS_I2C_ADDR        (0x20)
 
-#define IMGS_RESET_GPIO     (57)
+#define IMGS_RESET_GPIO     (80)
 
 typedef struct
 {

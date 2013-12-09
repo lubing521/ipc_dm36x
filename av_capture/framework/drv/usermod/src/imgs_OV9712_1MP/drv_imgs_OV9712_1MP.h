@@ -170,7 +170,7 @@
 #define    SC_CTRL_0          0xd6
 
 #define IMGS_I2C_ADDR         (0x60)
-#define IMGS_RESET_GPIO       (57)
+#define IMGS_RESET_GPIO       (80)
 
 typedef struct {
   int fps;        // Hz

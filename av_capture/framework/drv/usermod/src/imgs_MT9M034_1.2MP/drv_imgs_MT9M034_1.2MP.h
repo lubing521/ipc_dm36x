@@ -19,7 +19,7 @@
 
 #define IMGS_CHIP_ID        (0x2400)//MT9M034
 #define IMGS_I2C_ADDR       (0x20)
-#define IMGS_RESET_GPIO     57
+#define IMGS_RESET_GPIO     80
 
 /* mt9m034 register addresses */
 #define MT9M034_CHIP_VERSION        0x3000

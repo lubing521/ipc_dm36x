@@ -555,8 +555,6 @@ int AVSERVER_tskConnectInit()
 	else
 		printf("[AVSERVER_tskConnectInit]AVSERVER_OSDStart-----------ok\n");
 
-
-
   return status;
 }
 

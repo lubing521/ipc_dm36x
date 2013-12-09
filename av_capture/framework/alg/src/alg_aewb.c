@@ -671,8 +671,6 @@ static void TIAWB_applySettings(IAEWB_Wb* nextWb)
 {
     AWB_PARAM awb_gain;
 
-    Aew_ext_parameter.saturation = 128;
-#if 1
     if (Aew_ext_parameter.saturation >= 128)
     {
         awb_gain.rGain  = ((nextWb->rGain >> 3)) + Aew_ext_parameter.saturation / 4 - 32;
@@ -689,11 +687,11 @@ static void TIAWB_applySettings(IAEWB_Wb* nextWb)
     }
 
     //gALG_aewbObj.algTiAEWB->awb_adjust(&awb_gain, Aew_ext_parameter.awb_mode);
-#endif
     
 #ifdef _AEWB_DEBUG_PRINT_
     printf("AEWB debug: r=%d, g=%d, b=%d\n", nextWb->rGain, nextWb->gGain, nextWb->bGain);
 #endif
+
     ALG_aewbSetIpipeWb2(&awb_gain);
 
 #if 0
@@ -736,11 +734,11 @@ static void TIAE_applySettings(IAEWB_Ae *curAe, IAEWB_Ae *nextAe, int actStep, i
 
         if (ALG_aewbCheckAutoIris() > 0)
         {
-            AdjustApertureLevel((Uint8)AL);
+            //AdjustApertureLevel((Uint8)AL);
         }
         else
         {
-            AdjustApertureLevel(100);
+            //AdjustApertureLevel(100);
         }
         gALG_aewbObj.algTiAEWB->SetExposureGain(EX, AG, DG, 1);
 

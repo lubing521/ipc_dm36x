@@ -48,7 +48,7 @@
 #define ROW_BLK_DEF_OFFSET  (0x4B)
 
 #define IMGS_I2C_ADDR       (gImgsI2CAddr) //(0xBA)
-#define IMGS_RESET_GPIO     (57)
+#define IMGS_RESET_GPIO     (80)
 
 typedef struct
 {

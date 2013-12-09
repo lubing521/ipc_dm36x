@@ -6,7 +6,7 @@
 DRV_I2cHndl i2cHndl;
 DRV_SPIHndl spiHndl;
 
-#define IMGS_RESET_GPIO         (57)
+#define IMGS_RESET_GPIO         (80)
 
 #define AR0130_I2C_ADDR         (0x20)
 #define AR0330_I2C_ADDR         (0x20)
