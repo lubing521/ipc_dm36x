@@ -380,7 +380,31 @@ void UI_setConfig(AVSERVER_Config *config)
 				break;
 		}
 		
-		config->sensorMode					= DRV_IMGS_SENSOR_MODE_1280x960;
+        eSensorType sensorId = GetSensorId();
+        switch (sensorId)
+        {
+        case OV9712:
+            config->sensorMode = DRV_IMGS_SENSOR_MODE_1280x800;
+            break;
+        case AR0130:
+        case MT9M034:
+            config->sensorMode = DRV_IMGS_SENSOR_MODE_1280x960;
+            break;
+        case IMX122:
+            config->sensorMode = DRV_IMGS_SENSOR_MODE_1920x1080;
+            break;
+        case AR0330:
+        case AR0331:
+            config->sensorMode = DRV_IMGS_SENSOR_MODE_1920x1080;
+            break;
+        case MT9P031:
+            config->sensorMode = DRV_IMGS_SENSOR_MODE_1920x1080;
+            break;
+        default:
+            config->sensorMode = DRV_IMGS_SENSOR_MODE_1280x960;
+            break;
+        }
+
 		config->sensorFps 					= 25;
 		config->aewb_config.aewbBinEnable	= TRUE;
 

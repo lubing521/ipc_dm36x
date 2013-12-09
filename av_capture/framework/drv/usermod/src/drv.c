@@ -198,7 +198,7 @@ void DRV_imgGetWidthHeight(int sensorMode, Uint16 *width, Uint16 *height)
         break;
     case DRV_IMGS_SENSOR_MODE_1280x960:
         *width  = 1280;
-        *height = 800;
+        *height = 960;
         break;
     case DRV_IMGS_SENSOR_MODE_720x960:
         *width  = 720;
