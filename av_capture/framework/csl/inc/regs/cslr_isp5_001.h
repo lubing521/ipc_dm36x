@@ -11,19 +11,20 @@
 /**************************************************************************\
 * Register Overlay Structure
 \**************************************************************************/
-typedef struct {
-  volatile Uint32 PID;
-  volatile Uint32 PCCR;
-  volatile Uint32 BCR;
-  volatile Uint32 INTSTAT;
-  volatile Uint32 INTSEL1;
-  volatile Uint32 INTSEL2;
-  volatile Uint32 INTSEL3;
-  volatile Uint32 EVTSEL;
-  volatile Uint32 CCDCMUX;
-  volatile Uint32 PG_PULSE_CTRL;
-  volatile Uint32 PG_FRAME_SIZE;
-  volatile Uint32 MPSR;
+typedef struct
+{
+    volatile Uint32 PID;
+    volatile Uint32 PCCR;
+    volatile Uint32 BCR;
+    volatile Uint32 INTSTAT;
+    volatile Uint32 INTSEL1;
+    volatile Uint32 INTSEL2;
+    volatile Uint32 INTSEL3;
+    volatile Uint32 EVTSEL;
+    volatile Uint32 CCDCMUX;
+    volatile Uint32 PG_PULSE_CTRL;
+    volatile Uint32 PG_FRAME_SIZE;
+    volatile Uint32 MPSR;
 } CSL_Isp5Regs;
 
 /**************************************************************************\
@@ -31,22 +32,18 @@ typedef struct {
 \**************************************************************************/
 
 /* PID */
-
-#define CSL_ISP5_PID_PREV_MASK (0xFFFFFFFFu)
-#define CSL_ISP5_PID_PREV_SHIFT (0x00000000u)
+#define CSL_ISP5_PID_PREV_MASK     (0xFFFFFFFFu)
+#define CSL_ISP5_PID_PREV_SHIFT    (0x00000000u)
 #define CSL_ISP5_PID_PREV_RESETVAL (0x4C180800u)
-
-#define CSL_ISP5_PID_RESETVAL (0x4C180800u)
+#define CSL_ISP5_PID_RESETVAL      (0x4C180800u)
 
 /* PCCR */
-
-
-#define CSL_ISP5_PCCR_PSYNC_CLK_SEL_MASK (0x00000080u)
-#define CSL_ISP5_PCCR_PSYNC_CLK_SEL_SHIFT (0x00000007u)
+#define CSL_ISP5_PCCR_PSYNC_CLK_SEL_MASK     (0x00000080u)
+#define CSL_ISP5_PCCR_PSYNC_CLK_SEL_SHIFT    (0x00000007u)
 #define CSL_ISP5_PCCR_PSYNC_CLK_SEL_RESETVAL (0x00000000u)
 
-#define CSL_ISP5_PCCR_SYNC_ENABLE_MASK (0x00000040u)
-#define CSL_ISP5_PCCR_SYNC_ENABLE_SHIFT (0x00000006u)
+#define CSL_ISP5_PCCR_SYNC_ENABLE_MASK     (0x00000040u)
+#define CSL_ISP5_PCCR_SYNC_ENABLE_SHIFT    (0x00000006u)
 #define CSL_ISP5_PCCR_SYNC_ENABLE_RESETVAL (0x00000001u)
 
 #define CSL_ISP5_PCCR_IPIPEIF_CLK_ENABLE_MASK (0x00000020u)

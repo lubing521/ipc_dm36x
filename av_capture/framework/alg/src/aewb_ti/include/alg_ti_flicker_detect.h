@@ -6,7 +6,6 @@ typedef unsigned short uint16;
 typedef unsigned short ushort;
 typedef unsigned long uint32;
 typedef unsigned long long uint64;
-//typedef unsigned int Bool;
 typedef signed char int8;
 typedef signed short int16;
 typedef signed long int32;

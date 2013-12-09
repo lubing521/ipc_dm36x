@@ -1,17 +1,3 @@
-/*
-    DM360 Evaluation Software
-
-    (c)Texas Instruments 2007
-*/
-
-/**
-  \file tistdtypes.h
-  \brief Primitive C types
-*/
-
-
-
-
 
 #ifndef _TISTDTYPES_H_
 #define _TISTDTYPES_H_
@@ -27,8 +13,8 @@ typedef unsigned int Bool32;               ///< Boolean type
 
 typedef short   Bool;                 ///< Boolean type
 
-#define TRUE		(1)        ///< Boolean value : TRUE
-#define FALSE		(0)        ///< Boolean value : FALSE
+#define TRUE        (1)        ///< Boolean value : TRUE
+#define FALSE       (0)        ///< Boolean value : FALSE
 
 #endif
 

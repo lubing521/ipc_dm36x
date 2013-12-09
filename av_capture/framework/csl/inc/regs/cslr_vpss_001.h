@@ -11,24 +11,25 @@
 /**************************************************************************\
 * Register Overlay Structure
 \**************************************************************************/
-typedef struct {
-  volatile Uint32 PCCR;
-  volatile Uint32 TEST;
-  volatile Uint32 MISR;
-  volatile Uint32 DATST1;
-  volatile Uint32 DATST2;
-  volatile Uint32 RSVD0[7];
-  volatile Uint32 CKE0;
-  volatile Uint32 RSVD1[3];
-  volatile Uint32 CKE1;
-  volatile Uint32 RSVD2[3];
-  volatile Uint32 CKE2;
-  volatile Uint32 RSVD3[3];
-  volatile Uint32 CKE3;
-  volatile Uint32 RSVD4[3];
-  volatile Uint32 CKE4;
-  volatile Uint32 RSVD5[3];
-  volatile Uint32 CKE5;
+typedef struct
+{
+    volatile Uint32 PCCR;
+    volatile Uint32 TEST;
+    volatile Uint32 MISR;
+    volatile Uint32 DATST1;
+    volatile Uint32 DATST2;
+    volatile Uint32 RSVD0[7];
+    volatile Uint32 CKE0;
+    volatile Uint32 RSVD1[3];
+    volatile Uint32 CKE1;
+    volatile Uint32 RSVD2[3];
+    volatile Uint32 CKE2;
+    volatile Uint32 RSVD3[3];
+    volatile Uint32 CKE3;
+    volatile Uint32 RSVD4[3];
+    volatile Uint32 CKE4;
+    volatile Uint32 RSVD5[3];
+    volatile Uint32 CKE5;
 } CSL_VpssRegs;
 
 /**************************************************************************\

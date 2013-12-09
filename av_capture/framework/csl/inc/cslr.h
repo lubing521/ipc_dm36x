@@ -1,13 +1,4 @@
-/*****************************************************\
- *  Copyright 2003, Texas Instruments Incorporated.  *
- *  All rights reserved.                             *
- *  Restricted rights to use, duplicate or disclose  *
- *  this   code   are  granted   through  contract.  *
- *                                                   *
- * "@(#) PSP/CSL  3.0.0.0  (2003-09-30)              *
-\*****************************************************/
 
-/* Register layer central -- contains field-manipulation macro definitions */
 
 #ifndef _CSLR_H_
 #define _CSLR_H_
@@ -56,10 +47,4 @@
 
 #endif /* _CSLR_H_ */
 
-/* Rev.No.   Date/Time               ECN No.          Modifier      */
-/* -------   ---------               -------          --------      */
 
-/* 4          Aug 10:09:12 9         2272             xkeshavm      */
-/*                                                                  */
-/* To upload API CSL 0.51 Release                                   */
-/********************************************************************/

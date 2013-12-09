@@ -1118,11 +1118,38 @@ void ALG_aewbConvert_RGB_YUV(IAEWB_Rgb *rgbData, int pix_in_pax, int awb_h3a_pax
     }
 }
 
-awb_calc_data_t *ImageTune_imgsGetAwbConfig(int mod)
+awb_calc_data_t *ImageTune_imgsGetAwbConfig(int mode)
 {
-    //Revisit
-    //OSA_printf("IT AlgAwb: GetAwbConfig done \n");
-
-    return &awb_calc_data;
-
+    awb_calc_data_t *data = NULL;
+    
+    eSensorType sensorId = GetSensorId();
+    switch (sensorId)
+    {
+    case OV9712:
+        data = &awb_calc_data_ov9712;
+        break;
+    case AR0130:
+        data = &awb_calc_data_ar130;
+        break;
+    case MT9M034:
+        data = &awb_calc_data_MT9M034;
+        break;
+    case IMX122:
+        data = &awb_calc_data_imx122;
+        break;
+    case AR0330:
+        data = &awb_calc_data_ar0330;
+        break;
+    case AR0331:
+        data = &awb_calc_data_ar0331;
+        break;
+    case MT9P031:
+        data = &awb_calc_data_MT9P031;
+        break;
+    default:
+        break;
+    }
+    
+    return data;
 }
+

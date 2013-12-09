@@ -11,30 +11,31 @@
 /**************************************************************************\
 * Register Overlay Structure
 \**************************************************************************/
-typedef struct {
-  volatile Uint32 ENABLE;
-  volatile Uint32 CFG1;
-  volatile Uint32 PPLN;
-  volatile Uint32 LPFR;
-  volatile Uint32 HNUM;
-  volatile Uint32 VNUM;
-  volatile Uint32 ADDRU;
-  volatile Uint32 ADDRL;
-  volatile Uint32 ADOFS;
-  volatile Uint32 RSZ;
-  volatile Uint32 GAIN;
-  volatile Uint32 DPCM;
-  volatile Uint32 CFG2;
-  volatile Uint32 INIRSZ;
-  volatile Uint32 OCLIP;
-  volatile Uint32 UFERR;
-  volatile Uint32 CLKDIV;
-  volatile Uint32 DPC1;
-  volatile Uint32 DPC2;
-  volatile Uint32 DFSGVL;
-  volatile Uint32 DFSGTH;
-  volatile Uint32 RSZ2;
-  volatile Uint32 INIRSZ2;
+typedef struct
+{
+    volatile Uint32 ENABLE;
+    volatile Uint32 CFG1;
+    volatile Uint32 PPLN;
+    volatile Uint32 LPFR;
+    volatile Uint32 HNUM;
+    volatile Uint32 VNUM;
+    volatile Uint32 ADDRU;
+    volatile Uint32 ADDRL;
+    volatile Uint32 ADOFS;
+    volatile Uint32 RSZ;
+    volatile Uint32 GAIN;
+    volatile Uint32 DPCM;
+    volatile Uint32 CFG2;
+    volatile Uint32 INIRSZ;
+    volatile Uint32 OCLIP;
+    volatile Uint32 UFERR;
+    volatile Uint32 CLKDIV;
+    volatile Uint32 DPC1;
+    volatile Uint32 DPC2;
+    volatile Uint32 DFSGVL;
+    volatile Uint32 DFSGTH;
+    volatile Uint32 RSZ2;
+    volatile Uint32 INIRSZ2;
 } CSL_IpipeifRegs;
 
 /**************************************************************************\

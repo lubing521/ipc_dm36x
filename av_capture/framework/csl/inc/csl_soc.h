@@ -1,14 +1,3 @@
-/*
-    DM360 Evaluation Software
-
-    (c)Texas Instruments 2007
-*/
-
-/**
-  \file csl_soc.h
-
-  \brief Top-level include to get access to all register overlay structures and addresses
-*/
 
 #ifndef _CSL_SOC_H_
 #define _CSL_SOC_H_
@@ -18,19 +7,19 @@
 typedef int CSL_Status;         ///< CSL Status
 
 #ifndef CSL_SOK
-#define CSL_SOK             ( 0)  ///< CSL Status : Success
+    #define CSL_SOK             ( 0)  ///< CSL Status : Success
 #endif
 
 #ifndef CSL_EFAIL
-#define CSL_EFAIL           (-1)  ///< CSL Status : Generic failure
+    #define CSL_EFAIL           (-1)  ///< CSL Status : Generic failure
 #endif
 
 #ifndef CSL_EINVPARAMS
-#define CSL_EINVPARAMS      (-2)  ///< CSL Status : invalid parameters
+    #define CSL_EINVPARAMS      (-2)  ///< CSL Status : invalid parameters
 #endif
 
 #ifndef NULL
-#define NULL            (0)     ///< NULL pointer
+    #define NULL            (0)     ///< NULL pointer
 #endif
 
 #define CSL_SYS_VERSION           "0.10.00"           ///< CSL Version String
@@ -164,7 +153,7 @@ typedef volatile CSL_SysRegs *CSL_SysRegsOvly;
 
 
 #ifdef CSL_KERNEL_API
-#include <csl_sys.h>
+    #include <csl_sys.h>
 #endif
 
 int CSL_sysInit(void);
@@ -172,30 +161,3 @@ int CSL_sysExit(void);
 
 #endif /* _CSL_SOC_H_ */
 
-/**
-  \mainpage DM360 CSL
-
-  The document details the APIs that are part of the DM360 CSL (Chip support library)
-
-  The Chip Support Library consists of the below modules,
-
-  - \ref CSL_VPSS
-    - \ref CSL_VPFE
-      - \ref CSL_CCDC
-      - \ref CSL_IPIPEIF
-      - \ref CSL_IPIPE
-      - \ref CSL_RSZ
-      - \ref CSL_H3A
-      - \ref CSL_LDC
-      - \ref CSL_FD
-    - \ref CSL_GPIO
-
-  \par See Also,
-  - \ref TI_DISCLAIMER
-*/
-
-/**
- \page  TI_DISCLAIMER  TI Disclaimer
-
- \htmlinclude ti_disclaim.htm
-*/

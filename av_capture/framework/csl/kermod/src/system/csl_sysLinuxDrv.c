@@ -25,9 +25,7 @@ CSL_SysLinuxObj gCSL_sysLinuxObj;
 Uint32 CSL_sysGetCurTime()
 {
   struct timeval tv;
-
   do_gettimeofday(&tv);
-
   return (tv.tv_sec * 1000) + (tv.tv_usec + 500) / 1000;
 }
 

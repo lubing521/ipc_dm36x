@@ -1,15 +1,4 @@
-/*
- *  Copyright 2007 by Texas Instruments Incorporated.
- *
- *  All rights reserved. Property of Texas Instruments Incorporated.
- *  Restricted rights to use, duplicate or disclose this code are
- *  granted through contract.
- *
- */
 
-/*
- *  ======== awb_ti.h ========
- */
 #ifndef AWB_TI_
 #define AWB_TI_
 

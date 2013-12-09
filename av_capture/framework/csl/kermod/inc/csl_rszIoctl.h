@@ -31,94 +31,82 @@
 #define CSL_RSZ_CMD_SET_FLIP                     (0x18) ///< prm: [I ] CSL_RszSetFlipPrm *
 #define CSL_RSZ_CMD_SET_RT_PRMS                  (0x19) ///< prm: [I ] CSL_RszSetRtPrm *
 
-typedef struct {
-
-  Uint8   rszMod;
-  CSL_RszOutConfig *data;
-
+typedef struct
+{
+    Uint8   rszMod;
+    CSL_RszOutConfig *data;
 } CSL_RszSetOutConfigPrm;
 
-typedef struct {
-
-  Uint8   rszMod;
-  Bool32    enable;
-
+typedef struct
+{
+    Uint8   rszMod;
+    Bool32    enable;
 } CSL_RszOutEnablePrm;
 
-typedef struct {
-
-  Uint8   rszMod;
-  Uint8  *addr;
-  Uint8  *yuv420CoutAddr;
-
+typedef struct
+{
+    Uint8   rszMod;
+    Uint8  *addr;
+    Uint8  *yuv420CoutAddr;
 } CSL_RszSetOutAddrPrm;
 
-typedef struct {
-
-  Uint8   rszMod;
-  CSL_RszStatus *status;
-
+typedef struct
+{
+    Uint8   rszMod;
+    CSL_RszStatus *status;
 } CSL_RszGetStatusPrm;
 
-typedef struct {
-
-  Uint8   rszMod;
-  CSL_RszInFrameConfig *inFrameConfig;
-  CSL_RszOutFrameConfig *outConfig;
-
+typedef struct
+{
+    Uint8   rszMod;
+    CSL_RszInFrameConfig *inFrameConfig;
+    CSL_RszOutFrameConfig *outConfig;
 } CSL_RszSetOutFrameConfigPrm;
 
-typedef struct {
-
-  Uint8   rszMod;
-  CSL_RszOutFrameConfig *outConfig;
-
+typedef struct
+{
+    Uint8   rszMod;
+    CSL_RszOutFrameConfig *outConfig;
 } CSL_RszGetOutFrameConfigPrm;
 
-typedef struct {
-
-  Uint8   rszMod;
-  CSL_RszRuntimeConfig *rtConfig;
-
+typedef struct
+{
+    Uint8   rszMod;
+    CSL_RszRuntimeConfig *rtConfig;
 } CSL_RszSetRtPrm;
 
-typedef struct {
-
-  Uint8   rszMod;
-  CSL_BufInit *bufInit;
-  CSL_RszBufConfig *bufConfig;
-  
+typedef struct
+{
+    Uint8   rszMod;
+    CSL_BufInit *bufInit;
+    CSL_RszBufConfig *bufConfig;
 } CSL_RszBufInitPrm;
 
-typedef struct {
-
-  Uint8   rszMod;
-  Bool32    flipH;
-  Bool32    flipV;
-  
+typedef struct
+{
+    Uint8   rszMod;
+    Bool32  flipH;
+    Bool32  flipV;
 } CSL_RszSetFlipPrm;
 
-typedef struct {
-
-  Uint8   rszMod;
-  Bool32    enable;
-
+typedef struct
+{
+    Uint8   rszMod;
+    Bool32  enable;
 } CSL_RszBufSwitchEnablePrm;
 
-typedef struct {
-
-  Uint8   rszMod;
-  CSL_BufInfo *buf;
-  Uint32  minBuf;
-  Uint32  timeout;
-
+typedef struct
+{
+    Uint8   rszMod;
+    CSL_BufInfo *buf;
+    Uint32  minBuf;
+    Uint32  timeout;
 } CSL_RszBufGetFullPrm;
 
-typedef struct {
-
-  Uint8   rszMod;
-  CSL_BufInfo *buf;
-
+typedef struct
+{
+    Uint8   rszMod;
+    CSL_BufInfo *buf;
 } CSL_RszBufPutEmptyPrm;
 
 CSL_Status CSL_rszInit(CSL_RszHandle hndl);

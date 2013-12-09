@@ -11,27 +11,28 @@
 /**************************************************************************\
 * Register Overlay Structure
 \**************************************************************************/
-typedef struct {
-  volatile Uint32 PID;
-  volatile Uint32 PCR;
-  volatile Uint32 RD_BASE;
-  volatile Uint32 RD_OFST;
-  volatile Uint32 FRAME_SIZE;
-  volatile Uint32 INITXY;
-  volatile Uint32 WR_BASE;
-  volatile Uint32 WR_OFST;
-  volatile Uint32 C420_RD_BASE;
-  volatile Uint32 C420_WR_BASE;
-  volatile Uint32 CONFIG;
-  volatile Uint32 CENTER;
-  volatile Uint32 KHV;
-  volatile Uint32 BLOCK;
-  volatile Uint32 LUT_ADDR;
-  volatile Uint32 LUT_WDATA;
-  volatile Uint32 LUT_RDATA;
-  volatile Uint32 AFFINE_AB;
-  volatile Uint32 AFFINE_CD;
-  volatile Uint32 AFFINE_EF;
+typedef struct
+{
+    volatile Uint32 PID;
+    volatile Uint32 PCR;
+    volatile Uint32 RD_BASE;
+    volatile Uint32 RD_OFST;
+    volatile Uint32 FRAME_SIZE;
+    volatile Uint32 INITXY;
+    volatile Uint32 WR_BASE;
+    volatile Uint32 WR_OFST;
+    volatile Uint32 C420_RD_BASE;
+    volatile Uint32 C420_WR_BASE;
+    volatile Uint32 CONFIG;
+    volatile Uint32 CENTER;
+    volatile Uint32 KHV;
+    volatile Uint32 BLOCK;
+    volatile Uint32 LUT_ADDR;
+    volatile Uint32 LUT_WDATA;
+    volatile Uint32 LUT_RDATA;
+    volatile Uint32 AFFINE_AB;
+    volatile Uint32 AFFINE_CD;
+    volatile Uint32 AFFINE_EF;
 } CSL_LdcRegs;
 
 /**************************************************************************\

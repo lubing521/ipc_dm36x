@@ -1,8 +1,3 @@
-/*
-    DM360 Evaluation Software
-
-    (c)Texas Instruments 2007
-*/
 
 #ifndef _CSL_VPSS_H_
 #define _CSL_VPSS_H_
@@ -13,20 +8,6 @@ extern  "C" {
 
 #include <csl_soc.h>
 
-/**
-  \file csl_vpss.h
-  \brief VPSS / ISP Common APIs
-*/
-
-/**
-  \defgroup  CSL_VPSS VPSS
-
-  Video Processing Sub-System modules
-
-  @{
-*/
-
-// define's
 
 #define CSL_VPSS_NO_UPDATE    (0xFF)  ///< if this value is used for any of the below fields the corresponding value in register is not updated
 
@@ -80,117 +61,113 @@ extern  "C" {
 /**
   \brief  VPSS clock configuration
 */
-  typedef struct {
+    typedef struct
+    {
+        // in ISP5 regs
+        Uint8   pclkSelect;         ///< CSL_VPSS_PCLK_SEL_MMR \n CSL_VPSS_PCLK_SEL_VPSS
 
-    // in ISP5 regs
-    Uint8   pclkSelect;         ///< CSL_VPSS_PCLK_SEL_MMR \n CSL_VPSS_PCLK_SEL_VPSS
+        Uint8   pclkSyncClkEnable;  ///< PCLK Sync module, TRUE: Enable, FALSE: Disable, CSL_VPSS_NO_UPDATE: No change
+        Uint8   blClkEnable;        ///< BL Clock, TRUE: Enable, FALSE: Disable, CSL_VPSS_NO_UPDATE: No change
+        Uint8   isifClkEnable;      ///< ISIF Clock, TRUE: Enable, FALSE: Disable, CSL_VPSS_NO_UPDATE: No change
+        Uint8   h3aClkEnable;       ///< H3A Clock, TRUE: Enable, FALSE: Disable, CSL_VPSS_NO_UPDATE: No change
+        Uint8   ipipeifClkEnable;   ///< IPIPE Clock, TRUE: Enable, FALSE: Disable, CSL_VPSS_NO_UPDATE: No change
+        Uint8   ipipeClkEnable;     ///< IPIPE Clock, TRUE: Enable, FALSE: Disable, CSL_VPSS_NO_UPDATE: No change
+        Uint8   rszClkEnable;       ///< RSZ Clock, TRUE: Enable, FALSE: Disable, CSL_VPSS_NO_UPDATE: No change
 
-    Uint8   pclkSyncClkEnable;  ///< PCLK Sync module, TRUE: Enable, FALSE: Disable, CSL_VPSS_NO_UPDATE: No change
-    Uint8   blClkEnable;        ///< BL Clock, TRUE: Enable, FALSE: Disable, CSL_VPSS_NO_UPDATE: No change
-    Uint8   isifClkEnable;      ///< ISIF Clock, TRUE: Enable, FALSE: Disable, CSL_VPSS_NO_UPDATE: No change
-    Uint8   h3aClkEnable;       ///< H3A Clock, TRUE: Enable, FALSE: Disable, CSL_VPSS_NO_UPDATE: No change
-    Uint8   ipipeifClkEnable;   ///< IPIPE Clock, TRUE: Enable, FALSE: Disable, CSL_VPSS_NO_UPDATE: No change
-    Uint8   ipipeClkEnable;     ///< IPIPE Clock, TRUE: Enable, FALSE: Disable, CSL_VPSS_NO_UPDATE: No change
-    Uint8   rszClkEnable;       ///< RSZ Clock, TRUE: Enable, FALSE: Disable, CSL_VPSS_NO_UPDATE: No change
+        // in VPSS regs
+        Uint8   ldcClkEnable;       ///< LDC Clock, TRUE: Enable, FALSE: Disable, CSL_VPSS_NO_UPDATE: No change
+        Uint8   fdifClkEnable;      ///< FDIF Clock, TRUE: Enable, FALSE: Disable, CSL_VPSS_NO_UPDATE: No change
 
-    // in VPSS regs
-    Uint8   ldcClkEnable;       ///< LDC Clock, TRUE: Enable, FALSE: Disable, CSL_VPSS_NO_UPDATE: No change
-    Uint8   fdifClkEnable;      ///< FDIF Clock, TRUE: Enable, FALSE: Disable, CSL_VPSS_NO_UPDATE: No change
-
-    Uint8   ldcClkSelect;       ///< CSL_VPSS_LDC_CLK_MODULE \n CSL_VPSS_LDC_CLK_ARM, CSL_VPSS_NO_UPDATE: No change
-
-  } CSL_VpssClkConfig;
+        Uint8   ldcClkSelect;       ///< CSL_VPSS_LDC_CLK_MODULE \n CSL_VPSS_LDC_CLK_ARM, CSL_VPSS_NO_UPDATE: No change
+    } CSL_VpssClkConfig;
 
 /**
   \brief  VPSS Interrupt/Event selection configuration
 */
-  typedef struct {
-
-    Uint8   intSel[9];          ///< CSL_VPSS_INT_EVT_SEL_ISIF_INT0 ...CSL_VPSS_INT_EVT_SEL_IPIPE_INT_DPC_RNEW1, CSL_VPSS_NO_UPDATE: No change
-    Uint8   evtSel[4];          ///< CSL_VPSS_INT_EVT_SEL_ISIF_INT0 ...CSL_VPSS_INT_EVT_SEL_IPIPE_INT_DPC_RNEW1, CSL_VPSS_NO_UPDATE: No change
-
-  } CSL_VpssIntEvtConfig;
+    typedef struct
+    {
+        Uint8   intSel[9];          ///< CSL_VPSS_INT_EVT_SEL_ISIF_INT0 ...CSL_VPSS_INT_EVT_SEL_IPIPE_INT_DPC_RNEW1, CSL_VPSS_NO_UPDATE: No change
+        Uint8   evtSel[4];          ///< CSL_VPSS_INT_EVT_SEL_ISIF_INT0 ...CSL_VPSS_INT_EVT_SEL_IPIPE_INT_DPC_RNEW1, CSL_VPSS_NO_UPDATE: No change
+    } CSL_VpssIntEvtConfig;
 
 /**
   \brief  VPSS Read/Write priority configuration
 */
-  typedef struct {
-
-    Uint8   priVpssWr;          ///< Write priority for VPSS, Should set highest priority (0) for best performance, CSL_VPSS_NO_UPDATE: No change
-    Uint8   priVpssRd;          ///< Read priority for VPSS, Should set highest priority (0) for best performance, CSL_VPSS_NO_UPDATE: No change
-
-  } CSL_VpssPriConfig;
+    typedef struct
+    {
+        Uint8   priVpssWr;  ///< Write priority for VPSS, Should set highest priority (0) for best performance, CSL_VPSS_NO_UPDATE: No change
+        Uint8   priVpssRd;  ///< Read priority for VPSS, Should set highest priority (0) for best performance, CSL_VPSS_NO_UPDATE: No change
+    } CSL_VpssPriConfig;
 
 /**
   \brief  BL WBL configuration
 */
-  typedef struct {
-
-    Uint8   wblSelIsifIpipe;    ///< CSL_VPSS_BL_WBL_SEL_IPIPE_ISIF \n CSL_VPSS_BL_WBL_SEL_ISIF_IPIPE, CSL_VPSS_NO_UPDATE: No change
-    Uint8   wblSelIpipeLdc;     ///< CSL_VPSS_BL_WBL_SEL_LDC_IPIPE \n CSL_VPSS_BL_WBL_SEL_IPIPE_LDC, CSL_VPSS_NO_UPDATE: No change
-
-  } CSL_VpssWblSelConfig;
+    typedef struct
+    {
+        Uint8   wblSelIsifIpipe;    ///< CSL_VPSS_BL_WBL_SEL_IPIPE_ISIF \n CSL_VPSS_BL_WBL_SEL_ISIF_IPIPE, CSL_VPSS_NO_UPDATE: No change
+        Uint8   wblSelIpipeLdc;     ///< CSL_VPSS_BL_WBL_SEL_LDC_IPIPE \n CSL_VPSS_BL_WBL_SEL_IPIPE_LDC, CSL_VPSS_NO_UPDATE: No change
+    } CSL_VpssWblSelConfig;
 
 /**
   \brief CLK DIV structure
 */
-  typedef struct {
+    typedef struct
+    {
+        Uint16 PLL1_M;
+        Uint16 PLL1_PREDIV;
+        Uint16 PLL1_POSTDIV;
+        Uint16 PLL1_PLLDIV[10];
 
-    Uint16 PLL1_M;
-    Uint16 PLL1_PREDIV;
-    Uint16 PLL1_POSTDIV;
-    Uint16 PLL1_PLLDIV[10];
+        Uint16 PLL2_M;
+        Uint16 PLL2_PREDIV;
+        Uint16 PLL2_POSTDIV;
+        Uint16 PLL2_PLLDIV[10];
 
-    Uint16 PLL2_M;
-    Uint16 PLL2_PREDIV;
-    Uint16 PLL2_POSTDIV;
-    Uint16 PLL2_PLLDIV[10];
+        Uint32 PERICLKCTL;
+        Uint32 VPSSCLKCTL;
 
-    Uint32 PERICLKCTL;
-    Uint32 VPSSCLKCTL;
-
-  } CSL_VpssClkDiv;
+    } CSL_VpssClkDiv;
 
 
 /**
   \brief  VPSS Hardware configuration structure
 */
-  typedef struct {
-
-    CSL_VpssWblSelConfig *wblSelConfig; ///< WBL config parameters if NULL do not set these parameters
-    CSL_VpssPriConfig *priConfig; ///< Read/Write priority config parameters if NULL do not set these parameters
-    CSL_VpssIntEvtConfig *intEvtConfig; ///< Interrupt/Event config parameters if NULL do not set these parameters
-    CSL_VpssClkConfig *clkConfig; ///< Clock config parameters if NULL do not set these parameters
-
-  } CSL_VpssHwSetup;
+    typedef struct
+    {
+        CSL_VpssWblSelConfig *wblSelConfig; ///< WBL config parameters if NULL do not set these parameters
+        CSL_VpssPriConfig    *priConfig;    ///< Read/Write priority config parameters if NULL do not set these parameters
+        CSL_VpssIntEvtConfig *intEvtConfig; ///< Interrupt/Event config parameters if NULL do not set these parameters
+        CSL_VpssClkConfig    *clkConfig;    ///< Clock config parameters if NULL do not set these parameters
+    } CSL_VpssHwSetup;
 
 /**
   \brief Module Object Structure
 */
-  typedef struct {
+    typedef struct
+    {
 
 #ifdef CSL_KERNEL_API
-    CSL_VpssRegsOvly regs;      ///< Register overlay
-    CSL_Isp5RegsOvly ispRegs;   ///< ISP5 Register overlay
+        CSL_VpssRegsOvly regs;      ///< Register overlay
+        CSL_Isp5RegsOvly ispRegs;   ///< ISP5 Register overlay
 #else
-    int     fd;
-    unsigned int            regBaseLen;     ///< Length of register addresses mapped to virtual memory
-    unsigned long           regBasePhysAddr;///< Physical memory address of ISP registers
-    void                   *regBaseVirtAddr;///< Virtual memory mapped address of ISP registers
-    CSL_VpssRegsOvly        vpssRegs;       ///< Register overlay
-    CSL_Isp5RegsOvly        ispRegs;        ///< Register overlay
-    CSL_IsifRegsOvly        isifRegs;       ///< Register overlay    
-    CSL_IpipeRegsOvly       ipipeRegs;      ///< Register overlay        
-    CSL_IpipeifRegsOvly     ipipeifRegs;    ///< Register overlay
-    CSL_RszRegsOvly         rszRegs;        ///< Register overlay                    
-    CSL_H3aRegsOvly         h3aRegs;        ///< Register overlay
-    CSL_LdcRegsOvly         ldcRegs;        ///< Register overlay                                            
-    CSL_FaceDetectRegsOvly  faceDetectRegs; ///< Register overlay
+        int     fd;
+        unsigned int            regBaseLen;     ///< Length of register addresses mapped to virtual memory
+        unsigned long           regBasePhysAddr;///< Physical memory address of ISP registers
+        void                   *regBaseVirtAddr;///< Virtual memory mapped address of ISP registers
+        CSL_VpssRegsOvly        vpssRegs;       ///< Register overlay
+        CSL_Isp5RegsOvly        ispRegs;        ///< Register overlay
+        CSL_IsifRegsOvly        isifRegs;       ///< Register overlay    
+        CSL_IpipeRegsOvly       ipipeRegs;      ///< Register overlay        
+        CSL_IpipeifRegsOvly     ipipeifRegs;    ///< Register overlay
+        CSL_RszRegsOvly         rszRegs;        ///< Register overlay                    
+        CSL_H3aRegsOvly         h3aRegs;        ///< Register overlay
+        CSL_LdcRegsOvly         ldcRegs;        ///< Register overlay                                            
+        CSL_FaceDetectRegsOvly  faceDetectRegs; ///< Register overlay
 #endif
 
-  } CSL_VpssObj;
+    } CSL_VpssObj;
 
-  typedef CSL_VpssObj *CSL_VpssHandle;  ///< Module Handle
+    typedef CSL_VpssObj *CSL_VpssHandle;  ///< Module Handle
 
 // functions
 
@@ -201,7 +178,7 @@ extern  "C" {
 
   \return CSL_SOK on success, else CSL_Exxxx
 */
-  CSL_Status CSL_vpssOpen(CSL_VpssHandle hndl);
+    CSL_Status CSL_vpssOpen(CSL_VpssHandle hndl);
 
 /**
   \brief Close Module Handle
@@ -210,7 +187,7 @@ extern  "C" {
 
   \return CSL_SOK on success, else CSL_Exxxx
 */
-  CSL_Status CSL_vpssClose(CSL_VpssHandle hndl);
+    CSL_Status CSL_vpssClose(CSL_VpssHandle hndl);
 
 /**
   \brief Set all module registers
@@ -220,7 +197,7 @@ extern  "C" {
 
   \return CSL_SOK on success, else CSL_Exxxx
 */
-  CSL_Status CSL_vpssHwSetup(CSL_VpssHandle hndl, CSL_VpssHwSetup * data);
+    CSL_Status CSL_vpssHwSetup(CSL_VpssHandle hndl, CSL_VpssHwSetup * data);
 
 /**
   \brief Set all module registers to power-ON reset value
@@ -229,7 +206,7 @@ extern  "C" {
 
   \return CSL_SOK on success, else CSL_Exxxx
 */
-  CSL_Status CSL_vpssHwReset(CSL_VpssHandle hndl);
+    CSL_Status CSL_vpssHwReset(CSL_VpssHandle hndl);
 
 /**
   \brief VPSS clock config
@@ -239,7 +216,7 @@ extern  "C" {
 
   \return CSL_SOK on success, else CSL_Exxxx
 */
-  CSL_Status CSL_vpssSetClkConfig(CSL_VpssHandle hndl, CSL_VpssClkConfig * data);
+    CSL_Status CSL_vpssSetClkConfig(CSL_VpssHandle hndl, CSL_VpssClkConfig * data);
 
 /**
   \brief VPSS interrupt/event config
@@ -249,7 +226,7 @@ extern  "C" {
 
   \return CSL_SOK on success, else CSL_Exxxx
 */
-  CSL_Status CSL_vpssSetIntEvtConfig(CSL_VpssHandle hndl, CSL_VpssIntEvtConfig * data);
+    CSL_Status CSL_vpssSetIntEvtConfig(CSL_VpssHandle hndl, CSL_VpssIntEvtConfig * data);
 
 /**
   \brief VPSS read/write priority config
@@ -259,7 +236,7 @@ extern  "C" {
 
   \return CSL_SOK on success, else CSL_Exxxx
 */
-  CSL_Status CSL_vpssSetPriConfig(CSL_VpssHandle hndl, CSL_VpssPriConfig * data);
+    CSL_Status CSL_vpssSetPriConfig(CSL_VpssHandle hndl, CSL_VpssPriConfig * data);
 
 /**
   \brief VPSS WBL config
@@ -269,7 +246,7 @@ extern  "C" {
 
   \return CSL_SOK on success, else CSL_Exxxx
 */
-  CSL_Status CSL_vpssSetWblSelConfig(CSL_VpssHandle hndl, CSL_VpssWblSelConfig * data);
+    CSL_Status CSL_vpssSetWblSelConfig(CSL_VpssHandle hndl, CSL_VpssWblSelConfig * data);
 
 /**
   \brief Module lock : Mutex Lock
@@ -279,7 +256,7 @@ extern  "C" {
 
   \return CSL_SOK on success, else CSL_Exxxx
 */
-  CSL_Status CSL_vpssLock(CSL_VpssHandle hndl, Uint32 timeout);
+    CSL_Status CSL_vpssLock(CSL_VpssHandle hndl, Uint32 timeout);
 
 /**
   \brief Module unlock : Mutex Unlock
@@ -288,7 +265,7 @@ extern  "C" {
 
   \return CSL_SOK on success, else CSL_Exxxx
 */
-  CSL_Status CSL_vpssUnlock(CSL_VpssHandle hndl);
+    CSL_Status CSL_vpssUnlock(CSL_VpssHandle hndl);
 
 
 /**
@@ -299,7 +276,7 @@ extern  "C" {
 
   \return CSL_SOK on success, else CSL_Exxxx
 */
-  CSL_Status CSL_vpssGetClkDiv(CSL_VpssHandle hndl, CSL_VpssClkDiv *prm);
+    CSL_Status CSL_vpssGetClkDiv(CSL_VpssHandle hndl, CSL_VpssClkDiv *prm);
 
 /**
   \brief Set CLKDIV values for different modules
@@ -309,7 +286,7 @@ extern  "C" {
 
   \return CSL_SOK on success, else CSL_Exxxx
 */
-  CSL_Status CSL_vpssSetClkDiv(CSL_VpssHandle hndl, CSL_VpssClkDiv *prm);
+    CSL_Status CSL_vpssSetClkDiv(CSL_VpssHandle hndl, CSL_VpssClkDiv *prm);
 
 
 #ifdef __cplusplus
@@ -317,9 +294,4 @@ extern  "C" {
 #endif
 /*@}*/
 #endif
-/**
-  \ingroup CSL_VPSS
-  \defgroup  CSL_VPFE VPFE
 
-  \brief Video Processing Front End modules
-*/
