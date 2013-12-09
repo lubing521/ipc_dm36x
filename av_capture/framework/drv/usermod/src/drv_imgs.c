@@ -274,36 +274,23 @@ int CheckSensor()
         }
         while (++retry <= RETRY_NUM);
     }
-
-EXIT:
-    if (status == OSA_SOK)
+    DRV_i2cClose(&i2cHndl);
+    
+    if (DRV_imgsCheckId_IMX122(&spiHndl) == OSA_SOK)
     {
-        DRV_i2cClose(&i2cHndl);
+        OSA_printf("\n----------------Detect Sensor is IMX122\n\n");
+        drvImgsFunc = &IMX122ImgsFuncs;
+        sensorId = IMX122;
     }
+        
+EXIT:
+    DRV_i2cClose(&i2cHndl);
+
     if (sensorId == SENSOR_UNKNOWN)
     {
-        status = DRV_SPIOpen(&spiHndl, 0);
-        if (status != OSA_SOK)
-        {
-            OSA_ERROR("DRV_SPIOpen\n");
-            sensorId = SENSOR_UNKNOWN;
-            DRV_SPIClose(&spiHndl);
-            return OSA_EFAIL;
-        }
-        else
-        {
-            if (DRV_imgsCheckId_IMX122(&spiHndl) == OSA_SOK)
-            {
-                OSA_printf("\n----------------Detect Sensor is IMX122\n\n");
-            }
-            else
-            {
-                OSA_printf("\n----------------No Sensor detected! Default Sensor is IMX122\n\n");
-            }
-            drvImgsFunc = &IMX122ImgsFuncs;
-            sensorId = IMX122;
-            DRV_SPIClose(&spiHndl);
-        }
+        OSA_printf("\n----------------Default video input is YUV data\n\n");
+        drvImgsFunc = &AP0101ImgsFuncs;
+        sensorId = AP0101;
     }
 
     return OSA_SOK;

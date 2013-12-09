@@ -39,12 +39,6 @@ int DRV_init()
         goto error_exit;
     }
 
-    status = AdjustApertureLevel(100);
-    if (status != OSA_SOK)
-    {
-        OSA_ERROR("Adjust ApertureLevel init\n");
-    }
-
     status = DRV_vpssInit();
     if (status != OSA_SOK)
     {

@@ -130,7 +130,7 @@ int main(int argc, char **argv)
   gAVSERVER_UI_config.swosdEnable		= FALSE;
   gAVSERVER_UI_config.numEncodes 		= 0;
   gAVSERVER_UI_config.aewbVendor 		= AEWB_TI;
-  gAVSERVER_UI_config.audioEnable		= FALSE;//TRUE; //keep audio always on
+  gAVSERVER_UI_config.audioEnable		= FALSE;
   gAVSERVER_UI_config.demomode 			= FALSE;
   gAVSERVER_UI_config.audioSampleRate 	= AUDIO_GetSampleRate();
   gAVSERVER_UI_config.platform_id 		= PLATFORM_DM365;
@@ -206,10 +206,10 @@ int main(int argc, char **argv)
     if(strcmp(argv[i], "720P")==0)
       gAVSERVER_UI_config.mode = AVSERVER_UI_CAPTURE_MODE_720P;
     else
-	if(strcmp(argv[i], "1080P_ONLY")==0)//add by jsk
+	if(strcmp(argv[i], "1080P_ONLY")==0)
 		gAVSERVER_UI_config.mode = AVSERVER_UI_CAPTURE_MODE_1080P_ONLY;
 	else
-	if (strcmp(argv[i], "720P_ONLY")==0)//add by jsk
+	if (strcmp(argv[i], "720P_ONLY")==0)
 		gAVSERVER_UI_config.mode = AVSERVER_UI_CAPTURE_MODE_720P_ONLY;
 	else
     if(strcmp(argv[i], "720P_MAX")==0)
