@@ -404,8 +404,116 @@ int AVSERVER_saldreLevel(int level)
 	return OSA_SOK;
 }
 
+int SetColPatConfig(const int mirrValue)
+{
+    static CSL_IpipeColPatConfig ColPatConfig;
+
+    if (mirrValue == 3)
+    {
+        ColPatConfig.colPat[0][0] = CSL_IPIPE_SOURCE_COLOUR_GB;
+        ColPatConfig.colPat[0][1] = CSL_IPIPE_SOURCE_COLOUR_B;
+        ColPatConfig.colPat[1][0] = CSL_IPIPE_SOURCE_COLOUR_R;
+        ColPatConfig.colPat[1][1] = CSL_IPIPE_SOURCE_COLOUR_GR;
+    }
+    else if (mirrValue == 2)
+    {
+        ColPatConfig.colPat[0][0] = CSL_IPIPE_SOURCE_COLOUR_R;
+        ColPatConfig.colPat[0][1] = CSL_IPIPE_SOURCE_COLOUR_GR;
+        ColPatConfig.colPat[1][0] = CSL_IPIPE_SOURCE_COLOUR_GB;
+        ColPatConfig.colPat[1][1] = CSL_IPIPE_SOURCE_COLOUR_B;
+    }
+    else if (mirrValue == 1)
+    {
+        ColPatConfig.colPat[0][0] = CSL_IPIPE_SOURCE_COLOUR_B;
+        ColPatConfig.colPat[0][1] = CSL_IPIPE_SOURCE_COLOUR_GB;
+        ColPatConfig.colPat[1][0] = CSL_IPIPE_SOURCE_COLOUR_GR;
+        ColPatConfig.colPat[1][1] = CSL_IPIPE_SOURCE_COLOUR_R;
+    }
+    else
+    {
+        ColPatConfig.colPat[0][0] = CSL_IPIPE_SOURCE_COLOUR_GR;
+        ColPatConfig.colPat[0][1] = CSL_IPIPE_SOURCE_COLOUR_R;
+        ColPatConfig.colPat[1][0] = CSL_IPIPE_SOURCE_COLOUR_B;
+        ColPatConfig.colPat[1][1] = CSL_IPIPE_SOURCE_COLOUR_GB;
+    }
+
+    int status = CSL_ipipeSetColPatConfig(&gCSL_ipipeHndl, &ColPatConfig);
+
+    return status;
+}
+
+int SetMirrValue(const int mirrValue)
+{
+    int i;
+    int flipH, flipV;
+    int status = OSA_EFAIL;
+    static int mirrValuebak = -1;
+
+    if (mirrValuebak != mirrValue)
+    {
+        mirrValuebak = mirrValue;
+        if (mirrValue == 3)
+        {
+            flipH = TRUE;
+            flipV = TRUE;
+        }
+        else if (mirrValue == 2)
+        {
+            flipH = TRUE;
+            flipV = FALSE;
+        }
+        else if (mirrValue == 1)
+        {
+            flipH = FALSE;
+            flipV = TRUE;
+        }
+        else
+        {
+            flipH = FALSE;
+            flipV = FALSE;
+        }
+
+        for (i = 0; i < AVSERVER_MAX_STREAMS; i++)
+        {
+            gAVSERVER_config.captureConfig[i].flipH      = flipH;
+            gAVSERVER_config.captureConfig[i].flipV      = flipV;
+            gAVSERVER_config.captureConfig[i].mirrUpdate = TRUE;
+        }
+
+        eSensorType sensorId = GetSensorId();
+        switch (sensorId)
+        {
+        case AR0130:
+        case MT9M034:
+        case AR0330:
+        case MT9P031:
+            for (i = 0; i < AVSERVER_MAX_STREAMS; i++)
+            {
+                gAVSERVER_config.captureConfig[i].flipH      = FALSE;
+                gAVSERVER_config.captureConfig[i].flipV      = FALSE;
+                gAVSERVER_config.captureConfig[i].mirrUpdate = TRUE;
+            }
+            status = drvImgsFunc->imgsSetMirror(flipH, flipV);
+            if (status == 0 && sensorId == MT9P031)
+            {
+                status = SetColPatConfig(mirrValue);
+                printf("SetColPatConfig mirrValue = %d\n", mirrValue);
+            }
+            return status;
+        case OV9712:
+        case AR0331:
+        case IMX122:
+        default:
+            break;
+        }
+    }
+
+    return 0;
+}
+
 int AVSERVER_setMirrValue(int value)
 {
+#if 0
 	int i, flipH, flipV;
 
 	if(value == 3) {
@@ -426,7 +534,11 @@ int AVSERVER_setMirrValue(int value)
 		gAVSERVER_config.captureConfig[i].flipV 		= FALSE;//flipV;
 		gAVSERVER_config.captureConfig[i].mirrUpdate 	= TRUE;
 	}
+#else
 
+    SetMirrValue(value);
+
+#endif
 
 	return OSA_SOK;
 }
