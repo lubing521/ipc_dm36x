@@ -4,6 +4,7 @@
 
 #include <alg.h>
 #include <drv_h3a.h>
+#include "aewb_xdm.h"
 
 #define ALG_AEWB_ID_NONE    0
 #define ALG_AEWB_ID_APPRO   1
@@ -94,6 +95,28 @@ typedef struct {
 
 } ALG_AfRunPrm;
 
+typedef struct
+{
+    int Nf2Value;
+    int Nf2Value_adjust;
+} ipipeNf2Prm;
+
+typedef struct
+{
+    int ClampValue;
+    int ClampValue_adjust;
+} CcdcClampPrm;
+
+typedef struct
+{
+    Bool32 DebugEnable; 
+    ALG_AewbStatus AewbStatus;
+    ALG_AewbRunPrm AewbRunPrm;
+    AWB_PARAM awb_gain;
+    ipipeNf2Prm ipipeNf2;
+    CcdcClampPrm CcdcClamp; 
+} ALG_AEWB_DEBUG;
+
 /* ANR - IT */
 typedef struct {
 
@@ -106,6 +129,7 @@ typedef struct {
 
 }ALG_AewbData_ITTAwb;
 
+extern ALG_AEWB_DEBUG gALG_AewbDebug;
 extern void TI2A_init_tables(int width, int height);
 
 int ALG_aewbGetBLC(void);

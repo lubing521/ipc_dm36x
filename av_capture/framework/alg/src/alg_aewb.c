@@ -17,7 +17,6 @@
 #include "TI_aewb.h"
 #include "imageTune.h"
 #include "imageTuneCmdHandler.h"
-#include "imagetools.h"
 
 #include <drv_gpio.h>
 
@@ -25,6 +24,7 @@
 //#define FD_DEBUG_MSG
 #define AEWB_DEBUG 1
 
+ALG_AEWB_DEBUG gALG_AewbDebug;
 ALG_AewbObj gALG_aewbObj;
 AEW_EXT_PARAM Aew_ext_parameter;
 
@@ -175,8 +175,6 @@ void* ALG_aewbCreate(ALG_AewbCreate *create)
     int retval;
     int sensorMode;
 
-    ImageToolsInit();
-    
     memset(&gALG_aewbObj, 0, sizeof(gALG_aewbObj));
     memset(&Aew_ext_parameter, 0, sizeof(Aew_ext_parameter));
 

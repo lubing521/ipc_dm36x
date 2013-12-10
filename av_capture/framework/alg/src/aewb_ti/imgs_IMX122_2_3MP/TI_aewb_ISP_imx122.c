@@ -3,7 +3,6 @@
 #include "drv_ipipe.h"
 #include "TI_aewb_ISP.h"
 #include <imageTunePriv.h>
-#include "imagetools.h"
 
 #define ISP_DEBUG 0
 

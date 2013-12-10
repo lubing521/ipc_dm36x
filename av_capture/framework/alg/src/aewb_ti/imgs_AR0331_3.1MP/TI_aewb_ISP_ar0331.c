@@ -4,7 +4,6 @@
 #include "TI_aewb_ISP.h"
 #include "alg_aewb.h"
 #include <imageTunePriv.h>
-#include "imagetools.h"
 
 static struct rgb2rgb_index rgb_matrixes_0[]= 
 {
