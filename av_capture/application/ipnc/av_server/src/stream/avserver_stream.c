@@ -14,8 +14,8 @@ int VIDEO_streamSysInit()
 
   memset(&streamSet, 0, sizeof(streamSet));
 
-  streamSet.ImageWidth  = gAVSERVER_config.encodeConfig[0].cropWidth;
-  streamSet.ImageHeight = gAVSERVER_config.encodeConfig[0].cropHeight;
+  streamSet.ImageWidth   = gAVSERVER_config.encodeConfig[0].cropWidth;
+  streamSet.ImageHeight  = gAVSERVER_config.encodeConfig[0].cropHeight;
   streamSet.Mpeg4Quality = gAVSERVER_config.encodeConfig[0].codecBitrate;
   streamSet.JpgQuality   = gAVSERVER_config.encodeConfig[1].qValue;
 
@@ -56,7 +56,6 @@ int VIDEO_streamSysInit()
         streamSet.ImageWidth_Ext[STREAM_EXT_JPG] = gAVSERVER_config.encodeConfig[2].cropWidth;
         streamSet.ImageHeight_Ext[STREAM_EXT_JPG] = gAVSERVER_config.encodeConfig[2].cropHeight;
         break;
-
     }
   }
 
@@ -71,9 +70,7 @@ int VIDEO_streamSysInit()
 #endif
 
   streamSet.Mem_layout	= gAVSERVER_config.streamConfig.mem_layou_set;
-
   status = stream_init( stream_get_handle(), &streamSet);
-
   if(status!=OSA_SOK)
     OSA_ERROR("stream_init()\n");
 
@@ -83,9 +80,7 @@ int VIDEO_streamSysInit()
 int VIDEO_streamSysExit()
 {
   stream_end( stream_get_handle() );
-
   pthread_mutex_destroy(&gbl.mutex);
-
   return OSA_SOK;
 }
 
@@ -226,7 +221,6 @@ int AUDIO_streamShmCopy(AUDIO_BufInfo *pBufInfo)
 
 void SetPtzCmd(int Getcmd)
 {
-
 }
 
 void SetDrawDateTimeStatus( int IsDraw )
@@ -237,7 +231,6 @@ void SetDrawDateTimeStatus( int IsDraw )
 		AVSERVER_swosdEnableDateTimeStamp(IsDrawDateTime);
 	else
 		AVSERVER_swosdEnableDateTimeStamp(FALSE);
-
 }
 
 void SetOsdText(char *strText, int nLength)
@@ -322,7 +315,6 @@ void VIDEO_motion_setparm(ApproMotionPrm* pMotionPrm)
 int VIDEO_streamGetJPGSerialNum(void)
 {
 	return stream_get_handle()->MemInfo.video_info[VIDOE_INFO_MJPG].cur_serial;
-
 }
 
 int VIDEO_streamGetMediaInfo(void)
@@ -432,7 +424,6 @@ void VIDEO_streamSetDateTimePrm(DateTimePrm* datetimeParam)
 void VIDEO_streamOsdPrm(OSDPrm* osdPrm, int id)
 {
 	//int enable = osdPrm->dateEnable | osdPrm->timeEnable | osdPrm->logoEnable | osdPrm->textEnable | osdPrm->detailedInfo;
-
 	gAVSERVER_config.captureConfig[id].swosdConfig.swosdDateEnable 		= osdPrm->dateEnable;
 	gAVSERVER_config.captureConfig[id].swosdConfig.swosdTimeEnable 		= osdPrm->timeEnable;
 
@@ -548,14 +539,12 @@ void AUDIO_alarmFlag(int enable)
 	AVSERVER_audioAlarmEnable(enable);
 }
 
-
-
 /////zeng 2012-06-28
-
 void VIDEO_SetRateControlType(int streamId , int nRcType)
 {
 	 AVSERVER_setEncRcType( streamId, nRcType);
 }
+
 void VIDEO_SetCapturePrm(int id ,MSGVCAPCFG* pVcapCfg)
 {
 	if(pVcapCfg==NULL) return ;
@@ -569,6 +558,7 @@ void VIDEO_SetCapturePrm(int id ,MSGVCAPCFG* pVcapCfg)
 	gAVSERVER_config.captureConfig[id].mirrUpdate 	= TRUE;
 		
 }
+
 int VIDEO_GetCapturePrm(int id ,MSGVCAPCFG* pVcapCfg)
 {
 	if(pVcapCfg==NULL) return FALSE;
@@ -588,10 +578,9 @@ int VIDEO_GetCapturePrm(int id ,MSGVCAPCFG* pVcapCfg)
 
 void VIDEO_SetEncodePrm(int id , MSGVENCCFG* pVencCfg)
 {
-
 	if(pVencCfg->captureStreamId != gAVSERVER_config.encodeConfig[id].captureStreamId)
 	{
-		return ;
+		return;
 	}
 
 	gAVSERVER_config.encodeConfig[id].frameRateBase = pVencCfg->frameRateBase;
@@ -607,6 +596,7 @@ void VIDEO_SetEncodePrm(int id , MSGVENCCFG* pVencCfg)
 	gAVSERVER_config.encodeConfig[id].qpMax 		= pVencCfg->qpMax;
 	
 }
+
 int VIDEO_GetEncodePrm(int id , MSGVENCCFG* pVencCfg)
 {
 	if(id != gAVSERVER_config.encodeConfig[id].captureStreamId)
@@ -629,6 +619,7 @@ int VIDEO_GetEncodePrm(int id , MSGVENCCFG* pVencCfg)
 	pVencCfg->qpMax			= gAVSERVER_config.encodeConfig[id].qpMax;	
 	return TRUE;
 }
+
 void OSD_SetEnable(int nType , int bEnable)
 {
 	int nEnable = FALSE;
@@ -638,16 +629,17 @@ void OSD_SetEnable(int nType , int bEnable)
 	else nEnable = FALSE;
 	AVSERVER_SetOsdEnable(nType,nEnable);
 }
+
 void OSD_SetTextStr(char* pStr , int nLen)
 {
 	printf("[OSD_SetTextStr]pStr=%s,len=%d\n" ,pStr , nLen);
 	if(pStr==NULL) return ;
 	AVSERVER_SetOsdTextStr(pStr ,nLen);	
 }
+
 void MASK_SetVideoMask(int nNumber, int bEnable ,int nx0, int ny0, int nx1, int ny1)
 {
 	printf("nNumber=%d,bEnable=%d ,nx0=%d ,ny0=%d ,nx1=%d ,ny1=%d\n" ,nNumber ,bEnable ,nx0,ny0,nx1,ny1);		
 	AVSERVER_SetVideoMask( nNumber ,  bEnable , nx0, ny0, nx1, ny1);
 }
-
 

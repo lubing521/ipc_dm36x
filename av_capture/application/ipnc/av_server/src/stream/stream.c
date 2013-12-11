@@ -1645,7 +1645,6 @@ void stream_feature_setup( int nFeature, void *pParm )
 				Aew_ext_parameter.day_night = AE_NIGHT;
 
 			}
-
 			break;
 		}
 

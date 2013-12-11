@@ -720,17 +720,17 @@ int AVSERVER_init()
   status |= OSA_mutexCreate(&gAVSERVER_ctrl.lockMutex);
 
   status |= VIDEO_captureCreate();
-  status |= VIDEO_resizeCreate();
+  //status |= VIDEO_resizeCreate();
   status |= VIDEO_streamCreate();
   status |= VIDEO_displayCreate();
-  status |= VIDEO_ldcCreate();
-  status |= VIDEO_vnfCreate();
-  status |= VIDEO_vsCreate();
+  //status |= VIDEO_ldcCreate();
+  //status |= VIDEO_vnfCreate();
+  //status |= VIDEO_vsCreate();
   status |= VIDEO_aewbCreate();
   //status |= VIDEO_fdCreate();
   status |= VIDEO_encodeCreate();
   status |= VIDEO_swosdCreate();
-  status |= VIDEO_encryptCreate();
+  //status |= VIDEO_encryptCreate();
   status |= VIDEO_motionCreate();
   //status |= AUDIO_audioCreate();
   //status |= AUDIOPLAY_audioCreate();
