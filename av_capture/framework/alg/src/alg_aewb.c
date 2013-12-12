@@ -146,10 +146,10 @@ CHECK_END:
 
 int ALG_aewbGetBLC(void)
 {
-	int blc = Aew_ext_parameter.blc;
+	//int blc = Aew_ext_parameter.blc;
 	
-    blc = (blc == 0) ? 0 : 1;	
-    return blc;
+    //blc = (blc == 0) ? 0 : 1;	
+    return 0;
 }
 
 int ALG_aewbCheckAutoIris(void)
@@ -448,8 +448,7 @@ int TI_2A_config(int flicker_detection, int saldre)
     i = 0; aewbFrames = 0;
 
 #ifdef FD_DEBUG_MSG
-    OSA_printf("\n\n\n\n\nTI_2A_config: flicker detection = %d\n\n", flicker_detection);
-    OSA_printf("Aew_ext_parameter.env_50_60Hz = %d\n", Aew_ext_parameter.env_50_60Hz);
+    OSA_printf("\nTI_2A_config: flicker detection = %d\n\n", flicker_detection);
 #endif
 
     /* set stepSize based on input from Flicker detectiom and PAL/NTSC environment */
@@ -639,14 +638,14 @@ void AEW_SETUP_CONTROL( CONTROL3AS *CONTROL3A )
     }
 
     /* 50/60Hz switch & brightness & contrast support for TI 2A */
-    if(gALG_aewbObj.aewbVendor==ALG_AEWB_ID_TI) {
+    if(gALG_aewbObj.aewbVendor==ALG_AEWB_ID_TI) 
+    {
         ALG_aewbSetBrightness(CONTROL3A->IMAGE_BRIGHTNESS);
         ALG_aewbSetContrast(CONTROL3A->IMAGE_CONTRAST >> 3);
         
-        if(env_50_60Hz != CONTROL3A->VIDEO_MODE) {
+        if(env_50_60Hz != CONTROL3A->VIDEO_MODE) 
+        {
             env_50_60Hz = CONTROL3A->VIDEO_MODE;
-
-			///zeng add 2013-09-22
 			Aew_ext_parameter.ENV_50_60HZ_SETUP(env_50_60Hz);
 			
             if (env_50_60Hz == VIDEO_NTSC)
@@ -974,7 +973,6 @@ int ALG_aewbRun(void *hndl, ALG_AewbRunPrm *prm, ALG_AewbStatus *status)
         {
             TI2AFunc( (void *)prm->h3aDataVirtAddr );
         }
-
     }
 
     return 0;
@@ -1021,10 +1019,9 @@ int ALG_aewbDelete(void *hndl)
     return 0;
 }
 
-int ALG_aewbSetTTawb( ALG_AewbData_ITTAwb ipipe_awb_gain){
-
+int ALG_aewbSetTTawb( ALG_AewbData_ITTAwb ipipe_awb_gain)
+{
     //TBD
-
     return 0;
 }
 
@@ -1077,14 +1074,12 @@ int ALG_aewbGetTTawb( ALG_AewbData_ITTAwb *itt_AwbData)
  *
  * Source - Buyue
  *********************************************************************************************************************************/
-
 void ALG_aewbConvert_RGB_YUV(IAEWB_Rgb *rgbData, int pix_in_pax, int awb_h3a_paxels, IAEWB_Rgb *norm_rgbData, IAWB_Yuv *yuvData)
 {
     int i;
     int current_R, current_G, current_B;
     int current_Y, current_Cb, current_Cr;
     int temp;
-
 
     for ( i = 0; i < awb_h3a_paxels; i++ )
     {

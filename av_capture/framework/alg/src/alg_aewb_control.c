@@ -492,27 +492,6 @@ short ALG_aewbSetEdgeEnhancement(EDGE_PARAM  *pParm)
     return 0;
 }
 
-int g_bEnableTurnColor = 0;
-short ALG_aewbSetBrightness(int Yoffset)
-{
-    static int YoffsetBak = -1;
-    
-    if (YoffsetBak == Yoffset)
-    {
-        return 0;
-    }
-    
-    YoffsetBak = Yoffset;
-
-    int daynight = g_bEnableTurnColor;
-#ifdef ALG_AEWB_DEBUG   
-OSA_printf("AEWB: Brightness = %5d\n", Yoffset-128);
-#endif 
-    rgb2yuv[daynight]->offset[0] = Yoffset-128;
-    DRV_ipipeSetRgb2Yuv(rgb2yuv[daynight]);
-    return 0;
-}
-
 short ALG_aewbSetContrast(int Contrast)
 {
     static int ContrastBak = -1;
@@ -531,6 +510,27 @@ short ALG_aewbSetContrast(int Contrast)
     return 0;
 }
 
+int g_bEnableTurnColor = 0;
+short ALG_aewbSetBrightness(int Yoffset)
+{
+    static int YoffsetBak = -1;
+    
+    if (YoffsetBak == Yoffset)
+    {
+        return 0;
+    }
+    
+    YoffsetBak = Yoffset;
+
+    int daynight = g_bEnableTurnColor;
+#ifdef ALG_AEWB_DEBUG   
+    OSA_printf("AEWB: Brightness = %5d\n", Yoffset-128);
+#endif 
+    rgb2yuv[daynight]->offset[0] = Yoffset-128;
+    DRV_ipipeSetRgb2Yuv(rgb2yuv[daynight]);
+    return 0;
+}
+
 void ALG_aewbSetDayNight(void)
 {
     static int daynight_bak = -1;
@@ -545,7 +545,7 @@ void ALG_aewbSetDayNight(void)
     daynight_bak = daynight;
     
 #if ALG_AEWB_DEBUG
-    OSA_printf("AEWB: daynight = %s\n", daynight == COLOR_IRCUT? "COLOR_IRCUT":"MONO_IRCUT");
+    OSA_printf("AEWB: daynight = %s\n", daynight == 0 ? "COLOR_IRCUT" : "MONO_IRCUT");
 #endif
     rgb2yuv[daynight]->offset[0] = Aew_ext_parameter.brightness-128;
     DRV_ipipeSetRgb2Yuv(rgb2yuv[daynight]);
