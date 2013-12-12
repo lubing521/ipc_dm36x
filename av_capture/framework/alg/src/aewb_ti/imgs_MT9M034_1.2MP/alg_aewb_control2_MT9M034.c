@@ -38,7 +38,7 @@ void ALG_aewbSetExposureGain_MT9M034(int EX, int AG, int DG, int init)
     #endif
 }
 
-static void TFC_Awb_MT9M034(AWB_PARAM * awb_gain, int awb_mode)
+static void TI_Awb_MT9M034(AWB_PARAM * awb_gain, int awb_mode)
 {
     if (awb_mode == AWB_AUTO)
     {   
@@ -76,7 +76,7 @@ ALG_TI_Aewb_Priv TI_AWEB_MT9M034 =
     .ISP_control     = TI_2A_ISP_control_MT9M034,
     .fd_get_config   = TI_fd_get_config_MT9M034,
     .fd_trigger      = TI_fd_trigger_MT9M034,
-    .awb_adjust      = TFC_Awb_MT9M034,
+    .awb_adjust      = TI_Awb_MT9M034,
     .calc_data       = &awb_calc_data_MT9M034
 };
 

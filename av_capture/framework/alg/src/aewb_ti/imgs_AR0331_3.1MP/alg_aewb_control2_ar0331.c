@@ -19,7 +19,7 @@ void ALG_aewbSetExposureGain_ar0331(int EX, int AG, int DG, int init)
     }
 }  
 
-static void TFC_Awb_ar0331(AWB_PARAM * awb_gain, int awb_mode)
+static void TI_Awb_ar0331(AWB_PARAM * awb_gain, int awb_mode)
 {
     if (awb_mode == AWB_AUTO)
     {    
@@ -58,7 +58,7 @@ ALG_TI_Aewb_Priv TI_AWEB_ar0331 =
     .ISP_control     = TI_2A_ISP_control_ar0331,
     .fd_get_config   = TI_fd_get_config_ar0331,
     .fd_trigger      = TI_fd_trigger_ar0331,
-    .awb_adjust      = TFC_Awb_ar0331,
+    .awb_adjust      = TI_Awb_ar0331,
     .calc_data       = &awb_calc_data_ar0331
 };
 
