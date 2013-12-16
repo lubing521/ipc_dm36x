@@ -151,15 +151,15 @@ int DRV_imgsCalcSW_OV9712(int exposureTimeInUsecs, int *SW)
     return OSA_SOK;
 }
 
-int DRV_imgsCalcAgain_OV9712(int aGain)
+int DRV_imgsCalcAgain_OV9712(int again)
 {
     Uint16 gainRegVal=0;
-
+#if 0
     if (aGain<1000)
         aGain = 1000;
 
-    if (aGain>12000)
-        aGain = 12000;
+    if (aGain>7999)
+        aGain = 7999;
 
     if (aGain >= 8000)
     {
@@ -177,6 +177,24 @@ int DRV_imgsCalcAgain_OV9712(int aGain)
         aGain >>= 1;
     }
     gainRegVal += ((aGain-1000)*16 + 500)/1000;
+#else
+	float gain_times;
+    double gain_db;
+    unsigned int gain_reg;
+    int i =0;
+
+    if (again <= 1000) again = 1000;
+    if (again >= 60000) again = 60000;
+
+    gain_times = again / 1000.0;
+    gain_db = 20.0 * log10(gain_times);
+    gain_reg = (unsigned char) (gain_db / 0.3 + 0.5);    //for 0.3db/step
+
+    //gain_reg = gain_reg > 48 ? 48 : gain_reg;
+    //gain_reg = 80;
+    gainRegVal = gain_reg;
+    printf("aGain = %d, gainRegVal = %d\n", again, gainRegVal);
+#endif
 
     //printf("aGain = %d, gainRegVal = %d\n", aGain, gainRegVal);
     return gainRegVal;

@@ -156,7 +156,7 @@ int VIDEO_streamShmCopy(int streamId, OSA_BufInfo *pBufInfo)
        );
    }
 
-#if 1
+#if 0
     if (streamId == 0)
     {
         static int lasttime = 0;

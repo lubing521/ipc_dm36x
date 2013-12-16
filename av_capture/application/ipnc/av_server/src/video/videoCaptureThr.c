@@ -837,7 +837,7 @@ int VIDEO_captureTskMain(struct OSA_TskHndl *pTsk, OSA_MsgHndl *pMsg, Uint32 cur
         if(status!=OSA_SOK)
             break;
 
-        if(gVIDEO_ctrl.rawCaptureCount % (gAVSERVER_config.sensorFps*10) == 0)
+        if(gVIDEO_ctrl.rawCaptureCount % (gAVSERVER_config.sensorFps * 30) == 0)
         {
             AVSERVER_profileInfoShow();
  	    }

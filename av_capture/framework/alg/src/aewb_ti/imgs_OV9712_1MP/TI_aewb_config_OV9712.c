@@ -85,10 +85,11 @@ static void TIAE_config_flicker_1stop(IAE_DynamicParams * aeDynamicParams, int m
         aeDynamicParams->apertureLevelRange[i].min = 100;
         aeDynamicParams->apertureLevelRange[i].max = 100;
         aeDynamicParams->sensorGainRange[i].min = 1000;
-        aeDynamicParams->sensorGainRange[i].max = 12000;
+        aeDynamicParams->sensorGainRange[i].max = 40000;
         aeDynamicParams->ipipeGainRange[i].min = 1024;
         aeDynamicParams->ipipeGainRange[i].max = 2048;
         i++;
+
     }
     else //(step_size == 8333)
     {
@@ -107,7 +108,7 @@ static void TIAE_config_flicker_1stop(IAE_DynamicParams * aeDynamicParams, int m
         aeDynamicParams->apertureLevelRange[i].min = 100;
         aeDynamicParams->apertureLevelRange[i].max = 100;
         aeDynamicParams->sensorGainRange[i].min = 1000;
-        aeDynamicParams->sensorGainRange[i].max = 12000;
+        aeDynamicParams->sensorGainRange[i].max = 40000;
         aeDynamicParams->ipipeGainRange[i].min = 1024;
         aeDynamicParams->ipipeGainRange[i].max = 2048;
         i++;

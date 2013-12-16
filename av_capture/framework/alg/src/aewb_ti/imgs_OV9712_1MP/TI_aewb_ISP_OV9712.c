@@ -132,7 +132,7 @@ static void ISP_ipipeSetNf2(int aGain, int dGain)
     }
     else
     {
-        value = 20 + (ag - 2000) / 75 + (dg - 1000) / 10;
+        value = 20 + (ag - 2000) / 100 + (dg - 1000) / 20;
     }
 
     value += gALG_AewbDebug.ipipeNf2.Nf2Value_adjust + ALG_aewbGetNoiseLevel();
@@ -162,11 +162,11 @@ static void ISP_ipipeSetNf2(int aGain, int dGain)
 
 static int getSetIndex(int eTime, int aGain, int dGain, int cTemp)
 {
-    if (aGain >= 8000 && dGain >= 1536)
+    if (aGain >= 20000 && dGain >= 2048)
     {
         return 2; 
     }
-    else if (aGain >= 5000)
+    else if (aGain >= 20000 && dGain > 1024)
     {  
         return 1;
     }

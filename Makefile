@@ -11,6 +11,11 @@ exe:
 	make -fMAKEFILE.MK -C$(BASE_DIR)/../application/ipnc/av_server exe								
 #endif
 	make install
+	@echo "------------------------------------------------------------------------------------------------------------------"
+	@echo "Please run < make lsp > if you have changed anything in csl/drv kernel modules and use the new built image!!!!"
+	@echo
+	@echo "Build Completed for $(HARDWARE) $(SYSTEM)"
+	@echo "------------------------------------------------------------------------------------------------------------------"
 	
 libs:
 	make -fMAKEFILE.MK -C$(BASE_DIR)/../framework $(MAKE_TARGET)
