@@ -5,7 +5,7 @@
 #include <alg.h>
 
 #define ALG_JPG_ENC_Q_VALUE_MIN   (5)  // lowest quality
-#define ALG_JPG_ENC_Q_VALUE_MAX   (95) // highest quality
+#define ALG_JPG_ENC_Q_VALUE_MAX   (75) // highest quality
 
 typedef struct {
 

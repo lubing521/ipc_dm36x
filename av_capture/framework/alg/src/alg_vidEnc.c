@@ -246,7 +246,7 @@ XDAS_Int32 ALG_vidEncSetDynamicParams(ALG_VidEncObj *pObj)
 
 	OSA_mutexLock(&vnf_imcop_lock);
 	OSA_mutexLock(&vicp_imcop_lock);
-    ALG_jpgEncSetQvalue(pObj->hJpgEncode, pObj->createPrm.bitrate);
+    ALG_jpgEncSetQvalue(pObj->hJpgEncode, pObj->createPrm.qValue);
     OSA_mutexUnlock(&vnf_imcop_lock);
 	OSA_mutexUnlock(&vicp_imcop_lock);
 

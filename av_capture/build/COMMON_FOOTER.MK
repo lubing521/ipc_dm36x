@@ -49,6 +49,7 @@ so:
 exe:
 	@echo $(MODULE): Linking to .out
 	$(LD) $(LD_OPTS) -o$(EXE) $(LIBS)
+	$(STRIP) $(EXE)
 	@echo Final executable $(EXE) !!!	
 	
 install:

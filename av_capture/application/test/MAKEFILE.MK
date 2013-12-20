@@ -2,13 +2,15 @@
 
 	
 libs:
-	make -fMAKEFILE.MK -C./moduletest MODULE=moduletest $(MAKE_TARGET)
-	make -fMAKEFILE.MK -C./regrw MODULE=regrw $(MAKE_TARGET)
-	make -fMAKEFILE.MK -C./i2crw MODULE=i2crw $(MAKE_TARGET)
+	make -fMAKEFILE.MK -C./moduletest  MODULE=moduletest $(MAKE_TARGET)
+	make -fMAKEFILE.MK -C./regrw       MODULE=regrw $(MAKE_TARGET)
+	make -fMAKEFILE.MK -C./i2crw       MODULE=i2crw $(MAKE_TARGET)
+	make -fMAKEFILE.MK -C./sensorcheck MODULE=sensorcheck $(MAKE_TARGET)
 exe:
-	make -fMAKEFILE.MK -C./moduletest MODULE=moduletest exe
-	make -fMAKEFILE.MK -C./regrw MODULE=regrw exe
-	make -fMAKEFILE.MK -C./i2crw MODULE=i2crw exe			
+	make -fMAKEFILE.MK -C./moduletest  MODULE=moduletest exe
+	make -fMAKEFILE.MK -C./regrw       MODULE=regrw exe
+	make -fMAKEFILE.MK -C./i2crw       MODULE=i2crw exe
+	make -fMAKEFILE.MK -C./sensorcheck MODULE=sensorcheck exe		
 	
 all:
 	make -fMAKEFILE.MK depend
