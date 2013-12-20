@@ -65,7 +65,7 @@ int main(int argc, char **argv)
 }
 
 extern int errno;
-void test(void)
+int CheckSensor_Test(void)
 {
     pid_t status;
 		   
@@ -79,7 +79,7 @@ void test(void)
 		   
 	if (WIFEXITED(status))
 	{
-		 printf("exit normal![%d]\n", errno) ;
+		 printf("exit normal! [%d]\n", errno);
 		 printf("exit staus = [%X]\n", WEXITSTATUS(status));
 		 int sensorId = WEXITSTATUS(status);
 		 return sensorId;
