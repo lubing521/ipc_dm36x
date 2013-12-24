@@ -301,7 +301,7 @@ XDAS_Int32 ALG_vidEncSetDynamicParams(ALG_VidEncObj *pObj)
 	  pObj->dynamicParams_h264.aspectRatioX 				  	= 1;
 	  pObj->dynamicParams_h264.aspectRatioY 				  	= 1;
 	  pObj->dynamicParams_h264.lfDisableIdc					  	= 0;
-   	  pObj->dynamicParams_h264.enableBufSEI					  	= 1;    /*!< Enable Buffering period SEI */
+   	  pObj->dynamicParams_h264.enableBufSEI					  	= 0;    /*!< Enable Buffering period SEI */
   	  pObj->dynamicParams_h264.enablePicTimSEI				  	= 1;  	/*!< Enable Picture Timing SEI */
  	  pObj->dynamicParams_h264.perceptualRC                   	= 1;
       pObj->dynamicParams_h264.idrFrameInterval               	= 100;//pObj->createPrm.keyFrameInterval;
@@ -599,7 +599,6 @@ int ALG_vidEncSetFramerate(void *hndl, int framerate)
   return ALG_vidEncSetDynamicParams(pObj);
 }
 
-
 int ALG_vidEncSetMVdataOut(void *hndl, int mbMvOutEnable)
 {
   ALG_VidEncObj *pObj = (ALG_VidEncObj*)hndl;
@@ -611,7 +610,6 @@ int ALG_vidEncSetMVdataOut(void *hndl, int mbMvOutEnable)
 
   return ALG_vidEncSetDynamicParams(pObj);
 }
-
 
 int ALG_vidEncGetMVdataSize(void *hndl)
 {
