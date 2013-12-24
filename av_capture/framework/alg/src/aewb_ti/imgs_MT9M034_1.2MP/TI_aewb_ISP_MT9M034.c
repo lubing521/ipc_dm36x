@@ -199,8 +199,8 @@ static void ISP_ipipeSetNf2(int aGain, int dGain)
     .lutSpreadTable     = { 0,  0,  0,  0,  0,  0,  0,  0},
     };
     
-    int ag = (aGain > 20000) ? 20000 : aGain;
-    int dg = (dGain >  1280) ?  1280 : dGain;
+    int ag = (aGain > 40000) ? 40000 : aGain;
+    int dg = (dGain >  1536) ?  1536 : dGain;
     int value = 0;
     
     if (ag < 4000)
@@ -209,7 +209,7 @@ static void ISP_ipipeSetNf2(int aGain, int dGain)
     }
     else
     {
-        value = 20 + (ag - 4000) / 250 + (dg - 1000) / 10;
+        value = 20 + (ag - 4000) / 400 + (dg - 1000) / 10;
     }
 
     value += gALG_AewbDebug.ipipeNf2.Nf2Value_adjust + ALG_aewbGetNoiseLevel();
