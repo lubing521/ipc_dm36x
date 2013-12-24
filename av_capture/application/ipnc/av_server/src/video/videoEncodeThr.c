@@ -226,34 +226,41 @@ int VIDEO_encodeTskRun(int streamId)
 			gVIDEO_ctrl.encodeStream[encodeId].newRcUpdate = 0;
 		}
 
-		
         if(gVIDEO_ctrl.encodeStream[encodeId].newMotionUpdate) {
         	ALG_vidEncSetMVdataOut(gVIDEO_ctrl.encodeStream[encodeId].algEncHndl, gVIDEO_ctrl.encodeStream[encodeId].newMotionStatus);
             gVIDEO_ctrl.encodeStream[encodeId].newMotionUpdate = 0;
           	//OSA_printf("MOTION UPDATE: %d \n", encodeId);
         }
 
-        if(gVIDEO_ctrl.encodeStream[encodeId].newFps) {
-            ALG_vidEncSetFramerate(gVIDEO_ctrl.encodeStream[encodeId].algEncHndl, gAVSERVER_config.encodeConfig[encodeId].frameRateBase);
+        if(gVIDEO_ctrl.encodeStream[encodeId].newFps) 
+        {
+            ALG_vidEncSetFramerate(gVIDEO_ctrl.encodeStream[encodeId].algEncHndl, 
+                gAVSERVER_config.encodeConfig[encodeId].frameRateBase);
             gVIDEO_ctrl.encodeStream[encodeId].newFps = FALSE;
           	//OSA_printf("FRAMERATE UPDATE: %d \n", encodeId);
         }
 
-		if(gAVSERVER_config.encodeConfig[encodeId].newCodecPrm) {
-			ALG_vidEncSetQPSize(gVIDEO_ctrl.encodeStream[encodeId].algEncHndl, gAVSERVER_config.encodeConfig[encodeId].qpInit,
-				gAVSERVER_config.encodeConfig[encodeId].qpMin, gAVSERVER_config.encodeConfig[encodeId].qpMax,
-				gAVSERVER_config.encodeConfig[encodeId].packetSize );
-			ALG_vidEncSetKeyFrameInterval(gVIDEO_ctrl.encodeStream[encodeId].algEncHndl, gAVSERVER_config.encodeConfig[encodeId].ipRatio,
+		if(gAVSERVER_config.encodeConfig[encodeId].newCodecPrm) 
+		{
+			ALG_vidEncSetQPSize(gVIDEO_ctrl.encodeStream[encodeId].algEncHndl, 
+			    gAVSERVER_config.encodeConfig[encodeId].qpInit,
+				gAVSERVER_config.encodeConfig[encodeId].qpMin, 
+				gAVSERVER_config.encodeConfig[encodeId].qpMax,
+				gAVSERVER_config.encodeConfig[encodeId].packetSize);
+			ALG_vidEncSetKeyFrameInterval(gVIDEO_ctrl.encodeStream[encodeId].algEncHndl, 
+			    gAVSERVER_config.encodeConfig[encodeId].ipRatio,
 				gAVSERVER_config.encodeConfig[encodeId].fIframe);
 
 			gAVSERVER_config.encodeConfig[encodeId].newCodecPrm	= 0;
-          	//OSA_printf("NEW CODEC PARAM UPDATE: %d \n", encodeId);
+          	OSA_printf("NEW CODEC PARAM UPDATE: %d \n", encodeId);
 		}
 
-		if(gAVSERVER_config.encodeConfig[encodeId].resetCodec) {
-			ALG_vidEncSetKeyFrameInterval(gVIDEO_ctrl.encodeStream[encodeId].algEncHndl, gAVSERVER_config.encodeConfig[encodeId].ipRatio,
+		if(gAVSERVER_config.encodeConfig[encodeId].resetCodec) 
+		{
+			ALG_vidEncSetKeyFrameInterval(gVIDEO_ctrl.encodeStream[encodeId].algEncHndl, 
+			    gAVSERVER_config.encodeConfig[encodeId].ipRatio,
 				gAVSERVER_config.encodeConfig[encodeId].fIframe);
-			gAVSERVER_config.encodeConfig[encodeId].resetCodec	= 0;
+			gAVSERVER_config.encodeConfig[encodeId].resetCodec = 0;
           	//OSA_printf("RESET CODEC PARAM UPDATE: %d \n", encodeId);
 		}
 

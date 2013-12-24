@@ -469,14 +469,36 @@ void VIDEO_streamROIPrm(CodecROIPrm* codecROIPrm, int id)
 
 void VIDEO_codecAdvPrm(CodecAdvPrm* codecAdvPrm, int id)
 {
-	gAVSERVER_config.encodeConfig[id].newCodecPrm	= (Uint16)TRUE;
-	gAVSERVER_config.encodeConfig[id].ipRatio 		= (Uint16)codecAdvPrm->ipRatio;
-	gAVSERVER_config.encodeConfig[id].fIframe 		= (Uint16)codecAdvPrm->fIframe;
-	gAVSERVER_config.encodeConfig[id].qpInit 		= (Uint16)codecAdvPrm->qpInit;
-	gAVSERVER_config.encodeConfig[id].qpMin 		= (Uint16)codecAdvPrm->qpMin;
-	gAVSERVER_config.encodeConfig[id].qpMax 		= (Uint16)codecAdvPrm->qpMax;
-	gAVSERVER_config.encodeConfig[id].encodePreset	= (Uint16)codecAdvPrm->meConfig;
-	gAVSERVER_config.encodeConfig[id].packetSize 	= (Uint16)codecAdvPrm->packetSize;
+    static Uint16 qp[6][3] =
+	{
+		{46, 36, 51}, // Quality 0	mobile
+		{44, 34, 51}, // Quality 1
+		{42, 32, 51}, // Quality 2
+		{40, 32, 51}, // Quality 3	default
+		{34, 28, 50}, // Quality 4
+		{30,  8, 50}, // Quality 5	best
+	};
+	
+	int qualityLevel = 4;
+	
+	//qualityLevel = (qualityLevel > 5) ? 5 : qualityLevel;
+	//qualityLevel = (qualityLevel < 0) ? 0 : qualityLevel;
+	
+	gAVSERVER_config.encodeConfig[id].qpInit = qp[qualityLevel][0];
+	gAVSERVER_config.encodeConfig[id].qpMin  = qp[qualityLevel][1];
+	gAVSERVER_config.encodeConfig[id].qpMax  = qp[qualityLevel][2];
+	gAVSERVER_config.encodeConfig[id].packetSize  = 100;
+	gAVSERVER_config.encodeConfig[id].qValue      = qualityLevel;
+    gAVSERVER_config.encodeConfig[id].newCodecPrm = 1;
+    
+	//gAVSERVER_config.encodeConfig[id].newCodecPrm = (Uint16)TRUE;
+	//gAVSERVER_config.encodeConfig[id].ipRatio 		= (Uint16)codecAdvPrm->ipRatio;
+	//gAVSERVER_config.encodeConfig[id].fIframe 		= (Uint16)codecAdvPrm->fIframe;
+	//gAVSERVER_config.encodeConfig[id].qpInit 		= (Uint16)codecAdvPrm->qpInit;
+	//gAVSERVER_config.encodeConfig[id].qpMin 		= (Uint16)codecAdvPrm->qpMin;
+	//gAVSERVER_config.encodeConfig[id].qpMax 		= (Uint16)codecAdvPrm->qpMax;
+	//gAVSERVER_config.encodeConfig[id].encodePreset	= (Uint16)codecAdvPrm->meConfig;
+	//gAVSERVER_config.encodeConfig[id].packetSize 	= 100;//(Uint16)codecAdvPrm->packetSize;
 }
 
 void VIDEO_codecReset(int enable)

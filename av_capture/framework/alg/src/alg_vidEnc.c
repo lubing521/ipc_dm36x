@@ -242,6 +242,12 @@ XDAS_Int32 ALG_vidEncSetDynamicParams(ALG_VidEncObj *pObj)
   if(pObj==NULL)
     return OSA_EFAIL;
 
+  //test only
+  pObj->createPrm.qpinit 		= 40;
+  pObj->createPrm.qpmin 		= 32;
+  pObj->createPrm.qpmax 		= 51;
+  pObj->createPrm.packetsize 	= 100;
+  
   if(pObj->createPrm.codec==ALG_VID_CODEC_MJPEG) {
 
 	OSA_mutexLock(&vnf_imcop_lock);
@@ -334,7 +340,7 @@ XDAS_Int32 ALG_vidEncSetDynamicParams(ALG_VidEncObj *pObj)
 		  break;
 		default:
 		case ALG_VID_ENC_RATE_CONTROL_VBR:
-		  pObj->dynamicParams_h264.rcAlgo     = 1;
+		  pObj->dynamicParams_h264.rcAlgo     = 5;//1;
 		  break;
 		case ALG_VID_ENC_RATE_CONTROL_RCOFF:
 		  pObj->dynamicParams_h264.rcAlgo     = 2;
@@ -531,7 +537,6 @@ int ALG_vidEncSetQPSize(void *hndl, int qpinit, int qpmin, int qpmax, int packet
 
   return status;
 }
-
 
 int ALG_vidEncSetBitrate(void *hndl, int bitrate)
 {
