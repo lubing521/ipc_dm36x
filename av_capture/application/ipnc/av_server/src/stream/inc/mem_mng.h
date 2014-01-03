@@ -204,8 +204,6 @@ typedef struct _MEM_INFO{
 	int				mem_layout;
 	int				video_info_nums;
 	VIDEO_BLK_INFO	*video_info;
-
-
 } MEM_MNG_INFO;
 
 typedef struct _MEM_SIZE{

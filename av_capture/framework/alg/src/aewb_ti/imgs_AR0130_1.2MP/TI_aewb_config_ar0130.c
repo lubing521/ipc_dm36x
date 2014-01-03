@@ -150,7 +150,7 @@ static void TIAE_config_flicker_yes(IAE_DynamicParams * aeDynamicParams, int min
         aeDynamicParams->sensorGainRange[i].min = 10000;
         aeDynamicParams->sensorGainRange[i].max = 40000;
         aeDynamicParams->ipipeGainRange[i].min = 1024;
-        aeDynamicParams->ipipeGainRange[i].max = 2048;
+        aeDynamicParams->ipipeGainRange[i].max = 1280;
         i++;
     }
     else if (step_size == 10000) //50 Hz
@@ -162,7 +162,7 @@ static void TIAE_config_flicker_yes(IAE_DynamicParams * aeDynamicParams, int min
         aeDynamicParams->sensorGainRange[i].min = 10000;
         aeDynamicParams->sensorGainRange[i].max = 40000;
         aeDynamicParams->ipipeGainRange[i].min = 1024;
-        aeDynamicParams->ipipeGainRange[i].max = 2048;
+        aeDynamicParams->ipipeGainRange[i].max = 1280;
         i++;
     }
 

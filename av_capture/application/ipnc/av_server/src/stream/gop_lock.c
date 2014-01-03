@@ -68,10 +68,7 @@ void GopInit(void)
  */
 GopInfo_t *GopInfoMalloc(void)
 {
-
 	return malloc(sizeof(GopInfo_t));
-
-
 }
 
 /**

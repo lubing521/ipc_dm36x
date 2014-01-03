@@ -156,7 +156,7 @@ int VIDEO_streamShmCopy(int streamId, OSA_BufInfo *pBufInfo)
        );
    }
 
-#if 0
+#if 1
     if (streamId == 0)
     {
         static int lasttime = 0;
@@ -490,7 +490,9 @@ void VIDEO_codecAdvPrm(CodecAdvPrm* codecAdvPrm, int id)
 	gAVSERVER_config.encodeConfig[id].packetSize  = 100;
 	gAVSERVER_config.encodeConfig[id].qValue      = qualityLevel;
     gAVSERVER_config.encodeConfig[id].newCodecPrm = 1;
-    
+
+    printf("\n\n\n\nVIDEO_codecAdvPrm [%d] = %d\n\n\n\n", id, 
+                   gAVSERVER_config.encodeConfig[id].qpInit);
 	//gAVSERVER_config.encodeConfig[id].newCodecPrm = (Uint16)TRUE;
 	//gAVSERVER_config.encodeConfig[id].ipRatio 		= (Uint16)codecAdvPrm->ipRatio;
 	//gAVSERVER_config.encodeConfig[id].fIframe 		= (Uint16)codecAdvPrm->fIframe;

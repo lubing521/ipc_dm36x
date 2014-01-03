@@ -59,7 +59,7 @@ int stream_init( 	STREAM_PARM *pParm , STREAM_SET *pSet)
 	int cnt = 0;
 
 	/* Init memory manager */
-	pParm->MemInfo.mem_layout = pSet->Mem_layout; //MEM_LAYOUT_3
+	pParm->MemInfo.mem_layout = pSet->Mem_layout;
 	if(MemMng_Init( &(pParm->MemInfo) ) != STREAM_SUCCESS)
 	{
 		ERR("Memory manager init fail\n");
@@ -137,6 +137,7 @@ int stream_write(void *pAddr, int size, int frame_type ,int stream_type ,unsigne
 			pVidInfo = &(pParm->MemInfo.video_info[VIDOE_INFO_MJPG]);
 			sem_id	 = pParm->MemMngSemId[STREAM_SEM_JPEG];
 		break;
+		
 		case STREAM_H264_2:
 		case STREAM_MP4_EXT:
 			pVidInfo = &(pParm->MemInfo.video_info[VIDOE_INFO_MP4_EXT]);
@@ -165,7 +166,9 @@ int stream_write(void *pAddr, int size, int frame_type ,int stream_type ,unsigne
 	else if( stream_type == STREAM_MP4 || stream_type == STREAM_MP4_EXT)
 	{
 		//pVidInfo->extrasize = 18;
-	}else{
+	}
+	else
+	{
 		pVidInfo->extrasize = 0;
 	}
 
@@ -191,7 +194,6 @@ int stream_write(void *pAddr, int size, int frame_type ,int stream_type ,unsigne
 	{
 		case STREAM_H264_1:
 		case STREAM_MP4:
-
 			if(pParm->lockNewFrame[GOP_INDEX_MP4] && ret == 0)
 			{
 				if(frame_type == P_FRAME)
@@ -219,7 +221,6 @@ int stream_write(void *pAddr, int size, int frame_type ,int stream_type ,unsigne
 		break;
 
 		case STREAM_AUDIO:
-
 			if(pParm->checkNewFrame[GOP_INDEX_AUDIO])
 			{
 					Rendezvous_meet(&(pParm->objRv[GOP_INDEX_AUDIO]));
@@ -366,7 +367,6 @@ void ShowInfo(STREAM_PARM *pParm,int id)
 	DBG("pParm->JpgQuality = %d \n",pParm->JpgQuality);
 	DBG("pParm->Mpeg4Quality = %d \n",pParm->Mpeg4Quality);
 	DBG("pParm->qid = %d \n",pParm->qid);
-
 }
 
 /**
@@ -386,13 +386,12 @@ void *Msg_CTRL(void* args)
 	//ShowInfo(pParm, 1);
     OSA_setTskName("msgctrl");
 
-	qid 					= (int )pParm->qid;
-	Rendezvous_Handle	hRv = &pParm->objRv[0];
+	qid = (int)pParm->qid;
+	Rendezvous_Handle hRv = &pParm->objRv[0];
 
 	while((!gblGetQuit())&&(pParm->IsQuit == 0))
 	{
-		msg_size = msgrcv( qid, &msgbuf, sizeof(msgbuf)-sizeof(long),
-				MSG_TYPE_MSG1, 0);
+		msg_size = msgrcv( qid, &msgbuf, sizeof(msgbuf)-sizeof(long), MSG_TYPE_MSG1, 0);
 		if( msg_size < 0 )
 		{
 			ERR("Receive msg fail \n");
@@ -747,7 +746,6 @@ void *Msg_CTRL(void* args)
 						break;
 					}
 					Sem_lock(sem_id);
-
 
 					switch(msgbuf.frame_info.format)
 					{
@@ -1438,9 +1436,6 @@ void *Msg_CTRL(void* args)
     pthread_exit(NULL);
 }
 
-
-
-
 /**
  * @brief	Initialize message function
  * @param	"STREAM_PARM *pParm" : stream param
@@ -1448,7 +1443,6 @@ void *Msg_CTRL(void* args)
  */
 static int Init_Msg_Func(STREAM_PARM *pParm)
 {
-
 	pthread_attr_t     attr;
 	struct sched_param schedParam;
 
@@ -1466,7 +1460,7 @@ static int Init_Msg_Func(STREAM_PARM *pParm)
 	}
 	DBG(" Init_Msg_Func \n" );
 	//ShowInfo(pParm, 0);
-	pthread_create(&(pParm->threadControl),&attr,Msg_CTRL,(void *)pParm);
+	pthread_create(&(pParm->threadControl), &attr, Msg_CTRL, (void *)pParm);
 
 	return STREAM_SUCCESS;
 }
@@ -1488,28 +1482,24 @@ void stream_feature_setup( int nFeature, void *pParm )
 		{
 			int input_val = *(int *)pParm;
 			VIDEO_bitRate_setparm( 0, input_val );
-
 			break;
 		}
 		case STREAM_FEATURE_BIT_RATE2:
 		{
 			int input_val = *(int *)pParm;
 			VIDEO_bitRate_setparm( 1, input_val );
-
 			break;
 		}
 		case STREAM_FEATURE_JPG_QUALITY:
 		{
 			int input_val = *(int *)pParm;
 			VIDEO_jpeg_quality_setparm(input_val);
-
 			break;
 		}
 		case STREAM_FEATURE_AAC_BITRATE:
 		{
 			int input_val = *(int *)pParm;
 			AUDIO_aac_bitRate_setparm(input_val);
-
 			break;
 		}
 		case STREAM_FEATURE_FRAMERATE1:
@@ -1590,7 +1580,6 @@ void stream_feature_setup( int nFeature, void *pParm )
 
 			break;
 		}
-
 		case STREAM_FEATURE_SATURATION:
 		{
 			int input_val = *(int *)pParm;
@@ -1598,7 +1587,6 @@ void stream_feature_setup( int nFeature, void *pParm )
 			Aew_ext_parameter.saturation = input_val;
 			break;
 		}
-
 		case STREAM_FEATURE_AWB_MODE:
 		{
 			int input_val = *(int *)pParm;
@@ -1622,7 +1610,6 @@ void stream_feature_setup( int nFeature, void *pParm )
 
 			break;
 		}
-
 		case STREAM_FEATURE_AE_MODE:
 		{
 			int input_val = *(int *)pParm;
@@ -1643,24 +1630,20 @@ void stream_feature_setup( int nFeature, void *pParm )
 			else
 			{
 				Aew_ext_parameter.day_night = AE_NIGHT;
-
 			}
 			break;
 		}
-
 		case STREAM_FEATURE_AEW_TYPE:
 		{
 			int input_val = *(int *)pParm;
 			Aew_ext_parameter.aew_enable= (input_val == 0) ? AEW_DISABLE:AEW_ENABLE;
 			VIDEO_aewbSetType(input_val);
-
 			break;
 		}
 		case STREAM_FEATURE_AEW_PRIORITY:
 		{
 			int input_val = *(int *)pParm;
 			VIDEO_aewbPriority(input_val);
-
 			break;
 		}
 		case STREAM_FEATURE_ENV_50_60HZ:
@@ -1680,7 +1663,6 @@ void stream_feature_setup( int nFeature, void *pParm )
 				Aew_ext_parameter.env_50_60Hz = VIDEO_NTSC;
 			}
 			printf("[stream] env_50_60Hz=%d \n" , Aew_ext_parameter.env_50_60Hz);
-			
 			break;
 		}
 		case STREAM_FEATURE_BINNING_SKIP:
@@ -1713,7 +1695,6 @@ void stream_feature_setup( int nFeature, void *pParm )
 			VIDEO_streamSetOSDEnable(input_val);
 			break;
 		}
-
 		case STREAM_FEATURE_TSTAMPENABLE:
 		{
 			int input_val = *(int *)pParm;
