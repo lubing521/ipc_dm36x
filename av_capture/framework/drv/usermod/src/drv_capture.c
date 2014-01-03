@@ -1,3 +1,8 @@
+#include <string.h>
+#include <sys/time.h>
+#include <sys/types.h>
+#include <unistd.h>
+#include <time.h>
 
 #include <drv_capture.h>
 
@@ -99,11 +104,11 @@ int DRV_captureClose()
     return OSA_SOK;
 }
 
-static Uint32 GetCurTime_mSec()
+Uint32 GetCurTime_mSec()
 {
-    struct timeval tv;
-    gettimeofday(&tv, NULL);
-    return (tv.tv_sec * 1000) + (tv.tv_usec + 500) / 1000;
+    struct timespec tv;
+    clock_gettime(CLOCK_MONOTONIC, &tv);
+    return (tv.tv_sec * 1000) + (tv.tv_nsec) / (1000 * 1000);
 }
 
 int DRV_captureStart(Bool rawOutEnable, Bool yuvOutEnable)

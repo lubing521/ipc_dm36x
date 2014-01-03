@@ -278,7 +278,7 @@ int VIDEO_streamTskRun(int streamId)
       OSA_prfEnd(&gAVSERVER_ctrl.streamPrf, 1);      
     }      
 
-    AVSERVER_bufPutEmpty( VIDEO_TSK_STREAM, streamId, inBufId);  
+    AVSERVER_bufPutEmpty(VIDEO_TSK_STREAM, streamId, inBufId);  
   }
   
   return status;

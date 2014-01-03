@@ -84,13 +84,6 @@ int VIDEO_streamSysExit()
   return OSA_SOK;
 }
 
-static Uint32 GetCurTime()
-{
-    struct timeval tv;
-    gettimeofday(&tv);
-    return (tv.tv_sec * 1000) + (tv.tv_usec + 500) / 1000;
-}
-
 int VIDEO_streamShmCopy(int streamId, OSA_BufInfo *pBufInfo)
 {
   int  status=OSA_SOK;
@@ -162,30 +155,26 @@ int VIDEO_streamShmCopy(int streamId, OSA_BufInfo *pBufInfo)
         static int lasttime = 0;
         static int timenow = 0;
         lasttime = timenow;
-        timenow = GetCurTime();
-        int timediff = timenow - timestamp;
+        timenow = GetCurTime_mSec();
+        //int timediff = timenow - timestamp;
         int timeinterval = timenow - lasttime;
         static int count = 0;
         count++;
         
         if (timeinterval >= 50)
         {
-            OSA_printf("count = %4d, frameType=%s, size = %6d, time = (%d, %d) %d, timeinterval = %d ****\n",
+            OSA_printf("count = %4d, frameType = %s, size = %6d, timeinterval = %d\n",
             count,
             frameType == 1 ? "KEY" : "   ",
             pInBufHeader->encFrameSize,
-            timenow,
-            timestamp,
-            timediff,
             timeinterval);
         }
         else if (timeinterval <= 30)
         {
-            OSA_printf("count = %4d, frameType=%s, size = %6d, timediff = %d ms, timeinterval = %d\n",
+            OSA_printf("count = %4d, frameType = %s, size = %6d, timeinterval = %d\n",
             count,
             frameType == 1 ? "KEY" : "   ",
             pInBufHeader->encFrameSize,
-            timediff,
             timeinterval);
         }
     }

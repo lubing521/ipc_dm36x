@@ -83,7 +83,7 @@ DEFINE+=-DYUV_MODE
 endif
 
 AR_OPTS=-rc
-LD_OPTS=-lpthread -lpng -fPIC -lasound
+LD_OPTS=-lpthread -lpng -lrt -fPIC -lasound
 
 FILES=$(subst ./, , $(foreach dir,.,$(wildcard $(dir)/*.c)) ) 
 

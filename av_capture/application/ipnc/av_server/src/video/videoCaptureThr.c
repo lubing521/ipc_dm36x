@@ -1,9 +1,36 @@
 
 #include <avserver.h>
 #include <osa_sem.h>
+#include <sys/prctl.h>
+
+typedef enum
+{
+    NO_SENSOR = 1,    //没有检测到sensor
+    CAPTURE_STOP,     //capture 还没有启动
+    CAPTURE_ERROR,    //capture error
+    CAPTURE_OK        //capture ok  
+} AVSERVER_STATUS;
 
 extern OSA_SemHndl g_saldreSemStart;
 extern OSA_SemHndl g_saldreSemDone;
+
+extern Uint32 GetCurTime_mSec();
+extern void mSleep(const int mseconds);
+int VIDEO_DaemonAvserverCreate(void);
+
+int gAvserverStatus = CAPTURE_STOP;
+
+int SensorIsOK(void)
+{
+    if (GetSensorStatus() == SENSOR_OK)
+    {
+        return 1;
+    }
+    else
+    {
+        return 0;
+    }
+}
 
 int VIDEO_captureTskCreate()
 {
@@ -215,9 +242,9 @@ int VIDEO_captureTskRunIsifIn()
 
   VIDEO_BufHeader *pBufHeader;
   OSA_BufInfo *pBufInfo;
-  int count = 0;
 
   VIDEO_captureFrameRateCount(1, 600000);
+  gVIDEO_ctrl.rawCaptureCount++;
   
   for(streamId=0; streamId<gAVSERVER_config.numCaptureStream; streamId++) {
     status = DRV_ipipeGetRszBuf(streamId, &rszBufId[streamId], OSA_TIMEOUT_FOREVER);
@@ -255,8 +282,6 @@ int VIDEO_captureTskRunIsifIn()
     pBufHeader->height    = gVIDEO_ctrl.captureInfo.ipipeInfo.rszInfo[streamId].height;
     pBufHeader->offsetH   = gVIDEO_ctrl.captureInfo.ipipeInfo.rszInfo[streamId].offsetH;
     pBufHeader->offsetV   = gVIDEO_ctrl.captureInfo.ipipeInfo.rszInfo[streamId].offsetV;
-
-    gVIDEO_ctrl.rawCaptureCount++;
 
     if(streamId==DRV_LDC_TUNING_TOOL_CTRL_STREAM_ID) {
       if(DRV_imageTuneIsSaveYuvData() || DRV_imageTuneIsSendYuvData()) {
@@ -758,71 +783,81 @@ int VIDEO_captureTskRunDdrIn()
 	return status;
 }
 
+
 int VIDEO_captureTskMain(struct OSA_TskHndl *pTsk, OSA_MsgHndl *pMsg, Uint32 curState )
 {
-  int status;
-  Bool done=FALSE, ackMsg = FALSE;
-  Uint16 cmd = OSA_msgGetCmd(pMsg);
+    int status;
+    Bool done=FALSE, ackMsg = FALSE;
+    Uint16 cmd = OSA_msgGetCmd(pMsg);
 
-  OSA_setTskName("capture");
+    OSA_setTskName("capture");
   
-  #ifdef AVSERVER_DEBUG_VIDEO_CAPTURE_THR
-  OSA_printf(" CAPTURE: Recevied CMD = 0x%04x\n", cmd);
-  #endif
+#ifdef AVSERVER_DEBUG_VIDEO_CAPTURE_THR
+    OSA_printf(" CAPTURE: Recevied CMD = 0x%04x\n", cmd);
+#endif
 
-  if(cmd!=AVSERVER_CMD_CREATE) {
-    OSA_tskAckOrFreeMsg(pMsg, OSA_SOK);
-    return OSA_SOK;
-  }
+    if(cmd!=AVSERVER_CMD_CREATE) 
+    {
+        OSA_tskAckOrFreeMsg(pMsg, OSA_SOK);
+        return OSA_SOK;
+    }
 
-  #ifdef AVSERVER_DEBUG_VIDEO_CAPTURE_THR
-  OSA_printf(" CAPTURE: Create...\n");
-  #endif
+#ifdef AVSERVER_DEBUG_VIDEO_CAPTURE_THR
+    OSA_printf(" CAPTURE: Create...\n");
+#endif
 
-  status = VIDEO_captureTskCreate();
+    status = VIDEO_captureTskCreate();
 
-  OSA_tskAckOrFreeMsg(pMsg, status);
+    OSA_tskAckOrFreeMsg(pMsg, status);
 
-  if(status!=OSA_SOK) {
-    OSA_ERROR("VIDEO_captureTskCreate()");
-    return OSA_SOK;
-  }
+    if(status!=OSA_SOK) 
+    {
+        OSA_ERROR("VIDEO_captureTskCreate()");
+        return OSA_SOK;
+    }
 
-  #ifdef AVSERVER_DEBUG_VIDEO_CAPTURE_THR
-  OSA_printf(" CAPTURE: Create...DONE\n");
-  #endif
+#ifdef AVSERVER_DEBUG_VIDEO_CAPTURE_THR
+    OSA_printf(" CAPTURE: Create...DONE\n");
+#endif
 
-  status = OSA_tskWaitMsg(pTsk, &pMsg);
-  if(status!=OSA_SOK)
-    return OSA_SOK;
+    status = OSA_tskWaitMsg(pTsk, &pMsg);
+    if(status!=OSA_SOK)
+    {
+        return OSA_SOK;
+    }
 
-  cmd = OSA_msgGetCmd(pMsg);
+    cmd = OSA_msgGetCmd(pMsg);
+    if(cmd==AVSERVER_CMD_DELETE) 
+    {
+        done = TRUE;
+        ackMsg = TRUE;
+    } 
+    else 
+    {
+#ifdef AVSERVER_DEBUG_VIDEO_CAPTURE_THR
+        OSA_printf(" CAPTURE: Start...\n");
+#endif
 
-  if(cmd==AVSERVER_CMD_DELETE) {
+        VIDEO_captureTskStart();
+        OSA_tskAckOrFreeMsg(pMsg, OSA_SOK);
+#ifdef AVSERVER_DEBUG_VIDEO_CAPTURE_THR
+        OSA_printf(" CAPTURE: Start...DONE\n");
+#endif
+    }
 
-    done = TRUE;
-    ackMsg = TRUE;
-
-  } else {
-
-    #ifdef AVSERVER_DEBUG_VIDEO_CAPTURE_THR
-    OSA_printf(" CAPTURE: Start...\n");
-    #endif
-
-    VIDEO_captureTskStart();
-
-    OSA_tskAckOrFreeMsg(pMsg, OSA_SOK);
-
-    #ifdef AVSERVER_DEBUG_VIDEO_CAPTURE_THR
-    OSA_printf(" CAPTURE: Start...DONE\n");
-    #endif
-  }
-
+    if (VIDEO_DaemonAvserverCreate() == 0)
+    {
+        OSA_printf(" VIDEO_DaemonAvserverCreate OK\n");
+    }
+    else
+    {
+        OSA_printf(" VIDEO_DaemonAvserverCreate Error!\n");
+    }
+    
     while(!done) 
     {
         //VIDEO_aewbApplyPrm();
         OSA_prfBegin(&gAVSERVER_ctrl.capturePrf);
-
         if( gAVSERVER_config.captureRawInMode == AVSERVER_CAPTURE_RAW_IN_MODE_ISIF_IN ) 
         {
             status = VIDEO_captureTskRunIsifIn();
@@ -831,13 +866,14 @@ int VIDEO_captureTskMain(struct OSA_TskHndl *pTsk, OSA_MsgHndl *pMsg, Uint32 cur
         {
             status = VIDEO_captureTskRunDdrIn();
         }
-
         OSA_prfEnd(&gAVSERVER_ctrl.capturePrf, 1);
 
         if(status!=OSA_SOK)
+        {
             break;
-
-        if(gVIDEO_ctrl.rawCaptureCount % (gAVSERVER_config.sensorFps * 30) == 0)
+        }
+        
+        if(gVIDEO_ctrl.rawCaptureCount % (gAVSERVER_config.sensorFps * 60) == 0)
         {
             AVSERVER_profileInfoShow();
  	    }
@@ -845,13 +881,14 @@ int VIDEO_captureTskMain(struct OSA_TskHndl *pTsk, OSA_MsgHndl *pMsg, Uint32 cur
         status = OSA_tskCheckMsg(pTsk, &pMsg);
 
         if(status!=OSA_SOK)
+        {
             continue;
-
+        }
         cmd = OSA_msgGetCmd(pMsg);
 
-        #ifdef AVSERVER_DEBUG_VIDEO_CAPTURE_THR
+#ifdef AVSERVER_DEBUG_VIDEO_CAPTURE_THR
         OSA_printf(" CAPTURE: Recevied CMD = 0x%04x\n", cmd);
-        #endif
+#endif
 
         switch(cmd) 
         {
@@ -865,18 +902,20 @@ int VIDEO_captureTskMain(struct OSA_TskHndl *pTsk, OSA_MsgHndl *pMsg, Uint32 cur
         }
     }
 
-    #ifdef AVSERVER_DEBUG_VIDEO_CAPTURE_THR
+#ifdef AVSERVER_DEBUG_VIDEO_CAPTURE_THR
     OSA_printf(" CAPTURE: Delete...\n");
-    #endif
+#endif
 
     VIDEO_captureTskDelete();
 
     if(ackMsg)
+    {
         OSA_tskAckOrFreeMsg(pMsg, OSA_SOK);
-
-    #ifdef AVSERVER_DEBUG_VIDEO_CAPTURE_THR
-        OSA_printf(" CAPTURE: Delete...DONE\n");
-    #endif
+    }
+    
+#ifdef AVSERVER_DEBUG_VIDEO_CAPTURE_THR
+    OSA_printf(" CAPTURE: Delete...DONE\n");
+#endif
     return OSA_SOK;
 }
 
@@ -897,13 +936,89 @@ int VIDEO_captureCreate()
 int VIDEO_captureDelete()
 {
     int status;
-
     status = OSA_tskDelete(&gVIDEO_ctrl.captureTsk);
-
     if(status!=OSA_SOK) 
     {
         OSA_ERROR("OSA_tskDelete()\n");
     }
     return status;
+}
+
+int GetAvserverStatus(void)
+{
+	return gAvserverStatus;
+}
+
+void *DaemonAvserver(void *arg)
+{
+#define DAEMONT_TIME_MS (30 * 1000) //ms
+    static int time_now, time_last = 0;
+    static int rawcount_now, rawcount_last;
+    static int timediff; //sec
+    static int rawcountdiff;
+    static int count = 0;
+
+    prctl(PR_SET_NAME, "DaemonAvsrv");
+
+    if (SensorIsOK() != 1)
+    {
+        printf("Sensor is Error!\n");// sensor is No connections  
+        gAvserverStatus = NO_SENSOR;
+        return; 
+    }
+
+    gAvserverStatus = CAPTURE_STOP;
+    
+    while (1)
+    {
+        time_now = GetCurTime_mSec(); 
+        if (time_now - time_last < DAEMONT_TIME_MS)
+        {
+            mSleep(1000 * 1);
+            continue;
+        }
+
+        timediff = (time_now - time_last) / 1000; //sec
+        time_last = time_now;
+    
+        rawcount_last = rawcount_now;
+        rawcount_now = gVIDEO_ctrl.rawCaptureCount; 
+        rawcountdiff = rawcount_now - rawcount_last;
+
+        count++;
+        if (count > 1 &&       
+            timediff > 0 &&    //Avoid data overflow
+            rawcountdiff >= 0)  //Avoid data overflow
+        { 
+#if 1
+            printf("[%3d] time=%8d ms, rawcount_last=%4d, rawcount_now=%4d, rawcountdiff=%4d, timediff=%d\n",
+                count,
+                time_now,
+                rawcount_last,
+                rawcount_now,
+                rawcountdiff,
+                timediff);
+#endif        
+            if (rawcountdiff < timediff * gAVSERVER_config.sensorFps / 4)
+            {
+                gAvserverStatus = CAPTURE_ERROR;
+            }
+            else// if (rawcount_now > 25*120)
+            {
+                gAvserverStatus = CAPTURE_OK;
+            }
+        }
+    }
+    return 0;
+}
+
+int VIDEO_DaemonAvserverCreate(void)
+{
+	pthread_t thread;
+	if (pthread_create(&thread, NULL, DaemonAvserver, NULL))
+	{
+       return -1;
+    }
+    return 0;
 }
 
