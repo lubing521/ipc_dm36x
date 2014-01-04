@@ -36,6 +36,7 @@ static int Init_Msg_Func(STREAM_PARM *pParm);
 static STREAM_PARM stream_parm;
 void stream_feature_setup( int nFeature, void *pParm );
 extern AEW_EXT_PARAM Aew_ext_parameter;
+extern int GetAvserverStatus(void);
 
 /**
  * @brief	Get stream handle
@@ -650,7 +651,6 @@ void *Msg_CTRL(void* args)
 					}
 					Sem_lock(sem_id);
 
-
 					switch(msgbuf.frame_info.format){
 						case FMT_MJPEG:
 							pVidInfo = &pParm->MemInfo.video_info[VIDOE_INFO_MJPG];
@@ -706,20 +706,17 @@ void *Msg_CTRL(void* args)
 						case FMT_MPEG4_EXT:
 							pVidInfo = &pParm->MemInfo.video_info[VIDOE_INFO_MP4_EXT];
 						break;
-
 					}
 					if(pVidInfo == NULL)
 						break;
 					msgbuf.frame_info.offset	= (unsigned long)(pVidInfo->extradata) -
 													pParm->MemInfo.start_addr;
 					msgbuf.frame_info.size		= pVidInfo->extrasize;
-
 					break;
 				}
 				case MSG_CMD_GET_MEDIA_INFO:
 				{
 					msgbuf.frame_info.format = VIDEO_streamGetMediaInfo();
-
 					break;
 				}
 				case MSG_CMD_GET_AND_LOCK_IFRAME:
@@ -1279,7 +1276,6 @@ void *Msg_CTRL(void* args)
 					break;
 				}
 
-				
 				case MSG_CMD_GET_VCAP_PARAM:
 				{
 					MSGVCAPCFG* pVCapCfg = (MSGVCAPCFG*)&msgbuf.mem_info;
@@ -1330,13 +1326,12 @@ void *Msg_CTRL(void* args)
 						msgbuf.ret = 0;
 						break;
 					}		
-					if(FALSE == VIDEO_GetEncodePrm(pVencCfg->captureStreamId , pVencCfg))
+					if(FALSE == VIDEO_GetEncodePrm(pVencCfg->captureStreamId, pVencCfg))
 					{
 						msgbuf.ret = 0;
 						break;		
 					}
 					msgbuf.ret = sizeof(MSGVENCCFG);
-	
 					break;
 				}
 				
@@ -1414,12 +1409,24 @@ void *Msg_CTRL(void* args)
 					break;
 				}
 
-
+                case MSG_CMD_GET_AVSERVER_STATUS:
+				{
+					int *pAvserverStatus = (int*)&msgbuf.mem_info;
+					if (pAvserverStatus == NULL) 
+					{
+						msgbuf.ret = 0;
+						break;
+					}		
+                    *pAvserverStatus = GetAvserverStatus();
+					msgbuf.ret = sizeof(pAvserverStatus);
+					break;
+				}
 				
-			default:
-					DBG("default case \n");
+			    default:
+					DBG("default case\n");
 					break;
 			}
+			
 			if(msgbuf.Src != 0)
 			{
 				/* response */
@@ -1471,12 +1478,12 @@ static int Init_Msg_Func(STREAM_PARM *pParm)
  * @param	"STREAM_PARM *pParm" : input value
  * @return	none
  */
-void stream_feature_setup( int nFeature, void *pParm )
+void stream_feature_setup(int nFeature, void *pParm)
 {
-	if( nFeature < 0|| nFeature >= STREAM_FEATURE_NUM )
+	if(nFeature < 0 || nFeature >= STREAM_FEATURE_NUM)
 		return;
 
-	switch(nFeature)
+	switch (nFeature)
 	{
 		case STREAM_FEATURE_BIT_RATE1:
 		{
