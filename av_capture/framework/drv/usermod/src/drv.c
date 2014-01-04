@@ -8,8 +8,6 @@
 #include <drv_ldc.h>
 #include <drv_imgs.h>
 #include <drv_audio.h>
-//#include "dbg.h"
-
 int DRV_vpssInit();
 int DRV_vpssExit();
 
@@ -214,8 +212,8 @@ void DRV_imgGetWidthHeight(int sensorMode, Uint16 *width, Uint16 *height)
         break;
     case DRV_IMGS_SENSOR_MODE_1920x1080:
         *width  = 1920;
-        *height = 1080;
-        break;
+        *height = 1088;
+        break; 
     case DRV_IMGS_SENSOR_MODE_2048x1536:
         *width  = 2048;
         *height = 1520;
@@ -223,10 +221,6 @@ void DRV_imgGetWidthHeight(int sensorMode, Uint16 *width, Uint16 *height)
     case DRV_IMGS_SENSOR_MODE_2176x1296:
         *width  = 2176 - 32*5; //2016
         *height = 1280 - 32*3; //1184
-        break;
-    case DRV_IMGS_SENSOR_MODE_2304x1296:
-        *width  = 2304;
-        *height = 1296;
         break;
     case DRV_IMGS_SENSOR_MODE_2592x1920:
         *width  = 2400;

@@ -1303,7 +1303,7 @@ const unsigned short AR0330_1920_1080[]=
 0x3004, 196, 	    // X_ADDR_START
 0x3008, 2117, 	    // X_ADDR_END
 0x3002, 220, 	    // Y_ADDR_START
-0x3006, 1317, 	    // Y_ADDR_END
+0x3006, 1323, 	    // Y_ADDR_END
 
 0x30A2, 0x0001, 	// X_ODD_INC
 0x30A6, 0x0001, 	// Y_ODD_INC

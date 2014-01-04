@@ -243,9 +243,9 @@ XDAS_Int32 ALG_vidEncSetDynamicParams(ALG_VidEncObj *pObj)
     return OSA_EFAIL;
 
   //test only
-  pObj->createPrm.qpinit 		= 40;
-  pObj->createPrm.qpmin 		= 32;
-  pObj->createPrm.qpmax 		= 51;
+  pObj->createPrm.qpinit 		= 36;
+  pObj->createPrm.qpmin 		= 30;
+  pObj->createPrm.qpmax 		= 50;
   pObj->createPrm.packetsize 	= 100;
   
   if(pObj->createPrm.codec==ALG_VID_CODEC_MJPEG) {

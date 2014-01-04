@@ -128,25 +128,6 @@ static struct rgb2rgb_index* rgb_matrixes[]=
     rgb_matrixes_1,
 };
 
-#if 0
-static CSL_IpipeEdgeEnhanceConfig ee_0 = {
-    .enable = 1,
-    .hpfShift = 3,
-    .table = TI_YEE_TABLE_IMX122,
-    .lowerThres = 32,
-    .hpfCoeff = {{80, -10, 0}, {-10,-10,0}, {0,0,0}},
-    .edgeSharpGain = 0,
-};
-static CSL_IpipeEdgeEnhanceConfig ee_1 = {
-    .enable = 0,
-    .hpfShift = 4,
-    .table = TI_YEE_TABLE_IMX122,
-    .lowerThres = 32,
-    .hpfCoeff = {{80, -10, 0}, {-10,-10,0}, {0,0,0}},
-    .edgeSharpGain = 0,
-};
-#endif
-
 static void ISP_ipipeSetNf2(int aGain, int dGain)
 {
     static int value_bak = -1;

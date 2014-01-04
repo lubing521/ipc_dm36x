@@ -4,7 +4,6 @@
 #include <drv_isifPriv.h>
 #include <drv_imgs.h>
 
-//#include "dbg.h"
 extern awb_calc_data_t *ImageTune_imgsGetAwbConfig(int mode);
 DRV_ImageTuneObj gDRV_imageTuneObj;
 

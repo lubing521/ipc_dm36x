@@ -200,6 +200,7 @@ int DRV_imgsCalcAgain_OV9712(int again)
     return gainRegVal;
 }
 
+
 int DRV_imgsInvertSW_OV9712(int regVal)
 {
     DRV_ImgsFrameTime *pFrame = &gDRV_imgsObj.curFrameTime;

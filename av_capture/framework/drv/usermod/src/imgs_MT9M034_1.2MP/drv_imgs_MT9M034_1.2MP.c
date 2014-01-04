@@ -54,13 +54,14 @@ int DRV_imgsOpen_MT9M034(DRV_ImgsConfig *config)
         return status;
     }
 
-#ifdef BOARD_AP_IPNC
+//#ifdef BOARD_AP_IPNC
     DRV_gpioSetMode(IMGS_RESET_GPIO, DRV_GPIO_DIR_OUT);
-    DRV_gpioClr(IMGS_RESET_GPIO);
-    OSA_waitMsecs(100);
     DRV_gpioSet(IMGS_RESET_GPIO);
-    OSA_waitMsecs(100);
-#endif
+    DRV_gpioClr(IMGS_RESET_GPIO);
+    OSA_waitMsecs(50);
+    DRV_gpioSet(IMGS_RESET_GPIO);
+    OSA_waitMsecs(50);
+//#endif
 
     do
     {

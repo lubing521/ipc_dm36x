@@ -154,6 +154,7 @@ static struct rgb2rgb_index rgb_matrixes_0[] =
         .color_temp = 0,
     }
 };
+
 static struct rgb2rgb_index rgb_matrixes_1[] = 
 {
     {
@@ -175,6 +176,7 @@ static struct rgb2rgb_index rgb_matrixes_1[] =
     }
 
 };
+
 static struct rgb2rgb_index rgb_matrixes_2[] = 
 {
     {
@@ -203,32 +205,6 @@ static struct rgb2rgb_index* rgb_matrixes[]=
     rgb_matrixes_1,
 };
 
-#endif
-
-
-#if 0
-static CSL_IpipeEdgeEnhanceConfig ee_0 = {
-    .enable = 1,
-    .hpfShift = 3,
-    .table = TI_YEE_TABLE_MT9P031,
-    .lowerThres = 32,
-    .hpfCoeff = {{80, -10, 0}, {-10,-10,0}, {0,0,0}},
-    .edgeSharpGain = 0,
-};
-static CSL_IpipeEdgeEnhanceConfig ee_1 = {
-    .enable = 0,
-    .hpfShift = 4,
-    .table = TI_YEE_TABLE_MT9P031,
-    .lowerThres = 32,
-    .hpfCoeff = {{80, -10, 0}, {-10,-10,0}, {0,0,0}},
-    .edgeSharpGain = 0,
-};
-
-static CSL_IpipeEdgeEnhanceConfig* ee[] = {
-    &ee_0,
-    &ee_1,
-    &ee_1,
-};
 #endif
 
 static void ISP_SetCcdcClamp(int aGain, int dGain)
